@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,6 +25,7 @@ import java.util.Collection;
 
 public class LoginActivity extends AppCompatActivity {
     public static final String EMPTY = "";
+    LoadingDialog loadingDialog = new LoadingDialog(LoginActivity.this);
     private SharedPreferences sharedPreferences;
     private static User user;
 
@@ -41,9 +44,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void verifyLogin() {
-        View login = findViewById(R.id.login);
-        View password = findViewById(R.id.password);
-        boolean successAuth = djangoRequest();
+        String login = ((EditText) findViewById(R.id.login)).getText().toString();
+        String password = ((EditText) findViewById(R.id.password)).getText().toString();
+        boolean successAuth = djangoRequest(login, password);
 
         if (successAuth) {
             saveAuthState();
@@ -53,13 +56,17 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private boolean djangoRequest() {
+    private boolean djangoRequest(String login, String password) {
+        loadingDialog.startLoadingDialog();
+        // TODO  client.sendAsync()
+        new Handler().postDelayed(() -> loadingDialog.dismissDialog(), 3000);
+
         user = new User(1, "photo", "cropped-photo", "puhovin.21", "Пухов", "Илья", "Николаевич", LocalDate.of(2003, 8, 1), "+7 (999) 740 24-33", "dinamond2003@gmail.com", "https://vk.com/ilya.pukhov", "Bio", new Faculty(1, "Цифровых Систем"), new Direction(1, "09", "Дирекция"), new Group(1, "Программная инженерия"), new ArrayList<Team>((Collection) new Team(1, "Робозавры", null, new ArrayList<User>((Collection) new User()))));
         return true;
     }
 
     private void openApp() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
     }
 
