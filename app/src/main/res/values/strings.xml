@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">YUTA</string>
+    <string name="footer_text">YSTU\'s Unified Task App</string>
+    <string name="footer_description">Единое приложение ЯГТУ для задач</string>
+    <string name="header_text">Добро пожаловать в YUTA!</string>
+    <string name="ystu_photo">ystu_photo</string>
+    <string name="yuta_logo">yuta_logo</string>
+    <string name="auth_text">Авторизация</string>
+    <string name="separator">separator</string>
+    <string name="login">Логин</string>
+    <string name="login_icon">Login</string>
+    <string name="password">Пароль</string>
+    <string name="password_icon">password_icon</string>
+    <string name="login_button">ВОЙТИ</string>
+    <string name="error_message">Неправильный логин или пароль</string>
 </resources>
