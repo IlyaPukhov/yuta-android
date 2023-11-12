@@ -13,7 +13,7 @@
             android:id="@+id/textView"
             app:layout_constraintTop_toBottomOf="@+id/progressBar"
             android:layout_marginTop="16dp"
-            android:textAppearance="@style/login"
+            android:textAppearance="@style/loading"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -26,5 +26,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:progressTint="@color/blue" />
+            android:indeterminate="true"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@color/white" />
 </androidx.constraintlayout.widget.ConstraintLayout>
