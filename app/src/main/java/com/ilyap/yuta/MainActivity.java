@@ -1,9 +1,5 @@
 package com.ilyap.yuta;
 
-import static com.ilyap.yuta.ui.LoginActivity.EMPTY;
-
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,11 +19,5 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         NavController navController = Navigation.findNavController(this, R.id.fragment);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
-
-        System.out.println("111");
-
-//        SharedPreferences sharedPreferences = getSharedPreferences("session", Context.MODE_PRIVATE);
-//        // TODO Gson
-//        String userJson = sharedPreferences.getString("user", EMPTY);
     }
 }
