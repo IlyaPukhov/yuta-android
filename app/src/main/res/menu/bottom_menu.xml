@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:id="@+id/profileFragment"
+            android:title="@string/nav_profile"
+            android:icon="@drawable/profile_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    <item
+            android:id="@+id/projectsFragment"
+            android:title="@string/nav_projects"
+            android:icon="@drawable/projects_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    <item
+            android:id="@+id/tasksFragment"
+            android:title="@string/nav_tasks"
+            android:icon="@drawable/tasks_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    <item
+            android:id="@+id/teamsFragment"
+            android:title="@string/nav_teams"
+            android:icon="@drawable/teams_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+</menu>
