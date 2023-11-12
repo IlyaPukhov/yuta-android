@@ -53,4 +53,11 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/white</item>
     </style>
+
+    <style name="nav_item">
+        <item name="android:textSize">11sp</item>
+        <item name="android:letterSpacing">0.12</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/montserrat_regular</item>
+    </style>
 </resources>

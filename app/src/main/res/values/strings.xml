@@ -14,4 +14,8 @@
     <string name="login_button">ВОЙТИ</string>
     <string name="error_message">Неправильный логин или пароль</string>
     <string name="loading_text">Проверка данных…</string>
+    <string name="nav_profile">Профиль</string>
+    <string name="nav_projects">Проекты</string>
+    <string name="nav_tasks">Задачи</string>
+    <string name="nav_teams">Команды</string>
 </resources>
