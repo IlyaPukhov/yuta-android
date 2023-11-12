@@ -1,4 +1,4 @@
-package com.ilyap.yuta.models.users;
+package com.ilyap.yuta.models;
 
 import java.io.Serializable;
 

@@ -1,6 +1,4 @@
-package com.ilyap.yuta.models.teams;
-
-import com.ilyap.yuta.models.users.User;
+package com.ilyap.yuta.models;
 
 import java.io.Serializable;
 import java.util.List;

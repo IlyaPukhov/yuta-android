@@ -1,6 +1,4 @@
-package com.ilyap.yuta.models.users;
-
-import com.ilyap.yuta.models.teams.Team;
+package com.ilyap.yuta.models;
 
 import java.io.Serializable;
 import java.time.LocalDate;
