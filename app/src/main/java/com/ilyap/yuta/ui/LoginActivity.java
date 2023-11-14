@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ilyap.yuta.MainActivity;
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.http.AuthResponse;
+import com.ilyap.yuta.models.AuthResponse;
 import com.ilyap.yuta.utils.JsonUtils;
 import com.ilyap.yuta.utils.RequestUtils;
 
@@ -22,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     LoadingDialog loadingDialog;
     TextView errorText;
     private SharedPreferences sharedPreferences;
-    private int user_id = -1;
+    private int user_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         // TODO после запроса по апи убрать
         new Handler().postDelayed(() -> loadingDialog.dismissDialog(), 3000);
 
-        String json = RequestUtils.userLoginRequest();
+        String json = RequestUtils.getUserIdRequest();
         AuthResponse response = JsonUtils.parse(json, AuthResponse.class);
 
         if (response.getStatus().equalsIgnoreCase("ok")) {

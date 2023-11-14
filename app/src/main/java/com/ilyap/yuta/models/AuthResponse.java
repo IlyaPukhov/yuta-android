@@ -1,4 +1,4 @@
-package com.ilyap.yuta.models.http;
+package com.ilyap.yuta.models;
 
 public class AuthResponse {
     String status;
