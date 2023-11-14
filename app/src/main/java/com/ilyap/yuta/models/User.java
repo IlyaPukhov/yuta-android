@@ -1,55 +1,30 @@
 package com.ilyap.yuta.models;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.List;
 
 public class User implements Serializable {
-    private int id;
+    private String login;
     private String photo;
     private String croppedPhoto;
-    private String login;
     private String lastName;
     private String firstName;
     private String patronymic;
-    private LocalDate birthday;
+    private String age;
+    private String biography;
     private String phoneNumber;
     private String eMail;
     private String vk;
-    private String biography;
-    private Faculty faculty;
-    private Direction direction;
-    private Group group;
-    private List<Team> teams;
+    private String faculty;
+    private String direction;
+    private String group;
+    private int allProjectsCount;
+    private int doneProjectsCount;
+    private int allTasksCount;
+    private int doneTasksCount;
+    private int teamsCount;
 
-    public User() {
-    }
-
-    public User(int id, String photo, String croppedPhoto, String login, String lastName, String firstName, String patronymic, LocalDate birthday, String phoneNumber, String eMail, String vk, String biography, Faculty faculty, Direction direction, Group group, List<Team> teams) {
-        this.id = id;
-        this.photo = photo;
-        this.croppedPhoto = croppedPhoto;
-        this.login = login;
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.patronymic = patronymic;
-        this.birthday = birthday;
-        this.phoneNumber = phoneNumber;
-        this.eMail = eMail;
-        this.vk = vk;
-        this.biography = biography;
-        this.faculty = faculty;
-        this.direction = direction;
-        this.group = group;
-        this.teams = teams;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public String getLogin() {
+        return login;
     }
 
     public String getPhoto() {
@@ -68,44 +43,28 @@ public class User implements Serializable {
         this.croppedPhoto = croppedPhoto;
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
     public String getLastName() {
         return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getPatronymic() {
         return patronymic;
     }
 
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
+    public String getAge() {
+        return age;
     }
 
-    public LocalDate getBirthday() {
-        return birthday;
+    public String getBiography() {
+        return biography;
     }
 
-    public void setBirthday(LocalDate birthday) {
-        this.birthday = birthday;
+    public void setBiography(String biography) {
+        this.biography = biography;
     }
 
     public String getPhoneNumber() {
@@ -132,43 +91,35 @@ public class User implements Serializable {
         this.vk = vk;
     }
 
-    public String getBiography() {
-        return biography;
-    }
-
-    public void setBiography(String biography) {
-        this.biography = biography;
-    }
-
-    public Faculty getFaculty() {
+    public String getFaculty() {
         return faculty;
     }
 
-    public void setFaculty(Faculty faculty) {
-        this.faculty = faculty;
-    }
-
-    public Direction getDirection() {
+    public String getDirection() {
         return direction;
     }
 
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
-
-    public Group getGroup() {
+    public String getGroup() {
         return group;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public int getAllProjectsCount() {
+        return allProjectsCount;
     }
 
-    public List<Team> getTeams() {
-        return teams;
+    public int getDoneProjectsCount() {
+        return doneProjectsCount;
     }
 
-    public void setTeams(List<Team> teams) {
-        this.teams = teams;
+    public int getAllTasksCount() {
+        return allTasksCount;
+    }
+
+    public int getDoneTasksCount() {
+        return doneTasksCount;
+    }
+
+    public int getTeamsCount() {
+        return teamsCount;
     }
 }

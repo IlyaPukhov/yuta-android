@@ -16,6 +16,7 @@ import com.ilyap.yuta.MainActivity;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.http.AuthResponse;
 import com.ilyap.yuta.utils.JsonUtils;
+import com.ilyap.yuta.utils.RequestUtils;
 
 public class LoginActivity extends AppCompatActivity {
     LoadingDialog loadingDialog;
@@ -55,10 +56,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean djangoRequest(String login, String password) {
         loadingDialog.startLoadingDialog();
-        // TODO  client.sendAsync()
+        // TODO после запроса по апи убрать
         new Handler().postDelayed(() -> loadingDialog.dismissDialog(), 3000);
 
-        String json = "{\"status\": \"OK\", \"user_id\": 1}";
+        String json = RequestUtils.userLoginRequest();
         AuthResponse response = JsonUtils.parse(json, AuthResponse.class);
 
         if (response.getStatus().equalsIgnoreCase("ok")) {
