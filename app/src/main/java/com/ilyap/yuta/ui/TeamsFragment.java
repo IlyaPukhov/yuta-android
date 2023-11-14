@@ -1,4 +1,4 @@
-package com.ilyap.yuta;
+package com.ilyap.yuta.ui;
 
 import android.os.Bundle;
 
@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ilyap.yuta.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link TasksFragment#newInstance} factory method to
+ * Use the {@link TeamsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TasksFragment extends Fragment {
+public class TeamsFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +26,7 @@ public class TasksFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public TasksFragment() {
+    public TeamsFragment() {
         // Required empty public constructor
     }
 
@@ -34,11 +36,11 @@ public class TasksFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment TasksFragment.
+     * @return A new instance of fragment TeamsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static TasksFragment newInstance(String param1, String param2) {
-        TasksFragment fragment = new TasksFragment();
+    public static TeamsFragment newInstance(String param1, String param2) {
+        TeamsFragment fragment = new TeamsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,6 +61,6 @@ public class TasksFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tasks, container, false);
+        return inflater.inflate(R.layout.fragment_teams, container, false);
     }
 }
