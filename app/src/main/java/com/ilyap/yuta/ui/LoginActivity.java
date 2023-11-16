@@ -1,10 +1,11 @@
 package com.ilyap.yuta.ui;
 
+import static android.view.View.GONE;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void verifyLogin() {
-        errorText.setVisibility(View.INVISIBLE);
+        errorText.setVisibility(GONE);
         String login = getTextFromField(R.id.login);
         String password = getTextFromField(R.id.password);
 
@@ -55,13 +56,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean djangoRequest(String login, String password) {
+        // TODO async
         loadingDialog.startLoadingDialog();
-        // TODO после запроса по апи убрать
-        new Handler().postDelayed(() -> loadingDialog.dismissDialog(), 3000);
-
         String json = RequestUtils.getUserIdRequest();
-        AuthResponse response = JsonUtils.parse(json, AuthResponse.class);
+        loadingDialog.dismissDialog();
 
+        AuthResponse response = JsonUtils.parse(json, AuthResponse.class);
         if (response.getStatus().equalsIgnoreCase("ok")) {
             user_id = response.getUserId();
             return true;

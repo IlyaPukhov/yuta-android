@@ -20,6 +20,8 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:itemTextAppearanceActive="@style/nav_item"
             app:itemTextAppearanceInactive="@style/nav_item"
+            app:itemTextAppearanceActiveBoldEnabled="true"
+            app:itemBackground="@drawable/active_item"
             app:itemTextColor="@color/white" />
 
     <fragment
@@ -32,5 +34,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="FragmentTagUsage" />
 </androidx.constraintlayout.widget.ConstraintLayout>
