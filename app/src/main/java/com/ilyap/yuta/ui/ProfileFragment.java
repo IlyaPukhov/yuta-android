@@ -1,5 +1,7 @@
 package com.ilyap.yuta.ui;
 
+import static android.content.Intent.*;
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static android.view.View.VISIBLE;
 
 import android.content.Context;
@@ -104,7 +106,9 @@ public class ProfileFragment extends Fragment {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove("user_id").apply();
         Intent intent = new Intent(requireActivity(), LoginActivity.class);
+        intent.addFlags(FLAG_ACTIVITY_CLEAR_TASK | FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        requireActivity().finish();
     }
 
     private void reload() {
