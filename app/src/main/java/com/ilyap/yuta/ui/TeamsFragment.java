@@ -15,13 +15,6 @@ public class TeamsFragment extends Fragment {
     public TeamsFragment() {
     }
 
-    public static TeamsFragment newInstance() {
-        TeamsFragment fragment = new TeamsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -15,13 +15,6 @@ public class ProjectsFragment extends Fragment {
     public ProjectsFragment() {
     }
 
-    public static ProjectsFragment newInstance() {
-        ProjectsFragment fragment = new ProjectsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

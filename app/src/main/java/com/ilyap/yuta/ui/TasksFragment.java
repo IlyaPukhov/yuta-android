@@ -15,13 +15,6 @@ public class TasksFragment extends Fragment {
     public TasksFragment() {
     }
 
-    public static TasksFragment newInstance() {
-        TasksFragment fragment = new TasksFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
