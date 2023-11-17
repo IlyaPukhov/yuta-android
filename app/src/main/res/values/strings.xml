@@ -29,4 +29,6 @@
     <string name="faculty">Факультет</string>
     <string name="direction">Направление</string>
     <string name="group">Группа</string>
+    <string name="network_text">Требуется подключение к Интернету</string>
+    <string name="network_down_text">Подключитесь и перезайдите в приложение.</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.ilyap.yuta.ui;
+package com.ilyap.yuta.ui.fragments;
 
 import android.os.Bundle;
 

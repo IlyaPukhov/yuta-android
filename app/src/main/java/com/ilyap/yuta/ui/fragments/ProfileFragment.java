@@ -1,4 +1,4 @@
-package com.ilyap.yuta.ui;
+package com.ilyap.yuta.ui.fragments;
 
 import static android.content.Intent.*;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
+import com.ilyap.yuta.ui.LoginActivity;
 import com.ilyap.yuta.utils.JsonUtils;
 import com.ilyap.yuta.utils.RequestUtils;
 
@@ -89,7 +90,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setDataInTextView(int id, String text) {
-        TextView textView = (TextView) view.findViewById(id);
+        TextView textView = view.findViewById(id);
         if (text != null) {
             textView.setText(text);
             if (textView.getVisibility() != VISIBLE) {
