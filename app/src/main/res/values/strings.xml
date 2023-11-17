@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">YUTA</string>
-    <string name="footer_text">YSTU\'s Unified Task App</string>
+    <string name="footer_text">YSTU\'s Unified Tasks App</string>
     <string name="footer_description">Единое приложение ЯГТУ для задач</string>
     <string name="header_text">Добро пожаловать в YUTA!</string>
     <string name="ystu_photo">ystu_photo</string>

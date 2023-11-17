@@ -25,6 +25,7 @@ import com.ilyap.yuta.utils.RequestUtils;
 public class ProfileFragment extends Fragment {
     private SharedPreferences sharedPreferences;
     private View view;
+    User user;
 
     public ProfileFragment() {
     }
@@ -35,19 +36,19 @@ public class ProfileFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         sharedPreferences = requireActivity().getSharedPreferences("session", Context.MODE_PRIVATE);
 
-        User user = getUser(getAuthorizedUserId());
-        fillViews(user);
+        user = getUser(getAuthorizedUserId());
+        fillViews();
 
         view.findViewById(R.id.log_out).setOnClickListener(v -> logOut());
-        view.findViewById(R.id.reload).setOnClickListener(v -> reload());
-        view.findViewById(R.id.edit).setOnClickListener(v -> edit());
+        view.findViewById(R.id.reload).setOnClickListener(v -> openReloadDialog());
+        view.findViewById(R.id.edit).setOnClickListener(v -> openEditDialog());
         view.findViewById(R.id.photo).setOnClickListener(v -> openPhotoDialog());
 
         return view;
     }
 
-    private void fillViews(User user) {
-        Glide.with(this).load(user.getCroppedPhoto()).into((ImageView) view.findViewById(R.id.photo));
+    private void fillViews() {
+        updateImage();
 
         String fullName = user.getLastName() + " " + user.getFirstName() + (user.getPatronymic() == null ? "" : " " + user.getPatronymic());
         String faculty = getString(R.string.faculty) + ": " + user.getFaculty();
@@ -70,16 +71,21 @@ public class ProfileFragment extends Fragment {
         setDataInTextView(R.id.vk, user.getVk());
     }
 
-    private void reload() {
+    private void openReloadDialog() {
         // TODO
     }
 
-    private void edit() {
+    private void openEditDialog() {
         // TODO
     }
 
     private void openPhotoDialog() {
         // TODO
+        updateImage();
+    }
+
+    private void updateImage() {
+        Glide.with(this).load(user.getCroppedPhoto()).into((ImageView) view.findViewById(R.id.photo));
     }
 
     private void setDataInTextView(int id, String text) {
