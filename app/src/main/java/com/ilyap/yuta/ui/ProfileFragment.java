@@ -46,19 +46,20 @@ public class ProfileFragment extends Fragment {
         view.findViewById(R.id.log_out).setOnClickListener(v -> logOut());
         view.findViewById(R.id.reload).setOnClickListener(v -> reload());
         view.findViewById(R.id.edit).setOnClickListener(v -> edit());
+        view.findViewById(R.id.photo).setOnClickListener(v -> openPhotoDialog());
 
         return view;
     }
 
     private void fillViews(User user) {
         String fullName = user.getLastName() + " " + user.getFirstName() + (user.getPatronymic() == null ? "" : " " + user.getPatronymic());
-        String faculty = "Факультет: " + user.getFaculty();
-        String direction = "Направление: " + user.getDirection();
-        String group = "Группа: " + user.getGroup();
+        String faculty = getString(R.string.faculty) + ": " + user.getFaculty();
+        String direction = getString(R.string.direction) + ": " + user.getDirection();
+        String group = getString(R.string.group) + ": " + user.getGroup();
         String projectsCount = user.getDoneProjectsCount() + "/" + user.getAllProjectsCount();
         String tasksCount = user.getDoneTasksCount() + "/" + user.getAllTasksCount();
 
-        Glide.with(this).load(user.getCroppedPhoto()).into((ImageView) view.findViewById(R.id.imageView));
+        Glide.with(this).load(user.getCroppedPhoto()).into((ImageView) view.findViewById(R.id.photo));
         ((TextView) view.findViewById(R.id.name)).setText(fullName);
         ((TextView) view.findViewById(R.id.age)).setText(user.getAge());
         ((TextView) view.findViewById(R.id.faculty)).setText(faculty);
@@ -111,6 +112,10 @@ public class ProfileFragment extends Fragment {
     }
 
     private void edit() {
+        // TODO
+    }
+
+    private void openPhotoDialog() {
         // TODO
     }
 }

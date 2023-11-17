@@ -360,7 +360,7 @@
             <com.google.android.material.imageview.ShapeableImageView
                     android:layout_width="125dp"
                     android:layout_height="125dp"
-                    android:id="@+id/imageView"
+                    android:id="@+id/photo"
                     android:clickable="true"
                     android:scaleType="centerCrop"
                     app:shapeAppearanceOverlay="@style/rounded_image_view"

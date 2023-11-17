@@ -26,6 +26,7 @@
     <string name="tasks">Задачи</string>
     <string name="projects">Проекты</string>
     <string name="teams">Команды</string>
-    <string name="group">группа</string>
-    <string name="direction">направление</string>
+    <string name="faculty">Факультет</string>
+    <string name="direction">Направление</string>
+    <string name="group">Группа</string>
 </resources>
