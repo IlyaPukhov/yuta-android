@@ -9,12 +9,13 @@ import androidx.appcompat.app.AlertDialog;
 
 import java.util.Objects;
 
-public abstract class CustomDialog {
-    private final Activity activity;
-    private AlertDialog dialog;
-    private int dialogLayout;
+public abstract class CustomDialog extends AlertDialog {
+    protected final Activity activity;
+    protected AlertDialog dialog;
+    protected int dialogLayout;
 
     public CustomDialog(Activity activity) {
+        super(activity.getApplicationContext());
         this.activity = activity;
     }
 

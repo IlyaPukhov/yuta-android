@@ -20,7 +20,7 @@
     <string name="nav_teams">Команды</string>
     <string name="avatar">avatar</string>
     <string name="exit_button">exit</string>
-    <string name="reload_button">reload</string>
+    <string name="reload_button">ОБНОВИТЬ</string>
     <string name="edit_button">edit</string>
     <string name="study_info">study information</string>
     <string name="tasks">Задачи</string>
@@ -31,4 +31,7 @@
     <string name="group">Группа</string>
     <string name="network_text">Требуется подключение к Интернету</string>
     <string name="network_down_text">Подключитесь и перезайдите в приложение.</string>
+    <string name="reload_text">Обновление информации</string>
+    <string name="reload_desc">Чтобы синхронизировать данные личного кабинета на сайте ЯГТУ и данные в YUTA, введите свой пароль:</string>
+    <string name="close_button">close</string>
 </resources>

@@ -1,9 +1,10 @@
 package com.ilyap.yuta.ui.fragments;
 
-import static android.content.Intent.*;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static android.view.View.VISIBLE;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +21,8 @@ import com.bumptech.glide.Glide;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.LoginActivity;
+import com.ilyap.yuta.ui.dialogs.CustomDialog;
+import com.ilyap.yuta.ui.dialogs.ReloadDialog;
 import com.ilyap.yuta.utils.JsonUtils;
 import com.ilyap.yuta.utils.RequestUtils;
 
@@ -37,7 +40,6 @@ public class ProfileFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         sharedPreferences = requireActivity().getSharedPreferences("session", Context.MODE_PRIVATE);
 
-        user = getUser(getAuthorizedUserId());
         fillViews();
 
         view.findViewById(R.id.log_out).setOnClickListener(v -> logOut());
@@ -49,6 +51,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void fillViews() {
+        user = getUser(getAuthorizedUserId());
         updateImage();
 
         String fullName = user.getLastName() + " " + user.getFirstName() + (user.getPatronymic() == null ? "" : " " + user.getPatronymic());
@@ -73,7 +76,9 @@ public class ProfileFragment extends Fragment {
     }
 
     private void openReloadDialog() {
-        // TODO
+        CustomDialog reloadDialog = new ReloadDialog((Activity) view.getContext());
+        reloadDialog.start();
+        fillViews();
     }
 
     private void openEditDialog() {

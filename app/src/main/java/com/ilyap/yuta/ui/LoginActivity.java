@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (!hasInternetConnection()) {
-            showNetworkDialog();
+            openNetworkDialog();
         }
 
         errorText = findViewById(R.id.error_text);
@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    private void showNetworkDialog() {
+    private void openNetworkDialog() {
         CustomDialog networkDialog = new NetworkDialog(LoginActivity.this);
         networkDialog.start();
     }
