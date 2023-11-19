@@ -22,6 +22,7 @@ import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.LoginActivity;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
+import com.ilyap.yuta.ui.dialogs.EditUserDialog;
 import com.ilyap.yuta.ui.dialogs.ReloadDialog;
 import com.ilyap.yuta.utils.JsonUtils;
 import com.ilyap.yuta.utils.RequestUtils;
@@ -29,7 +30,7 @@ import com.ilyap.yuta.utils.RequestUtils;
 public class ProfileFragment extends Fragment {
     private SharedPreferences sharedPreferences;
     private View view;
-    User user;
+    private static User user;
 
     public ProfileFragment() {
     }
@@ -40,6 +41,7 @@ public class ProfileFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         sharedPreferences = requireActivity().getSharedPreferences("session", Context.MODE_PRIVATE);
 
+        user = getUser(getAuthorizedUserId());
         fillViews();
 
         view.findViewById(R.id.log_out).setOnClickListener(v -> logOut());
@@ -51,7 +53,6 @@ public class ProfileFragment extends Fragment {
     }
 
     private void fillViews() {
-        user = getUser(getAuthorizedUserId());
         updateImage();
 
         String fullName = user.getLastName() + " " + user.getFirstName() + (user.getPatronymic() == null ? "" : " " + user.getPatronymic());
@@ -76,13 +77,13 @@ public class ProfileFragment extends Fragment {
     }
 
     private void openReloadDialog() {
-        CustomDialog reloadDialog = new ReloadDialog((Activity) view.getContext());
+        ReloadDialog reloadDialog = new ReloadDialog((Activity) view.getContext(), this);
         reloadDialog.start();
-        fillViews();
     }
 
     private void openEditDialog() {
-        // TODO
+        CustomDialog editDialog = new EditUserDialog((Activity) view.getContext(), this);
+        editDialog.start();
     }
 
     private void openPhotoDialog() {
@@ -120,5 +121,14 @@ public class ProfileFragment extends Fragment {
 
     private int getAuthorizedUserId() {
         return sharedPreferences.getInt("user_id", -1);
+    }
+
+    public static User getCurrentUser() {
+        return user;
+    }
+
+    public void fillViews(User currentUser) {
+        user = currentUser;
+        fillViews();
     }
 }

@@ -4,12 +4,13 @@ import android.content.Context;
 import android.widget.EditText;
 
 import com.ilyap.yuta.R;
+import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestUtils;
 
 public class ReloadDialog extends CustomInteractiveDialog {
 
-    public ReloadDialog(Context context) {
-        super(context);
+    public ReloadDialog(Context context, ProfileFragment profileFragment) {
+        super(context, profileFragment);
         setDialogLayout(R.layout.reload_dialog);
     }
 
@@ -21,6 +22,11 @@ public class ReloadDialog extends CustomInteractiveDialog {
         dialog.findViewById(R.id.close).setOnClickListener(v -> this.dismiss());
         dialog.findViewById(R.id.submit).setOnClickListener(v -> {
             RequestUtils.reloadRequest(password != null ? password.getText().toString() : null);
+
+            if (profileFragment != null) {
+                profileFragment.fillViews(ProfileFragment.getCurrentUser());
+            }
+
             this.dismiss();
         });
     }

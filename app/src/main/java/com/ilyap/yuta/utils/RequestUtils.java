@@ -1,5 +1,7 @@
 package com.ilyap.yuta.utils;
 
+import com.ilyap.yuta.models.User;
+
 public class RequestUtils {
 
     public static String getUserIdRequest() {
@@ -11,6 +13,10 @@ public class RequestUtils {
     }
 
     public static void reloadRequest(String password) {
+        // TODO
+    }
+
+    public static void editUserRequest(User user) {
         // TODO
     }
 }

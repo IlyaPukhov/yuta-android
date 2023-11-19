@@ -6,12 +6,17 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 
+
+import com.ilyap.yuta.ui.fragments.ProfileFragment;
+
 import java.util.Objects;
 
 public abstract class CustomInteractiveDialog extends CustomDialog {
+    protected final ProfileFragment profileFragment;
 
-    public CustomInteractiveDialog(Context context) {
+    public CustomInteractiveDialog(Context context, ProfileFragment profileFragment) {
         super((Activity) context);
+        this.profileFragment = profileFragment;
     }
 
     @Override
