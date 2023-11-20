@@ -41,4 +41,10 @@
     <string name="vk">Ссылка на ВК</string>
     <string name="error_phone">Неверный телефон</string>
     <string name="error_email">Неверный e-mail</string>
+    <string name="update_photo_item">Обновить фотографию</string>
+    <string name="delete_photo_item">Удалить фотографию</string>
+    <string name="edit_miniature_item">Изменить миниатюру</string>
+    <string name="delete_button">ДА, УДАЛИТЬ</string>
+    <string name="delete_desc">Вы действительно хотите удалить фотографию?</string>
+    <string name="delete_text">Предупреждение</string>
 </resources>

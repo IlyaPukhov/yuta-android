@@ -23,6 +23,7 @@ import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.LoginActivity;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.EditUserDialog;
+import com.ilyap.yuta.ui.dialogs.PhotoDialog;
 import com.ilyap.yuta.ui.dialogs.ReloadDialog;
 import com.ilyap.yuta.utils.JsonUtils;
 import com.ilyap.yuta.utils.RequestUtils;
@@ -87,8 +88,8 @@ public class ProfileFragment extends Fragment {
     }
 
     private void openPhotoDialog() {
-        // TODO
-        updateImage();
+        CustomDialog photoDialog = new PhotoDialog((Activity) view.getContext(), this);
+        photoDialog.start();
     }
 
     private void updateImage() {

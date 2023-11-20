@@ -19,4 +19,8 @@ public class RequestUtils {
     public static void editUserRequest(User user) {
         // TODO
     }
+
+    public static void deletePhotoRequest(User user) {
+        // TODO
+    }
 }
