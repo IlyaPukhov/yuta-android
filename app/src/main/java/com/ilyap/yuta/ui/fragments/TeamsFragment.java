@@ -1,4 +1,4 @@
-package com.ilyap.yuta.ui;
+package com.ilyap.yuta.ui.fragments;
 
 import android.os.Bundle;
 
@@ -10,14 +10,14 @@ import android.view.ViewGroup;
 
 import com.ilyap.yuta.R;
 
-public class ProjectsFragment extends Fragment {
+public class TeamsFragment extends Fragment {
 
-    public ProjectsFragment() {
+    public TeamsFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_projects, container, false);
+        return inflater.inflate(R.layout.fragment_teams, container, false);
     }
 }

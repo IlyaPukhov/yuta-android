@@ -1,9 +1,12 @@
-package com.ilyap.yuta.ui;
+package com.ilyap.yuta.ui.fragments;
 
-import static android.content.Intent.*;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static android.view.View.VISIBLE;
 
+import static com.ilyap.yuta.ui.dialogs.UploadPhotoDialog.PICK_IMAGE_REQUEST;
+
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,17 +17,26 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
+import com.ilyap.yuta.ui.LoginActivity;
+import com.ilyap.yuta.ui.dialogs.CustomDialog;
+import com.ilyap.yuta.ui.dialogs.EditUserDialog;
+import com.ilyap.yuta.ui.dialogs.PhotoDialog;
+import com.ilyap.yuta.ui.dialogs.ReloadDialog;
+import com.ilyap.yuta.ui.dialogs.UploadPhotoDialog;
 import com.ilyap.yuta.utils.JsonUtils;
 import com.ilyap.yuta.utils.RequestUtils;
 
 public class ProfileFragment extends Fragment {
     private SharedPreferences sharedPreferences;
     private View view;
+    private static User user;
 
     public ProfileFragment() {
     }
@@ -35,19 +47,19 @@ public class ProfileFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         sharedPreferences = requireActivity().getSharedPreferences("session", Context.MODE_PRIVATE);
 
-        User user = getUser(getAuthorizedUserId());
-        fillViews(user);
+        user = getUser(getAuthorizedUserId());
+        fillViews();
 
         view.findViewById(R.id.log_out).setOnClickListener(v -> logOut());
-        view.findViewById(R.id.reload).setOnClickListener(v -> reload());
-        view.findViewById(R.id.edit).setOnClickListener(v -> edit());
+        view.findViewById(R.id.reload).setOnClickListener(v -> openReloadDialog());
+        view.findViewById(R.id.edit).setOnClickListener(v -> openEditDialog());
         view.findViewById(R.id.photo).setOnClickListener(v -> openPhotoDialog());
 
         return view;
     }
 
-    private void fillViews(User user) {
-        Glide.with(this).load(user.getCroppedPhoto()).into((ImageView) view.findViewById(R.id.photo));
+    private void fillViews() {
+        updateImage();
 
         String fullName = user.getLastName() + " " + user.getFirstName() + (user.getPatronymic() == null ? "" : " " + user.getPatronymic());
         String faculty = getString(R.string.faculty) + ": " + user.getFaculty();
@@ -70,20 +82,27 @@ public class ProfileFragment extends Fragment {
         setDataInTextView(R.id.vk, user.getVk());
     }
 
-    private void reload() {
-        // TODO
+    private void openReloadDialog() {
+        ReloadDialog reloadDialog = new ReloadDialog((Activity) view.getContext(), this);
+        reloadDialog.start();
     }
 
-    private void edit() {
-        // TODO
+    private void openEditDialog() {
+        CustomDialog editDialog = new EditUserDialog((Activity) view.getContext(), this);
+        editDialog.start();
     }
 
     private void openPhotoDialog() {
-        // TODO
+        CustomDialog photoDialog = new PhotoDialog((Activity) view.getContext(), this);
+        photoDialog.start();
+    }
+
+    private void updateImage() {
+        Glide.with(this).load(user.getCroppedPhoto()).into((ImageView) view.findViewById(R.id.photo));
     }
 
     private void setDataInTextView(int id, String text) {
-        TextView textView = (TextView) view.findViewById(id);
+        TextView textView = view.findViewById(id);
         if (text != null) {
             textView.setText(text);
             if (textView.getVisibility() != VISIBLE) {
@@ -109,4 +128,27 @@ public class ProfileFragment extends Fragment {
     private int getAuthorizedUserId() {
         return sharedPreferences.getInt("user_id", -1);
     }
+
+    public static User getCurrentUser() {
+        return user;
+    }
+
+    public void fillViews(User currentUser) {
+        user = currentUser;
+        fillViews();
+    }
+
+    public void updateImage(User currentUser) {
+        user = currentUser;
+        updateImage();
+    }
+
+    public ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    UploadPhotoDialog.handleActivityResult(PICK_IMAGE_REQUEST, Activity.RESULT_OK, result.getData());
+                }
+            }
+    );
 }
