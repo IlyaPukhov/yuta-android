@@ -3,7 +3,6 @@
 
     <style name="footer_text">
         <item name="android:fontFamily">@font/montserrat_semibold</item>
-        <item name="android:lineHeight">22sp</item>
         <item name="android:textSize">18sp</item>
         <item name="android:letterSpacing">0.05</item>
         <item name="android:textColor">@color/white</item>
@@ -19,7 +18,7 @@
     <style name="header_text">
         <item name="android:fontFamily">@font/montserrat_bold</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="auth_text">
@@ -39,12 +38,12 @@
         <item name="android:fontFamily">@font/montserrat_bold</item>
         <item name="android:textSize">16sp</item>
         <item name="android:letterSpacing">0.1</item>
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="error_message">
         <item name="android:fontFamily">@font/montserrat_semibold</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">#FF0000</item>
     </style>
 
@@ -54,10 +53,109 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="network">
+        <item name="android:fontFamily">@font/montserrat_medium</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="network_down">
+        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <style name="nav_item">
         <item name="android:textSize">11sp</item>
         <item name="android:letterSpacing">0.12</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:fontFamily">@font/montserrat_regular</item>
+    </style>
+
+    <style name="rounded_image_view">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="button_style" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@null</item>
+    </style>
+
+    <style name="name_text">
+        <item name="android:fontFamily">@font/montserrat_semibold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="age_text">
+        <item name="android:fontFamily">@font/montserrat_semibold</item>
+        <item name="android:textSize">19sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="bio_text">
+        <item name="android:textSize">16sp</item>
+        <item name="android:letterSpacing">0.04</item>
+        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="profile_desc">
+        <item name="android:textSize">15sp</item>
+        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="profile_productivity">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/montserrat_semibold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="productivity_value">
+        <item name="android:textSize">31sp</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
+
+    <style name="profile_contacts">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/montserrat_medium</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="reload_button">
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:letterSpacing">0.12</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="reload_text">
+        <item name="android:fontFamily">@font/montserrat_semibold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="reload_desc">
+        <item name="android:fontFamily">@font/montserrat_medium</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:letterSpacing">0.1</item>
+        <item name="android:textColor">@color/dark_gray</item>
+    </style>
+
+    <style name="photo_dialog_item">
+        <item name="android:fontFamily">@font/montserrat_medium</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:letterSpacing">0.12</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="pick_button" parent="reload_button">
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="crop_button" parent="reload_button">
+        <item name="android:textSize">15sp</item>
     </style>
 </resources>
