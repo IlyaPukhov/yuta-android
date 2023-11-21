@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -32,8 +33,11 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
         user = ProfileFragment.getCurrentUser();
 
         imageView = dialog.findViewById(R.id.photo);
-        Glide.with(activity).load(user.getCroppedPhoto())
-                .skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(imageView);
+        Glide.with(activity)
+                .load(user.getCroppedPhoto())
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(imageView);
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> this.dismiss());
         dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> {
@@ -66,11 +70,13 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
         if (imageView != null && selectedImageUri != null) {
             user.setPhoto(String.valueOf(selectedImageUri));
             user.setCroppedPhoto(String.valueOf(selectedImageUri));
+            RequestUtils.uploadPhotoRequest(user);
+            imageView.setImageURI(selectedImageUri);
             if (profileFragment != null) {
                 profileFragment.updateImage(user);
             }
-            RequestUtils.uploadPhotoRequest(user);
-            imageView.setImageURI(selectedImageUri);
+
+            Toast.makeText(profileFragment.requireContext(), profileFragment.getString(R.string.saved), Toast.LENGTH_SHORT).show();
         }
     }
 }

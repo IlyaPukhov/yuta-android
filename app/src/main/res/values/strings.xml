@@ -55,4 +55,7 @@
     <string name="crop_text">Выбор миниатюры</string>
     <string name="crop_desc">Выберите область для маленьких фотографий.\nВыбранная миниатюра будет использоваться в профиле.</string>
     <string name="save_button">СОХРАНИТЬ</string>
+    <string name="saved">Сохранено</string>
+    <string name="deleted">Фото удалено</string>
+    <string name="updated">Данные обновлены</string>
 </resources>

@@ -76,6 +76,7 @@
             android:layout_marginEnd="22dp"
             app:layout_constraintTop_toBottomOf="@+id/crop_desc"
             android:layout_marginTop="20dp"
+            android:adjustViewBounds="true"
             app:layout_constraintBottom_toTopOf="@+id/save_miniature"
             android:layout_marginBottom="20dp"
             app:cropGuidelinesThickness="4dp"
@@ -84,8 +85,7 @@
             app:cropAspectRatioY="1"
             app:cropGuidelines="on"
             app:cropBorderLineColor="#B316389D"
-            app:cropBorderCornerColor="#B316389D"
-            app:cropFixAspectRatio="true" />
+            app:cropBorderCornerColor="#B316389D" />
 
     <Button
             android:id="@+id/save_miniature"

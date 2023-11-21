@@ -3,7 +3,6 @@ package com.ilyap.yuta.ui.fragments;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static android.view.View.VISIBLE;
-
 import static com.ilyap.yuta.ui.dialogs.UploadPhotoDialog.PICK_IMAGE_REQUEST;
 
 import android.app.Activity;
@@ -84,22 +83,23 @@ public class ProfileFragment extends Fragment {
     }
 
     private void openReloadDialog() {
-        ReloadDialog reloadDialog = new ReloadDialog((Activity) view.getContext(), this);
+        ReloadDialog reloadDialog = new ReloadDialog(view.getContext(), this);
         reloadDialog.start();
     }
 
     private void openEditDialog() {
-        CustomDialog editDialog = new EditUserDialog((Activity) view.getContext(), this);
+        CustomDialog editDialog = new EditUserDialog(view.getContext(), this);
         editDialog.start();
     }
 
     private void openPhotoDialog() {
-        CustomDialog photoDialog = new PhotoDialog((Activity) view.getContext(), this);
+        CustomDialog photoDialog = new PhotoDialog(view.getContext(), this);
         photoDialog.start();
     }
 
     private void updateImage() {
-        Glide.with(this).load(user.getCroppedPhoto())
+        Glide.with(this)
+                .load(user.getCroppedPhoto())
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into((ImageView) view.findViewById(R.id.photo));

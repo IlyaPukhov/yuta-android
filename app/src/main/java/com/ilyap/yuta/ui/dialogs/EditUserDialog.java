@@ -6,6 +6,7 @@ import android.content.Context;
 import android.util.Patterns;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
@@ -34,6 +35,8 @@ public class EditUserDialog extends CustomInteractiveDialog {
                 if (profileFragment != null) {
                     profileFragment.fillViews(user);
                 }
+
+                Toast.makeText(activity, activity.getString(R.string.updated), Toast.LENGTH_SHORT).show();
                 this.dismiss();
             }
         });
@@ -46,7 +49,7 @@ public class EditUserDialog extends CustomInteractiveDialog {
         MaskEditText editTextPhoneNumber = dialog.findViewById(R.id.phone_number);
         String email = getData(R.id.email);
         String vk = getData(R.id.vk);
-        TextView error = (TextView) dialog.findViewById(R.id.error_text);
+        TextView error = dialog.findViewById(R.id.error_text);
 
         if (biography != null) {
             user.setBiography(biography);
@@ -80,7 +83,7 @@ public class EditUserDialog extends CustomInteractiveDialog {
     }
 
     private String getData(int id) {
-        EditText editText = (EditText) dialog.findViewById(id);
+        EditText editText = dialog.findViewById(id);
 
         if (editText != null) {
             String text = editText.getText().toString().trim();

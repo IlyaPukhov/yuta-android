@@ -1,6 +1,7 @@
 package com.ilyap.yuta.ui.dialogs;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
@@ -21,6 +22,7 @@ public class DeletePhotoDialog extends CustomInteractiveDialog {
         dialog.findViewById(R.id.close).setOnClickListener(v -> this.dismiss());
         dialog.findViewById(R.id.submit).setOnClickListener(v -> {
             deletePhoto(profileFragment);
+            Toast.makeText(activity, activity.getString(R.string.deleted), Toast.LENGTH_SHORT).show();
             this.dismiss();
         });
     }

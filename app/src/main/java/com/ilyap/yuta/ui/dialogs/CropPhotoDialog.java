@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -43,13 +44,17 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
         dialog.findViewById(R.id.save_miniature).setOnClickListener(v -> {
+            int factWidth = cropImageView.getWholeImageRect().width();
+            int factHeight = cropImageView.getWholeImageRect().height();
             Rect cropRect = cropImageView.getCropRect();
-            RequestUtils.cropPhotoRequest(cropRect.width(), cropRect.height(), cropRect.left, cropRect.top);
+            RequestUtils.cropPhotoRequest(factWidth, factHeight, cropRect.width(), cropRect.height(), cropRect.left, cropRect.top);
             updateLocalImage();
+
+            Toast.makeText(profileFragment.requireContext(), profileFragment.getString(R.string.saved), Toast.LENGTH_SHORT).show();
             this.dismiss();
         });
 
-        loadImageWithGlide(user.getPhoto(), cropImageView);
+        loadImage(user.getPhoto(), cropImageView);
     }
 
     private void updateLocalImage() {
@@ -61,7 +66,7 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
         }
     }
 
-    private void loadImageWithGlide(String imageUrl, CropImageView cropImageView) {
+    private void loadImage(String imageUrl, CropImageView cropImageView) {
         Glide.with(cropImageView)
                 .asBitmap()
                 .load(imageUrl)
@@ -76,7 +81,6 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
 
                     @Override
                     public void onLoadCleared(Drawable placeholder) {
-                        cropImageView.setImageBitmap(null);
                     }
                 });
     }

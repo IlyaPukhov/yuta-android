@@ -28,7 +28,7 @@ public class RequestUtils {
         // TODO
     }
 
-    public static void cropPhotoRequest(int croppedWidth, int croppedHeight, int offsetX, int offsetY) {
+    public static void cropPhotoRequest(int imageWidth, int imageHeight, int croppedWidth, int croppedHeight, int offsetX, int offsetY) {
         // TODO
     }
 }
