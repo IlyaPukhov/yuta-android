@@ -13,16 +13,16 @@ import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestUtils;
 
-public class UpdatePhotoDialog extends CustomInteractiveDialog {
+public class UploadPhotoDialog extends CustomInteractiveDialog {
     public static final int PICK_IMAGE_REQUEST = 1;
     @SuppressLint("StaticFieldLeak")
     private static ImageView imageView;
     private static Uri selectedImageUri;
     private static User user;
 
-    public UpdatePhotoDialog(Context context, ProfileFragment profileFragment) {
+    public UploadPhotoDialog(Context context, ProfileFragment profileFragment) {
         super(context, profileFragment);
-        setDialogLayout(R.layout.update_photo_dialog);
+        setDialogLayout(R.layout.upload_photo_dialog);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class UpdatePhotoDialog extends CustomInteractiveDialog {
             imageView.setImageURI(null);
         });
         dialog.findViewById(R.id.pick_miniature).setOnClickListener(v -> {
-            CustomDialog editPhotoDialog = new EditPhotoDialog(activity, profileFragment);
+            CustomDialog editPhotoDialog = new CropPhotoDialog(activity, profileFragment);
             editPhotoDialog.start();
             this.dismiss();
         });
@@ -62,6 +62,11 @@ public class UpdatePhotoDialog extends CustomInteractiveDialog {
 
     private static void updatePhoto() {
         if (imageView != null && selectedImageUri != null) {
+            user.setPhoto(String.valueOf(selectedImageUri));
+            user.setCroppedPhoto(String.valueOf(selectedImageUri));
+            if (profileFragment != null) {
+                profileFragment.updateImage(user);
+            }
             RequestUtils.uploadPhotoRequest(user);
             imageView.setImageURI(selectedImageUri);
         }

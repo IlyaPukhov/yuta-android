@@ -28,6 +28,9 @@ public class DeletePhotoDialog extends CustomInteractiveDialog {
     protected static void deletePhoto(ProfileFragment profileFragment) {
         User user = ProfileFragment.getCurrentUser();
         RequestUtils.deletePhotoRequest(user);
+        // TODO
+        user.setPhoto("https://github.com/Panovky/YUTA/blob/develop/media/images/cropped-default_user_photo.png?raw=true");
+        user.setCroppedPhoto("https://github.com/Panovky/YUTA/blob/develop/media/images/cropped-default_user_photo.png?raw=true");
         if (profileFragment != null) {
             profileFragment.fillViews(user);
         }

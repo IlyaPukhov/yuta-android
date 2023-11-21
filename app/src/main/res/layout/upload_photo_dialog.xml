@@ -67,7 +67,6 @@
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:id="@+id/photo"
-            android:clickable="true"
             android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/rounded_image_view"
             app:strokeColor="@color/blue"

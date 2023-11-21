@@ -1,5 +1,6 @@
 package com.ilyap.yuta.ui.dialogs;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -12,11 +13,12 @@ import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import java.util.Objects;
 
 public abstract class CustomInteractiveDialog extends CustomDialog {
-    protected final ProfileFragment profileFragment;
+    @SuppressLint("StaticFieldLeak")
+    protected static ProfileFragment profileFragment;
 
     public CustomInteractiveDialog(Context context, ProfileFragment profileFragment) {
         super((Activity) context);
-        this.profileFragment = profileFragment;
+        CustomInteractiveDialog.profileFragment = profileFragment;
     }
 
     @Override

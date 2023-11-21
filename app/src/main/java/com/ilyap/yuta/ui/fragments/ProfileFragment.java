@@ -4,7 +4,7 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static android.view.View.VISIBLE;
 
-import static com.ilyap.yuta.ui.dialogs.UpdatePhotoDialog.PICK_IMAGE_REQUEST;
+import static com.ilyap.yuta.ui.dialogs.UploadPhotoDialog.PICK_IMAGE_REQUEST;
 
 import android.app.Activity;
 import android.content.Context;
@@ -29,7 +29,7 @@ import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.EditUserDialog;
 import com.ilyap.yuta.ui.dialogs.PhotoDialog;
 import com.ilyap.yuta.ui.dialogs.ReloadDialog;
-import com.ilyap.yuta.ui.dialogs.UpdatePhotoDialog;
+import com.ilyap.yuta.ui.dialogs.UploadPhotoDialog;
 import com.ilyap.yuta.utils.JsonUtils;
 import com.ilyap.yuta.utils.RequestUtils;
 
@@ -138,11 +138,16 @@ public class ProfileFragment extends Fragment {
         fillViews();
     }
 
+    public void updateImage(User currentUser) {
+        user = currentUser;
+        updateImage();
+    }
+
     public ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
-                    UpdatePhotoDialog.handleActivityResult(PICK_IMAGE_REQUEST, Activity.RESULT_OK, result.getData());
+                    UploadPhotoDialog.handleActivityResult(PICK_IMAGE_REQUEST, Activity.RESULT_OK, result.getData());
                 }
             }
     );

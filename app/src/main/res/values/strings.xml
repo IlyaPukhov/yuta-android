@@ -53,4 +53,7 @@
     <string name="pick_button">Выбрать фотографию</string>
     <string name="delete_photo">delete photo</string>
     <string name="pick_image">Выберите изображение</string>
+    <string name="crop_text">Выбор миниатюры</string>
+    <string name="crop_desc">Выберите область для маленьких фотографий.\nВыбранная миниатюра будет использоваться в профиле.</string>
+    <string name="save_button">СОХРАНИТЬ</string>
 </resources>

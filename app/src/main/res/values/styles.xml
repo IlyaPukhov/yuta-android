@@ -154,4 +154,8 @@
     <style name="pick_button" parent="reload_button">
         <item name="android:textSize">13sp</item>
     </style>
+
+    <style name="crop_button" parent="reload_button">
+        <item name="android:textSize">15sp</item>
+    </style>
 </resources>

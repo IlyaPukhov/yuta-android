@@ -1,13 +1,12 @@
 package com.ilyap.yuta.ui.dialogs;
 
-import android.app.Activity;
 import android.content.Context;
 
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 
 public class PhotoDialog extends CustomInteractiveDialog {
-    private final CustomDialog updatePhotoDialog = new UpdatePhotoDialog(activity, profileFragment);
+    private final CustomDialog updatePhotoDialog = new UploadPhotoDialog(activity, profileFragment);
 
     public PhotoDialog(Context context, ProfileFragment profileFragment) {
         super(context, profileFragment);
@@ -37,7 +36,7 @@ public class PhotoDialog extends CustomInteractiveDialog {
     }
 
     private void openEditPhotoDialog() {
-        CustomDialog editPhotoDialog = new EditPhotoDialog(activity, profileFragment);
+        CustomDialog editPhotoDialog = new CropPhotoDialog(activity, profileFragment);
         editPhotoDialog.start();
     }
 
