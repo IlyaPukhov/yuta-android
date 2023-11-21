@@ -47,4 +47,10 @@
     <string name="delete_button">ДА, УДАЛИТЬ</string>
     <string name="delete_desc">Вы действительно хотите удалить фотографию?</string>
     <string name="delete_text">Предупреждение</string>
+    <string name="miniature_button">ВЫБРАТЬ МИНИАТЮРУ</string>
+    <string name="upload_desc">Друзьям будет проще узнать вас, если вы загрузите свою настоящую фотографию.\nВы можете загрузить изображение в формате JPG, JPEG или PNG.</string>
+    <string name="upload_text">Загрузка фотографии</string>
+    <string name="pick_button">Выбрать фотографию</string>
+    <string name="delete_photo">delete photo</string>
+    <string name="pick_image">Выберите изображение</string>
 </resources>

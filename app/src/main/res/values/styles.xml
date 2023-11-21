@@ -150,4 +150,8 @@
         <item name="android:letterSpacing">0.12</item>
         <item name="android:textColor">@color/white</item>
     </style>
+
+    <style name="pick_button" parent="reload_button">
+        <item name="android:textSize">13sp</item>
+    </style>
 </resources>

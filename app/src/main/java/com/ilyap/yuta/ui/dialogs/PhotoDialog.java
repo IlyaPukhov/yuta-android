@@ -7,6 +7,7 @@ import com.ilyap.yuta.R;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 
 public class PhotoDialog extends CustomInteractiveDialog {
+    private final CustomDialog updatePhotoDialog = new UpdatePhotoDialog(activity, profileFragment);
 
     public PhotoDialog(Context context, ProfileFragment profileFragment) {
         super(context, profileFragment);
@@ -32,7 +33,6 @@ public class PhotoDialog extends CustomInteractiveDialog {
     }
 
     private void openUpdatePhotoDialog() {
-        CustomDialog updatePhotoDialog = new UpdatePhotoDialog(activity, profileFragment);
         updatePhotoDialog.start();
     }
 
@@ -44,5 +44,9 @@ public class PhotoDialog extends CustomInteractiveDialog {
     private void openDeletePhotoDialog() {
         CustomDialog deletePhotoDialog = new DeletePhotoDialog(activity, profileFragment);
         deletePhotoDialog.start();
+    }
+
+    public CustomDialog getUpdatePhotoDialog() {
+        return updatePhotoDialog;
     }
 }

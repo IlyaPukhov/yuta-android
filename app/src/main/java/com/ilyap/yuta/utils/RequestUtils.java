@@ -23,4 +23,8 @@ public class RequestUtils {
     public static void deletePhotoRequest(User user) {
         // TODO
     }
+
+    public static void uploadPhotoRequest(User user) {
+        // TODO
+    }
 }

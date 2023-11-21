@@ -363,7 +363,7 @@
                     android:layout_height="125dp"
                     android:id="@+id/photo"
                     android:clickable="true"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitCenter"
                     app:shapeAppearanceOverlay="@style/rounded_image_view"
                     app:strokeColor="@color/blue"
                     app:layout_constraintTop_toTopOf="parent"

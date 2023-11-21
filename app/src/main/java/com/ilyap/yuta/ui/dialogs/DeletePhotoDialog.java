@@ -20,12 +20,16 @@ public class DeletePhotoDialog extends CustomInteractiveDialog {
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> this.dismiss());
         dialog.findViewById(R.id.submit).setOnClickListener(v -> {
-            User user = ProfileFragment.getCurrentUser();
-            RequestUtils.deletePhotoRequest(user);
-            if (profileFragment != null) {
-                profileFragment.fillViews(user);
-            }
+            deletePhoto(profileFragment);
             this.dismiss();
         });
+    }
+
+    protected static void deletePhoto(ProfileFragment profileFragment) {
+        User user = ProfileFragment.getCurrentUser();
+        RequestUtils.deletePhotoRequest(user);
+        if (profileFragment != null) {
+            profileFragment.fillViews(user);
+        }
     }
 }
