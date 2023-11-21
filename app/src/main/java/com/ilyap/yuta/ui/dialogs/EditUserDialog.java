@@ -16,7 +16,10 @@ import com.santalu.maskara.widget.MaskEditText;
 
 public class EditUserDialog extends CustomInteractiveDialog {
     private static final int PHONE_NUMBER_LENGTH = 10;
-    private User user;
+    private EditText biographyView;
+    private MaskEditText phoneNumberView;
+    private EditText emailView;
+    private EditText vkView;
 
     public EditUserDialog(Context context, ProfileFragment profileFragment) {
         super(context, profileFragment);
@@ -26,11 +29,17 @@ public class EditUserDialog extends CustomInteractiveDialog {
     @Override
     public void start() {
         super.start();
-        user = ProfileFragment.getCurrentUser();
+        biographyView = dialog.findViewById(R.id.biography);
+        phoneNumberView = dialog.findViewById(R.id.phone_number);
+        emailView = dialog.findViewById(R.id.email);
+        vkView = dialog.findViewById(R.id.vk);
+
+        User user = ProfileFragment.getCurrentUser();
+        fillFields(user);
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> this.dismiss());
         dialog.findViewById(R.id.submit).setOnClickListener(v -> {
-            if (editUser()) {
+            if (editUser(user)) {
                 RequestUtils.editUserRequest(user);
                 if (profileFragment != null) {
                     profileFragment.fillViews(user);
@@ -42,23 +51,27 @@ public class EditUserDialog extends CustomInteractiveDialog {
         });
     }
 
-    private boolean editUser() {
+    private boolean editUser(User user) {
         boolean isCorrect = true;
-
-        String biography = getData(R.id.biography);
-        MaskEditText editTextPhoneNumber = dialog.findViewById(R.id.phone_number);
-        String email = getData(R.id.email);
-        String vk = getData(R.id.vk);
         TextView error = dialog.findViewById(R.id.error_text);
 
+        String biography = getData(biographyView);
         if (biography != null) {
             user.setBiography(biography);
         }
 
-        if (vk != null) {
-            user.setVk(vk);
+        int phoneLength = phoneNumberView.getUnMasked().length();
+        if (phoneLength != 0) {
+            if (phoneLength == PHONE_NUMBER_LENGTH) {
+                user.setPhoneNumber(phoneNumberView.getMasked());
+            } else {
+                error.setText(activity.getString(R.string.error_phone));
+                error.setVisibility(VISIBLE);
+                isCorrect = false;
+            }
         }
 
+        String email = getData(emailView);
         if (email != null) {
             if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 user.seteMail(email);
@@ -69,22 +82,36 @@ public class EditUserDialog extends CustomInteractiveDialog {
             }
         }
 
-        int phoneLength = editTextPhoneNumber.getUnMasked().length();
-        if (phoneLength != 0) {
-            if (phoneLength == PHONE_NUMBER_LENGTH) {
-                user.setPhoneNumber(editTextPhoneNumber.getMasked());
-            } else {
-                error.setText(activity.getString(R.string.error_phone));
-                error.setVisibility(VISIBLE);
-                isCorrect = false;
-            }
+        String vk = getData(vkView);
+        if (vk != null) {
+            user.setVk(vk);
         }
         return isCorrect;
     }
 
-    private String getData(int id) {
-        EditText editText = dialog.findViewById(id);
+    private void fillFields(User user) {
+        String biographyUser = user.getBiography();
+        if (biographyUser != null) {
+            biographyView.setText(biographyUser);
+        }
 
+        String phoneUser = user.getPhoneNumber();
+        if (phoneUser != null) {
+            phoneNumberView.setText(phoneUser);
+        }
+
+        String vkUser = user.getVk();
+        if (vkUser != null) {
+            vkView.setText(vkUser);
+        }
+
+        String emailUser = user.geteMail();
+        if (emailUser != null) {
+            emailView.setText(emailUser);
+        }
+    }
+
+    private String getData(EditText editText) {
         if (editText != null) {
             String text = editText.getText().toString().trim();
 
