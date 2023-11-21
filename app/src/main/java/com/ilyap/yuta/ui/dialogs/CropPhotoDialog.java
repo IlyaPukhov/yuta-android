@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Environment;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -18,8 +20,14 @@ import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestUtils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class CropPhotoDialog extends CustomInteractiveDialog {
-    private static User user;
+    CropImageView cropImageView;
+    private User user;
 
     public CropPhotoDialog(Context context, ProfileFragment profileFragment) {
         super(context, profileFragment);
@@ -31,8 +39,7 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
         super.start();
 
         user = ProfileFragment.getCurrentUser();
-
-        CropImageView cropImageView = dialog.findViewById(R.id.cropImageView);
+        cropImageView = dialog.findViewById(R.id.cropImageView);
         View closeButton = dialog.findViewById(R.id.close);
         View saveButton = dialog.findViewById(R.id.save_miniature);
 
@@ -40,10 +47,20 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
         saveButton.setOnClickListener(v -> {
             Rect cropRect = cropImageView.getCropRect();
             RequestUtils.cropPhotoRequest(cropRect.width(), cropRect.height(), cropRect.left, cropRect.top);
-            dismiss();
+            updateLocalImage();
+            this.dismiss();
         });
 
         loadImageWithGlide(user.getPhoto(), cropImageView);
+    }
+
+    private void updateLocalImage() {
+        // TODO убрать
+        user.setCroppedPhoto(String.valueOf(saveCroppedPhoto()));
+
+        if (profileFragment != null) {
+            profileFragment.updateImage(user);
+        }
     }
 
     private void loadImageWithGlide(String imageUrl, CropImageView cropImageView) {
@@ -62,5 +79,20 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
                         cropImageView.setImageBitmap(null);
                     }
                 });
+    }
+
+    private Uri saveCroppedPhoto() {
+        File outputDir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File outputFile = new File(outputDir, "cropped_image.jpg");
+
+        try {
+            FileOutputStream outputStream = new FileOutputStream(outputFile);
+            cropImageView.getCroppedImage().compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            outputStream.flush();
+            outputStream.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return Uri.fromFile(outputFile);
     }
 }
