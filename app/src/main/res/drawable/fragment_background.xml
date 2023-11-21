@@ -5,7 +5,13 @@
             <solid android:color="@color/white" />
         </shape>
     </item>
-    <item
-            android:bottom="100dp"
-            android:drawable="@drawable/gradient_background" />
+    <item android:bottom="250dp">
+        <shape>
+            <gradient
+                    android:type="linear"
+                    android:startColor="#0D2468"
+                    android:centerColor="#E673473C"
+                    android:endColor="#F2D96A10" />
+        </shape>
+    </item>
 </layer-list>
