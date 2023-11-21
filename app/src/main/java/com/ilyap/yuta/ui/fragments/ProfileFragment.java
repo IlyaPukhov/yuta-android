@@ -22,6 +22,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.LoginActivity;
@@ -98,7 +99,10 @@ public class ProfileFragment extends Fragment {
     }
 
     private void updateImage() {
-        Glide.with(this).load(user.getCroppedPhoto()).into((ImageView) view.findViewById(R.id.photo));
+        Glide.with(this).load(user.getCroppedPhoto())
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into((ImageView) view.findViewById(R.id.photo));
     }
 
     private void setDataInTextView(int id, String text) {
@@ -143,7 +147,7 @@ public class ProfileFragment extends Fragment {
         updateImage();
     }
 
-    public ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
+    public final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {

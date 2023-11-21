@@ -4,7 +4,6 @@
     <string name="footer_description">Единое приложение ЯГТУ для задач</string>
     <string name="header_text">Добро пожаловать в YUTA!</string>
     <string name="ystu_photo">ystu_photo</string>
-    <string name="yuta_logo">yuta_logo</string>
     <string name="auth_text">Авторизация</string>
     <string name="separator">separator</string>
     <string name="login">Логин</string>

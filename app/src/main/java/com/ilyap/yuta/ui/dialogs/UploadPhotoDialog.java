@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
@@ -31,12 +32,13 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
         user = ProfileFragment.getCurrentUser();
 
         imageView = dialog.findViewById(R.id.photo);
-        Glide.with(activity).load(user.getCroppedPhoto()).into(imageView);
+        Glide.with(activity).load(user.getCroppedPhoto())
+                .skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(imageView);
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> this.dismiss());
         dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> {
             DeletePhotoDialog.deletePhoto(profileFragment);
-            imageView.setImageURI(null);
+            imageView.setImageBitmap(null);
         });
         dialog.findViewById(R.id.pick_miniature).setOnClickListener(v -> {
             CustomDialog editPhotoDialog = new CropPhotoDialog(activity, profileFragment);

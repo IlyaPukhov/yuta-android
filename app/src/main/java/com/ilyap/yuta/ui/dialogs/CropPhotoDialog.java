@@ -6,11 +6,11 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -21,9 +21,9 @@ import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 public class CropPhotoDialog extends CustomInteractiveDialog {
     CropImageView cropImageView;
@@ -40,11 +40,9 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
 
         user = ProfileFragment.getCurrentUser();
         cropImageView = dialog.findViewById(R.id.cropImageView);
-        View closeButton = dialog.findViewById(R.id.close);
-        View saveButton = dialog.findViewById(R.id.save_miniature);
 
-        closeButton.setOnClickListener(v -> dismiss());
-        saveButton.setOnClickListener(v -> {
+        dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
+        dialog.findViewById(R.id.save_miniature).setOnClickListener(v -> {
             Rect cropRect = cropImageView.getCropRect();
             RequestUtils.cropPhotoRequest(cropRect.width(), cropRect.height(), cropRect.left, cropRect.top);
             updateLocalImage();
@@ -56,7 +54,7 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
 
     private void updateLocalImage() {
         // TODO убрать
-        user.setCroppedPhoto(String.valueOf(saveCroppedPhoto()));
+        user.setCroppedPhoto(Objects.requireNonNull(saveCroppedPhoto().getPath()));
 
         if (profileFragment != null) {
             profileFragment.updateImage(user);
@@ -67,6 +65,8 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
         Glide.with(cropImageView)
                 .asBitmap()
                 .load(imageUrl)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .apply(RequestOptions.centerInsideTransform())
                 .into(new CustomTarget<Bitmap>() {
                     @Override
