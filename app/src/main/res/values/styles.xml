@@ -50,19 +50,19 @@
     <style name="loading">
         <item name="android:fontFamily">@font/montserrat_regular</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/light_gray</item>
     </style>
 
     <style name="network">
         <item name="android:fontFamily">@font/montserrat_medium</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/light_gray</item>
     </style>
 
     <style name="network_down">
         <item name="android:fontFamily">@font/montserrat_regular</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/light_gray</item>
     </style>
 
     <style name="nav_item">
@@ -148,7 +148,7 @@
         <item name="android:fontFamily">@font/montserrat_medium</item>
         <item name="android:textSize">18sp</item>
         <item name="android:letterSpacing">0.12</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/dark_gray</item>
     </style>
 
     <style name="pick_button" parent="reload_button">
