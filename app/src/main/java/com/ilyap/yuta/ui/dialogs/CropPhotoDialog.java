@@ -49,7 +49,7 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
             int factWidth = cropImageView.getWholeImageRect().width();
             int factHeight = cropImageView.getWholeImageRect().height();
             Rect cropRect = cropImageView.getCropRect();
-            RequestUtils.cropPhotoRequest(factWidth, factHeight, cropRect.width(), cropRect.height(), cropRect.left, cropRect.top);
+            RequestUtils.cropUserPhotoRequest(factWidth, factHeight, cropRect.width(), cropRect.height(), cropRect.left, cropRect.top);
             updateLocalImage();
 
             Toast.makeText(profileFragment.requireContext(), profileFragment.getString(R.string.saved), Toast.LENGTH_SHORT).show();

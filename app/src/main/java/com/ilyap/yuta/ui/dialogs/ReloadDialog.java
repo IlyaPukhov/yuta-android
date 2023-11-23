@@ -24,7 +24,7 @@ public class ReloadDialog extends CustomInteractiveDialog {
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> this.dismiss());
         dialog.findViewById(R.id.submit).setOnClickListener(v -> {
-            RequestUtils.reloadRequest(password != null ? password.getText().toString() : null);
+            RequestUtils.reloadUserRequest(password != null ? password.getText().toString() : null);
 
             if (profileFragment != null) {
                 profileFragment.fillViews(getCurrentUser());

@@ -21,10 +21,6 @@ public class User {
     private int doneTasksCount;
     private int teamsCount;
 
-    public String getLogin() {
-        return login;
-    }
-
     public String getPhoto() {
         return photo;
     }

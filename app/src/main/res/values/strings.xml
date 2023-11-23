@@ -58,4 +58,7 @@
     <string name="saved">Сохранено</string>
     <string name="deleted">Фото удалено</string>
     <string name="updated">Данные обновлены</string>
+    <string name="member_button">Вы участник</string>
+    <string name="manager_button">Вы руководитель</string>
+    <string name="create_team">Создать команду</string>
 </resources>

@@ -72,7 +72,7 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
         if (imageView != null && selectedImageUri != null) {
             user.setPhoto(String.valueOf(selectedImageUri));
             user.setCroppedPhoto(String.valueOf(selectedImageUri));
-            RequestUtils.uploadPhotoRequest(user);
+            RequestUtils.uploadUserPhotoRequest(user);
             imageView.setImageURI(selectedImageUri);
             if (profileFragment != null) {
                 profileFragment.updateImage(user);

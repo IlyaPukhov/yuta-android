@@ -15,7 +15,7 @@ public class RequestUtils {
         return "{\"login\":\"ribinaka.21\",\"photo\":\"https://github.com/Panovky/YUTA/blob/develop/media/images/cropped-default_user_photo.png?raw=true\",\"cropped_photo\":\"https://github.com/Panovky/YUTA/blob/develop/media/images/cropped-default_user_photo.png?raw=true\",\"last_name\":\"Панова\",\"first_name\":\"Ксения\",\"patronymic\":\"Андреевна\",\"age\":\"21 год\",\"biography\":\"Студентка третьего курса университета. Занимаюcь в основном разработкой бэкенда веб-приложений.\",\"phone_number\":\"+7 (901) 278-88-00\",\"e_mail\":\"rybinak95@gmail.com\",\"vk\":\"https://vk.com/bitte_r\",\"faculty\":\"Институт цифровых систем\",\"direction\":\"09.03.04 - Программная инженерия\", \"group\":\"ЦПИ-31\",\"all_projects_count\":2,\"done_projects_count\":0,\"all_tasks_count\":1,\"done_tasks_count\":1,\"teams_count\":2}";
     }
 
-    public static void reloadRequest(String password) {
+    public static void reloadUserRequest(String password) {
         // TODO
     }
 
@@ -23,15 +23,23 @@ public class RequestUtils {
         // TODO
     }
 
-    public static void deletePhotoRequest(User user) {
+    public static void deleteUserPhotoRequest(User user) {
         // TODO
     }
 
-    public static void uploadPhotoRequest(User user) {
+    public static void uploadUserPhotoRequest(User user) {
         // TODO
     }
 
-    public static void cropPhotoRequest(int imageWidth, int imageHeight, int croppedWidth, int croppedHeight, int offsetX, int offsetY) {
+    public static void cropUserPhotoRequest(int imageWidth, int imageHeight, int croppedWidth, int croppedHeight, int offsetX, int offsetY) {
         // TODO
+    }
+
+    public static String getManagedTeamsRequest(int userId) {
+        return "[{\"name\":\"Команда Ксюши\",\"leader\":{\"id\":1,\"cropped_photo\":\"https://github.com/Panovky/YUTA/blob/develop/media/images/cropped-default_user_photo.png?raw=true\",\"last_name\":\"Панова\",\"first_name\":\"Ксения\"},\"members\":[{\"id\":3,\"cropped_photo\":\"https://github.com/Panovky/YUTA/blob/develop/media/images/cropped-default_user_photo.png?raw=true\",\"last_name\":\"Аристов\",\"first_name\":\"Даниил\"},{\"id\":7,\"cropped_photo\":\"https://github.com/Panovky/YUTA/blob/develop/media/images/cropped-default_user_photo.png?raw=true\",\"last_name\":\"Матюшанова\",\"first_name\":\"Дарина\"},{\"id\":5,\"cropped_photo\":\"https://github.com/Panovky/YUTA/blob/develop/media/images/cropped-default_user_photo.png?raw=true\",\"last_name\":\"Пухов\",\"first_name\":\"Илья\"}]}]";
+    }
+
+    public static String getMemberTeamsRequest(int userId) {
+        return "[{\"name\":\"Команда Дани\",\"leader\":{\"id\":3,\"cropped_photo\":\"https://github.com/Panovky/YUTA/blob/develop/media/images/cropped-default_user_photo.png?raw=true\",\"last_name\":\"Аристов\",\"first_name\":\"Даниил\"},\"members\":[{\"id\":7,\"cropped_photo\":\"https://github.com/Panovky/YUTA/blob/develop/media/images/cropped-default_user_photo.png?raw=true\",\"last_name\":\"Матюшанова\",\"first_name\":\"Дарина\"},{\"id\":1,\"cropped_photo\":\"https://github.com/Panovky/YUTA/blob/develop/media/images/cropped-default_user_photo.png?raw=true\",\"last_name\":\"Панова\",\"first_name\":\"Ксения\"},{\"id\":5,\"cropped_photo\":\"https://github.com/Panovky/YUTA/blob/develop/media/images/cropped-default_user_photo.png?raw=true\",\"last_name\":\"Пухов\",\"first_name\":\"Илья\"}]}]";
     }
 }
