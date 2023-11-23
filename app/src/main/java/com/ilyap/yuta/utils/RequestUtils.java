@@ -4,6 +4,9 @@ import com.ilyap.yuta.models.User;
 
 public class RequestUtils {
 
+    private RequestUtils() {
+    }
+
     public static String getUserIdRequest() {
         return "{\"status\": \"OK\", \"user_id\": 1}";
     }

@@ -1,5 +1,7 @@
 package com.ilyap.yuta.ui.dialogs;
 
+import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -30,7 +32,7 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
     @Override
     public void start() {
         super.start();
-        user = ProfileFragment.getCurrentUser();
+        user = getCurrentUser();
 
         imageView = dialog.findViewById(R.id.photo);
         Glide.with(activity)

@@ -44,8 +44,4 @@ public class PhotoDialog extends CustomInteractiveDialog {
         CustomDialog deletePhotoDialog = new DeletePhotoDialog(activity, profileFragment);
         deletePhotoDialog.start();
     }
-
-    public CustomDialog getUpdatePhotoDialog() {
-        return updatePhotoDialog;
-    }
 }

@@ -1,5 +1,7 @@
 package com.ilyap.yuta.ui.dialogs;
 
+import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
+
 import android.content.Context;
 import android.widget.Toast;
 
@@ -28,7 +30,7 @@ public class DeletePhotoDialog extends CustomInteractiveDialog {
     }
 
     protected static void deletePhoto(ProfileFragment profileFragment) {
-        User user = ProfileFragment.getCurrentUser();
+        User user = getCurrentUser();
         RequestUtils.deletePhotoRequest(user);
         // TODO
         user.setPhoto("https://github.com/Panovky/YUTA/blob/develop/media/images/cropped-default_user_photo.png?raw=true");

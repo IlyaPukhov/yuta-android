@@ -5,10 +5,11 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static android.net.ConnectivityManager.TYPE_MOBILE;
 import static android.net.ConnectivityManager.TYPE_WIFI;
 import static android.view.View.GONE;
+import static com.ilyap.yuta.utils.UserUtils.getUserId;
+import static com.ilyap.yuta.utils.UserUtils.setUserId;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -30,16 +31,14 @@ import com.ilyap.yuta.utils.RequestUtils;
 
 public class LoginActivity extends AppCompatActivity {
     TextView errorText;
-    private SharedPreferences sharedPreferences;
-    private int user_id;
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        sharedPreferences = getSharedPreferences("session", Context.MODE_PRIVATE);
-        if (hasInternetConnection() && sharedPreferences.getInt("user_id", -1) >= 0) {
+        if (hasInternetConnection() && getUserId(this) >= 0) {
             openApp();
         }
 
@@ -59,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
 
         boolean successAuth = djangoRequest(login, password);
         if (successAuth) {
-            saveUserId();
+            setUserId(this, userId);
             openApp();
         } else {
             errorText.setVisibility(View.VISIBLE);
@@ -75,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
 
         AuthResponse response = JsonUtils.parse(json, AuthResponse.class);
         if (response.getStatus().equalsIgnoreCase("ok")) {
-            user_id = response.getUserId();
+            userId = response.getUserId();
             return true;
         }
         return false;
@@ -91,11 +90,6 @@ public class LoginActivity extends AppCompatActivity {
     private void openNetworkDialog() {
         CustomDialog networkDialog = new NetworkDialog(LoginActivity.this);
         networkDialog.start();
-    }
-
-    private void saveUserId() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("user_id", user_id).apply();
     }
 
     private boolean hasInternetConnection() {

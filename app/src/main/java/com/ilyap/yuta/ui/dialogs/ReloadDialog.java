@@ -1,5 +1,7 @@
 package com.ilyap.yuta.ui.dialogs;
 
+import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
+
 import android.content.Context;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -25,7 +27,7 @@ public class ReloadDialog extends CustomInteractiveDialog {
             RequestUtils.reloadRequest(password != null ? password.getText().toString() : null);
 
             if (profileFragment != null) {
-                profileFragment.fillViews(ProfileFragment.getCurrentUser());
+                profileFragment.fillViews(getCurrentUser());
             }
 
             Toast.makeText(activity, activity.getString(R.string.updated), Toast.LENGTH_SHORT).show();

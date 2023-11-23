@@ -1,5 +1,7 @@
 package com.ilyap.yuta.ui.dialogs;
 
+import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -39,7 +41,7 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
     public void start() {
         super.start();
 
-        user = ProfileFragment.getCurrentUser();
+        user = getCurrentUser();
         cropImageView = dialog.findViewById(R.id.cropImageView);
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
