@@ -20,8 +20,4 @@ public final class JsonUtils {
     public static <T> T parse(String jsonString, Class<T> pojoClass) {
         return gson.fromJson(jsonString, pojoClass);
     }
-
-    public static <T> List<T> parseArray(String jsonString, Class<T> pojoClass) {
-        return gson.fromJson(jsonString, TypeToken.getParameterized(ArrayList.class, pojoClass).getType());
-    }
 }

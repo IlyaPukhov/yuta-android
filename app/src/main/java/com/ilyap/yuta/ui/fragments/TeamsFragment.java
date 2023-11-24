@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.Team;
+import com.ilyap.yuta.models.TeamResponse;
 import com.ilyap.yuta.utils.JsonUtils;
 import com.ilyap.yuta.utils.RequestUtils;
 
@@ -31,10 +32,10 @@ public class TeamsFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_teams, container, false);
 
-        //user = getUser(getUserId(requireActivity()));
-
-        List<Team> managedTeams = JsonUtils.parseArray(RequestUtils.getManagedTeamsRequest(getUserId(requireActivity())), Team.class);
-        List<Team> memberTeams = JsonUtils.parseArray(RequestUtils.getMemberTeamsRequest(getUserId(requireActivity())), Team.class);
+        int userId = getUserId(requireActivity());
+        TeamResponse teamResponse = JsonUtils.parse(RequestUtils.getTeamsRequest(userId), TeamResponse.class);
+        List<Team> managedTeams = teamResponse.getManagedTeams();
+        List<Team> othersTeams = teamResponse.getOthersTeams();
 
         managedTeamsButton = view.findViewById(R.id.manager_button);
         memberTeamsButton = view.findViewById(R.id.member_button);
