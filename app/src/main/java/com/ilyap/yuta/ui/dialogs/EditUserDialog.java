@@ -16,6 +16,7 @@ import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestUtils;
 import com.santalu.maskara.widget.MaskEditText;
 
+@SuppressWarnings("ConstantConditions")
 public class EditUserDialog extends CustomInteractiveDialog {
     private static final int PHONE_NUMBER_LENGTH = 10;
     private EditText biographyView;

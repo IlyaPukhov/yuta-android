@@ -10,6 +10,7 @@ import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestUtils;
 
+@SuppressWarnings("ConstantConditions")
 public class DeletePhotoDialog extends CustomInteractiveDialog {
 
     public DeletePhotoDialog(Context context, ProfileFragment profileFragment) {

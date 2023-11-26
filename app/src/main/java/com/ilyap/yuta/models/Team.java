@@ -3,9 +3,9 @@ package com.ilyap.yuta.models;
 import java.util.List;
 
 public class Team {
-    String name;
-    User leader;
-    List<User> members;
+    private String name;
+    private User leader;
+    private List<User> members;
 
     public String getName() {
         return name;

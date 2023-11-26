@@ -27,7 +27,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="@string/yuta_logo" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -51,7 +52,7 @@
                         android:paddingHorizontal="21dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:ignore="TouchTargetSizeCheck"
+                        tools:ignore="RtlHardcoded,TouchTargetSizeCheck"
                         android:autoSizeTextType="uniform"
                         android:drawableLeft="@drawable/create_team_icon"
                         app:layout_constraintTop_toTopOf="parent"
@@ -101,25 +102,16 @@
                 </LinearLayout>
 
 
-                <!--                <TextView-->
-                <!--                        android:textIsSelectable="true"-->
-                <!--                        android:textAppearance="@style/profile_desc"-->
-                <!--                        android:textAlignment="center"-->
-                <!--                        android:fontFamily="@font/montserrat_regular"-->
-                <!--                        android:autoSizeTextType="uniform"-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:id="@+id/faculty"-->
-                <!--                        android:layout_marginTop="10dp"-->
-                <!--                        app:layout_constraintStart_toStartOf="parent"-->
-                <!--                        app:layout_constraintEnd_toEndOf="parent"-->
-                <!--                        android:layout_marginStart="60dp"-->
-                <!--                        android:layout_marginEnd="60dp" />-->
-
-
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@+id/toggleGroup"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:nestedScrollingEnabled="false"
+                        android:paddingBottom="45dp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

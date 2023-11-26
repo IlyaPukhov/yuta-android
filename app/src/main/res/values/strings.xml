@@ -61,4 +61,9 @@
     <string name="member_button">Вы участник</string>
     <string name="manager_button">Вы руководитель</string>
     <string name="create_team">Создать команду</string>
+    <string name="team_leader">team leader</string>
+    <string name="card_phone">card phone</string>
+    <string name="previous_cards">previous cards</string>
+    <string name="next_cards">next cards</string>
+    <string name="yuta_logo">YUTA logo</string>
 </resources>

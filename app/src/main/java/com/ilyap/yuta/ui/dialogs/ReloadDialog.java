@@ -10,6 +10,7 @@ import com.ilyap.yuta.R;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestUtils;
 
+@SuppressWarnings("ConstantConditions")
 public class ReloadDialog extends CustomInteractiveDialog {
 
     public ReloadDialog(Context context, ProfileFragment profileFragment) {

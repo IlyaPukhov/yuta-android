@@ -5,6 +5,7 @@ import android.content.Context;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 
+@SuppressWarnings("ConstantConditions")
 public class PhotoDialog extends CustomInteractiveDialog {
     private final CustomDialog updatePhotoDialog = new UploadPhotoDialog(activity, profileFragment);
 

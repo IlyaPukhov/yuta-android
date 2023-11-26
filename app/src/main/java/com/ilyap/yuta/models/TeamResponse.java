@@ -3,8 +3,8 @@ package com.ilyap.yuta.models;
 import java.util.List;
 
 public class TeamResponse {
-    List<Team> managedTeams;
-    List<Team> othersTeams;
+    private List<Team> managedTeams;
+    private List<Team> othersTeams;
 
     public List<Team> getManagedTeams() {
         return managedTeams;

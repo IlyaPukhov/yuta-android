@@ -17,9 +17,10 @@ import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestUtils;
 
+@SuppressWarnings("ConstantConditions")
+@SuppressLint("StaticFieldLeak")
 public class UploadPhotoDialog extends CustomInteractiveDialog {
     public static final int PICK_IMAGE_REQUEST = 1;
-    @SuppressLint("StaticFieldLeak")
     private static ImageView imageView;
     private static Uri selectedImageUri;
     private static User user;
