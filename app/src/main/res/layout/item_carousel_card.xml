@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    <ImageView
+            android:contentDescription="@string/card_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/card_background"
+            android:id="@+id/imageView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:contentDescription="@string/team_leader"
+            android:layout_height="wrap_content"
+            android:src="@drawable/team_leader_icon"
+            android:visibility="gone"
+            android:id="@+id/teamLeaderIcon"
+            app:layout_constraintTop_toTopOf="@+id/imageView"
+            app:layout_constraintStart_toStartOf="@+id/imageView"
+            android:layout_marginTop="11dp"
+            android:layout_marginStart="16dp" />
+
+    <TextView
+            android:textAppearance="@style/card_name"
+            android:textAlignment="center"
+            android:autoSizeTextType="uniform"
+            android:textColor="@color/dark_gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/name"
+            app:layout_constraintTop_toBottomOf="@id/avatar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="10dp" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+            android:background="@drawable/photo_filler"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/avatar"
+            android:clickable="true"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/rounded_image_view"
+            app:strokeColor="@color/blue"
+            app:layout_constraintTop_toTopOf="@+id/imageView"
+            app:layout_constraintStart_toStartOf="@id/imageView"
+            app:layout_constraintEnd_toEndOf="@id/imageView"
+            android:contentDescription="@string/avatar"
+            app:strokeWidth="3dp"
+            android:padding="2dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

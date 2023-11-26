@@ -1,5 +1,7 @@
 package com.ilyap.yuta.ui.dialogs;
 
+import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
+
 import android.content.Context;
 import android.widget.Toast;
 
@@ -8,6 +10,7 @@ import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestUtils;
 
+@SuppressWarnings("ConstantConditions")
 public class DeletePhotoDialog extends CustomInteractiveDialog {
 
     public DeletePhotoDialog(Context context, ProfileFragment profileFragment) {
@@ -28,8 +31,8 @@ public class DeletePhotoDialog extends CustomInteractiveDialog {
     }
 
     protected static void deletePhoto(ProfileFragment profileFragment) {
-        User user = ProfileFragment.getCurrentUser();
-        RequestUtils.deletePhotoRequest(user);
+        User user = getCurrentUser();
+        RequestUtils.deleteUserPhotoRequest(user);
         // TODO
         user.setPhoto("https://github.com/Panovky/YUTA/blob/develop/media/images/cropped-default_user_photo.png?raw=true");
         user.setCroppedPhoto("https://github.com/Panovky/YUTA/blob/develop/media/images/cropped-default_user_photo.png?raw=true");

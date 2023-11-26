@@ -2,6 +2,8 @@ package com.ilyap.yuta.ui.dialogs;
 
 import static android.view.View.VISIBLE;
 
+import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
+
 import android.content.Context;
 import android.util.Patterns;
 import android.widget.EditText;
@@ -14,6 +16,7 @@ import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestUtils;
 import com.santalu.maskara.widget.MaskEditText;
 
+@SuppressWarnings("ConstantConditions")
 public class EditUserDialog extends CustomInteractiveDialog {
     private static final int PHONE_NUMBER_LENGTH = 10;
     private EditText biographyView;
@@ -34,7 +37,7 @@ public class EditUserDialog extends CustomInteractiveDialog {
         emailView = dialog.findViewById(R.id.email);
         vkView = dialog.findViewById(R.id.vk);
 
-        User user = ProfileFragment.getCurrentUser();
+        User user = getCurrentUser();
         fillFields(user);
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> this.dismiss());

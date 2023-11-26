@@ -1,14 +1,13 @@
 package com.ilyap.yuta.ui.fragments;
 
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.ui.dialogs.UploadPhotoDialog.PICK_IMAGE_REQUEST;
+import static com.ilyap.yuta.utils.UserUtils.getUser;
+import static com.ilyap.yuta.utils.UserUtils.getUserId;
+import static com.ilyap.yuta.utils.UserUtils.logOut;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,17 +23,13 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
-import com.ilyap.yuta.ui.LoginActivity;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.EditUserDialog;
 import com.ilyap.yuta.ui.dialogs.PhotoDialog;
 import com.ilyap.yuta.ui.dialogs.ReloadDialog;
 import com.ilyap.yuta.ui.dialogs.UploadPhotoDialog;
-import com.ilyap.yuta.utils.JsonUtils;
-import com.ilyap.yuta.utils.RequestUtils;
 
 public class ProfileFragment extends Fragment {
-    private SharedPreferences sharedPreferences;
     private View view;
     private static User user;
 
@@ -45,12 +40,11 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
-        sharedPreferences = requireActivity().getSharedPreferences("session", Context.MODE_PRIVATE);
 
-        user = getUser(getAuthorizedUserId());
+        user = getUser(getUserId(requireActivity()));
         fillViews();
 
-        view.findViewById(R.id.log_out).setOnClickListener(v -> logOut());
+        view.findViewById(R.id.log_out).setOnClickListener(v -> logOut(requireActivity()));
         view.findViewById(R.id.reload).setOnClickListener(v -> openReloadDialog());
         view.findViewById(R.id.edit).setOnClickListener(v -> openEditDialog());
         view.findViewById(R.id.photo).setOnClickListener(v -> openPhotoDialog());
@@ -113,28 +107,6 @@ public class ProfileFragment extends Fragment {
                 textView.setVisibility(VISIBLE);
             }
         }
-    }
-
-    private User getUser(int id) {
-        String json = RequestUtils.getUserRequest(id);
-        return JsonUtils.parse(json, User.class);
-    }
-
-    private void logOut() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.remove("user_id").apply();
-        Intent intent = new Intent(requireActivity(), LoginActivity.class);
-        intent.addFlags(FLAG_ACTIVITY_CLEAR_TASK | FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        requireActivity().finish();
-    }
-
-    private int getAuthorizedUserId() {
-        return sharedPreferences.getInt("user_id", -1);
-    }
-
-    public static User getCurrentUser() {
-        return user;
     }
 
     public void fillViews(User currentUser) {

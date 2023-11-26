@@ -1,5 +1,7 @@
 package com.ilyap.yuta.ui.dialogs;
 
+import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -15,9 +17,10 @@ import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestUtils;
 
+@SuppressWarnings("ConstantConditions")
+@SuppressLint("StaticFieldLeak")
 public class UploadPhotoDialog extends CustomInteractiveDialog {
     public static final int PICK_IMAGE_REQUEST = 1;
-    @SuppressLint("StaticFieldLeak")
     private static ImageView imageView;
     private static Uri selectedImageUri;
     private static User user;
@@ -30,7 +33,7 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
     @Override
     public void start() {
         super.start();
-        user = ProfileFragment.getCurrentUser();
+        user = getCurrentUser();
 
         imageView = dialog.findViewById(R.id.photo);
         Glide.with(activity)
@@ -70,7 +73,7 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
         if (imageView != null && selectedImageUri != null) {
             user.setPhoto(String.valueOf(selectedImageUri));
             user.setCroppedPhoto(String.valueOf(selectedImageUri));
-            RequestUtils.uploadPhotoRequest(user);
+            RequestUtils.uploadUserPhotoRequest(user);
             imageView.setImageURI(selectedImageUri);
             if (profileFragment != null) {
                 profileFragment.updateImage(user);

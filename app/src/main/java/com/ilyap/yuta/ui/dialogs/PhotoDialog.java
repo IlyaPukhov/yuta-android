@@ -5,6 +5,7 @@ import android.content.Context;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 
+@SuppressWarnings("ConstantConditions")
 public class PhotoDialog extends CustomInteractiveDialog {
     private final CustomDialog updatePhotoDialog = new UploadPhotoDialog(activity, profileFragment);
 
@@ -43,9 +44,5 @@ public class PhotoDialog extends CustomInteractiveDialog {
     private void openDeletePhotoDialog() {
         CustomDialog deletePhotoDialog = new DeletePhotoDialog(activity, profileFragment);
         deletePhotoDialog.start();
-    }
-
-    public CustomDialog getUpdatePhotoDialog() {
-        return updatePhotoDialog;
     }
 }

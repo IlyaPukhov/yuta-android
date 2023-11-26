@@ -67,8 +67,8 @@
                 android:drawablePadding="17dp"
                 app:drawableLeftCompat="@drawable/delete_photo_icon"
                 android:layout_weight="1"
-                tools:ignore="TouchTargetSizeCheck" />
-
+                tools:ignore="TouchTargetSizeCheck"
+                app:drawableTint="@color/dark_gray" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

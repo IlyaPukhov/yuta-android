@@ -333,7 +333,7 @@
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         android:id="@+id/edit"
-                        android:contentDescription="@string/edit_button"
+                        android:contentDescription="@string/edit_profile_button"
                         app:layout_constraintTop_toTopOf="parent"
                         android:layout_marginTop="32dp"
                         app:layout_constraintEnd_toEndOf="parent"

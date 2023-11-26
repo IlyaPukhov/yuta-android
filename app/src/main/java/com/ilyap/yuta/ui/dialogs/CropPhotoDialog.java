@@ -1,5 +1,7 @@
 package com.ilyap.yuta.ui.dialogs;
 
+import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -26,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Objects;
 
+@SuppressWarnings("ConstantConditions")
 public class CropPhotoDialog extends CustomInteractiveDialog {
     CropImageView cropImageView;
     private User user;
@@ -39,7 +42,7 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
     public void start() {
         super.start();
 
-        user = ProfileFragment.getCurrentUser();
+        user = getCurrentUser();
         cropImageView = dialog.findViewById(R.id.cropImageView);
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
@@ -47,7 +50,7 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
             int factWidth = cropImageView.getWholeImageRect().width();
             int factHeight = cropImageView.getWholeImageRect().height();
             Rect cropRect = cropImageView.getCropRect();
-            RequestUtils.cropPhotoRequest(factWidth, factHeight, cropRect.width(), cropRect.height(), cropRect.left, cropRect.top);
+            RequestUtils.cropUserPhotoRequest(factWidth, factHeight, cropRect.width(), cropRect.height(), cropRect.left, cropRect.top);
             updateLocalImage();
 
             Toast.makeText(profileFragment.requireContext(), profileFragment.getString(R.string.saved), Toast.LENGTH_SHORT).show();
