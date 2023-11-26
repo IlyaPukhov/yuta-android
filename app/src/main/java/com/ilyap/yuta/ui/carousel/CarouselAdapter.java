@@ -1,5 +1,9 @@
 package com.ilyap.yuta.ui.carousel;
 
+import static android.view.View.VISIBLE;
+import static com.ilyap.yuta.utils.UserUtils.getUserId;
+
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,14 +19,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.ilyap.yuta.R;
+import com.ilyap.yuta.models.TeamMember;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder> {
-    private final List<ImageModel> carouselList;
+    private static final int PAGE_SIZE = 3;
+    private final List<List<TeamMember>> carouselList;
     private final Context context;
 
-    public CarouselAdapter(List<ImageModel> carouselList, Context context) {
+    public CarouselAdapter(List<List<TeamMember>> carouselList, Context context) {
         this.carouselList = carouselList;
         this.context = context;
     }
@@ -36,8 +43,7 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
 
     @Override
     public void onBindViewHolder(@NonNull CarouselViewHolder holder, int position) {
-        ImageModel carousel = carouselList.get(position);
-        holder.bind(carousel);
+        holder.bind(carouselList.get(position));
     }
 
     @Override
@@ -64,16 +70,16 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
             deleteTeam = itemView.findViewById(R.id.deleteTeam);
         }
 
-        public void bind(ImageModel carousel) {
-            carouselNumberTextView.setText("Carousel " + carousel.getCarouselNumber());
-            List<List<Integer>> pages = carousel.getPagesList();
+        public void bind(List<TeamMember> carousel) {
+            carouselNumberTextView.setText(carousel.get(0).getTeam().getName());
+            List<List<TeamMember>> pages = getPagesList(carousel);
 
-            HorizontalCarouselAdapter horizontalCarouselAdapter = new HorizontalCarouselAdapter(pages);
+            HorizontalCarouselAdapter horizontalCarouselAdapter = new HorizontalCarouselAdapter(pages, context);
             imagePager.setAdapter(horizontalCarouselAdapter);
 
             setupDots(pages.size());
             setupButtons(pages);
-            setupDataButtons();
+            setupDataButtons(carousel.get(0).getTeam().getLeader().getId());
 
             imagePager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
                 @Override
@@ -84,14 +90,21 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
             });
         }
 
-        private void setupDataButtons() {
+        private void setupDataButtons(int leaderId) {
+            if (leaderId == getUserId((Activity) context)) {
+                editTeam.setVisibility(VISIBLE);
+                deleteTeam.setVisibility(VISIBLE);
+                editTeam.setOnClickListener(v -> openEditTeam());
+                deleteTeam.setOnClickListener(v -> openDeleteTeam());
+            }
+        }
+
+        private void openDeleteTeam() {
             // TODO
-//            if (getCurrentUser().equals()) {
-//                editTeam.setVisibility(VISIBLE);
-//                deleteTeam.setVisibility(VISIBLE);
-//                editTeam.setOnClickListener(v -> openEditTeam());
-//                deleteTeam.setOnClickListener(v -> openDeleteTeam());
-//            }
+        }
+
+        private void openEditTeam() {
+            // TODO
         }
 
         private void setupDots(int size) {
@@ -122,7 +135,7 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
             }
         }
 
-        private void setupButtons(List<List<Integer>> pages) {
+        private <T> void setupButtons(List<List<T>> pages) {
             btnPrev.setOnClickListener(v -> {
                 int currentPos = imagePager.getCurrentItem();
                 if (currentPos > 0) {
@@ -142,6 +155,15 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
                     imagePager.setCurrentItem(0);
                 }
             });
+        }
+
+        private <T> List<List<T>> getPagesList(List<T> list) {
+            List<List<T>> pages = new ArrayList<>();
+            for (int i = 0; i < list.size(); i += PAGE_SIZE) {
+                int end = Math.min(list.size(), i + PAGE_SIZE);
+                pages.add(new ArrayList<>(list.subList(i, end)));
+            }
+            return pages;
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.ilyap.yuta.models;
 
 public class User {
+    private int id;
     private String login;
     private String photo;
     private String croppedPhoto;
@@ -20,6 +21,14 @@ public class User {
     private int allTasksCount;
     private int doneTasksCount;
     private int teamsCount;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getPhoto() {
         return photo;

@@ -1,6 +1,6 @@
 package com.ilyap.yuta.ui.carousel;
 
-import android.graphics.Rect;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +11,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ilyap.yuta.R;
+import com.ilyap.yuta.models.TeamMember;
 
 import java.util.List;
 
 public class HorizontalCarouselAdapter extends RecyclerView.Adapter<HorizontalCarouselAdapter.HorizontalViewHolder> {
-    private final List<List<Integer>> pages;
+    private final List<List<TeamMember>> pages;
+    private final Context context;
 
-    public HorizontalCarouselAdapter(List<List<Integer>> pages) {
+    public HorizontalCarouselAdapter(List<List<TeamMember>> pages, Context context) {
         this.pages = pages;
+        this.context = context;
     }
 
     @NonNull
@@ -31,8 +34,7 @@ public class HorizontalCarouselAdapter extends RecyclerView.Adapter<HorizontalCa
 
     @Override
     public void onBindViewHolder(@NonNull HorizontalViewHolder holder, int position) {
-        List<Integer> imageList = pages.get(position);
-        holder.bind(imageList);
+        holder.bind(pages.get(position));
     }
 
     @Override
@@ -40,7 +42,7 @@ public class HorizontalCarouselAdapter extends RecyclerView.Adapter<HorizontalCa
         return pages.size();
     }
 
-    public static class HorizontalViewHolder extends RecyclerView.ViewHolder {
+    public class HorizontalViewHolder extends RecyclerView.ViewHolder {
         private final RecyclerView horizontalRecyclerView;
 
         public HorizontalViewHolder(@NonNull View itemView) {
@@ -48,31 +50,12 @@ public class HorizontalCarouselAdapter extends RecyclerView.Adapter<HorizontalCa
             horizontalRecyclerView = itemView.findViewById(R.id.horizontalRecyclerView);
         }
 
-        public void bind(List<Integer> imageList) {
-            horizontalRecyclerView.addItemDecoration(new HorizontalSpaceItemDecoration(10));
-
-            LinearLayoutManager layoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        public void bind(List<TeamMember> members) {
+            LinearLayoutManager layoutManager = new SpanningLinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
             horizontalRecyclerView.setLayoutManager(layoutManager);
 
-            ImageAdapter imageAdapter = new ImageAdapter(imageList);
-            horizontalRecyclerView.setAdapter(imageAdapter);
-        }
-    }
-
-    public static class HorizontalSpaceItemDecoration extends RecyclerView.ItemDecoration {
-
-        private final int horizontalSpaceWidth;
-
-        public HorizontalSpaceItemDecoration(int horizontalSpaceWidth) {
-            this.horizontalSpaceWidth = horizontalSpaceWidth;
-        }
-
-        @Override
-        @SuppressWarnings("ConstantConditions")
-        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-            if (parent.getChildAdapterPosition(view) != parent.getAdapter().getItemCount() - 1) {
-                outRect.right = horizontalSpaceWidth;
-            }
+            MemberAdapter memberAdapter = new MemberAdapter(members, context);
+            horizontalRecyclerView.setAdapter(memberAdapter);
         }
     }
 }
