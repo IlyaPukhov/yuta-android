@@ -6,7 +6,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="45dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/teamLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,13 +23,44 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="Робозавры" />
-    </LinearLayout>
+                android:textAlignment="center" />
+
+        <Button
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/editTeam"
+                android:contentDescription="@string/edit_team_button"
+                android:background="@drawable/edit_icon"
+                app:drawableTint="@color/orange"
+                style="@style/button_style"
+                tools:ignore="TouchTargetSizeCheck"
+                android:backgroundTint="@color/orange"
+                app:layout_constraintStart_toEndOf="@+id/teamName"
+                android:layout_marginStart="25dp"
+                app:layout_constraintTop_toTopOf="@+id/teamName"
+                app:layout_constraintBottom_toBottomOf="@+id/teamName"
+                android:visibility="gone" />
+
+        <Button
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/deleteTeam"
+                android:contentDescription="@string/delete_team_button"
+                android:background="@drawable/delete_photo_icon"
+                style="@style/button_style"
+                tools:ignore="TouchTargetSizeCheck"
+                android:backgroundTint="@color/orange"
+                app:layout_constraintStart_toEndOf="@+id/editTeam"
+                android:layout_marginStart="10dp"
+                app:layout_constraintTop_toTopOf="@+id/editTeam"
+                app:layout_constraintBottom_toBottomOf="@+id/editTeam"
+                android:visibility="gone" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/imagePager"
             android:layout_width="0dp"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@+id/btnPrev"
             app:layout_constraintEnd_toStartOf="@+id/btnNext"
             app:layout_constraintTop_toBottomOf="@id/teamLayout"
@@ -49,33 +80,33 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-    <ImageButton
+    <Button
             android:id="@+id/btnPrev"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="16dp"
+            android:layout_height="36dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/arrow"
+            style="@style/button_style"
+            android:background="@drawable/arrow"
             app:layout_constraintBottom_toBottomOf="@+id/imagePager"
             app:layout_constraintTop_toTopOf="@+id/imagePager"
             app:layout_constraintStart_toStartOf="parent"
             android:rotationY="180"
-            android:background="@null"
             android:contentDescription="@string/previous_cards"
             tools:ignore="TouchTargetSizeCheck"
             android:layout_marginStart="5dp" />
 
-    <ImageButton
+    <Button
             android:id="@+id/btnNext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="16dp"
+            android:layout_height="36dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/arrow"
+            style="@style/button_style"
+            android:background="@drawable/arrow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/imagePager"
             app:layout_constraintTop_toTopOf="@+id/imagePager"
-            android:background="@null"
             android:contentDescription="@string/next_cards"
             tools:ignore="TouchTargetSizeCheck"
             android:layout_marginEnd="5dp" />

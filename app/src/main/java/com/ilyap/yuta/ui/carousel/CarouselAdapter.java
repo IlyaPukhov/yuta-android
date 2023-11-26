@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -50,7 +50,8 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
         private final TextView carouselNumberTextView;
         private final ViewPager2 imagePager;
         private final LinearLayout dotsLayout;
-        private final ImageButton btnPrev, btnNext;
+        private final Button btnPrev, btnNext;
+        private final Button editTeam, deleteTeam;
 
         public CarouselViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -59,6 +60,8 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
             dotsLayout = itemView.findViewById(R.id.dotsLayout);
             btnPrev = itemView.findViewById(R.id.btnPrev);
             btnNext = itemView.findViewById(R.id.btnNext);
+            editTeam = itemView.findViewById(R.id.editTeam);
+            deleteTeam = itemView.findViewById(R.id.deleteTeam);
         }
 
         public void bind(ImageModel carousel) {
@@ -70,6 +73,7 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
 
             setupDots(pages.size());
             setupButtons(pages);
+            setupDataButtons();
 
             imagePager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
                 @Override
@@ -78,6 +82,16 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
                     updateDots(position);
                 }
             });
+        }
+
+        private void setupDataButtons() {
+            // TODO
+//            if (getCurrentUser().equals()) {
+//                editTeam.setVisibility(VISIBLE);
+//                deleteTeam.setVisibility(VISIBLE);
+//                editTeam.setOnClickListener(v -> openEditTeam());
+//                deleteTeam.setOnClickListener(v -> openDeleteTeam());
+//            }
         }
 
         private void setupDots(int size) {

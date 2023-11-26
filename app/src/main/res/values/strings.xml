@@ -66,4 +66,7 @@
     <string name="previous_cards">previous cards</string>
     <string name="next_cards">next cards</string>
     <string name="yuta_logo">YUTA logo</string>
+    <string name="edit_profile_button">обновить пользователя</string>
+    <string name="edit_team_button">обновить команду</string>
+    <string name="delete_team_button">удалить команду</string>
 </resources>

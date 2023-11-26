@@ -81,7 +81,6 @@
                             android:layout_height="wrap_content"
                             android:textOn="@string/manager_button"
                             android:textOff="@string/manager_button"
-                            android:checked="true"
                             android:background="@drawable/switch_button"
                             android:paddingHorizontal="30dp"
                             android:stateListAnimator="@null"

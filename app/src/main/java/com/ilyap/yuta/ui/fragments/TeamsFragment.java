@@ -27,6 +27,8 @@ import java.util.List;
 public class TeamsFragment extends Fragment {
     ToggleButton managedTeamsButton;
     ToggleButton memberTeamsButton;
+    RecyclerView recyclerView;
+    View view;
 
     public TeamsFragment() {
     }
@@ -34,26 +36,43 @@ public class TeamsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_teams, container, false);
-
+        view = inflater.inflate(R.layout.fragment_teams, container, false);
         int userId = getUserId(requireActivity());
+        recyclerViewInitialize();
+
         TeamResponse teamResponse = JsonUtils.parse(RequestUtils.getTeamsRequest(userId), TeamResponse.class);
         List<Team> managedTeams = teamResponse.getManagedTeams();
         List<Team> othersTeams = teamResponse.getOthersTeams();
 
-        List<ImageModel> carouselList = generateData();
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        teamsSwitchInitialize();
+        return view;
+    }
+
+    private void showManagedTeams() {
+        fillCarousels(generateData());
+    }
+
+    private void showOtherTeams() {
+        fillCarousels(generateData());
+    }
+
+    private void fillCarousels(List<ImageModel> list) {
+        CarouselAdapter carouselAdapter = new CarouselAdapter(list, requireContext());
+        recyclerView.setAdapter(carouselAdapter);
+    }
+
+    private void recyclerViewInitialize() {
+        recyclerView = view.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        CarouselAdapter carouselAdapter = new CarouselAdapter(new ArrayList<>(), requireContext());
-        recyclerView.setAdapter(carouselAdapter);
+    }
 
+    private void teamsSwitchInitialize() {
         managedTeamsButton = view.findViewById(R.id.manager_button);
         memberTeamsButton = view.findViewById(R.id.member_button);
         managedTeamsButton.setOnClickListener(this::onToggleButtonClick);
         memberTeamsButton.setOnClickListener(this::onToggleButtonClick);
-
-        return view;
+        managedTeamsButton.performClick();
     }
 
     private List<ImageModel> generateData() {
@@ -64,8 +83,8 @@ public class TeamsFragment extends Fragment {
         List<Integer> imageList2 = Arrays.asList(R.drawable.photo_filler, R.drawable.photo_filler, R.drawable.photo_filler, R.drawable.photo_filler, R.drawable.photo_filler, R.drawable.photo_filler, R.drawable.photo_filler, R.drawable.photo_filler);
 
         // Разделим списки изображений на подсписки по 3 элемента в каждом
-        List<List<Integer>> pages1 = paginate(imageList1, 2);
-        List<List<Integer>> pages2 = paginate(imageList2, 2);
+        List<List<Integer>> pages1 = paginate(imageList1, 3);
+        List<List<Integer>> pages2 = paginate(imageList2, 3);
 
         ImageModel carousel1 = new ImageModel(1, pages1);
         ImageModel carousel2 = new ImageModel(2, pages2);
@@ -92,10 +111,15 @@ public class TeamsFragment extends Fragment {
 
     private void onToggleButtonClick(View view) {
         ToggleButton button = (ToggleButton) view;
+        ToggleButton otherButton;
 
-        ToggleButton otherButton = (button.getId() == managedTeamsButton.getId())
-                ? memberTeamsButton
-                : managedTeamsButton;
+        if (button.getId() == managedTeamsButton.getId()) {
+            showManagedTeams();
+            otherButton = memberTeamsButton;
+        } else {
+            showOtherTeams();
+            otherButton = managedTeamsButton;
+        }
 
         button.setTextAppearance(R.style.active_teams);
         button.setChecked(true);
