@@ -1,11 +1,14 @@
 package com.ilyap.yuta.ui.fragments;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.fragment.app.Fragment;
@@ -28,6 +31,7 @@ public class TeamsFragment extends Fragment {
     private ToggleButton managedTeamsButton;
     private ToggleButton memberTeamsButton;
     private RecyclerView recyclerView;
+    private TextView emptyText;
     private View view;
     private int userId;
 
@@ -38,6 +42,7 @@ public class TeamsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_teams, container, false);
+        emptyText = view.findViewById(R.id.empty_text);
         userId = getUserId(requireActivity());
         recyclerViewInitialize();
 
@@ -46,6 +51,12 @@ public class TeamsFragment extends Fragment {
     }
 
     private void fillCarousels(List<Team> teams) {
+        if (teams.isEmpty()) {
+            emptyText.setVisibility(VISIBLE);
+            return;
+        }
+
+        emptyText.setVisibility(GONE);
         List<List<TeamMember>> carouselList = teams.stream()
                 .map(team -> {
                     List<TeamMember> membersList = new ArrayList<>();
