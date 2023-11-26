@@ -218,7 +218,9 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/phone_number"
                             android:drawablePadding="10dp"
-                            app:drawableLeftCompat="@drawable/phone_icon" />
+                            app:drawableLeftCompat="@drawable/phone_icon"
+                            android:autoLink="phone"
+                            android:textColorLink="@color/black" />
 
                     <TextView
                             android:visibility="gone"
@@ -232,7 +234,9 @@
                             android:id="@+id/email"
                             android:layout_marginTop="12dp"
                             android:drawablePadding="10dp"
-                            app:drawableLeftCompat="@drawable/email_icon" />
+                            app:drawableLeftCompat="@drawable/email_icon"
+                            android:autoLink="email"
+                            android:textColorLink="@color/black" />
 
                     <TextView
                             android:visibility="gone"
@@ -246,9 +250,9 @@
                             android:id="@+id/vk"
                             android:layout_marginTop="12dp"
                             android:drawablePadding="10dp"
-                            android:linksClickable="true"
                             android:textColorLink="@color/black"
-                            app:drawableLeftCompat="@drawable/vk_icon" />
+                            app:drawableLeftCompat="@drawable/vk_icon"
+                            android:autoLink="web" />
                 </LinearLayout>
 
                 <ImageView
