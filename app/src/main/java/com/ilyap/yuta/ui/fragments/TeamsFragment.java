@@ -51,12 +51,8 @@ public class TeamsFragment extends Fragment {
     }
 
     private void fillCarousels(List<Team> teams) {
-        if (teams.isEmpty()) {
-            emptyText.setVisibility(VISIBLE);
-            return;
-        }
+        emptyText.setVisibility(teams.isEmpty() ? VISIBLE : GONE);
 
-        emptyText.setVisibility(GONE);
         List<List<TeamMember>> carouselList = teams.stream()
                 .map(team -> {
                     List<TeamMember> membersList = new ArrayList<>();
