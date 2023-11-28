@@ -20,11 +20,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:drawablePadding="25dp"
                 android:gravity="center"
                 android:text="@string/header_text"
                 android:textAppearance="@style/header_text"
-                app:drawableStartCompat="@drawable/fragment_logo"
                 android:layout_centerInParent="true" />
 
     </RelativeLayout>
