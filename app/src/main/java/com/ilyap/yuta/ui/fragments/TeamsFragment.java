@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,8 +21,7 @@ import com.ilyap.yuta.models.Team;
 import com.ilyap.yuta.models.TeamMember;
 import com.ilyap.yuta.models.TeamResponse;
 import com.ilyap.yuta.ui.carousel.CarouselAdapter;
-import com.ilyap.yuta.utils.JsonUtils;
-import com.ilyap.yuta.utils.RequestUtils;
+import com.ilyap.yuta.utils.RequestViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +32,9 @@ public class TeamsFragment extends Fragment {
     private ToggleButton memberTeamsButton;
     private RecyclerView recyclerView;
     private TextView emptyText;
+    private View progressLayout;
     private View view;
-    private int userId;
+    private RequestViewModel viewModel;
 
     public TeamsFragment() {
     }
@@ -43,7 +44,10 @@ public class TeamsFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_teams, container, false);
         emptyText = view.findViewById(R.id.empty_text);
-        userId = getUserId(requireActivity());
+        progressLayout = view.findViewById(R.id.progressLayout);
+        progressLayout.setVisibility(VISIBLE);
+
+        viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
         recyclerViewInitialize();
 
         teamsSwitchInitialize();
@@ -83,17 +87,30 @@ public class TeamsFragment extends Fragment {
         managedTeamsButton.performClick();
     }
 
+    private void loadTeams(View button) {
+        viewModel.getResultLiveData().removeObservers(getViewLifecycleOwner());
+        viewModel.getTeams(getUserId(requireActivity()));
+        viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
+            if (!(result instanceof TeamResponse)) return;
+            progressLayout.setVisibility(GONE);
+            TeamResponse teamResponse = (TeamResponse) result;
+
+            if (button.getId() == managedTeamsButton.getId()) {
+                fillCarousels(teamResponse.getManagedTeams());
+            } else {
+                fillCarousels(teamResponse.getOthersTeams());
+            }
+        });
+    }
+
     private void onToggleButtonClick(View view) {
-        ToggleButton button = (ToggleButton) view;
-        ToggleButton otherButton;
+        final ToggleButton button = (ToggleButton) view;
+        final ToggleButton otherButton;
 
-        TeamResponse teamResponse = JsonUtils.parse(RequestUtils.getTeamsRequest(userId), TeamResponse.class);
-
+        loadTeams(button);
         if (button.getId() == managedTeamsButton.getId()) {
-            fillCarousels(teamResponse.getManagedTeams());
             otherButton = memberTeamsButton;
         } else {
-            fillCarousels(teamResponse.getOthersTeams());
             otherButton = managedTeamsButton;
         }
 

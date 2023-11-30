@@ -5,6 +5,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static android.net.ConnectivityManager.TYPE_MOBILE;
 import static android.net.ConnectivityManager.TYPE_WIFI;
 import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
 import static com.ilyap.yuta.utils.UserUtils.setUserId;
 
@@ -13,12 +14,12 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.ilyap.yuta.MainActivity;
 import com.ilyap.yuta.R;
@@ -26,17 +27,17 @@ import com.ilyap.yuta.models.AuthResponse;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.LoadingDialog;
 import com.ilyap.yuta.ui.dialogs.NetworkDialog;
-import com.ilyap.yuta.utils.JsonUtils;
-import com.ilyap.yuta.utils.RequestUtils;
+import com.ilyap.yuta.utils.RequestViewModel;
 
 public class LoginActivity extends AppCompatActivity {
-    TextView errorText;
-    private int userId;
+    private TextView errorText;
+    private RequestViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
 
         if (hasInternetConnection() && getUserId(this) >= 0) {
             openApp();
@@ -56,28 +57,22 @@ public class LoginActivity extends AppCompatActivity {
         String login = getTextFromField(R.id.login);
         String password = getTextFromField(R.id.password);
 
-        boolean successAuth = djangoRequest(login, password);
-        if (successAuth) {
-            setUserId(this, userId);
-            openApp();
-        } else {
-            errorText.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private boolean djangoRequest(String login, String password) {
-        CustomDialog loadingDialog = new LoadingDialog(LoginActivity.this);
-        // TODO async
+        CustomDialog loadingDialog = new LoadingDialog(this);
         loadingDialog.start();
-        String json = RequestUtils.getUserIdRequest();
-        loadingDialog.dismiss();
 
-        AuthResponse response = JsonUtils.parse(json, AuthResponse.class);
-        if (response.getStatus().equalsIgnoreCase("ok")) {
-            userId = response.getUserId();
-            return true;
-        }
-        return false;
+        viewModel.getResultLiveData().removeObservers(this);
+        viewModel.auth(login, password);
+        viewModel.getResultLiveData().observe(this, result -> {
+            if (!(result instanceof AuthResponse)) return;
+            AuthResponse response = (AuthResponse) result;
+            if (response.getStatus().equalsIgnoreCase("ok")) {
+                setUserId(this, response.getUserId());
+                openApp();
+            } else {
+                errorText.setVisibility(VISIBLE);
+            }
+            loadingDialog.dismiss();
+        });
     }
 
     private void openApp() {

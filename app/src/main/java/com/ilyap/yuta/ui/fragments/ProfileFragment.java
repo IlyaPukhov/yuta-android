@@ -1,10 +1,11 @@
 package com.ilyap.yuta.ui.fragments;
 
+import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.ui.dialogs.UploadPhotoDialog.PICK_IMAGE_REQUEST;
-import static com.ilyap.yuta.utils.UserUtils.getUser;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
 import static com.ilyap.yuta.utils.UserUtils.logOut;
+import static com.ilyap.yuta.utils.UserUtils.setCurrentUser;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -26,12 +28,15 @@ import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.EditUserDialog;
 import com.ilyap.yuta.ui.dialogs.PhotoDialog;
-import com.ilyap.yuta.ui.dialogs.ReloadDialog;
+import com.ilyap.yuta.ui.dialogs.UpdateUserDialog;
 import com.ilyap.yuta.ui.dialogs.UploadPhotoDialog;
+import com.ilyap.yuta.utils.RequestViewModel;
 
 public class ProfileFragment extends Fragment {
     private View view;
+    private View progressLayout;
     private static User user;
+    private RequestViewModel viewModel;
 
     public ProfileFragment() {
     }
@@ -40,9 +45,10 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
+        progressLayout = view.findViewById(R.id.progressLayout);
 
-        user = getUser(getUserId(requireActivity()));
-        fillViews();
+        viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
+        profileInit();
 
         view.findViewById(R.id.log_out).setOnClickListener(v -> logOut(requireActivity()));
         view.findViewById(R.id.reload).setOnClickListener(v -> openReloadDialog());
@@ -52,8 +58,21 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
+    public void profileInit() {
+        progressLayout.setVisibility(VISIBLE);
+        viewModel.getResultLiveData().removeObservers(getViewLifecycleOwner());
+        viewModel.getUser(getUserId(requireActivity()));
+        viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
+            if (!(result instanceof User)) return;
+            user = (User) result;
+            fillViews();
+            progressLayout.setVisibility(GONE);
+            setCurrentUser(user);
+        });
+    }
+
     private void fillViews() {
-        updateImage();
+        //updateImage(); // TODO пути картинок медиа
 
         String fullName = user.getLastName() + " " + user.getFirstName() + (user.getPatronymic() == null ? "" : " " + user.getPatronymic());
         String faculty = getString(R.string.faculty) + ": " + user.getFaculty();
@@ -77,8 +96,8 @@ public class ProfileFragment extends Fragment {
     }
 
     private void openReloadDialog() {
-        ReloadDialog reloadDialog = new ReloadDialog(view.getContext(), this);
-        reloadDialog.start();
+        UpdateUserDialog updateUserDialog = new UpdateUserDialog(view.getContext(), this);
+        updateUserDialog.start();
     }
 
     private void openEditDialog() {
@@ -107,11 +126,6 @@ public class ProfileFragment extends Fragment {
                 textView.setVisibility(VISIBLE);
             }
         }
-    }
-
-    public void fillViews(User currentUser) {
-        user = currentUser;
-        fillViews();
     }
 
     public void updateImage(User currentUser) {

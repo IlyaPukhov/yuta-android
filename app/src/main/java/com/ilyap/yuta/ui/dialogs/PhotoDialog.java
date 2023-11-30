@@ -20,15 +20,15 @@ public class PhotoDialog extends CustomInteractiveDialog {
 
         dialog.findViewById(R.id.update_photo).setOnClickListener(v -> {
             openUpdatePhotoDialog();
-            this.dismiss();
+            dismiss();
         });
         dialog.findViewById(R.id.edit_miniature).setOnClickListener(v -> {
             openEditPhotoDialog();
-            this.dismiss();
+            dismiss();
         });
         dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> {
             openDeletePhotoDialog();
-            this.dismiss();
+            dismiss();
         });
     }
 
