@@ -78,7 +78,7 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
             imagePager.setAdapter(horizontalCarouselAdapter);
 
             setupDots(pages.size());
-            setupButtons(pages);
+            setupNavButtons(pages);
             setupDataButtons(carousel.get(0).getTeam().getLeader().getId());
 
             imagePager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -135,7 +135,12 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
             }
         }
 
-        private <T> void setupButtons(List<List<T>> pages) {
+        private <T> void setupNavButtons(List<List<T>> pages) {
+            if (pages.size() < 2) {
+                btnPrev.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.light_gray));
+                btnNext.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.light_gray));
+            }
+
             btnPrev.setOnClickListener(v -> {
                 int currentPos = imagePager.getCurrentItem();
                 if (currentPos > 0) {

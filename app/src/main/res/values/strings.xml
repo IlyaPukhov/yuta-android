@@ -69,4 +69,5 @@
     <string name="edit_profile_button">обновить пользователя</string>
     <string name="edit_team_button">обновить команду</string>
     <string name="delete_team_button">удалить команду</string>
+    <string name="empty_text">Ой, команды не найдены…</string>
 </resources>
