@@ -1,6 +1,7 @@
 package com.ilyap.yuta.ui.dialogs;
 
 import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
+import static com.ilyap.yuta.utils.UserUtils.loadImage;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -9,8 +10,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
@@ -35,11 +34,7 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
         user = getCurrentUser();
 
         imageView = dialog.findViewById(R.id.photo);
-        Glide.with(activity)
-                .load(user.getCroppedPhoto())
-                .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into(imageView);
+        loadImage(activity, user.getCroppedPhoto(), imageView);
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
         dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> {

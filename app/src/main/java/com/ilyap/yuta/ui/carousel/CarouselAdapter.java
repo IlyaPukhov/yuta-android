@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder> {
-    private static final int PAGE_SIZE = 3;
+    private static final int PAGE_SIZE = 2;
     private final List<List<TeamMember>> carouselList;
     private final Context context;
 

@@ -1,6 +1,7 @@
 package com.ilyap.yuta.ui.carousel;
 
 import static android.view.View.VISIBLE;
+import static com.ilyap.yuta.utils.UserUtils.loadImage;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.TeamMember;
 import com.ilyap.yuta.models.User;
@@ -69,9 +69,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
 
             String userName = user.getLastName() + System.lineSeparator() + user.getFirstName();
             name.setText(userName);
-            Glide.with(context)
-                    .load(user.getCroppedPhoto())
-                    .into(imageView);
+            loadImage(context, user.getCroppedPhoto(), imageView);
 
             card.setOnClickListener(v -> openProfile(user));
         }

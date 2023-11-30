@@ -386,6 +386,17 @@
                 app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:background="@drawable/photo_circle"
+            app:layout_constraintEnd_toEndOf="@+id/photo"
+            app:layout_constraintStart_toStartOf="@+id/photo"
+            app:layout_constraintTop_toTopOf="@+id/photo"
+            app:layout_constraintBottom_toBottomOf="@+id/photo">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <com.google.android.material.imageview.ShapeableImageView
             android:background="@drawable/photo_filler"
             android:layout_width="125dp"
@@ -394,7 +405,7 @@
             android:clickable="true"
             android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/rounded_image_view"
-            app:strokeColor="@color/blue"
+            app:strokeColor="@color/white"
             android:contentDescription="@string/avatar"
             app:strokeWidth="3dp"
             android:padding="2dp"

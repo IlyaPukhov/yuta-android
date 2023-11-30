@@ -7,7 +7,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.LoginActivity;
 
@@ -17,6 +21,15 @@ public final class UserUtils {
     public static final String EMPTY_DATA = "";
 
     private UserUtils() {
+    }
+
+    public static void loadImage(Context context, String path, ImageView imageView){
+        Glide.with(context)
+                .load(path)
+                .dontTransform()
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .priority(Priority.IMMEDIATE)
+                .into(imageView);
     }
 
     public static void setUserId(Activity activity, int id) {
