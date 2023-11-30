@@ -10,12 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.TeamMember;
 import com.ilyap.yuta.models.User;
+import com.ilyap.yuta.ui.fragments.ReadonlyProfileFragment;
 
 import java.util.List;
 
@@ -46,12 +48,14 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
     }
 
     public class MemberViewHolder extends RecyclerView.ViewHolder {
+        private final View card;
         private final ImageView imageView;
         private final TextView name;
         private final ImageView teamLeaderIcon;
 
         public MemberViewHolder(@NonNull View itemView) {
             super(itemView);
+            card = itemView.findViewById(R.id.card);
             imageView = itemView.findViewById(R.id.avatar);
             name = itemView.findViewById(R.id.name);
             teamLeaderIcon = itemView.findViewById(R.id.teamLeaderIcon);
@@ -68,6 +72,20 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
             Glide.with(context)
                     .load(user.getCroppedPhoto())
                     .into(imageView);
+
+            card.setOnClickListener(v -> openProfile(user));
+        }
+
+        private void openProfile(User user) {
+            ReadonlyProfileFragment profileFragment = new ReadonlyProfileFragment();
+            profileFragment.setUser(user);
+
+            AppCompatActivity activity = (AppCompatActivity) context;
+            activity.getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.teamsContainer, profileFragment)
+                    .addToBackStack("profileFragmentTransaction")
+                    .commit();
         }
     }
 }

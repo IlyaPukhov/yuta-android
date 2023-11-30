@@ -45,7 +45,6 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:id="@+id/avatar"
-            android:clickable="true"
             android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/rounded_image_view"
             app:strokeColor="@color/blue"
@@ -58,4 +57,14 @@
             android:layout_marginTop="25dp"
             android:layout_marginStart="25dp"
             android:layout_marginEnd="25dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/card"
+            android:clickable="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

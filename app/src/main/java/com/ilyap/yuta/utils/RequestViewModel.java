@@ -3,6 +3,7 @@ package com.ilyap.yuta.utils;
 import static com.ilyap.yuta.utils.RequestUtils.ROOT_API_URL;
 import static com.ilyap.yuta.utils.RequestUtils.getRequestJson;
 import static com.ilyap.yuta.utils.RequestUtils.postRequestJson;
+import static com.ilyap.yuta.utils.UserUtils.EMPTY_DATA;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -19,10 +20,9 @@ import java.util.HashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class RequestViewModel extends ViewModel {
+public final class RequestViewModel extends ViewModel {
     private final Executor executor = Executors.newSingleThreadExecutor();
     private final MutableLiveData<Object> resultLiveData = new MutableLiveData<>();
-    private static final String EMPTY_DATA = "";
 
     public LiveData<Object> getResultLiveData() {
         return resultLiveData;
@@ -52,22 +52,22 @@ public class RequestViewModel extends ViewModel {
             params.put("action", "edit_data");
 
             String biography = user.getBiography();
-            if (biography != null && !biography.equals(EMPTY_DATA)) {
+            if (!biography.equals(EMPTY_DATA)) {
                 params.put("biography", biography);
             }
 
             String phone = user.getPhoneNumber();
-            if (phone != null && !phone.equals(EMPTY_DATA)) {
+            if (!phone.equals(EMPTY_DATA)) {
                 params.put("phone_number", phone);
             }
 
             String email = user.geteMail();
-            if (email != null && !email.equals(EMPTY_DATA)) {
+            if (!email.equals(EMPTY_DATA)) {
                 params.put("e_mail", email);
             }
 
             String vk = user.getVk();
-            if (vk != null && !vk.equals(EMPTY_DATA)) {
+            if (!vk.equals(EMPTY_DATA)) {
                 params.put("vk", vk);
             }
 
