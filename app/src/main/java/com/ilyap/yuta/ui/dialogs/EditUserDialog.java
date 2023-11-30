@@ -1,6 +1,7 @@
 package com.ilyap.yuta.ui.dialogs;
 
 import static android.view.View.VISIBLE;
+import static com.ilyap.yuta.utils.UserUtils.EMPTY_DATA;
 import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
 
@@ -66,9 +67,7 @@ public class EditUserDialog extends CustomInteractiveDialog {
         TextView error = dialog.findViewById(R.id.error_text);
 
         String biography = getData(biographyView);
-        if (biography != null) {
-            user.setBiography(biography);
-        }
+        user.setBiography(biography != null ? biography : EMPTY_DATA);
 
         int phoneLength = phoneNumberView.getUnMasked().length();
         if (phoneLength == PHONE_NUMBER_LENGTH || phoneLength == 0) {
@@ -81,19 +80,20 @@ public class EditUserDialog extends CustomInteractiveDialog {
 
         String email = getData(emailView);
         if (email != null) {
-            if (email.isEmpty() || Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 user.seteMail(email);
             } else {
                 error.setText(activity.getString(R.string.error_email));
                 error.setVisibility(VISIBLE);
                 isValid = false;
             }
+        } else {
+            user.seteMail(EMPTY_DATA);
         }
 
         String vk = getData(vkView);
-        if (vk != null) {
-            user.setVk(vk);
-        }
+        user.setVk(vk != null ? vk : EMPTY_DATA);
+
         return isValid;
     }
 

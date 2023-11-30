@@ -15,7 +15,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-public class RequestUtils {
+public final class RequestUtils {
     public static final String ROOT_API_URL = "http://192.168.1.226:8000/api/";
 
     private RequestUtils() {

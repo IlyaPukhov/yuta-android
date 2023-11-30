@@ -33,10 +33,10 @@ import com.ilyap.yuta.ui.dialogs.UploadPhotoDialog;
 import com.ilyap.yuta.utils.RequestViewModel;
 
 public class ProfileFragment extends Fragment {
-    private View view;
-    private View progressLayout;
-    private static User user;
-    private RequestViewModel viewModel;
+    protected View view;
+    protected View progressLayout;
+    protected User user;
+    protected RequestViewModel viewModel;
 
     public ProfileFragment() {
     }
@@ -71,8 +71,8 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private void fillViews() {
-        //updateImage(); // TODO пути картинок медиа
+    protected void fillViews() {
+        updateImage();
 
         String fullName = user.getLastName() + " " + user.getFirstName() + (user.getPatronymic() == null ? "" : " " + user.getPatronymic());
         String faculty = getString(R.string.faculty) + ": " + user.getFaculty();
@@ -120,11 +120,14 @@ public class ProfileFragment extends Fragment {
 
     private void setDataInTextView(int id, String text) {
         TextView textView = view.findViewById(id);
+        textView.setText(null);
         if (text != null) {
             textView.setText(text);
             if (textView.getVisibility() != VISIBLE) {
                 textView.setVisibility(VISIBLE);
             }
+        } else {
+            textView.setVisibility(GONE);
         }
     }
 

@@ -14,6 +14,7 @@ import com.ilyap.yuta.ui.LoginActivity;
 public final class UserUtils {
     private static User currentUser;
     private static SharedPreferences sharedPreferences;
+    public static final String EMPTY_DATA = "";
 
     private UserUtils() {
     }
