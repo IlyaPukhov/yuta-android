@@ -1,24 +1,27 @@
 package com.ilyap.yuta.ui.dialogs;
 
 import static android.view.View.VISIBLE;
-
 import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
+import static com.ilyap.yuta.utils.UserUtils.getUserId;
 
 import android.content.Context;
 import android.util.Patterns;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.lifecycle.ViewModelProvider;
 
 import com.ilyap.yuta.R;
+import com.ilyap.yuta.models.EditResponse;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
-import com.ilyap.yuta.utils.RequestUtils;
+import com.ilyap.yuta.utils.RequestViewModel;
 import com.santalu.maskara.widget.MaskEditText;
 
 @SuppressWarnings("ConstantConditions")
 public class EditUserDialog extends CustomInteractiveDialog {
     private static final int PHONE_NUMBER_LENGTH = 10;
+    private RequestViewModel viewModel;
     private EditText biographyView;
     private MaskEditText phoneNumberView;
     private EditText emailView;
@@ -32,6 +35,8 @@ public class EditUserDialog extends CustomInteractiveDialog {
     @Override
     public void start() {
         super.start();
+        viewModel = new ViewModelProvider(profileFragment).get(RequestViewModel.class);
+
         biographyView = dialog.findViewById(R.id.biography);
         phoneNumberView = dialog.findViewById(R.id.phone_number);
         emailView = dialog.findViewById(R.id.email);
@@ -40,22 +45,24 @@ public class EditUserDialog extends CustomInteractiveDialog {
         User user = getCurrentUser();
         fillFields(user);
 
-        dialog.findViewById(R.id.close).setOnClickListener(v -> this.dismiss());
-        dialog.findViewById(R.id.submit).setOnClickListener(v -> {
-            if (editUser(user)) {
-                RequestUtils.editUserRequest(user);
-                if (profileFragment != null) {
-                    profileFragment.fillViews(user);
-                }
+        dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
+        dialog.findViewById(R.id.submit).setOnClickListener(v -> editUserData(user));
+    }
 
-                Toast.makeText(activity, activity.getString(R.string.updated), Toast.LENGTH_SHORT).show();
-                this.dismiss();
-            }
-        });
+    private void editUserData(User user) {
+        if (editUser(user)) {
+            viewModel.getResultLiveData().removeObservers(profileFragment);
+            viewModel.editUserData(getUserId(activity), user);
+            viewModel.getResultLiveData().observe(profileFragment, result -> {
+                if (!(result instanceof EditResponse)) return;
+                profileFragment.profileInit();
+                dismiss();
+            });
+        }
     }
 
     private boolean editUser(User user) {
-        boolean isCorrect = true;
+        boolean isValid = true;
         TextView error = dialog.findViewById(R.id.error_text);
 
         String biography = getData(biographyView);
@@ -64,24 +71,22 @@ public class EditUserDialog extends CustomInteractiveDialog {
         }
 
         int phoneLength = phoneNumberView.getUnMasked().length();
-        if (phoneLength != 0) {
-            if (phoneLength == PHONE_NUMBER_LENGTH) {
-                user.setPhoneNumber(phoneNumberView.getMasked());
-            } else {
-                error.setText(activity.getString(R.string.error_phone));
-                error.setVisibility(VISIBLE);
-                isCorrect = false;
-            }
+        if (phoneLength == PHONE_NUMBER_LENGTH || phoneLength == 0) {
+            user.setPhoneNumber(phoneNumberView.getText().toString());
+        } else {
+            error.setText(activity.getString(R.string.error_phone));
+            error.setVisibility(VISIBLE);
+            isValid = false;
         }
 
         String email = getData(emailView);
         if (email != null) {
-            if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            if (email.isEmpty() || Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 user.seteMail(email);
             } else {
                 error.setText(activity.getString(R.string.error_email));
                 error.setVisibility(VISIBLE);
-                isCorrect = false;
+                isValid = false;
             }
         }
 
@@ -89,7 +94,7 @@ public class EditUserDialog extends CustomInteractiveDialog {
         if (vk != null) {
             user.setVk(vk);
         }
-        return isCorrect;
+        return isValid;
     }
 
     private void fillFields(User user) {
@@ -101,6 +106,8 @@ public class EditUserDialog extends CustomInteractiveDialog {
         String phoneUser = user.getPhoneNumber();
         if (phoneUser != null) {
             phoneNumberView.setText(phoneUser);
+            phoneNumberView.getEditableText().replace(0, phoneNumberView.length(), phoneUser);
+//            phoneNumberView.setSelection(phoneNumberView.getText().length());
         }
 
         String vkUser = user.getVk();

@@ -12,7 +12,7 @@ import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.LoginActivity;
 
 public final class UserUtils {
-    private static User user;
+    private static User currentUser;
     private static SharedPreferences sharedPreferences;
 
     private UserUtils() {
@@ -24,14 +24,12 @@ public final class UserUtils {
         editor.putInt("user_id", id).apply();
     }
 
-    public static User getUser(int id) {
-        String json = RequestUtils.getUserRequest(id);
-        user = JsonUtils.parse(json, User.class);
-        return user;
+    public static void setCurrentUser(User user) {
+        currentUser = user;
     }
 
     public static User getCurrentUser() {
-        return user;
+        return currentUser;
     }
 
     public static void logOut(Activity activity) {

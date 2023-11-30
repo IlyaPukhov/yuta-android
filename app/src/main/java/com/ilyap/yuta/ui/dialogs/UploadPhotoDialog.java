@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -42,7 +41,7 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(imageView);
 
-        dialog.findViewById(R.id.close).setOnClickListener(v -> this.dismiss());
+        dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
         dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> {
             DeletePhotoDialog.deletePhoto(profileFragment);
             imageView.setImageBitmap(null);
@@ -50,7 +49,7 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
         dialog.findViewById(R.id.pick_miniature).setOnClickListener(v -> {
             CustomDialog editPhotoDialog = new CropPhotoDialog(activity, profileFragment);
             editPhotoDialog.start();
-            this.dismiss();
+            dismiss();
         });
         dialog.findViewById(R.id.pick_photo).setOnClickListener(v -> pickPhoto());
     }
@@ -78,8 +77,6 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
             if (profileFragment != null) {
                 profileFragment.updateImage(user);
             }
-
-            Toast.makeText(profileFragment.requireContext(), profileFragment.getString(R.string.saved), Toast.LENGTH_SHORT).show();
         }
     }
 }

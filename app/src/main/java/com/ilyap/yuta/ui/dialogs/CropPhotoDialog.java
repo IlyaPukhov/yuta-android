@@ -8,7 +8,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -53,8 +52,7 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
             RequestUtils.cropUserPhotoRequest(factWidth, factHeight, cropRect.width(), cropRect.height(), cropRect.left, cropRect.top);
             updateLocalImage();
 
-            Toast.makeText(profileFragment.requireContext(), profileFragment.getString(R.string.saved), Toast.LENGTH_SHORT).show();
-            this.dismiss();
+            dismiss();
         });
 
         loadImage(user.getPhoto(), cropImageView);

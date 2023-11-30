@@ -70,4 +70,5 @@
     <string name="edit_team_button">обновить команду</string>
     <string name="delete_team_button">удалить команду</string>
     <string name="empty_text">Ой, команды не найдены…</string>
+    <string name="error_update_message">Неправильный пароль :(</string>
 </resources>
