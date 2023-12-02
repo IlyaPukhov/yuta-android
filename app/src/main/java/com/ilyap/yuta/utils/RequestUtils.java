@@ -4,10 +4,8 @@ import com.ilyap.yuta.models.User;
 
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -32,15 +30,13 @@ public final class RequestUtils {
         urlConnection.setDoInput(true);
 
         JSONObject jsonParams = new JSONObject(params);
-        try {
-            OutputStreamWriter os = new OutputStreamWriter(urlConnection.getOutputStream(), StandardCharsets.UTF_8);
+        try (OutputStreamWriter os = new OutputStreamWriter(urlConnection.getOutputStream(), StandardCharsets.UTF_8)) {
             os.write(jsonParams.toString());
             os.flush();
-            os.close();
 
-            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-            return new BufferedReader(new InputStreamReader(in))
-                    .lines().collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
+            return new BufferedReader(new InputStreamReader(urlConnection.getInputStream()))
+                    .lines()
+                    .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
                     .toString();
         } finally {
             urlConnection.disconnect();
@@ -51,9 +47,9 @@ public final class RequestUtils {
         URL url = new URL(urlString);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
-            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-            return new BufferedReader(new InputStreamReader(in))
-                    .lines().collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
+            return new BufferedReader(new InputStreamReader(urlConnection.getInputStream()))
+                    .lines()
+                    .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
                     .toString();
         } finally {
             urlConnection.disconnect();

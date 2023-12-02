@@ -38,8 +38,9 @@
     <string name="phone_number">Телефон</string>
     <string name="email">E-mail</string>
     <string name="vk">Ссылка на ВК</string>
-    <string name="error_phone">Неверный телефон</string>
+    <string name="error_phone">Неверный номер телефона</string>
     <string name="error_email">Неверный e-mail</string>
+    <string name="error_vk">Неверная ссылка на ВК</string>
     <string name="update_photo_item">Обновить фотографию</string>
     <string name="delete_photo_item">Удалить фотографию</string>
     <string name="edit_miniature_item">Изменить миниатюру</string>
