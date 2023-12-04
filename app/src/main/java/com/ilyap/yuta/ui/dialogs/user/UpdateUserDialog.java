@@ -1,4 +1,4 @@
-package com.ilyap.yuta.ui.dialogs;
+package com.ilyap.yuta.ui.dialogs.user;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.UpdateResponse;
+import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestViewModel;
 

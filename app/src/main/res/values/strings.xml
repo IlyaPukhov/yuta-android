@@ -45,7 +45,8 @@
     <string name="delete_photo_item">Удалить фотографию</string>
     <string name="edit_miniature_item">Изменить миниатюру</string>
     <string name="delete_button">ДА, УДАЛИТЬ</string>
-    <string name="delete_desc">Вы действительно хотите удалить фотографию?</string>
+    <string name="delete_photo_desc">Вы действительно хотите удалить фотографию?</string>
+    <string name="delete_team_desc">Вы действительно хотите удалить команду</string>
     <string name="delete_text">Предупреждение</string>
     <string name="miniature_button">ВЫБРАТЬ МИНИАТЮРУ</string>
     <string name="upload_desc">Друзьям будет проще узнать вас, если вы загрузите свою настоящую фотографию.\nВы можете загрузить изображение в формате JPG, JPEG или PNG.</string>
@@ -83,4 +84,6 @@
     <string name="search_button">ПОИСК</string>
     <string name="error_team_message">Команда с данным названием уже существует!</string>
     <string name="create_team_button">СОЗДАТЬ</string>
+    <string name="edit_team_text">Изменение команды</string>
+    <string name="empty_search_message">Таких пользователей нет!</string>
 </resources>

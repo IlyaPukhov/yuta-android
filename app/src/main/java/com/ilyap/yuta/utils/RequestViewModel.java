@@ -12,6 +12,7 @@ import com.ilyap.yuta.models.AuthResponse;
 import com.ilyap.yuta.models.CheckTeamNameResponse;
 import com.ilyap.yuta.models.EditUserResponse;
 import com.ilyap.yuta.models.SearchResponse;
+import com.ilyap.yuta.models.Team;
 import com.ilyap.yuta.models.TeamResponse;
 import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.models.User;
@@ -32,6 +33,36 @@ public final class RequestViewModel extends ViewModel {
 
     public LiveData<Object> getResultLiveData() {
         return resultLiveData;
+    }
+
+    public void deleteTeam(int teamId) {
+        clearResultLiveData();
+        executor.execute(() -> {
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("action", "delete_team");
+            params.put("team_id", teamId);
+            try {
+                String json = postRequest(ROOT_API_URL + "teams", params);
+                resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    public void getTeam(int teamId) {
+        clearResultLiveData();
+        executor.execute(() -> {
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("action", "get_team_info");
+            params.put("team_id", teamId);
+            try {
+                String json = postRequest(ROOT_API_URL + "teams", params);
+                resultLiveData.postValue(JsonUtils.parse(json, Team.class));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public void searchUsers(String userName, int leaderId, List<User> members) {
@@ -71,6 +102,23 @@ public final class RequestViewModel extends ViewModel {
 
     public void checkTeamName(String name) {
         checkTeamName(name, -1);
+    }
+
+    public void editTeam(int teamId, String teamName, List<User> members) {
+        clearResultLiveData();
+        executor.execute(() -> {
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("action", "edit_team");
+            params.put("team_id", teamId);
+            params.put("team_name", teamName);
+            params.put("members_id", getMembersIdArray(members));
+            try {
+                String json = postRequest(ROOT_API_URL + "teams", params);
+                resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public void createTeam(int leaderId, String teamName, List<User> members) {

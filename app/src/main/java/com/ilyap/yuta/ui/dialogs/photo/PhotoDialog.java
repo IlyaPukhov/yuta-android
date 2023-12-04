@@ -1,8 +1,10 @@
-package com.ilyap.yuta.ui.dialogs;
+package com.ilyap.yuta.ui.dialogs.photo;
 
 import android.content.Context;
 
 import com.ilyap.yuta.R;
+import com.ilyap.yuta.ui.dialogs.CustomDialog;
+import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 
 @SuppressWarnings("ConstantConditions")

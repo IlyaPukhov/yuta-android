@@ -1,4 +1,4 @@
-package com.ilyap.yuta.ui.dialogs;
+package com.ilyap.yuta.ui.dialogs.photo;
 
 import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
 
@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
+import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestUtils;
 
@@ -16,7 +17,7 @@ public class DeletePhotoDialog extends CustomInteractiveDialog {
 
     public DeletePhotoDialog(Context context, Fragment fragment) {
         super(context, fragment);
-        setDialogLayout(R.layout.delete_photo_dialog);
+        setDialogLayout(R.layout.delete_dialog);
     }
 
     @Override
@@ -33,6 +34,7 @@ public class DeletePhotoDialog extends CustomInteractiveDialog {
     protected static void deletePhoto(Fragment fragment) {
         User user = getCurrentUser();
         RequestUtils.deleteUserPhotoRequest(user);
+        user.setCroppedPhoto(null);
         if (fragment != null) {
             ((ProfileFragment)fragment).updateImage(user);
         }

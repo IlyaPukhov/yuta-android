@@ -21,7 +21,7 @@ import com.ilyap.yuta.models.Team;
 import com.ilyap.yuta.models.TeamMember;
 import com.ilyap.yuta.models.TeamResponse;
 import com.ilyap.yuta.ui.adapters.CarouselAdapter;
-import com.ilyap.yuta.ui.dialogs.CreateTeamDialog;
+import com.ilyap.yuta.ui.dialogs.team.CreateTeamDialog;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.utils.RequestViewModel;
 
@@ -72,7 +72,7 @@ public class TeamsFragment extends Fragment {
                 })
                 .collect(Collectors.toList());
 
-        CarouselAdapter carouselAdapter = new CarouselAdapter(carouselList, requireContext());
+        CarouselAdapter carouselAdapter = new CarouselAdapter(carouselList, requireContext(), this);
         recyclerView.setAdapter(carouselAdapter);
     }
 

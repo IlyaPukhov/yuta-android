@@ -2,7 +2,7 @@ package com.ilyap.yuta.ui.fragments;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.ilyap.yuta.ui.dialogs.UploadPhotoDialog.PICK_IMAGE_REQUEST;
+import static com.ilyap.yuta.ui.dialogs.photo.UploadPhotoDialog.PICK_IMAGE_REQUEST;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
 import static com.ilyap.yuta.utils.UserUtils.loadImage;
 import static com.ilyap.yuta.utils.UserUtils.logOut;
@@ -24,10 +24,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
-import com.ilyap.yuta.ui.dialogs.EditUserDialog;
-import com.ilyap.yuta.ui.dialogs.PhotoDialog;
-import com.ilyap.yuta.ui.dialogs.UpdateUserDialog;
-import com.ilyap.yuta.ui.dialogs.UploadPhotoDialog;
+import com.ilyap.yuta.ui.dialogs.photo.PhotoDialog;
+import com.ilyap.yuta.ui.dialogs.photo.UploadPhotoDialog;
+import com.ilyap.yuta.ui.dialogs.user.EditUserDialog;
+import com.ilyap.yuta.ui.dialogs.user.UpdateUserDialog;
 import com.ilyap.yuta.utils.RequestViewModel;
 
 public class ProfileFragment extends Fragment {
@@ -57,9 +57,13 @@ public class ProfileFragment extends Fragment {
     }
 
     public void updateProfile() {
+        updateProfile(getUserId(requireActivity()));
+    }
+
+    protected void updateProfile(int userId) {
         progressLayout.setVisibility(VISIBLE);
         viewModel.getResultLiveData().removeObservers(getViewLifecycleOwner());
-        viewModel.getUser(getUserId(requireActivity()));
+        viewModel.getUser(userId);
         viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
             if (!(result instanceof User)) return;
             user = (User) result;
@@ -91,6 +95,19 @@ public class ProfileFragment extends Fragment {
         setDataInTextView(R.id.phone_number, user.getPhoneNumber());
         setDataInTextView(R.id.email, user.geteMail());
         setDataInTextView(R.id.vk, user.getVk());
+
+        fixContactsContainer(R.id.phone_number, R.id.email, R.id.vk);
+    }
+
+    private void fixContactsContainer(int... fields) {
+        boolean isEmpty = true;
+        for (int field : fields) {
+            if (view.findViewById(field).getVisibility() == VISIBLE) {
+                isEmpty = false;
+                break;
+            }
+        }
+        view.findViewById(R.id.contacts_container).setVisibility(isEmpty ? GONE : VISIBLE);
     }
 
     private void openReloadDialog() {

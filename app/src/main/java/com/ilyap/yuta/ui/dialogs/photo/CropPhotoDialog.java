@@ -1,4 +1,4 @@
-package com.ilyap.yuta.ui.dialogs;
+package com.ilyap.yuta.ui.dialogs.photo;
 
 import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
 
@@ -20,6 +20,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.canhub.cropper.CropImageView;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
+import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestUtils;
 
@@ -68,10 +69,10 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
         }
     }
 
-    private void loadImage(String imageUrl, CropImageView cropImageView) {
+    private void loadImage(String imagePath, CropImageView cropImageView) {
         Glide.with(cropImageView)
                 .asBitmap()
-                .load(imageUrl)
+                .load(imagePath)
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .apply(RequestOptions.centerInsideTransform())

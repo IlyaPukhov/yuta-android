@@ -1,4 +1,4 @@
-package com.ilyap.yuta.ui.dialogs;
+package com.ilyap.yuta.ui.dialogs.team;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -8,11 +8,13 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.ilyap.yuta.R;
@@ -21,6 +23,7 @@ import com.ilyap.yuta.models.SearchResponse;
 import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.adapters.ListAdapter;
+import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.TeamsFragment;
 import com.ilyap.yuta.utils.RequestViewModel;
 
@@ -29,21 +32,23 @@ import java.util.List;
 
 @SuppressWarnings("ConstantConditions")
 public class CreateTeamDialog extends CustomInteractiveDialog {
-    private RequestViewModel viewModel;
-    private EditText teamName;
+    protected RequestViewModel viewModel;
+    protected EditText teamName;
     private EditText searchField;
-    private Button submitButton;
+    protected Button submitButton;
     private Button searchButton;
     private ListView searchUsersView;
     private ListView addedMembersView;
-    private ListAdapter searchAdapter;
+    protected ListAdapter searchAdapter;
+    protected ListAdapter membersAdapter;
     private TextView error;
+    private TextView emptySearch;
     private boolean isTeamNameUnique;
     private List<User> searchUsers;
-    private List<User> addedMembers;
+    protected List<User> addedMembers;
 
-    public CreateTeamDialog(Context context, TeamsFragment teamsFragment) {
-        super(context, teamsFragment);
+    public CreateTeamDialog(Context context, Fragment fragment) {
+        super(context, fragment);
         setDialogLayout(R.layout.create_team_dialog);
     }
 
@@ -59,6 +64,7 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
         teamName = dialog.findViewById(R.id.team_name);
         searchField = dialog.findViewById(R.id.find_name);
         error = dialog.findViewById(R.id.error_text);
+        emptySearch = dialog.findViewById(R.id.empty_search_text);
         searchUsersView = dialog.findViewById(R.id.searchUsers);
         addedMembersView = dialog.findViewById(R.id.addedMembers);
 
@@ -81,27 +87,28 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
         });
     }
 
-    private void searchUsers() {
+    protected void searchUsers() {
         viewModel.getResultLiveData().removeObservers(fragment);
         viewModel.searchUsers(getData(searchField), getUserId(activity), addedMembers);
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof SearchResponse)) return;
-            updateSearchList(((SearchResponse) result).getUsers());
+            updateList(searchAdapter, ((SearchResponse) result).getUsers());
         });
     }
 
-    private void updateSearchList(List<User> users) {
-        searchAdapter.clear();
-        searchAdapter.addAll(users);
+    protected void updateList(ArrayAdapter<User> adapter, List<User> users) {
+        messageVisibility(emptySearch, !users.isEmpty());
+        adapter.clear();
+        adapter.addAll(users);
     }
 
-    private RequestViewModel isNameUnique(String name) {
+    protected RequestViewModel isNameUnique(String name) {
         viewModel.getResultLiveData().removeObservers(fragment);
         viewModel.checkTeamName(name);
         return viewModel;
     }
 
-    private String getData(EditText editText) {
+    protected String getData(EditText editText) {
         if (editText != null) {
             String text = editText.getText().toString().trim();
 
@@ -113,7 +120,7 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
     }
 
     private void listViewsInit() {
-        ListAdapter membersAdapter = new ListAdapter(getContext(), R.layout.item_user_list, addedMembers, null);
+        membersAdapter = new ListAdapter(getContext(), R.layout.item_user_list, addedMembers, null);
         addedMembersView.setAdapter(membersAdapter);
 
         searchAdapter = new ListAdapter(getContext(), R.layout.item_user_list, searchUsers, membersAdapter);

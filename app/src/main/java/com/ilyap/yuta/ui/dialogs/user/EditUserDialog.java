@@ -1,4 +1,4 @@
-package com.ilyap.yuta.ui.dialogs;
+package com.ilyap.yuta.ui.dialogs.user;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.EditUserResponse;
 import com.ilyap.yuta.models.User;
+import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestViewModel;
 import com.santalu.maskara.widget.MaskEditText;
@@ -61,15 +62,15 @@ public class EditUserDialog extends CustomInteractiveDialog {
         setupEditView(phoneNumberView);
         setupEditView(emailView);
         setupEditView(vkView);
-        phoneNumberView.setOnFocusChangeListener((v, hasFocus) -> errorVisibility(hasFocus, isPhoneValid, R.string.error_phone));
-        emailView.setOnFocusChangeListener((v, hasFocus) -> errorVisibility(hasFocus, isEmailValid, R.string.error_email));
-        vkView.setOnFocusChangeListener((v, hasFocus) -> errorVisibility(hasFocus, isVkValid, R.string.error_vk));
+        phoneNumberView.setOnFocusChangeListener((v, hasFocus) -> errorVisibility(isPhoneValid, R.string.error_phone));
+        emailView.setOnFocusChangeListener((v, hasFocus) -> errorVisibility(isEmailValid, R.string.error_email));
+        vkView.setOnFocusChangeListener((v, hasFocus) -> errorVisibility(isVkValid, R.string.error_vk));
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
         submitButton.setOnClickListener(v -> editUserData(user));
     }
 
-    private void errorVisibility(boolean hasFocus, boolean isValid, int resId) {
+    private void errorVisibility(boolean isValid, int resId) {
         if (!isValid) {
             error.setText(activity.getString(resId));
             error.setVisibility(VISIBLE);
@@ -92,12 +93,8 @@ public class EditUserDialog extends CustomInteractiveDialog {
 
     private void setEditUser(User user) {
         user.setBiography(getData(biographyView));
-
-        int phoneLength = phoneNumberView.getUnMasked().length();
-        user.setPhoneNumber(phoneLength == 0 ? null : phoneNumberView.getText().toString());
-
+        user.setPhoneNumber(getData(phoneNumberView));
         user.seteMail(getData(emailView));
-
         user.setVk(getData(vkView));
     }
 

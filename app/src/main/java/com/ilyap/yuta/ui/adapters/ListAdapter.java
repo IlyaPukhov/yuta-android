@@ -52,7 +52,7 @@ public class ListAdapter extends ArrayAdapter<User> {
 
         User user = getItem(position);
         if (user != null) {
-            // TODO
+            // TODO cropped photo
             loadImage(getContext(), user.getPhoto(), holder.avatar);
 
             String userName = user.getLastName() + " " + user.getFirstName() + (user.getPatronymic() == null ? "" : " " + user.getPatronymic());

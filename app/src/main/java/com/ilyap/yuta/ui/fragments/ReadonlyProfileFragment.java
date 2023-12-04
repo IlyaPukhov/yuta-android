@@ -14,10 +14,10 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.utils.RequestViewModel;
 
 public class ReadonlyProfileFragment extends ProfileFragment {
+    private int userId;
 
     public ReadonlyProfileFragment() {
     }
@@ -29,7 +29,7 @@ public class ReadonlyProfileFragment extends ProfileFragment {
         progressLayout = view.findViewById(R.id.progressLayout);
 
         viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
-        updateProfile();
+        updateProfile(userId);
 
         view.findViewById(R.id.log_out).setVisibility(GONE);
         view.findViewById(R.id.reload).setVisibility(GONE);
@@ -38,8 +38,8 @@ public class ReadonlyProfileFragment extends ProfileFragment {
         return view;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     @Override

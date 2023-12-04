@@ -205,4 +205,11 @@
         <item name="android:letterSpacing">0.12</item>
         <item name="android:textColor">#E6DF2121</item>
     </style>
+
+    <style name="empty_search_message">
+        <item name="android:fontFamily">@font/montserrat_semibold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="android:textColor">@color/dark_gray</item>
+    </style>
 </resources>

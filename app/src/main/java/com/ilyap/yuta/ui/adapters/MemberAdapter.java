@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ilyap.yuta.R;
@@ -77,14 +76,9 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
 
         private void openProfile(User user) {
             ReadonlyProfileFragment profileFragment = new ReadonlyProfileFragment();
-            profileFragment.setUser(user);
+            profileFragment.setUserId(user.getId());
 
-            AppCompatActivity activity = (AppCompatActivity) context;
-            activity.getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.teamsContainer, profileFragment)
-                    .addToBackStack("profileFragmentTransaction")
-                    .commit();
+            // TODO
         }
     }
 }
