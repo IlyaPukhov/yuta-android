@@ -1,7 +1,7 @@
 package com.ilyap.yuta.ui.fragments;
 
 import static android.view.View.GONE;
-import static androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
+import static android.view.View.VISIBLE;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,6 +26,13 @@ public class ReadonlyProfileFragment extends ProfileFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+
+        if (getArguments() != null) {
+            userId = getArguments().getInt("userId", -1);
+        }
+
+
         progressLayout = view.findViewById(R.id.progressLayout);
 
         viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
@@ -35,23 +42,25 @@ public class ReadonlyProfileFragment extends ProfileFragment {
         view.findViewById(R.id.reload).setVisibility(GONE);
         view.findViewById(R.id.edit).setVisibility(GONE);
 
+        View backButton = view.findViewById(R.id.back_button);
+        backButton.setVisibility(VISIBLE);
+        backButton.setOnClickListener(v -> handleBackPressed());
         return view;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                getParentFragmentManager().popBackStack("profileFragmentTransaction", POP_BACK_STACK_INCLUSIVE);
+                handleBackPressed();
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
+    }
+
+    private void handleBackPressed() {
+        getParentFragmentManager().popBackStack();
     }
 }

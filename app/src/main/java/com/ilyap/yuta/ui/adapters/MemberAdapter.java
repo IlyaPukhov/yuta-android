@@ -3,7 +3,9 @@ package com.ilyap.yuta.ui.adapters;
 import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.utils.UserUtils.loadImage;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.TeamMember;
 import com.ilyap.yuta.models.User;
-import com.ilyap.yuta.ui.fragments.ReadonlyProfileFragment;
 
 import java.util.List;
 
@@ -75,10 +77,11 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
         }
 
         private void openProfile(User user) {
-            ReadonlyProfileFragment profileFragment = new ReadonlyProfileFragment();
-            profileFragment.setUserId(user.getId());
+            Bundle bundle = new Bundle();
+            bundle.putInt("userId", user.getId());
 
-            // TODO
+            Navigation.findNavController((Activity) context, R.id.nav_host_fragment)
+                    .navigate(R.id.readonlyProfileFragment, bundle);
         }
     }
 }

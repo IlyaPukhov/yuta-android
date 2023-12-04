@@ -86,4 +86,5 @@
     <string name="create_team_button">СОЗДАТЬ</string>
     <string name="edit_team_text">Изменение команды</string>
     <string name="empty_search_message">Таких пользователей нет!</string>
+    <string name="logout_button">выйти из профиля</string>
 </resources>
