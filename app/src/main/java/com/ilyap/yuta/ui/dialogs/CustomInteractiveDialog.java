@@ -7,18 +7,17 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 
-
-import com.ilyap.yuta.ui.fragments.ProfileFragment;
+import androidx.fragment.app.Fragment;
 
 import java.util.Objects;
 
 public abstract class CustomInteractiveDialog extends CustomDialog {
     @SuppressLint("StaticFieldLeak")
-    protected static ProfileFragment profileFragment;
+    protected static Fragment fragment;
 
-    public CustomInteractiveDialog(Context context, ProfileFragment profileFragment) {
+    public CustomInteractiveDialog(Context context, Fragment fragment) {
         super((Activity) context);
-        CustomInteractiveDialog.profileFragment = profileFragment;
+        CustomInteractiveDialog.fragment = fragment;
     }
 
     @Override

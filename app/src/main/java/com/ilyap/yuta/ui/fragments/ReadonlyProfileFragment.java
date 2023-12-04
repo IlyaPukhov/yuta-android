@@ -29,7 +29,7 @@ public class ReadonlyProfileFragment extends ProfileFragment {
         progressLayout = view.findViewById(R.id.progressLayout);
 
         viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
-        profileInit();
+        updateProfile();
 
         view.findViewById(R.id.log_out).setVisibility(GONE);
         view.findViewById(R.id.reload).setVisibility(GONE);

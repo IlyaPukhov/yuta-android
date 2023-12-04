@@ -28,7 +28,7 @@ public class UpdateUserDialog extends CustomInteractiveDialog {
     @Override
     public void start() {
         super.start();
-        viewModel = new ViewModelProvider(profileFragment).get(RequestViewModel.class);
+        viewModel = new ViewModelProvider(fragment).get(RequestViewModel.class);
 
         errorText = dialog.findViewById(R.id.error_text);
         EditText password = dialog.findViewById(R.id.submit_password);
@@ -39,12 +39,12 @@ public class UpdateUserDialog extends CustomInteractiveDialog {
 
     private void updateUserData(String password) {
         errorText.setVisibility(GONE);
-        viewModel.getResultLiveData().removeObservers(profileFragment);
+        viewModel.getResultLiveData().removeObservers(fragment);
         viewModel.updateUserData(getUserId(activity), password);
-        viewModel.getResultLiveData().observe(profileFragment, result -> {
+        viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
             if (((UpdateResponse) result).isSuccess()) {
-                profileFragment.profileInit();
+                ((ProfileFragment) fragment).updateProfile();
                 dismiss();
             } else {
                 errorText.setVisibility(VISIBLE);

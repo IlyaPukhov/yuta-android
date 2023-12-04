@@ -1,4 +1,4 @@
-package com.ilyap.yuta.ui.carousel;
+package com.ilyap.yuta.ui.adapters;
 
 import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.utils.UserUtils.loadImage;
@@ -63,13 +63,14 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
 
         public void bind(TeamMember member) {
             User user = member.getMember();
+            loadImage(context, user.getCroppedPhoto(), imageView);
+
             if (member.getTeam().getLeader().equals(user)) {
                 teamLeaderIcon.setVisibility(VISIBLE);
             }
 
-            String userName = user.getLastName() + System.lineSeparator() + user.getFirstName();
+            String userName = user.getLastName() + " " + user.getFirstName();
             name.setText(userName);
-            loadImage(context, user.getCroppedPhoto(), imageView);
 
             card.setOnClickListener(v -> openProfile(user));
         }

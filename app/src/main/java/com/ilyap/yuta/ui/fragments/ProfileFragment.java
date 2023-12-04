@@ -46,17 +46,17 @@ public class ProfileFragment extends Fragment {
         progressLayout = view.findViewById(R.id.progressLayout);
 
         viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
-        profileInit();
+        updateProfile();
 
         view.findViewById(R.id.log_out).setOnClickListener(v -> logOut(requireActivity()));
         view.findViewById(R.id.reload).setOnClickListener(v -> openReloadDialog());
-        view.findViewById(R.id.edit).setOnClickListener(v -> openEditDialog());
+        view.findViewById(R.id.edit).setOnClickListener(v -> openEditUserDialog());
         view.findViewById(R.id.photo).setOnClickListener(v -> openPhotoDialog());
 
         return view;
     }
 
-    public void profileInit() {
+    public void updateProfile() {
         progressLayout.setVisibility(VISIBLE);
         viewModel.getResultLiveData().removeObservers(getViewLifecycleOwner());
         viewModel.getUser(getUserId(requireActivity()));
@@ -69,7 +69,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    protected void fillViews() {
+    private void fillViews() {
         loadImage(requireContext(), user.getCroppedPhoto(), view.findViewById(R.id.photo));
 
         String fullName = user.getLastName() + " " + user.getFirstName() + (user.getPatronymic() == null ? "" : " " + user.getPatronymic());
@@ -94,11 +94,11 @@ public class ProfileFragment extends Fragment {
     }
 
     private void openReloadDialog() {
-        UpdateUserDialog updateUserDialog = new UpdateUserDialog(view.getContext(), this);
+        CustomDialog updateUserDialog = new UpdateUserDialog(view.getContext(), this);
         updateUserDialog.start();
     }
 
-    private void openEditDialog() {
+    private void openEditUserDialog() {
         CustomDialog editDialog = new EditUserDialog(view.getContext(), this);
         editDialog.start();
     }

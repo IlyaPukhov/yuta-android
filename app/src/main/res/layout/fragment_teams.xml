@@ -44,8 +44,8 @@
 
                 <Button
                         android:id="@+id/create_team"
-                        android:background="@drawable/team_button"
-                        style="@style/button_style"
+                        android:background="@drawable/blue_button_background"
+                        style="@style/blue_button_style"
                         android:textAppearance="@style/active_teams"
                         android:text="@string/create_team"
                         android:textAlignment="center"

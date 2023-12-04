@@ -16,7 +16,7 @@ import android.widget.TextView;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.EditResponse;
+import com.ilyap.yuta.models.EditUserResponse;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestViewModel;
@@ -34,6 +34,7 @@ public class EditUserDialog extends CustomInteractiveDialog {
     private MaskEditText phoneNumberView;
     private EditText emailView;
     private EditText vkView;
+    private Button submitButton;
     private TextView error;
 
     public EditUserDialog(Context context, ProfileFragment profileFragment) {
@@ -44,9 +45,9 @@ public class EditUserDialog extends CustomInteractiveDialog {
     @Override
     public void start() {
         super.start();
-        viewModel = new ViewModelProvider(profileFragment).get(RequestViewModel.class);
+        viewModel = new ViewModelProvider(fragment).get(RequestViewModel.class);
 
-        Button submitButton = dialog.findViewById(R.id.submit);
+        submitButton = dialog.findViewById(R.id.submit);
         biographyView = dialog.findViewById(R.id.biography);
         phoneNumberView = dialog.findViewById(R.id.phone_number);
         emailView = dialog.findViewById(R.id.email);
@@ -55,57 +56,21 @@ public class EditUserDialog extends CustomInteractiveDialog {
 
         User user = getCurrentUser();
         fillFields(user);
+
         isPhoneValid = isEmailValid = isVkValid = true;
-
-        dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
-        submitButton.setOnClickListener(v -> editUserData(user));
-
+        setupEditView(phoneNumberView);
+        setupEditView(emailView);
+        setupEditView(vkView);
         phoneNumberView.setOnFocusChangeListener((v, hasFocus) -> errorVisibility(hasFocus, isPhoneValid, R.string.error_phone));
         emailView.setOnFocusChangeListener((v, hasFocus) -> errorVisibility(hasFocus, isEmailValid, R.string.error_email));
         vkView.setOnFocusChangeListener((v, hasFocus) -> errorVisibility(hasFocus, isVkValid, R.string.error_vk));
-        phoneNumberView.addTextChangedListener(new TextWatcher() {
-            public void afterTextChanged(Editable s) {
-            }
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int phoneLength = phoneNumberView.getUnMasked().length();
-                isPhoneValid = phoneLength == PHONE_NUMBER_LENGTH || phoneLength == 0;
-                submitButton.setEnabled(isPhoneValid);
-            }
-        });
-        emailView.addTextChangedListener(new TextWatcher() {
-            public void afterTextChanged(Editable s) {
-            }
-
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String email = getData(emailView);
-                isEmailValid = email == null || Patterns.EMAIL_ADDRESS.matcher(email).matches();
-                submitButton.setEnabled(isEmailValid);
-            }
-        });
-        vkView.addTextChangedListener(new TextWatcher() {
-            public void afterTextChanged(Editable s) {
-            }
-
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String vk = getData(vkView);
-                isVkValid = vk == null || Pattern.compile(VK_REGEX).matcher(vk).matches();
-                submitButton.setEnabled(isVkValid);
-            }
-        });
+        dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
+        submitButton.setOnClickListener(v -> editUserData(user));
     }
 
     private void errorVisibility(boolean hasFocus, boolean isValid, int resId) {
-        if (!hasFocus || !isValid) {
+        if (!isValid) {
             error.setText(activity.getString(resId));
             error.setVisibility(VISIBLE);
         } else {
@@ -116,11 +81,11 @@ public class EditUserDialog extends CustomInteractiveDialog {
     private void editUserData(User user) {
         setEditUser(user);
 
-        viewModel.getResultLiveData().removeObservers(profileFragment);
+        viewModel.getResultLiveData().removeObservers(fragment);
         viewModel.editUserData(getUserId(activity), user);
-        viewModel.getResultLiveData().observe(profileFragment, result -> {
-            if (!(result instanceof EditResponse)) return;
-            profileFragment.profileInit();
+        viewModel.getResultLiveData().observe(fragment, result -> {
+            if (!(result instanceof EditUserResponse)) return;
+            ((ProfileFragment) fragment).updateProfile();
             dismiss();
         });
     }
@@ -167,5 +132,36 @@ public class EditUserDialog extends CustomInteractiveDialog {
             }
         }
         return null;
+    }
+
+    private void setupEditView(EditText editText) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (editText == phoneNumberView) {
+                    int phoneLength = phoneNumberView.getUnMasked().length();
+                    isPhoneValid = phoneLength == PHONE_NUMBER_LENGTH || phoneLength == 0;
+                } else if (editText == emailView) {
+                    String email = getData(emailView);
+                    isEmailValid = email == null || Patterns.EMAIL_ADDRESS.matcher(email).matches();
+                } else if (editText == vkView) {
+                    String vk = getData(vkView);
+                    isVkValid = vk == null || Pattern.compile(VK_REGEX).matcher(vk).matches();
+                }
+                buttonVisibility();
+            }
+        });
+    }
+
+    private void buttonVisibility() {
+        submitButton.setEnabled(isPhoneValid && isEmailValid && isVkValid);
     }
 }

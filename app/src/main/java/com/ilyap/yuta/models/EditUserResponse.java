@@ -1,6 +1,6 @@
 package com.ilyap.yuta.models;
 
-public class EditResponse {
+public class EditUserResponse {
     private boolean modified;
 
     public boolean isModified() {

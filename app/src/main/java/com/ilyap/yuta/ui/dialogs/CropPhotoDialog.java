@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Environment;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -32,8 +33,8 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
     CropImageView cropImageView;
     private User user;
 
-    public CropPhotoDialog(Context context, ProfileFragment profileFragment) {
-        super(context, profileFragment);
+    public CropPhotoDialog(Context context, Fragment fragment) {
+        super(context, fragment);
         setDialogLayout(R.layout.crop_photo_dialog);
     }
 
@@ -62,8 +63,8 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
         // TODO убрать
         user.setCroppedPhoto(Objects.requireNonNull(saveCroppedPhoto().getPath()));
 
-        if (profileFragment != null) {
-            profileFragment.updateImage(user);
+        if (fragment != null) {
+            ((ProfileFragment) fragment).updateImage(user);
         }
     }
 

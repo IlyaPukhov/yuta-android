@@ -1,4 +1,4 @@
-package com.ilyap.yuta.ui.carousel;
+package com.ilyap.yuta.ui.adapters;
 
 import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;

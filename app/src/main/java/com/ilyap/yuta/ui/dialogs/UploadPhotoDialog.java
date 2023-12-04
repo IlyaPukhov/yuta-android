@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.ImageView;
 
+import androidx.fragment.app.Fragment;
+
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
@@ -23,8 +25,8 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
     private static Uri selectedImageUri;
     private static User user;
 
-    public UploadPhotoDialog(Context context, ProfileFragment profileFragment) {
-        super(context, profileFragment);
+    public UploadPhotoDialog(Context context, Fragment fragment) {
+        super(context, fragment);
         setDialogLayout(R.layout.upload_photo_dialog);
     }
 
@@ -38,11 +40,11 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
         dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> {
-            DeletePhotoDialog.deletePhoto(profileFragment);
+            DeletePhotoDialog.deletePhoto(fragment);
             imageView.setImageBitmap(null);
         });
         dialog.findViewById(R.id.pick_miniature).setOnClickListener(v -> {
-            CustomDialog editPhotoDialog = new CropPhotoDialog(activity, profileFragment);
+            CustomDialog editPhotoDialog = new CropPhotoDialog(activity, fragment);
             editPhotoDialog.start();
             dismiss();
         });
@@ -53,7 +55,7 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        profileFragment.imagePickerLauncher.launch(Intent.createChooser(intent, activity.getString(R.string.pick_image)));
+        ((ProfileFragment) fragment).imagePickerLauncher.launch(Intent.createChooser(intent, activity.getString(R.string.pick_image)));
     }
 
     public static void handleActivityResult(int requestCode, int resultCode, Intent data) {
@@ -69,8 +71,8 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
             user.setCroppedPhoto(String.valueOf(selectedImageUri));
             RequestUtils.uploadUserPhotoRequest(user);
             imageView.setImageURI(selectedImageUri);
-            if (profileFragment != null) {
-                profileFragment.updateImage(user);
+            if (fragment != null) {
+                ((ProfileFragment) fragment).updateImage(user);
             }
         }
     }
