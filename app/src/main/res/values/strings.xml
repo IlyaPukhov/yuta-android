@@ -45,7 +45,8 @@
     <string name="delete_photo_item">Удалить фотографию</string>
     <string name="edit_miniature_item">Изменить миниатюру</string>
     <string name="delete_button">ДА, УДАЛИТЬ</string>
-    <string name="delete_desc">Вы действительно хотите удалить фотографию?</string>
+    <string name="delete_photo_desc">Вы действительно хотите удалить фотографию?</string>
+    <string name="delete_team_desc">Вы действительно хотите удалить команду</string>
     <string name="delete_text">Предупреждение</string>
     <string name="miniature_button">ВЫБРАТЬ МИНИАТЮРУ</string>
     <string name="upload_desc">Друзьям будет проще узнать вас, если вы загрузите свою настоящую фотографию.\nВы можете загрузить изображение в формате JPG, JPEG или PNG.</string>
@@ -72,4 +73,18 @@
     <string name="delete_team_button">удалить команду</string>
     <string name="empty_text">Ой, команды не найдены…</string>
     <string name="error_update_message">Неправильный пароль :(</string>
+    <string name="add_team_member">добавить участника</string>
+    <string name="remove_team_member">удалить участника</string>
+    <string name="create_team_text">Создание команды</string>
+    <string name="create_team_desc">Придумайте краткое название команды:</string>
+    <string name="team_name">Название команды</string>
+    <string name="add_member_desc">Добавьте участиков команды:</string>
+    <string name="added_members_desc">Добавленные участники:</string>
+    <string name="find_name">ФИО</string>
+    <string name="search_button">ПОИСК</string>
+    <string name="error_team_message">Команда с данным названием уже существует!</string>
+    <string name="create_team_button">СОЗДАТЬ</string>
+    <string name="edit_team_text">Изменение команды</string>
+    <string name="empty_search_message">Таких пользователей нет!</string>
+    <string name="logout_button">выйти из профиля</string>
 </resources>

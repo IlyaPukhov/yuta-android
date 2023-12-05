@@ -1,9 +1,11 @@
-package com.ilyap.yuta.ui.carousel;
+package com.ilyap.yuta.ui.adapters;
 
 import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.utils.UserUtils.loadImage;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.TeamMember;
 import com.ilyap.yuta.models.User;
-import com.ilyap.yuta.ui.fragments.ReadonlyProfileFragment;
 
 import java.util.List;
 
@@ -63,27 +64,24 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
 
         public void bind(TeamMember member) {
             User user = member.getMember();
+            loadImage(context, user.getCroppedPhoto(), imageView);
+
             if (member.getTeam().getLeader().equals(user)) {
                 teamLeaderIcon.setVisibility(VISIBLE);
             }
 
-            String userName = user.getLastName() + System.lineSeparator() + user.getFirstName();
+            String userName = user.getLastName() + " " + user.getFirstName();
             name.setText(userName);
-            loadImage(context, user.getCroppedPhoto(), imageView);
 
             card.setOnClickListener(v -> openProfile(user));
         }
 
         private void openProfile(User user) {
-            ReadonlyProfileFragment profileFragment = new ReadonlyProfileFragment();
-            profileFragment.setUser(user);
+            Bundle bundle = new Bundle();
+            bundle.putInt("userId", user.getId());
 
-            AppCompatActivity activity = (AppCompatActivity) context;
-            activity.getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.teamsContainer, profileFragment)
-                    .addToBackStack("profileFragmentTransaction")
-                    .commit();
+            Navigation.findNavController((Activity) context, R.id.nav_host_fragment)
+                    .navigate(R.id.readonlyProfileFragment, bundle);
         }
     }
 }

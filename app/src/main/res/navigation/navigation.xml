@@ -24,4 +24,10 @@
             android:name="com.ilyap.yuta.ui.fragments.TeamsFragment"
             android:label="fragment_teams"
             tools:layout="@layout/fragment_teams" />
+
+    <fragment
+            android:id="@+id/readonlyProfileFragment"
+            android:name="com.ilyap.yuta.ui.fragments.ReadonlyProfileFragment"
+            android:label="fragment_profile"
+            tools:layout="@layout/fragment_profile" />
 </navigation>

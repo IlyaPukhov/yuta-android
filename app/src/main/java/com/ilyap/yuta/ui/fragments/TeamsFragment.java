@@ -20,7 +20,9 @@ import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.Team;
 import com.ilyap.yuta.models.TeamMember;
 import com.ilyap.yuta.models.TeamResponse;
-import com.ilyap.yuta.ui.carousel.CarouselAdapter;
+import com.ilyap.yuta.ui.adapters.CarouselAdapter;
+import com.ilyap.yuta.ui.dialogs.CustomDialog;
+import com.ilyap.yuta.ui.dialogs.team.CreateTeamDialog;
 import com.ilyap.yuta.utils.RequestViewModel;
 
 import java.util.ArrayList;
@@ -49,8 +51,9 @@ public class TeamsFragment extends Fragment {
 
         viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
         recyclerViewInitialize();
-
         teamsSwitchInitialize();
+
+        view.findViewById(R.id.create_team).setOnClickListener(v -> openCreateTeamDialog());
         return view;
     }
 
@@ -69,7 +72,7 @@ public class TeamsFragment extends Fragment {
                 })
                 .collect(Collectors.toList());
 
-        CarouselAdapter carouselAdapter = new CarouselAdapter(carouselList, requireContext());
+        CarouselAdapter carouselAdapter = new CarouselAdapter(carouselList, requireContext(), this);
         recyclerView.setAdapter(carouselAdapter);
     }
 
@@ -84,7 +87,7 @@ public class TeamsFragment extends Fragment {
         memberTeamsButton = view.findViewById(R.id.member_button);
         managedTeamsButton.setOnClickListener(this::onToggleButtonClick);
         memberTeamsButton.setOnClickListener(this::onToggleButtonClick);
-        managedTeamsButton.performClick();
+        updateCarousels();
     }
 
     private void loadTeams(View button) {
@@ -118,5 +121,14 @@ public class TeamsFragment extends Fragment {
         button.setChecked(true);
         otherButton.setTextAppearance(R.style.default_teams);
         otherButton.setChecked(false);
+    }
+
+    public void updateCarousels() {
+        managedTeamsButton.performClick();
+    }
+
+    private void openCreateTeamDialog() {
+        CustomDialog createTeamDialog = new CreateTeamDialog(view.getContext(), this);
+        createTeamDialog.start();
     }
 }

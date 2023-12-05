@@ -1,9 +1,12 @@
-package com.ilyap.yuta.ui.carousel;
+package com.ilyap.yuta.ui.adapters;
 
 import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
 
 import android.app.Activity;
+
+import androidx.fragment.app.Fragment;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +22,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.ilyap.yuta.R;
+import com.ilyap.yuta.models.Team;
 import com.ilyap.yuta.models.TeamMember;
+import com.ilyap.yuta.ui.dialogs.CustomDialog;
+import com.ilyap.yuta.ui.dialogs.team.DeleteTeamDialog;
+import com.ilyap.yuta.ui.dialogs.team.EditTeamDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +35,12 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
     private static final int PAGE_SIZE = 2;
     private final List<List<TeamMember>> carouselList;
     private final Context context;
+    private final Fragment fragment;
 
-    public CarouselAdapter(List<List<TeamMember>> carouselList, Context context) {
+    public CarouselAdapter(List<List<TeamMember>> carouselList, Context context, Fragment fragment) {
         this.carouselList = carouselList;
         this.context = context;
+        this.fragment = fragment;
     }
 
     @NonNull
@@ -58,6 +67,7 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
         private final LinearLayout dotsLayout;
         private final Button btnPrev, btnNext;
         private final Button editTeam, deleteTeam;
+        private Team team;
 
         public CarouselViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -71,7 +81,8 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
         }
 
         public void bind(List<TeamMember> carousel) {
-            carouselNumberTextView.setText(carousel.get(0).getTeam().getName());
+            team = carousel.get(0).getTeam();
+            carouselNumberTextView.setText(team.getName());
             List<List<TeamMember>> pages = getPagesList(carousel);
 
             HorizontalCarouselAdapter horizontalCarouselAdapter = new HorizontalCarouselAdapter(pages, context);
@@ -79,7 +90,7 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
 
             setupDots(pages.size());
             setupNavButtons(pages);
-            setupDataButtons(carousel.get(0).getTeam().getLeader().getId());
+            setupDataButtons(team.getLeader().getId());
 
             imagePager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
                 @Override
@@ -100,11 +111,13 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
         }
 
         private void openDeleteTeam() {
-            // TODO
+            CustomDialog deleteTeamDialog = new DeleteTeamDialog(context, fragment, team);
+            deleteTeamDialog.start();
         }
 
         private void openEditTeam() {
-            // TODO
+            CustomDialog editTeamDialog = new EditTeamDialog(context, fragment, team.getId());
+            editTeamDialog.start();
         }
 
         private void setupDots(int size) {

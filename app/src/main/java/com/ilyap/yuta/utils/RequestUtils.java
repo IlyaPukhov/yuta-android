@@ -19,7 +19,7 @@ public final class RequestUtils {
     private RequestUtils() {
     }
 
-    public static String postRequestJson(String urlString, Map<String, String> params) throws IOException {
+    public static String postRequest(String urlString, Map<String, Object> params) throws IOException {
         URL url = new URL(urlString);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 
@@ -43,7 +43,7 @@ public final class RequestUtils {
         }
     }
 
-    public static String getRequestJson(String urlString) throws IOException {
+    public static String getRequest(String urlString) throws IOException {
         URL url = new URL(urlString);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {

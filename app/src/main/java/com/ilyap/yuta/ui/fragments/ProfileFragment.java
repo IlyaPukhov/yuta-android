@@ -2,7 +2,7 @@ package com.ilyap.yuta.ui.fragments;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.ilyap.yuta.ui.dialogs.UploadPhotoDialog.PICK_IMAGE_REQUEST;
+import static com.ilyap.yuta.ui.dialogs.photo.UploadPhotoDialog.PICK_IMAGE_REQUEST;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
 import static com.ilyap.yuta.utils.UserUtils.loadImage;
 import static com.ilyap.yuta.utils.UserUtils.logOut;
@@ -24,10 +24,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
-import com.ilyap.yuta.ui.dialogs.EditUserDialog;
-import com.ilyap.yuta.ui.dialogs.PhotoDialog;
-import com.ilyap.yuta.ui.dialogs.UpdateUserDialog;
-import com.ilyap.yuta.ui.dialogs.UploadPhotoDialog;
+import com.ilyap.yuta.ui.dialogs.photo.PhotoDialog;
+import com.ilyap.yuta.ui.dialogs.photo.UploadPhotoDialog;
+import com.ilyap.yuta.ui.dialogs.user.EditUserDialog;
+import com.ilyap.yuta.ui.dialogs.user.UpdateUserDialog;
 import com.ilyap.yuta.utils.RequestViewModel;
 
 public class ProfileFragment extends Fragment {
@@ -46,20 +46,24 @@ public class ProfileFragment extends Fragment {
         progressLayout = view.findViewById(R.id.progressLayout);
 
         viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
-        profileInit();
+        updateProfile();
 
         view.findViewById(R.id.log_out).setOnClickListener(v -> logOut(requireActivity()));
         view.findViewById(R.id.reload).setOnClickListener(v -> openReloadDialog());
-        view.findViewById(R.id.edit).setOnClickListener(v -> openEditDialog());
+        view.findViewById(R.id.edit).setOnClickListener(v -> openEditUserDialog());
         view.findViewById(R.id.photo).setOnClickListener(v -> openPhotoDialog());
 
         return view;
     }
 
-    public void profileInit() {
+    public void updateProfile() {
+        updateProfile(getUserId(requireActivity()));
+    }
+
+    protected void updateProfile(int userId) {
         progressLayout.setVisibility(VISIBLE);
         viewModel.getResultLiveData().removeObservers(getViewLifecycleOwner());
-        viewModel.getUser(getUserId(requireActivity()));
+        viewModel.getUser(userId);
         viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
             if (!(result instanceof User)) return;
             user = (User) result;
@@ -69,7 +73,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    protected void fillViews() {
+    private void fillViews() {
         loadImage(requireContext(), user.getCroppedPhoto(), view.findViewById(R.id.photo));
 
         String fullName = user.getLastName() + " " + user.getFirstName() + (user.getPatronymic() == null ? "" : " " + user.getPatronymic());
@@ -91,14 +95,27 @@ public class ProfileFragment extends Fragment {
         setDataInTextView(R.id.phone_number, user.getPhoneNumber());
         setDataInTextView(R.id.email, user.geteMail());
         setDataInTextView(R.id.vk, user.getVk());
+
+        fixContactsContainer(R.id.phone_number, R.id.email, R.id.vk);
+    }
+
+    private void fixContactsContainer(int... fields) {
+        boolean isEmpty = true;
+        for (int field : fields) {
+            if (view.findViewById(field).getVisibility() == VISIBLE) {
+                isEmpty = false;
+                break;
+            }
+        }
+        view.findViewById(R.id.contacts_container).setVisibility(isEmpty ? GONE : VISIBLE);
     }
 
     private void openReloadDialog() {
-        UpdateUserDialog updateUserDialog = new UpdateUserDialog(view.getContext(), this);
+        CustomDialog updateUserDialog = new UpdateUserDialog(view.getContext(), this);
         updateUserDialog.start();
     }
 
-    private void openEditDialog() {
+    private void openEditUserDialog() {
         CustomDialog editDialog = new EditUserDialog(view.getContext(), this);
         editDialog.start();
     }

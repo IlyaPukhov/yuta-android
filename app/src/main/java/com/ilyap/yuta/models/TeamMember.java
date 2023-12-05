@@ -1,8 +1,8 @@
 package com.ilyap.yuta.models;
 
 public class TeamMember {
-    private Team team;
-    private User member;
+    private final Team team;
+    private final User member;
 
     public TeamMember(Team team, User member) {
         this.team = team;

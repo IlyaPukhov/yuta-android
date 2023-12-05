@@ -1,4 +1,4 @@
-package com.ilyap.yuta.ui.dialogs;
+package com.ilyap.yuta.ui.dialogs.photo;
 
 import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
 
@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Environment;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -19,6 +20,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.canhub.cropper.CropImageView;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
+import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestUtils;
 
@@ -32,8 +34,8 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
     CropImageView cropImageView;
     private User user;
 
-    public CropPhotoDialog(Context context, ProfileFragment profileFragment) {
-        super(context, profileFragment);
+    public CropPhotoDialog(Context context, Fragment fragment) {
+        super(context, fragment);
         setDialogLayout(R.layout.crop_photo_dialog);
     }
 
@@ -62,15 +64,15 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
         // TODO убрать
         user.setCroppedPhoto(Objects.requireNonNull(saveCroppedPhoto().getPath()));
 
-        if (profileFragment != null) {
-            profileFragment.updateImage(user);
+        if (fragment != null) {
+            ((ProfileFragment) fragment).updateImage(user);
         }
     }
 
-    private void loadImage(String imageUrl, CropImageView cropImageView) {
+    private void loadImage(String imagePath, CropImageView cropImageView) {
         Glide.with(cropImageView)
                 .asBitmap()
-                .load(imageUrl)
+                .load(imagePath)
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .apply(RequestOptions.centerInsideTransform())

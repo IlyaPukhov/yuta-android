@@ -1,14 +1,14 @@
-package com.ilyap.yuta.ui.dialogs;
+package com.ilyap.yuta.ui.dialogs.photo;
 
 import android.content.Context;
 
 import com.ilyap.yuta.R;
+import com.ilyap.yuta.ui.dialogs.CustomDialog;
+import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 
 @SuppressWarnings("ConstantConditions")
 public class PhotoDialog extends CustomInteractiveDialog {
-    private final CustomDialog updatePhotoDialog = new UploadPhotoDialog(activity, profileFragment);
-
     public PhotoDialog(Context context, ProfileFragment profileFragment) {
         super(context, profileFragment);
         setDialogLayout(R.layout.photo_dialog);
@@ -33,16 +33,17 @@ public class PhotoDialog extends CustomInteractiveDialog {
     }
 
     private void openUpdatePhotoDialog() {
+        CustomDialog updatePhotoDialog = new UploadPhotoDialog(activity, fragment);
         updatePhotoDialog.start();
     }
 
     private void openEditPhotoDialog() {
-        CustomDialog editPhotoDialog = new CropPhotoDialog(activity, profileFragment);
+        CustomDialog editPhotoDialog = new CropPhotoDialog(activity, fragment);
         editPhotoDialog.start();
     }
 
     private void openDeletePhotoDialog() {
-        CustomDialog deletePhotoDialog = new DeletePhotoDialog(activity, profileFragment);
+        CustomDialog deletePhotoDialog = new DeletePhotoDialog(activity, fragment);
         deletePhotoDialog.start();
     }
 }

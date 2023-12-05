@@ -77,8 +77,17 @@
         <item name="cornerSize">50%</item>
     </style>
 
-    <style name="button_style" parent="Widget.MaterialComponents.Button">
+    <style name="orange_button_style" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="backgroundTint">@color/orange_button</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="classic_button_style" parent="Widget.MaterialComponents.Button">
         <item name="backgroundTint">@null</item>
+    </style>
+
+    <style name="blue_button_style" parent="orange_button_style">
+        <item name="backgroundTint">@color/blue_button</item>
     </style>
 
     <style name="name_text">
@@ -137,7 +146,7 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="reload_desc">
+    <style name="dialog_desc">
         <item name="android:fontFamily">@font/montserrat_medium</item>
         <item name="android:textSize">15sp</item>
         <item name="android:letterSpacing">0.1</item>
@@ -179,7 +188,28 @@
         <item name="android:letterSpacing">0.05</item>
     </style>
 
+    <style name="list_member_name" >
+        <item name="android:fontFamily">@font/montserrat_semibold</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="android:textColor">@color/dark_gray</item>
+    </style>
+
     <style name="default_teams" parent="active_teams">
         <item name="android:textColor">@color/blue</item>
+    </style>
+
+    <style name="error_team_message" >
+        <item name="android:fontFamily">@font/montserrat_medium</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:letterSpacing">0.12</item>
+        <item name="android:textColor">#E6DF2121</item>
+    </style>
+
+    <style name="empty_search_message">
+        <item name="android:fontFamily">@font/montserrat_semibold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="android:textColor">@color/dark_gray</item>
     </style>
 </resources>
