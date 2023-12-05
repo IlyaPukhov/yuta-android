@@ -4,6 +4,7 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.ui.dialogs.UploadPhotoDialog.PICK_IMAGE_REQUEST;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
+import static com.ilyap.yuta.utils.UserUtils.loadImage;
 import static com.ilyap.yuta.utils.UserUtils.logOut;
 import static com.ilyap.yuta.utils.UserUtils.setCurrentUser;
 
@@ -13,7 +14,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -21,8 +21,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
@@ -72,7 +70,7 @@ public class ProfileFragment extends Fragment {
     }
 
     protected void fillViews() {
-        updateImage();
+        loadImage(requireContext(), user.getCroppedPhoto(), view.findViewById(R.id.photo));
 
         String fullName = user.getLastName() + " " + user.getFirstName() + (user.getPatronymic() == null ? "" : " " + user.getPatronymic());
         String faculty = getString(R.string.faculty) + ": " + user.getFaculty();
@@ -110,14 +108,6 @@ public class ProfileFragment extends Fragment {
         photoDialog.start();
     }
 
-    private void updateImage() {
-        Glide.with(this)
-                .load(user.getCroppedPhoto())
-                .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into((ImageView) view.findViewById(R.id.photo));
-    }
-
     private void setDataInTextView(int id, String text) {
         TextView textView = view.findViewById(id);
         textView.setText(null);
@@ -133,7 +123,7 @@ public class ProfileFragment extends Fragment {
 
     public void updateImage(User currentUser) {
         user = currentUser;
-        updateImage();
+        loadImage(requireContext(), user.getCroppedPhoto(), view.findViewById(R.id.photo));
     }
 
     public final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(

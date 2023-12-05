@@ -3,7 +3,6 @@ package com.ilyap.yuta.utils;
 import static com.ilyap.yuta.utils.RequestUtils.ROOT_API_URL;
 import static com.ilyap.yuta.utils.RequestUtils.getRequestJson;
 import static com.ilyap.yuta.utils.RequestUtils.postRequestJson;
-import static com.ilyap.yuta.utils.UserUtils.EMPTY_DATA;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -17,6 +16,7 @@ import com.ilyap.yuta.models.User;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -47,27 +47,27 @@ public final class RequestViewModel extends ViewModel {
     public void editUserData(int userId, User user) {
         clearResultLiveData();
         executor.execute(() -> {
-            HashMap<String, String> params = new HashMap<>();
+            Map<String, String> params = new HashMap<>();
             params.put("user_id", String.valueOf(userId));
             params.put("action", "edit_data");
 
             String biography = user.getBiography();
-            if (!biography.equals(EMPTY_DATA)) {
+            if (biography != null) {
                 params.put("biography", biography);
             }
 
             String phone = user.getPhoneNumber();
-            if (!phone.equals(EMPTY_DATA)) {
+            if (phone != null) {
                 params.put("phone_number", phone);
             }
 
             String email = user.geteMail();
-            if (!email.equals(EMPTY_DATA)) {
+            if (email != null) {
                 params.put("e_mail", email);
             }
 
             String vk = user.getVk();
-            if (!vk.equals(EMPTY_DATA)) {
+            if (vk != null) {
                 params.put("vk", vk);
             }
 

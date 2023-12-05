@@ -138,7 +138,7 @@
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:background="@drawable/login_button"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:textAppearance="@style/reload_button"
             android:text="@string/edit_button"
             android:textAlignment="center"
