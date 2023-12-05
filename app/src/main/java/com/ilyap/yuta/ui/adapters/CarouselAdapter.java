@@ -4,9 +4,6 @@ import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
 
 import android.app.Activity;
-
-import androidx.fragment.app.Fragment;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.ilyap.yuta.R;
@@ -31,15 +28,13 @@ import com.ilyap.yuta.ui.dialogs.team.EditTeamDialog;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder> {
+@SuppressWarnings("ConstantConditions")
+public class CarouselAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.ViewHolder<List<TeamMember>>> {
     private static final int PAGE_SIZE = 2;
-    private final List<List<TeamMember>> carouselList;
-    private final Context context;
     private final Fragment fragment;
 
-    public CarouselAdapter(List<List<TeamMember>> carouselList, Context context, Fragment fragment) {
-        this.carouselList = carouselList;
-        this.context = context;
+    public CarouselAdapter(Context context, List<List<TeamMember>> items, Fragment fragment) {
+        super(context, items);
         this.fragment = fragment;
     }
 
@@ -50,18 +45,7 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
         return new CarouselViewHolder(view);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull CarouselViewHolder holder, int position) {
-        holder.bind(carouselList.get(position));
-    }
-
-    @Override
-    public int getItemCount() {
-        return carouselList.size();
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    public class CarouselViewHolder extends RecyclerView.ViewHolder {
+    public class CarouselViewHolder extends BaseAdapter.ViewHolder<List<TeamMember>> {
         private final TextView carouselNumberTextView;
         private final ViewPager2 imagePager;
         private final LinearLayout dotsLayout;
@@ -80,14 +64,16 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
             deleteTeam = itemView.findViewById(R.id.deleteTeam);
         }
 
+        @Override
         public void bind(List<TeamMember> carousel) {
             team = carousel.get(0).getTeam();
             carouselNumberTextView.setText(team.getName());
             List<List<TeamMember>> pages = getPagesList(carousel);
 
-            HorizontalCarouselAdapter horizontalCarouselAdapter = new HorizontalCarouselAdapter(pages, context);
+            HorizontalCarouselAdapter horizontalCarouselAdapter = new HorizontalCarouselAdapter(getContext(), pages);
             imagePager.setAdapter(horizontalCarouselAdapter);
 
+            dotsLayout.removeAllViews();
             setupDots(pages.size());
             setupNavButtons(pages);
             setupDataButtons(team.getLeader().getId());
@@ -102,7 +88,7 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
         }
 
         private void setupDataButtons(int leaderId) {
-            if (leaderId == getUserId((Activity) context)) {
+            if (leaderId == getUserId((Activity) getContext())) {
                 editTeam.setVisibility(VISIBLE);
                 deleteTeam.setVisibility(VISIBLE);
                 editTeam.setOnClickListener(v -> openEditTeam());
@@ -111,19 +97,19 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
         }
 
         private void openDeleteTeam() {
-            CustomDialog deleteTeamDialog = new DeleteTeamDialog(context, fragment, team);
+            CustomDialog deleteTeamDialog = new DeleteTeamDialog(getContext(), fragment, team);
             deleteTeamDialog.start();
         }
 
         private void openEditTeam() {
-            CustomDialog editTeamDialog = new EditTeamDialog(context, fragment, team.getId());
+            CustomDialog editTeamDialog = new EditTeamDialog(getContext(), fragment, team.getId());
             editTeamDialog.start();
         }
 
         private void setupDots(int size) {
             for (int i = 0; i < size; i++) {
-                ImageView dot = new ImageView(context);
-                dot.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.dot_not_selected));
+                ImageView dot = new ImageView(getContext());
+                dot.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.dot_not_selected));
 
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -141,17 +127,17 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.Carous
             for (int i = 0; i < dotsLayout.getChildCount(); i++) {
                 ImageView dot = (ImageView) dotsLayout.getChildAt(i);
                 if (i == position) {
-                    dot.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.dot_selected));
+                    dot.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.dot_selected));
                 } else {
-                    dot.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.dot_not_selected));
+                    dot.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.dot_not_selected));
                 }
             }
         }
 
         private <T> void setupNavButtons(List<List<T>> pages) {
             if (pages.size() < 2) {
-                btnPrev.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.light_gray));
-                btnNext.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.light_gray));
+                btnPrev.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.light_gray));
+                btnNext.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.light_gray));
             }
 
             btnPrev.setOnClickListener(v -> {

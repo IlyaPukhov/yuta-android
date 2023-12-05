@@ -9,7 +9,4 @@
     <color name="inactive">#808080</color>
     <color name="field_background">#F0F0F0</color>
 
-    <color name="start_gradient">#0C2367</color>
-    <color name="center_gradient">#6C4F53</color>
-    <color name="end_gradient">#D06611</color>
 </resources>

@@ -20,7 +20,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/Theme.YUTA"
-            tools:targetApi="33">
+            tools:targetApi="34">
         <activity
                 android:name=".ui.LoginActivity"
                 android:exported="true">

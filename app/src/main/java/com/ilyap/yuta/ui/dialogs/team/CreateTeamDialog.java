@@ -8,21 +8,21 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.CheckTeamNameResponse;
 import com.ilyap.yuta.models.SearchResponse;
 import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.models.User;
-import com.ilyap.yuta.ui.adapters.ListAdapter;
+import com.ilyap.yuta.ui.adapters.UserAdapter;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.TeamsFragment;
 import com.ilyap.yuta.utils.RequestViewModel;
@@ -37,10 +37,8 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
     private EditText searchField;
     protected Button submitButton;
     private Button searchButton;
-    private ListView searchUsersView;
-    private ListView addedMembersView;
-    protected ListAdapter searchAdapter;
-    protected ListAdapter membersAdapter;
+    protected UserAdapter searchAdapter;
+    protected UserAdapter membersAdapter;
     private TextView error;
     private TextView emptySearch;
     private boolean isTeamNameUnique;
@@ -65,12 +63,10 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
         searchField = dialog.findViewById(R.id.find_name);
         error = dialog.findViewById(R.id.error_text);
         emptySearch = dialog.findViewById(R.id.empty_search_text);
-        searchUsersView = dialog.findViewById(R.id.searchUsers);
-        addedMembersView = dialog.findViewById(R.id.addedMembers);
 
         setupEditView(teamName);
         setupEditView(searchField);
-        listViewsInit();
+        recyclerViewsInitialize();
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
         searchButton.setOnClickListener(v -> searchUsers());
@@ -96,10 +92,9 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
         });
     }
 
-    protected void updateList(ArrayAdapter<User> adapter, List<User> users) {
+    protected void updateList(UserAdapter adapter, List<User> users) {
         messageVisibility(emptySearch, !users.isEmpty());
-        adapter.clear();
-        adapter.addAll(users);
+        adapter.updateList(users);
     }
 
     protected RequestViewModel isNameUnique(String name) {
@@ -119,11 +114,20 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
         return null;
     }
 
-    private void listViewsInit() {
-        membersAdapter = new ListAdapter(getContext(), R.layout.item_user_list, addedMembers, null);
+    private void recyclerViewsInitialize() {
+        RecyclerView searchUsersView = dialog.findViewById(R.id.searchUsers);
+        RecyclerView addedMembersView = dialog.findViewById(R.id.addedMembers);
+
+        LinearLayoutManager addedLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        addedMembersView.setLayoutManager(addedLayoutManager);
+
+        LinearLayoutManager searchLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        searchUsersView.setLayoutManager(searchLayoutManager);
+
+        membersAdapter = new UserAdapter(getContext(), addedMembers, null);
         addedMembersView.setAdapter(membersAdapter);
 
-        searchAdapter = new ListAdapter(getContext(), R.layout.item_user_list, searchUsers, membersAdapter);
+        searchAdapter = new UserAdapter(getContext(), searchUsers, membersAdapter);
         searchUsersView.setAdapter(searchAdapter);
     }
 

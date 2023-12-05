@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.TeamMember;
@@ -22,39 +21,26 @@ import com.ilyap.yuta.models.User;
 
 import java.util.List;
 
-public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberViewHolder> {
-    private final List<TeamMember> members;
-    private final Context context;
+public class TeamMemberAdapter extends BaseAdapter<TeamMember, BaseAdapter.ViewHolder<TeamMember>> {
 
-    public MemberAdapter(List<TeamMember> members, Context context) {
-        this.members = members;
-        this.context = context;
+    public TeamMemberAdapter(Context context, List<TeamMember> items) {
+        super(context, items);
     }
 
     @NonNull
     @Override
-    public MemberViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public TeamMemberViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_carousel_card, parent, false);
-        return new MemberViewHolder(view);
+        return new TeamMemberViewHolder(view);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull MemberViewHolder holder, int position) {
-        holder.bind(members.get(position));
-    }
-
-    @Override
-    public int getItemCount() {
-        return members.size();
-    }
-
-    public class MemberViewHolder extends RecyclerView.ViewHolder {
+    public class TeamMemberViewHolder extends BaseAdapter.ViewHolder<TeamMember> {
         private final View card;
         private final ImageView imageView;
         private final TextView name;
         private final ImageView teamLeaderIcon;
 
-        public MemberViewHolder(@NonNull View itemView) {
+        public TeamMemberViewHolder(@NonNull View itemView) {
             super(itemView);
             card = itemView.findViewById(R.id.card);
             imageView = itemView.findViewById(R.id.avatar);
@@ -62,9 +48,10 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
             teamLeaderIcon = itemView.findViewById(R.id.teamLeaderIcon);
         }
 
+        @Override
         public void bind(TeamMember member) {
             User user = member.getMember();
-            loadImage(context, user.getCroppedPhoto(), imageView);
+            loadImage(getContext(), user.getCroppedPhoto(), imageView);
 
             if (member.getTeam().getLeader().equals(user)) {
                 teamLeaderIcon.setVisibility(VISIBLE);
@@ -80,7 +67,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.MemberView
             Bundle bundle = new Bundle();
             bundle.putInt("userId", user.getId());
 
-            Navigation.findNavController((Activity) context, R.id.nav_host_fragment)
+            Navigation.findNavController((Activity) getContext(), R.id.nav_host_fragment)
                     .navigate(R.id.readonlyProfileFragment, bundle);
         }
     }
