@@ -16,13 +16,10 @@ import com.ilyap.yuta.models.TeamMember;
 
 import java.util.List;
 
-public class HorizontalCarouselAdapter extends RecyclerView.Adapter<HorizontalCarouselAdapter.HorizontalViewHolder> {
-    private final List<List<TeamMember>> pages;
-    private final Context context;
+public class HorizontalCarouselAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.ViewHolder<List<TeamMember>>> {
 
-    public HorizontalCarouselAdapter(List<List<TeamMember>> pages, Context context) {
-        this.pages = pages;
-        this.context = context;
+    public HorizontalCarouselAdapter(Context context, List<List<TeamMember>> items) {
+        super(context, items);
     }
 
     @NonNull
@@ -33,17 +30,7 @@ public class HorizontalCarouselAdapter extends RecyclerView.Adapter<HorizontalCa
         return new HorizontalViewHolder(view);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull HorizontalViewHolder holder, int position) {
-        holder.bind(pages.get(position));
-    }
-
-    @Override
-    public int getItemCount() {
-        return pages.size();
-    }
-
-    public class HorizontalViewHolder extends RecyclerView.ViewHolder {
+    public class HorizontalViewHolder extends BaseAdapter.ViewHolder<List<TeamMember>> {
         private final RecyclerView horizontalRecyclerView;
 
         public HorizontalViewHolder(@NonNull View itemView) {
@@ -51,12 +38,13 @@ public class HorizontalCarouselAdapter extends RecyclerView.Adapter<HorizontalCa
             horizontalRecyclerView = itemView.findViewById(R.id.horizontalRecyclerView);
         }
 
+        @Override
         public void bind(List<TeamMember> members) {
             LinearLayoutManager layoutManager = new SpanningLinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
             horizontalRecyclerView.setLayoutManager(layoutManager);
 
-            MemberAdapter memberAdapter = new MemberAdapter(members, context);
-            horizontalRecyclerView.setAdapter(memberAdapter);
+            TeamMemberAdapter teamMemberAdapter = new TeamMemberAdapter(getContext(), members);
+            horizontalRecyclerView.setAdapter(teamMemberAdapter);
         }
     }
 

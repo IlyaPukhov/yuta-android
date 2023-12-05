@@ -63,14 +63,16 @@ public class ProfileFragment extends Fragment {
     protected void updateProfile(int userId) {
         progressLayout.setVisibility(VISIBLE);
         viewModel.getResultLiveData().removeObservers(getViewLifecycleOwner());
-        viewModel.getUser(userId);
-        viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
-            if (!(result instanceof User)) return;
-            user = (User) result;
-            fillViews();
-            progressLayout.setVisibility(GONE);
-            setCurrentUser(user);
-        });
+        if (userId >= 0) {
+            viewModel.getUser(userId);
+            viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
+                if (!(result instanceof User)) return;
+                user = (User) result;
+                fillViews();
+                progressLayout.setVisibility(GONE);
+                setCurrentUser(user);
+            });
+        }
     }
 
     private void fillViews() {

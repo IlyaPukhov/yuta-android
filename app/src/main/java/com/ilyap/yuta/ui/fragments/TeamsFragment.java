@@ -32,11 +32,11 @@ import java.util.stream.Collectors;
 public class TeamsFragment extends Fragment {
     private ToggleButton managedTeamsButton;
     private ToggleButton memberTeamsButton;
-    private RecyclerView recyclerView;
     private TextView emptyText;
     private View progressLayout;
     private View view;
     private RequestViewModel viewModel;
+    private CarouselAdapter carouselAdapter;
 
     public TeamsFragment() {
     }
@@ -57,10 +57,16 @@ public class TeamsFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateCarousels();
+    }
+
     private void fillCarousels(List<Team> teams) {
         emptyText.setVisibility(teams.isEmpty() ? VISIBLE : GONE);
 
-        List<List<TeamMember>> carouselList = teams.stream()
+        carouselAdapter.updateList(teams.stream()
                 .map(team -> {
                     List<TeamMember> membersList = new ArrayList<>();
                     membersList.add(new TeamMember(team, team.getLeader()));
@@ -70,16 +76,17 @@ public class TeamsFragment extends Fragment {
 
                     return membersList;
                 })
-                .collect(Collectors.toList());
-
-        CarouselAdapter carouselAdapter = new CarouselAdapter(carouselList, requireContext(), this);
-        recyclerView.setAdapter(carouselAdapter);
+                .collect(Collectors.toList()));
     }
 
     private void recyclerViewInitialize() {
-        recyclerView = view.findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
+
+        List<List<TeamMember>> carouselList = new ArrayList<>();
+        carouselAdapter = new CarouselAdapter(requireContext(), carouselList, this);
+        recyclerView.setAdapter(carouselAdapter);
     }
 
     private void teamsSwitchInitialize() {
@@ -87,7 +94,6 @@ public class TeamsFragment extends Fragment {
         memberTeamsButton = view.findViewById(R.id.member_button);
         managedTeamsButton.setOnClickListener(this::onToggleButtonClick);
         memberTeamsButton.setOnClickListener(this::onToggleButtonClick);
-        updateCarousels();
     }
 
     private void loadTeams(View button) {
@@ -110,7 +116,6 @@ public class TeamsFragment extends Fragment {
         final ToggleButton button = (ToggleButton) view;
         final ToggleButton otherButton;
 
-        loadTeams(button);
         if (button.getId() == managedTeamsButton.getId()) {
             otherButton = memberTeamsButton;
         } else {
@@ -121,6 +126,8 @@ public class TeamsFragment extends Fragment {
         button.setChecked(true);
         otherButton.setTextAppearance(R.style.default_teams);
         otherButton.setChecked(false);
+
+        loadTeams(button);
     }
 
     public void updateCarousels() {

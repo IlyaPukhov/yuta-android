@@ -57,9 +57,6 @@
     <string name="crop_text">Выбор миниатюры</string>
     <string name="crop_desc">Выберите область для маленьких фотографий.\nВыбранная миниатюра будет использоваться в профиле.</string>
     <string name="save_button">СОХРАНИТЬ</string>
-    <string name="saved">Сохранено</string>
-    <string name="deleted">Фото удалено</string>
-    <string name="updated">Данные обновлены</string>
     <string name="member_button">Вы участник</string>
     <string name="manager_button">Вы руководитель</string>
     <string name="create_team">Создать команду</string>
@@ -78,7 +75,7 @@
     <string name="create_team_text">Создание команды</string>
     <string name="create_team_desc">Придумайте краткое название команды:</string>
     <string name="team_name">Название команды</string>
-    <string name="add_member_desc">Добавьте участиков команды:</string>
+    <string name="add_member_desc">Добавьте участников команды:</string>
     <string name="added_members_desc">Добавленные участники:</string>
     <string name="find_name">ФИО</string>
     <string name="search_button">ПОИСК</string>

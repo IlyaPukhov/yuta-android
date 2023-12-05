@@ -31,7 +31,7 @@ import java.util.Objects;
 
 @SuppressWarnings("ConstantConditions")
 public class CropPhotoDialog extends CustomInteractiveDialog {
-    CropImageView cropImageView;
+    private CropImageView cropImageView;
     private User user;
 
     public CropPhotoDialog(Context context, Fragment fragment) {

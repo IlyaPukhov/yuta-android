@@ -27,14 +27,11 @@ public class ReadonlyProfileFragment extends ProfileFragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-
         if (getArguments() != null) {
             userId = getArguments().getInt("userId", -1);
         }
 
-
         progressLayout = view.findViewById(R.id.progressLayout);
-
         viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
         updateProfile(userId);
 

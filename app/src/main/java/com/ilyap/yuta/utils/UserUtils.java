@@ -22,7 +22,7 @@ public final class UserUtils {
     private UserUtils() {
     }
 
-    public static void loadImage(Context context, String path, ImageView imageView){
+    public static void loadImage(Context context, String path, ImageView imageView) {
         Glide.with(context)
                 .load(path)
                 .dontTransform()
@@ -32,9 +32,11 @@ public final class UserUtils {
     }
 
     public static void setUserId(Activity activity, int id) {
-        sharedPreferences = getSharedPreferences(activity);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("user_id", id).apply();
+        if (id >= 0) {
+            sharedPreferences = getSharedPreferences(activity);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("user_id", id).apply();
+        }
     }
 
     public static void setCurrentUser(User user) {
