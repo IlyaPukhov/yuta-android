@@ -31,9 +31,9 @@ public final class UserUtils {
                 .into(imageView);
     }
 
-    public static void setUserId(Activity activity, int id) {
+    public static void setUserId(Context context, int id) {
         if (id >= 0) {
-            sharedPreferences = getSharedPreferences(activity);
+            sharedPreferences = getSharedPreferences(context);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt("user_id", id).apply();
         }
@@ -58,11 +58,11 @@ public final class UserUtils {
         activity.finish();
     }
 
-    public static int getUserId(Activity activity) {
-        return getSharedPreferences(activity).getInt("user_id", -1);
+    public static int getUserId(Context context) {
+        return getSharedPreferences(context).getInt("user_id", -1);
     }
 
-    private static SharedPreferences getSharedPreferences(Activity activity) {
-        return activity.getSharedPreferences("session", Context.MODE_PRIVATE);
+    private static SharedPreferences getSharedPreferences(Context context) {
+        return context.getSharedPreferences("session", Context.MODE_PRIVATE);
     }
 }

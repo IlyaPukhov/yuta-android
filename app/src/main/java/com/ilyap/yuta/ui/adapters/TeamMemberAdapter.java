@@ -1,9 +1,9 @@
 package com.ilyap.yuta.ui.adapters;
 
 import static android.view.View.VISIBLE;
+import static com.ilyap.yuta.utils.UserUtils.getUserId;
 import static com.ilyap.yuta.utils.UserUtils.loadImage;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,8 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.Navigation;
+import androidx.navigation.NavController;
 
+import com.ilyap.yuta.MainActivity;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.TeamMember;
 import com.ilyap.yuta.models.User;
@@ -49,26 +50,28 @@ public class TeamMemberAdapter extends BaseAdapter<TeamMember, BaseAdapter.ViewH
         }
 
         @Override
-        public void bind(TeamMember member) {
+        public void bind(@NonNull TeamMember member) {
             User user = member.getMember();
+            User leader = member.getTeam().getLeader();
             loadImage(getContext(), user.getCroppedPhoto(), imageView);
 
-            if (member.getTeam().getLeader().equals(user)) {
+            if (leader.equals(user)) {
                 teamLeaderIcon.setVisibility(VISIBLE);
             }
 
             String userName = user.getLastName() + " " + user.getFirstName();
             name.setText(userName);
 
-            card.setOnClickListener(v -> openProfile(user));
-        }
-
-        private void openProfile(User user) {
-            Bundle bundle = new Bundle();
-            bundle.putInt("userId", user.getId());
-
-            Navigation.findNavController((Activity) getContext(), R.id.nav_host_fragment)
-                    .navigate(R.id.readonlyProfileFragment, bundle);
+            card.setOnClickListener(v -> {
+                NavController navController = ((MainActivity) getContext()).getNavController();
+                if (getUserId(getContext()) == user.getId()) {
+                    navController.navigate(R.id.action_teamsFragment_to_profileFragment);
+                } else {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("userId", user.getId());
+                    navController.navigate(R.id.action_teamsFragment_to_readonlyProfileFragment, bundle);
+                }
+            });
         }
     }
 }

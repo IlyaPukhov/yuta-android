@@ -19,7 +19,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:labelVisibilityMode="labeled"
             app:menu="@menu/bottom_menu"
-            app:layout_constraintHorizontal_bias="0.0"
             app:itemTextAppearanceActive="@style/nav_item"
             app:itemTextAppearanceInactive="@style/nav_item"
             app:itemTextAppearanceActiveBoldEnabled="true"

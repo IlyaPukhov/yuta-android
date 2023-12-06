@@ -84,6 +84,7 @@
 
     <style name="classic_button_style" parent="Widget.MaterialComponents.Button">
         <item name="backgroundTint">@null</item>
+        <item name="android:stateListAnimator">@null</item>
     </style>
 
     <style name="blue_button_style" parent="orange_button_style">

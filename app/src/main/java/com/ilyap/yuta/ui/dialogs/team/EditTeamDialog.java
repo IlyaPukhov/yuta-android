@@ -48,7 +48,7 @@ public class EditTeamDialog extends CreateTeamDialog {
 
     private void editTeam() {
         viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.editTeam(team.getId(), getData(teamName), addedMembers);
+        viewModel.editTeam(teamId, getData(teamName), addedMembers);
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
             ((TeamsFragment) fragment).updateCarousels();
@@ -59,7 +59,7 @@ public class EditTeamDialog extends CreateTeamDialog {
     @Override
     protected RequestViewModel isNameUnique(String name) {
         viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.checkTeamName(name, team.getId());
+        viewModel.checkTeamName(name, teamId);
         return viewModel;
     }
 }

@@ -85,7 +85,7 @@ public class TeamsFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         List<List<TeamMember>> carouselList = new ArrayList<>();
-        carouselAdapter = new CarouselAdapter(requireContext(), carouselList, this);
+        carouselAdapter = new CarouselAdapter(requireActivity(), carouselList, this);
         recyclerView.setAdapter(carouselAdapter);
     }
 
