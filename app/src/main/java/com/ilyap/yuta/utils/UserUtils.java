@@ -3,6 +3,8 @@ package com.ilyap.yuta.utils;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
+import static com.ilyap.yuta.utils.RequestUtils.ROOT_URL;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -24,7 +26,7 @@ public final class UserUtils {
 
     public static void loadImage(Context context, String path, ImageView imageView) {
         Glide.with(context)
-                .load(path)
+                .load(ROOT_URL + path)
                 .dontTransform()
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .priority(Priority.IMMEDIATE)

@@ -15,7 +15,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/scrollView"
             android:layout_marginTop="32dp"
-            android:id="@+id/logo" />
+            android:id="@+id/card_background" />
 
     <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollView"

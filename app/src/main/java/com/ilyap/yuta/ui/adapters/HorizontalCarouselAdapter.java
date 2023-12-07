@@ -1,5 +1,7 @@
 package com.ilyap.yuta.ui.adapters;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -75,10 +77,13 @@ public class HorizontalCarouselAdapter extends BaseAdapter<List<TeamMember>, Bas
         }
 
         private RecyclerView.LayoutParams spanLayoutSize(RecyclerView.LayoutParams layoutParams) {
-            if (getOrientation() == HORIZONTAL) {
-                layoutParams.width = (int) Math.round(getHorizontalSpace() / (double) getItemCount());
-            } else if (getOrientation() == VERTICAL) {
-                layoutParams.height = (int) Math.round(getVerticalSpace() / (double) getItemCount());
+            int orientation = getOrientation();
+            int itemCount = getItemCount();
+
+            if (orientation == HORIZONTAL) {
+                layoutParams.width = (itemCount > 1) ? (int) Math.round(getHorizontalSpace() / (double) itemCount) : MATCH_PARENT;
+            } else if (orientation == VERTICAL) {
+                layoutParams.height = (itemCount > 1) ? (int) Math.round(getVerticalSpace() / (double) itemCount) : MATCH_PARENT;
             }
             return layoutParams;
         }
