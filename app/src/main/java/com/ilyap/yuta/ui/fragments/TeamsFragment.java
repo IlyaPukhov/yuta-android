@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,6 +40,10 @@ public class TeamsFragment extends Fragment {
     private RequestViewModel viewModel;
     private CarouselAdapter carouselAdapter;
 
+    private ToggleButton lastPickedButton;
+    private List<List<TeamMember>> managedTeamsMembers;
+    private List<List<TeamMember>> othersTeamsMembers;
+
     public TeamsFragment() {
     }
 
@@ -45,6 +51,7 @@ public class TeamsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_teams, container, false);
+
         emptyText = view.findViewById(R.id.empty_text);
         progressLayout = view.findViewById(R.id.progressLayout);
         progressLayout.setVisibility(VISIBLE);
@@ -53,20 +60,88 @@ public class TeamsFragment extends Fragment {
         recyclerViewInitialize();
         teamsSwitchInitialize();
 
+        if (savedInstanceState != null) {
+            int lastPickedButtonId = savedInstanceState.getInt("LAST_PICKED_BUTTON_ID", managedTeamsButton.getId());
+            lastPickedButton = view.findViewById(lastPickedButtonId);
+        }
+
         view.findViewById(R.id.create_team).setOnClickListener(v -> openCreateTeamDialog());
         return view;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        updateCarousels();
+    public void onStart() {
+        super.onStart();
+        updateCarousels(lastPickedButton);
     }
 
-    private void fillCarousels(List<Team> teams) {
-        emptyText.setVisibility(teams.isEmpty() ? VISIBLE : GONE);
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (lastPickedButton != null) {
+            outState.putInt("LAST_PICKED_BUTTON_ID", lastPickedButton.getId());
+        }
+    }
 
-        carouselAdapter.updateList(teams.stream()
+    private void fillCarousels(List<List<TeamMember>> teamMembers) {
+        emptyText.setVisibility(teamMembers.isEmpty() ? VISIBLE : GONE);
+        carouselAdapter.updateList(teamMembers);
+    }
+
+    private void updateTeams() {
+        viewModel.getResultLiveData().removeObservers(getViewLifecycleOwner());
+        viewModel.getTeams(getUserId(requireActivity()));
+        viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
+            if (!(result instanceof TeamResponse)) return;
+            progressLayout.setVisibility(GONE);
+            TeamResponse teamResponse = (TeamResponse) result;
+            managedTeamsMembers = getTeamMembers(teamResponse.getManagedTeams());
+            othersTeamsMembers = getTeamMembers(teamResponse.getOthersTeams());
+        });
+    }
+
+    public void updateCarousels() {
+        updateCarousels(managedTeamsButton);
+    }
+
+    private void updateCarousels(Button button) {
+        updateTeams();
+        viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
+            if (!(result instanceof TeamResponse)) return;
+            openTab(button);
+        });
+    }
+
+    private void openTab(Button button) {
+        button.performClick();
+    }
+
+    private void openCreateTeamDialog() {
+        CustomDialog createTeamDialog = new CreateTeamDialog(view.getContext(), this);
+        createTeamDialog.start();
+    }
+
+    private void onToggleButtonClick(View view) {
+        final ToggleButton button = (ToggleButton) view;
+        final ToggleButton otherButton;
+
+        if (button.getId() == managedTeamsButton.getId()) {
+            otherButton = memberTeamsButton;
+            fillCarousels(managedTeamsMembers);
+        } else {
+            otherButton = managedTeamsButton;
+            fillCarousels(othersTeamsMembers);
+        }
+
+        button.setTextAppearance(R.style.active_teams);
+        button.setChecked(true);
+        otherButton.setTextAppearance(R.style.default_teams);
+        otherButton.setChecked(false);
+        lastPickedButton = button;
+    }
+
+    private List<List<TeamMember>> getTeamMembers(List<Team> teams) {
+        return teams.stream()
                 .map(team -> {
                     List<TeamMember> membersList = new ArrayList<>();
                     membersList.add(new TeamMember(team, team.getLeader()));
@@ -76,7 +151,7 @@ public class TeamsFragment extends Fragment {
 
                     return membersList;
                 })
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
     }
 
     private void recyclerViewInitialize() {
@@ -85,7 +160,7 @@ public class TeamsFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         List<List<TeamMember>> carouselList = new ArrayList<>();
-        carouselAdapter = new CarouselAdapter(requireContext(), carouselList, this);
+        carouselAdapter = new CarouselAdapter(requireActivity(), carouselList, this);
         recyclerView.setAdapter(carouselAdapter);
     }
 
@@ -94,48 +169,6 @@ public class TeamsFragment extends Fragment {
         memberTeamsButton = view.findViewById(R.id.member_button);
         managedTeamsButton.setOnClickListener(this::onToggleButtonClick);
         memberTeamsButton.setOnClickListener(this::onToggleButtonClick);
-    }
-
-    private void loadTeams(View button) {
-        viewModel.getResultLiveData().removeObservers(getViewLifecycleOwner());
-        viewModel.getTeams(getUserId(requireActivity()));
-        viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
-            if (!(result instanceof TeamResponse)) return;
-            progressLayout.setVisibility(GONE);
-            TeamResponse teamResponse = (TeamResponse) result;
-
-            if (button.getId() == managedTeamsButton.getId()) {
-                fillCarousels(teamResponse.getManagedTeams());
-            } else {
-                fillCarousels(teamResponse.getOthersTeams());
-            }
-        });
-    }
-
-    private void onToggleButtonClick(View view) {
-        final ToggleButton button = (ToggleButton) view;
-        final ToggleButton otherButton;
-
-        if (button.getId() == managedTeamsButton.getId()) {
-            otherButton = memberTeamsButton;
-        } else {
-            otherButton = managedTeamsButton;
-        }
-
-        button.setTextAppearance(R.style.active_teams);
-        button.setChecked(true);
-        otherButton.setTextAppearance(R.style.default_teams);
-        otherButton.setChecked(false);
-
-        loadTeams(button);
-    }
-
-    public void updateCarousels() {
-        managedTeamsButton.performClick();
-    }
-
-    private void openCreateTeamDialog() {
-        CustomDialog createTeamDialog = new CreateTeamDialog(view.getContext(), this);
-        createTeamDialog.start();
+        lastPickedButton = managedTeamsButton;
     }
 }

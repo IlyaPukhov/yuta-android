@@ -12,14 +12,16 @@
             android:textAppearance="@style/list_member_name"
             android:textAlignment="center"
             android:autoSizeTextType="uniform"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/name"
             app:layout_constraintStart_toEndOf="@+id/avatar"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="10dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:maxWidth="185dp" />
+            android:maxWidth="185dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="50dp" />
 
     <com.google.android.material.imageview.ShapeableImageView
             android:background="@drawable/photo_filler"
@@ -41,12 +43,10 @@
             style="@style/orange_button_style"
             android:background="@drawable/plus_icon"
             tools:ignore="TouchTargetSizeCheck"
-            app:layout_constraintStart_toEndOf="@+id/name"
-            android:layout_marginStart="10dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="10dp" />
 
     <Button
             android:id="@+id/btnRemove"
@@ -57,11 +57,9 @@
             android:background="@drawable/minus_icon"
             tools:ignore="TouchTargetSizeCheck"
             android:visibility="gone"
-            app:layout_constraintStart_toEndOf="@+id/name"
-            android:layout_marginStart="10dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="10dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

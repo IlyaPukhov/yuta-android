@@ -3,7 +3,6 @@ package com.ilyap.yuta.ui.adapters;
 import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,7 +64,7 @@ public class CarouselAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.V
         }
 
         @Override
-        public void bind(List<TeamMember> carousel) {
+        public void bind(@NonNull List<TeamMember> carousel) {
             team = carousel.get(0).getTeam();
             carouselNumberTextView.setText(team.getName());
             List<List<TeamMember>> pages = getPagesList(carousel);
@@ -88,7 +87,7 @@ public class CarouselAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.V
         }
 
         private void setupDataButtons(int leaderId) {
-            if (leaderId == getUserId((Activity) getContext())) {
+            if (leaderId == getUserId(getContext())) {
                 editTeam.setVisibility(VISIBLE);
                 deleteTeam.setVisibility(VISIBLE);
                 editTeam.setOnClickListener(v -> openEditTeam());
@@ -134,7 +133,7 @@ public class CarouselAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.V
             }
         }
 
-        private <T> void setupNavButtons(List<List<T>> pages) {
+        private <T> void setupNavButtons(@NonNull List<List<T>> pages) {
             if (pages.size() < 2) {
                 btnPrev.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.light_gray));
                 btnNext.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.light_gray));
@@ -161,7 +160,8 @@ public class CarouselAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.V
             });
         }
 
-        private <T> List<List<T>> getPagesList(List<T> list) {
+        @NonNull
+        private <T> List<List<T>> getPagesList(@NonNull List<T> list) {
             List<List<T>> pages = new ArrayList<>();
             for (int i = 0; i < list.size(); i += PAGE_SIZE) {
                 int end = Math.min(list.size(), i + PAGE_SIZE);

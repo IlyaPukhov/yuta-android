@@ -8,9 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.ilyap.yuta.R;
@@ -26,9 +23,9 @@ public class ReadonlyProfileFragment extends ProfileFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
-
         if (getArguments() != null) {
             userId = getArguments().getInt("userId", -1);
+            fromTeams = true;
         }
 
         progressLayout = view.findViewById(R.id.progressLayout);
@@ -43,21 +40,5 @@ public class ReadonlyProfileFragment extends ProfileFragment {
         backButton.setVisibility(VISIBLE);
         backButton.setOnClickListener(v -> handleBackPressed());
         return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                handleBackPressed();
-            }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
-    }
-
-    private void handleBackPressed() {
-        getParentFragmentManager().popBackStack();
     }
 }

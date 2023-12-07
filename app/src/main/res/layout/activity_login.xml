@@ -37,7 +37,7 @@
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toTopOf="@+id/footer"
             app:layout_constraintTop_toBottomOf="@+id/header"
-            android:id="@+id/logo" />
+            android:id="@+id/card_background" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/auth_form"

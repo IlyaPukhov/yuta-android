@@ -16,11 +16,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.ilyap.yuta.MainActivity;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
@@ -35,6 +39,7 @@ public class ProfileFragment extends Fragment {
     protected View progressLayout;
     protected User user;
     protected RequestViewModel viewModel;
+    protected boolean fromTeams;
 
     public ProfileFragment() {
     }
@@ -43,6 +48,10 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
+        if (getArguments() != null) {
+            fromTeams = getArguments().getBoolean("fromTeams", false);
+        }
+
         progressLayout = view.findViewById(R.id.progressLayout);
 
         viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
@@ -153,4 +162,23 @@ public class ProfileFragment extends Fragment {
                 }
             }
     );
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if (fromTeams) {
+            OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+                @Override
+                public void handleOnBackPressed() {
+                    handleBackPressed();
+                }
+            };
+            requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
+        }
+    }
+
+    protected void handleBackPressed() {
+        ((MainActivity) requireActivity()).getNavController().navigate(R.id.teamsFragment);
+    }
 }

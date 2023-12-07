@@ -10,7 +10,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/card_background"
-            android:id="@+id/logo"
+            android:id="@+id/card_background"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -23,8 +23,8 @@
             android:src="@drawable/team_leader_icon"
             android:visibility="gone"
             android:id="@+id/teamLeaderIcon"
-            app:layout_constraintTop_toTopOf="@+id/logo"
-            app:layout_constraintStart_toStartOf="@+id/logo"
+            app:layout_constraintTop_toTopOf="@+id/card_background"
+            app:layout_constraintStart_toStartOf="@+id/card_background"
             android:layout_marginTop="11dp"
             android:layout_marginStart="16dp" />
 
