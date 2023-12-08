@@ -107,10 +107,10 @@ public class ProfileFragment extends Fragment {
         setDataInTextView(R.id.email, user.geteMail());
         setDataInTextView(R.id.vk, user.getVk());
 
-        fixContactsContainer(R.id.phone_number, R.id.email, R.id.vk);
+        contactsContainerVisibility(R.id.phone_number, R.id.email, R.id.vk);
     }
 
-    private void fixContactsContainer(int... fields) {
+    private void contactsContainerVisibility(int... fields) {
         boolean isEmpty = true;
         for (int field : fields) {
             if (view.findViewById(field).getVisibility() == VISIBLE) {

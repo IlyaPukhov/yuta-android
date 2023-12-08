@@ -1,6 +1,6 @@
 package com.ilyap.yuta.ui.dialogs.user;
 
-import static android.view.View.INVISIBLE;
+import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
@@ -75,7 +75,7 @@ public class EditUserDialog extends CustomInteractiveDialog {
             error.setText(activity.getString(resId));
             error.setVisibility(VISIBLE);
         } else {
-            error.setVisibility(INVISIBLE);
+            error.setVisibility(GONE);
         }
     }
 

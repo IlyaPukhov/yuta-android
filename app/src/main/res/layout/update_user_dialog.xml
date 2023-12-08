@@ -21,7 +21,7 @@
 
     <TextView
             android:id="@+id/reload_text"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/reload_text"
             android:textAppearance="@style/reload_text"
@@ -37,7 +37,7 @@
 
     <TextView
             android:id="@+id/reload_desc"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/reload_desc"
             android:textAppearance="@style/dialog_desc"
@@ -53,7 +53,7 @@
 
     <ImageView
             android:id="@+id/separator"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:src="@drawable/separator"
             android:contentDescription="@string/separator"
@@ -73,7 +73,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/reload_desc"
-            android:maxWidth="400dp">
+            app:layout_constraintWidth_max="400dp">
 
         <EditText
                 android:id="@+id/submit_password"
@@ -123,11 +123,14 @@
             android:layout_marginBottom="22dp"
             android:paddingHorizontal="30dp"
             android:paddingVertical="5dp"
-            tools:ignore="TouchTargetSizeCheck" />
+            tools:ignore="TouchTargetSizeCheck"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintVertical_bias="0.0" />
 
     <TextView
             android:id="@+id/error_text"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAppearance="@style/error_message"
             android:text="@string/error_update_message"
@@ -136,6 +139,8 @@
             app:layout_constraintTop_toBottomOf="@id/password_field"
             app:layout_constraintStart_toStartOf="@+id/password_field"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp" />
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toEndOf="@id/password_field" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
