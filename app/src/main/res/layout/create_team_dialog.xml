@@ -47,8 +47,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/separator"
                     android:layout_marginTop="20dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp" />
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp" />
 
             <TextView
                     android:id="@+id/added_members"
@@ -63,8 +63,8 @@
                     android:layout_marginTop="20dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginStart="20dp" />
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginStart="24dp" />
 
             <TextView
                     android:id="@+id/find_desc"
@@ -78,9 +78,9 @@
                     app:layout_constraintTop_toBottomOf="@+id/addedMembers"
                     android:layout_marginTop="25dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginStart="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="20dp" />
+                    android:layout_marginEnd="24dp" />
 
             <TextView
                     android:id="@+id/create_text"
@@ -128,8 +128,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginTop="15dp"
                     app:layout_constraintHorizontal_bias="0.0"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp" />
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp" />
 
             <EditText
                     android:id="@+id/find_name"
@@ -148,8 +148,8 @@
                     app:layout_constraintTop_toBottomOf="@+id/find_desc"
                     android:layout_marginTop="15dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
                     app:layout_constraintEnd_toEndOf="parent" />
 
             <Button
@@ -208,9 +208,9 @@
                     app:layout_constraintTop_toBottomOf="@+id/added_members"
                     android:layout_marginTop="15dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginStart="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginEnd="24dp"
                     android:nestedScrollingEnabled="false" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -220,9 +220,9 @@
                     app:layout_constraintTop_toBottomOf="@id/btnSearch"
                     android:layout_marginTop="15dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginStart="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginEnd="24dp"
                     android:nestedScrollingEnabled="false" />
 
             <TextView

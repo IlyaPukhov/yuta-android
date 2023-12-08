@@ -111,7 +111,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/phone_number"
             android:paddingHorizontal="16dp"
-            android:paddingVertical="10dp" />
+            android:paddingVertical="10dp"
+            android:maxLength="50" />
 
     <EditText
             android:id="@+id/vk"
@@ -131,7 +132,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/email"
             android:paddingHorizontal="16dp"
-            android:paddingVertical="10dp" />
+            android:paddingVertical="10dp"
+            android:maxLength="50" />
 
     <Button
             android:id="@+id/submit"
