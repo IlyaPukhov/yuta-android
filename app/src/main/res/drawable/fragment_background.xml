@@ -6,12 +6,15 @@
         </shape>
     </item>
     <item android:bottom="600dp">
-        <shape>
+        <shape
+                android:useLevel="true"
+                android:dither="true"
+                android:tileMode="repeat">
             <gradient
                     android:type="linear"
-                    android:startColor="#0D2468"
-                    android:centerColor="#E673473C"
-                    android:endColor="#F2D96A10" />
+                    android:startColor="#FC0D2468"
+                    android:centerColor="#FC73473C"
+                    android:endColor="#FCD96A10" />
         </shape>
     </item>
 </layer-list>
