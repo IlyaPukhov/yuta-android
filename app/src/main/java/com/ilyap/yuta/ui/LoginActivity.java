@@ -14,8 +14,11 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -33,6 +36,9 @@ import com.ilyap.yuta.utils.RequestViewModel;
 public class LoginActivity extends AppCompatActivity {
     private TextView errorText;
     private RequestViewModel viewModel;
+    private Button loginButton;
+    private EditText loginView;
+    private EditText passwordView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,16 +54,22 @@ public class LoginActivity extends AppCompatActivity {
             openNetworkDialog();
         }
 
+        loginView = findViewById(R.id.login);
+        passwordView = findViewById(R.id.password);
+        setupEditView(loginView);
+        setupEditView(passwordView);
+
         errorText = findViewById(R.id.error_text);
-        findViewById(R.id.login_button).setOnClickListener(v -> {
+        loginButton = findViewById(R.id.login_button);
+        loginButton.setOnClickListener(v -> {
             hideKeyboard();
             verifyLogin();
         });
     }
 
     private void verifyLogin() {
-        String login = getTextFromField(R.id.login);
-        String password = getTextFromField(R.id.password);
+        String login = loginView.getText().toString();
+        String password = passwordView.getText().toString();
 
         CustomDialog loadingDialog = new LoadingDialog(this);
         loadingDialog.start();
@@ -97,8 +109,21 @@ public class LoginActivity extends AppCompatActivity {
         return activeNetwork != null && (activeNetwork.getType() == TYPE_WIFI || activeNetwork.getType() == TYPE_MOBILE);
     }
 
-    private String getTextFromField(int fieldId) {
-        return ((EditText) findViewById(fieldId)).getText().toString();
+    private void setupEditView(EditText editText) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                loginButton.setEnabled(!s.toString().trim().equals(""));
+            }
+        });
     }
 
     public void hideKeyboard() {
