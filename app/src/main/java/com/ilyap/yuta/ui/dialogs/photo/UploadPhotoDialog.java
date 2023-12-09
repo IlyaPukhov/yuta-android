@@ -41,11 +41,9 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
         loadImage(activity, user.getCroppedPhoto(), imageView);
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
-        dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> {
-            DeletePhotoDialog.deletePhoto(fragment);
-            imageView.setImageBitmap(null);
-        });
+        dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> setImage(null));
         dialog.findViewById(R.id.pick_miniature).setOnClickListener(v -> {
+            updatePhoto();
             CustomDialog editPhotoDialog = new CropPhotoDialog(activity, fragment);
             editPhotoDialog.start();
             dismiss();
@@ -62,20 +60,23 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
 
     public static void handleActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
-            selectedImageUri = data.getData();
-            updatePhoto();
+            setImage(data.getData());
         }
     }
 
-    private static void updatePhoto() {
+    private void updatePhoto() {
         if (selectedImageUri != null) {
             user.setPhoto(String.valueOf(selectedImageUri));
             user.setCroppedPhoto(String.valueOf(selectedImageUri));
             RequestUtils.uploadUserPhotoRequest(user);
-            imageView.setImageURI(selectedImageUri);
             if (fragment != null) {
                 ((ProfileFragment) fragment).updateImage(user);
             }
         }
+    }
+
+    private static void setImage(Uri uri) {
+        selectedImageUri = uri;
+        imageView.setImageURI(selectedImageUri);
     }
 }

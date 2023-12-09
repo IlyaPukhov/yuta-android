@@ -43,7 +43,7 @@ public class EditTeamDialog extends CreateTeamDialog {
         submitButton.setText(R.string.save_button);
         ((TextView) dialog.findViewById(R.id.create_text)).setText(getContext().getString(R.string.edit_team_text));
         teamName.setText(team.getName());
-        updateList(membersAdapter, team.getMembers());
+        membersAdapter.updateList(team.getMembers());
     }
 
     private void editTeam() {

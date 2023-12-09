@@ -92,7 +92,7 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
         });
     }
 
-    protected void updateList(UserAdapter adapter, List<User> users) {
+    private void updateList(UserAdapter adapter, List<User> users) {
         messageVisibility(emptySearch, !users.isEmpty());
         adapter.updateList(users);
     }
