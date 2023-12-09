@@ -67,7 +67,10 @@ public class EditUserDialog extends CustomInteractiveDialog {
         vkView.setOnFocusChangeListener((v, hasFocus) -> errorVisibility(isVkValid, R.string.error_vk));
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
-        submitButton.setOnClickListener(v -> editUserData(user));
+        submitButton.setOnClickListener(v -> {
+            hideKeyboard(vkView);
+            editUserData(user);
+        });
     }
 
     private void errorVisibility(boolean isValid, int resId) {

@@ -26,7 +26,10 @@ public class EditTeamDialog extends CreateTeamDialog {
         super.start();
         setupTeam(teamId);
 
-        submitButton.setOnClickListener(v -> editTeam());
+        submitButton.setOnClickListener(v -> {
+            hideKeyboard(submitButton);
+            editTeam();
+        });
     }
 
     private void setupTeam(int teamId) {

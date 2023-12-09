@@ -35,7 +35,10 @@ public class UpdateUserDialog extends CustomInteractiveDialog {
         EditText password = dialog.findViewById(R.id.submit_password);
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
-        dialog.findViewById(R.id.submit).setOnClickListener(v -> updateUserData(password.getText().toString()));
+        dialog.findViewById(R.id.submit).setOnClickListener(v -> {
+            hideKeyboard(password);
+            updateUserData(password.getText().toString());
+        });
     }
 
     private void updateUserData(String password) {

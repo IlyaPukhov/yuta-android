@@ -14,7 +14,8 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.widget.Button;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -48,12 +49,13 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         errorText = findViewById(R.id.error_text);
-        Button buttonLogin = findViewById(R.id.login_button);
-        buttonLogin.setOnClickListener(v -> verifyLogin());
+        findViewById(R.id.login_button).setOnClickListener(v -> {
+            hideKeyboard();
+            verifyLogin();
+        });
     }
 
     private void verifyLogin() {
-        errorText.setVisibility(GONE);
         String login = getTextFromField(R.id.login);
         String password = getTextFromField(R.id.password);
 
@@ -66,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
             if (!(result instanceof AuthResponse)) return;
             AuthResponse response = (AuthResponse) result;
             if (response.getStatus().equalsIgnoreCase("ok")) {
+                errorText.setVisibility(GONE);
                 setUserId(this, response.getUserId());
                 openApp();
             } else {
@@ -96,5 +99,15 @@ public class LoginActivity extends AppCompatActivity {
 
     private String getTextFromField(int fieldId) {
         return ((EditText) findViewById(fieldId)).getText().toString();
+    }
+
+    public void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(INPUT_METHOD_SERVICE);
+        View view = this.getCurrentFocus();
+        if (view == null) {
+            view = new View(this);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        view.clearFocus();
     }
 }

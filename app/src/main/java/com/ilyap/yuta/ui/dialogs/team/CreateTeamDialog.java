@@ -70,7 +70,10 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
         searchButton.setOnClickListener(v -> searchUsers());
-        submitButton.setOnClickListener(v -> createTeam());
+        submitButton.setOnClickListener(v -> {
+            hideKeyboard(teamName);
+            createTeam();
+        });
     }
 
     private void createTeam() {
