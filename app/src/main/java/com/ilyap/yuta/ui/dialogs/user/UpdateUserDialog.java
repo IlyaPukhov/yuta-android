@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.ilyap.yuta.R;
@@ -62,7 +63,7 @@ public class UpdateUserDialog extends CustomInteractiveDialog {
         });
     }
 
-    private void setupEditView(EditText editText) {
+    private void setupEditView(@NonNull EditText editText) {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -74,6 +75,7 @@ public class UpdateUserDialog extends CustomInteractiveDialog {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                errorText.setVisibility(GONE);
                 submitButton.setEnabled(!s.toString().trim().equals(""));
             }
         });

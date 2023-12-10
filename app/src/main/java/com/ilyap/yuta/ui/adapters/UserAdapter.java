@@ -4,7 +4,6 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.utils.UserUtils.loadImage;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,15 +15,19 @@ import androidx.annotation.NonNull;
 
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
+import com.ilyap.yuta.ui.dialogs.CustomDialog;
+import com.ilyap.yuta.ui.dialogs.team.CreateTeamDialog;
 
 import java.util.List;
 
 public class UserAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User>> {
+    private final CustomDialog dialog;
     private final UserAdapter membersAdapter;
 
-    public UserAdapter(Context context, List<User> items, UserAdapter membersAdapter) {
-        super(context, items);
+    public UserAdapter(CustomDialog dialog, List<User> items, UserAdapter membersAdapter) {
+        super(dialog.getContext(), items);
         this.membersAdapter = membersAdapter;
+        this.dialog = dialog;
     }
 
     @NonNull
@@ -63,12 +66,16 @@ public class UserAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User>>
                     buttonAdd.setOnClickListener(v -> {
                         removeItem(user);
                         membersAdapter.insertItem(user);
+                        ((CreateTeamDialog) dialog).updateAddedTextVisibility();
                     });
                 } else {
                     buttonAdd.setVisibility(GONE);
                     buttonRemove.setVisibility(VISIBLE);
 
-                    buttonRemove.setOnClickListener(v -> removeItem(user));
+                    buttonRemove.setOnClickListener(v -> {
+                        removeItem(user);
+                        ((CreateTeamDialog) dialog).updateAddedTextVisibility();
+                    });
                 }
             }
         }

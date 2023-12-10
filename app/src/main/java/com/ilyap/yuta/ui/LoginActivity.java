@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -80,7 +81,6 @@ public class LoginActivity extends AppCompatActivity {
             if (!(result instanceof AuthResponse)) return;
             AuthResponse response = (AuthResponse) result;
             if (response.getStatus().equalsIgnoreCase("ok")) {
-                errorText.setVisibility(GONE);
                 setUserId(this, response.getUserId());
                 openApp();
             } else {
@@ -109,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
         return activeNetwork != null && (activeNetwork.getType() == TYPE_WIFI || activeNetwork.getType() == TYPE_MOBILE);
     }
 
-    private void setupEditView(EditText editText) {
+    private void setupEditView(@NonNull EditText editText) {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -121,12 +121,19 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                loginButton.setEnabled(!s.toString().trim().equals(""));
+                errorText.setVisibility(GONE);
+                updateLoginButtonEnable();
             }
         });
     }
 
-    public void hideKeyboard() {
+    private void updateLoginButtonEnable() {
+        String loginText = loginView.getText().toString().trim();
+        String passwordText = passwordView.getText().toString().trim();
+        loginButton.setEnabled(!loginText.isEmpty() && !passwordText.isEmpty());
+    }
+
+    private void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) this.getSystemService(INPUT_METHOD_SERVICE);
         View view = this.getCurrentFocus();
         if (view == null) {

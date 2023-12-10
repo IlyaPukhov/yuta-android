@@ -33,8 +33,8 @@ public abstract class BaseAdapter<T, VH extends BaseAdapter.ViewHolder<T>> exten
 
     public void removeItem(T item) {
         int position = this.items.indexOf(item);
-        this.items.remove(position);
         this.notifyItemRemoved(position);
+        this.items.remove(position);
         this.notifyItemRangeChanged(position, getItemCount());
     }
 

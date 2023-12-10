@@ -45,7 +45,7 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         if (getArguments() != null) {
@@ -110,7 +110,7 @@ public class ProfileFragment extends Fragment {
         contactsContainerVisibility(R.id.phone_number, R.id.email, R.id.vk);
     }
 
-    private void contactsContainerVisibility(int... fields) {
+    private void contactsContainerVisibility(@NonNull int... fields) {
         boolean isEmpty = true;
         for (int field : fields) {
             if (view.findViewById(field).getVisibility() == VISIBLE) {

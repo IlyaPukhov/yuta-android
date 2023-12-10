@@ -1,5 +1,6 @@
 package com.ilyap.yuta.ui.adapters;
 
+import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
 
@@ -93,6 +94,11 @@ public class CarouselAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.V
                 deleteTeam.setVisibility(VISIBLE);
                 editTeam.setOnClickListener(v -> openEditTeamDialog());
                 deleteTeam.setOnClickListener(v -> openDeleteTeamDialog());
+            } else {
+                editTeam.setVisibility(GONE);
+                deleteTeam.setVisibility(GONE);
+                editTeam.setOnClickListener(null);
+                deleteTeam.setOnClickListener(null);
             }
         }
 

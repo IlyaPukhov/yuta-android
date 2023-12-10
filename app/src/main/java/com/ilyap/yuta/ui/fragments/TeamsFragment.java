@@ -83,7 +83,7 @@ public class TeamsFragment extends Fragment {
         }
     }
 
-    private void fillCarousels(List<List<TeamMember>> teamMembers) {
+    private void fillCarousels(@NonNull List<List<TeamMember>> teamMembers) {
         emptyText.setVisibility(teamMembers.isEmpty() ? VISIBLE : GONE);
         carouselAdapter.updateList(teamMembers);
     }
@@ -112,7 +112,7 @@ public class TeamsFragment extends Fragment {
         });
     }
 
-    private void openTab(Button button) {
+    private void openTab(@NonNull Button button) {
         button.performClick();
     }
 
@@ -140,7 +140,7 @@ public class TeamsFragment extends Fragment {
         lastPickedButton = button;
     }
 
-    private List<List<TeamMember>> getTeamMembers(List<Team> teams) {
+    private List<List<TeamMember>> getTeamMembers(@NonNull List<Team> teams) {
         return teams.stream()
                 .map(team -> {
                     List<TeamMember> membersList = new ArrayList<>();

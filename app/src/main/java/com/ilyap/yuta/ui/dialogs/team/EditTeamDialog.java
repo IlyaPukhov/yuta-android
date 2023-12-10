@@ -24,7 +24,8 @@ public class EditTeamDialog extends CreateTeamDialog {
     @Override
     public void start() {
         super.start();
-        setupTeam(teamId);
+        setupViews();
+        getTeam(teamId);
 
         submitButton.setOnClickListener(v -> {
             hideKeyboard(submitButton);
@@ -32,21 +33,25 @@ public class EditTeamDialog extends CreateTeamDialog {
         });
     }
 
-    private void setupTeam(int teamId) {
+    private void setupViews() {
+        submitButton.setText(R.string.save_button);
+        ((TextView) dialog.findViewById(R.id.create_text)).setText(getContext().getString(R.string.edit_team_text));
+    }
+
+    private void getTeam(int teamId) {
         viewModel.getResultLiveData().removeObservers(fragment);
         viewModel.getTeam(teamId);
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof Team)) return;
             team = (Team) result;
-            setupViews();
+            setupTeam();
         });
     }
 
-    private void setupViews() {
-        submitButton.setText(R.string.save_button);
-        ((TextView) dialog.findViewById(R.id.create_text)).setText(getContext().getString(R.string.edit_team_text));
+    private void setupTeam() {
         teamName.setText(team.getName());
         membersAdapter.updateList(team.getMembers());
+        updateAddedTextVisibility();
     }
 
     private void editTeam() {

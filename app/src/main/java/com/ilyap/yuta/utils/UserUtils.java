@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -64,7 +66,7 @@ public final class UserUtils {
         return getSharedPreferences(context).getInt("user_id", -1);
     }
 
-    private static SharedPreferences getSharedPreferences(Context context) {
+    private static SharedPreferences getSharedPreferences(@NonNull Context context) {
         return context.getSharedPreferences("session", Context.MODE_PRIVATE);
     }
 }
