@@ -40,7 +40,7 @@ public class TeamsFragment extends Fragment {
     private RequestViewModel viewModel;
     private CarouselAdapter carouselAdapter;
 
-    private ToggleButton lastPickedButton;
+    private static int lastPickedButtonId;
     private List<List<TeamMember>> managedTeamsMembers;
     private List<List<TeamMember>> othersTeamsMembers;
 
@@ -60,9 +60,8 @@ public class TeamsFragment extends Fragment {
         recyclerViewInitialize();
         teamsSwitchInitialize();
 
-        if (savedInstanceState != null) {
-            int lastPickedButtonId = savedInstanceState.getInt("LAST_PICKED_BUTTON_ID", managedTeamsButton.getId());
-            lastPickedButton = view.findViewById(lastPickedButtonId);
+        if (lastPickedButtonId == 0) {
+            lastPickedButtonId = managedTeamsButton.getId();
         }
 
         view.findViewById(R.id.create_team).setOnClickListener(v -> openCreateTeamDialog());
@@ -72,15 +71,7 @@ public class TeamsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        updateCarousels(lastPickedButton);
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (lastPickedButton != null) {
-            outState.putInt("LAST_PICKED_BUTTON_ID", lastPickedButton.getId());
-        }
+        updateCarousels(view.findViewById(lastPickedButtonId));
     }
 
     private void fillCarousels(@NonNull List<List<TeamMember>> teamMembers) {
@@ -137,7 +128,7 @@ public class TeamsFragment extends Fragment {
         button.setChecked(true);
         otherButton.setTextAppearance(R.style.default_teams);
         otherButton.setChecked(false);
-        lastPickedButton = button;
+        lastPickedButtonId = button.getId();
     }
 
     private List<List<TeamMember>> getTeamMembers(@NonNull List<Team> teams) {
@@ -169,6 +160,5 @@ public class TeamsFragment extends Fragment {
         memberTeamsButton = view.findViewById(R.id.member_button);
         managedTeamsButton.setOnClickListener(this::onToggleButtonClick);
         memberTeamsButton.setOnClickListener(this::onToggleButtonClick);
-        lastPickedButton = managedTeamsButton;
     }
 }
