@@ -4,6 +4,7 @@ import static com.ilyap.yuta.utils.RequestUtils.ROOT_URL;
 import static com.ilyap.yuta.utils.RequestUtils.getRequest;
 import static com.ilyap.yuta.utils.RequestUtils.postRequest;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -139,7 +140,7 @@ public final class RequestViewModel extends ViewModel {
         });
     }
 
-    private static JSONArray getMembersIdArray(List<User> members) {
+    private static JSONArray getMembersIdArray(@NonNull List<User> members) {
         return members.stream()
                 .map(User::getId)
                 .collect(Collector.of(JSONArray::new, JSONArray::put, JSONArray::put));

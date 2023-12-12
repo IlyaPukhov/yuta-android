@@ -3,6 +3,7 @@ package com.ilyap.yuta.ui.dialogs.team;
 import android.content.Context;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -42,7 +43,7 @@ public class DeleteTeamDialog extends CustomInteractiveDialog {
         ((TextView) dialog.findViewById(R.id.delete_desc)).setText(text);
     }
 
-    private void deleteTeam(Fragment fragment, Team team) {
+    private void deleteTeam(Fragment fragment, @NonNull Team team) {
         viewModel.getResultLiveData().removeObservers(fragment);
         viewModel.deleteTeam(team.getId());
         viewModel.getResultLiveData().observe(fragment, result -> {

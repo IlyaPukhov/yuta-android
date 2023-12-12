@@ -1,5 +1,7 @@
 package com.ilyap.yuta.utils;
 
+import androidx.annotation.NonNull;
+
 import com.ilyap.yuta.models.User;
 
 import org.json.JSONObject;
@@ -19,6 +21,7 @@ public final class RequestUtils {
     private RequestUtils() {
     }
 
+    @NonNull
     public static String postRequest(String urlString, Map<String, Object> params) throws IOException {
         URL url = new URL(urlString);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -43,6 +46,7 @@ public final class RequestUtils {
         }
     }
 
+    @NonNull
     public static String getRequest(String urlString) throws IOException {
         URL url = new URL(urlString);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();

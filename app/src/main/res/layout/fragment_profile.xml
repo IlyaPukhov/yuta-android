@@ -6,33 +6,6 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragments.ProfileFragment">
 
-    <Button
-            android:layout_width="22dp"
-            android:layout_height="22dp"
-            android:id="@+id/back_button"
-            android:contentDescription="@string/exit_button"
-            android:background="@drawable/exit_icon"
-            style="@style/classic_button_style"
-            tools:ignore="TouchTargetSizeCheck"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            android:visibility="gone" />
-
-    <Button
-            android:layout_width="22dp"
-            android:layout_height="22dp"
-            android:id="@+id/log_out"
-            android:contentDescription="@string/logout_button"
-            android:background="@drawable/exit_icon"
-            style="@style/classic_button_style"
-            tools:ignore="TouchTargetSizeCheck"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginEnd="20dp"
-            app:layout_constraintEnd_toEndOf="parent" />
-
     <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="0dp"
@@ -48,9 +21,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+            <Button
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:id="@+id/back_button"
+                    android:contentDescription="@string/exit_button"
+                    android:background="@drawable/exit_icon"
+                    style="@style/classic_button_style"
+                    tools:ignore="TouchTargetSizeCheck"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:visibility="gone" />
+
+            <Button
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:id="@+id/log_out"
+                    android:contentDescription="@string/logout_button"
+                    android:background="@drawable/exit_icon"
+                    style="@style/classic_button_style"
+                    tools:ignore="TouchTargetSizeCheck"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/scroll_container"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/scrollview_background"
                     app:layout_constraintTop_toTopOf="parent"
@@ -66,15 +66,16 @@
                         android:textAlignment="center"
                         android:fontFamily="@font/montserrat_regular"
                         android:autoSizeTextType="uniform"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/faculty"
                         android:layout_marginTop="10dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/study_icon"
-                        android:layout_marginStart="60dp"
-                        android:layout_marginEnd="60dp" />
+                        android:layout_marginStart="30dp"
+                        android:layout_marginEnd="30dp"
+                        tools:ignore="SpeakableTextPresentCheck" />
 
                 <TextView
                         android:contentDescription="@string/direction"
@@ -89,9 +90,9 @@
                         android:layout_marginTop="8dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginEnd="60dp"
+                        android:layout_marginEnd="30dp"
                         app:layout_constraintTop_toBottomOf="@+id/faculty"
-                        android:layout_marginStart="60dp" />
+                        android:layout_marginStart="30dp" />
 
                 <TextView
                         android:contentDescription="@string/group"
@@ -106,8 +107,8 @@
                         android:layout_marginTop="8dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginStart="60dp"
-                        android:layout_marginEnd="60dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginEnd="30dp"
                         app:layout_constraintTop_toBottomOf="@+id/direction" />
 
                 <LinearLayout
@@ -143,7 +144,7 @@
                                 android:textAlignment="center"
                                 android:fontFamily="@font/montserrat_semibold"
                                 android:autoSizeTextType="uniform"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
 
                         <TextView
@@ -151,7 +152,7 @@
                                 android:textAlignment="center"
                                 android:fontFamily="@font/montserrat_bold"
                                 android:autoSizeTextType="uniform"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:padding="4dp"
                                 android:id="@+id/projects_count" />
@@ -171,7 +172,7 @@
                                 android:textAlignment="center"
                                 android:fontFamily="@font/montserrat_semibold"
                                 android:autoSizeTextType="uniform"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
 
                         <TextView
@@ -179,7 +180,7 @@
                                 android:textAlignment="center"
                                 android:fontFamily="@font/montserrat_bold"
                                 android:autoSizeTextType="uniform"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:padding="4dp"
                                 android:id="@+id/tasks_count" />
@@ -199,7 +200,7 @@
                                 android:textAlignment="center"
                                 android:fontFamily="@font/montserrat_semibold"
                                 android:autoSizeTextType="uniform"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
 
                         <TextView
@@ -207,7 +208,7 @@
                                 android:textAlignment="center"
                                 android:fontFamily="@font/montserrat_bold"
                                 android:autoSizeTextType="uniform"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:padding="4dp"
                                 android:id="@+id/teams_count" />
@@ -224,7 +225,9 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:id="@+id/contacts_container"
-                        android:visibility="gone">
+                        android:visibility="gone"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp">
 
                     <TextView
                             android:visibility="gone"
@@ -280,17 +283,14 @@
                         android:layout_height="40dp"
                         android:src="@drawable/study_info_icon"
                         android:contentDescription="@string/study_info"
-                        android:layout_centerHorizontal="true"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:layout_marginEnd="190dp"
-                        android:layout_marginStart="190dp"
                         android:layout_marginTop="25dp"
                         app:layout_constraintTop_toBottomOf="@+id/separator" />
 
                 <ImageView
                         android:id="@+id/separator"
-                        android:layout_width="240dp"
+                        android:layout_width="0dp"
                         android:layout_height="2dp"
                         android:src="@drawable/profile_separator"
                         android:contentDescription="@string/separator"
@@ -299,7 +299,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginEnd="95dp"
                         android:layout_marginStart="95dp"
-                        android:layout_marginTop="30dp"
+                        android:layout_marginTop="25dp"
                         app:layout_constraintTop_toBottomOf="@+id/biography" />
 
                 <TextView
@@ -307,12 +307,11 @@
                         android:visibility="gone"
                         android:textIsSelectable="true"
                         android:textAlignment="center"
-                        android:fontFamily="@font/montserrat_regular"
                         android:autoSizeTextType="uniform"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/biography"
-                        android:layout_marginTop="22dp"
+                        android:layout_marginTop="20dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginStart="28dp"
@@ -334,7 +333,7 @@
                         android:layout_marginEnd="175dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/name"
-                        android:layout_marginTop="10dp" />
+                        android:layout_marginTop="15dp" />
 
                 <TextView
                         android:textIsSelectable="true"
@@ -342,15 +341,16 @@
                         android:textAlignment="center"
                         android:fontFamily="@font/montserrat_semibold"
                         android:autoSizeTextType="uniform"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/name"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="75dp"
+                        android:layout_marginTop="90dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginStart="40dp"
-                        android:layout_marginEnd="40dp" />
+                        android:layout_marginEnd="40dp"
+                        tools:ignore="SpeakableTextPresentCheck" />
 
                 <Button
                         android:layout_width="22dp"
@@ -358,7 +358,7 @@
                         android:id="@+id/edit"
                         android:contentDescription="@string/edit_profile_button"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="32dp"
+                        android:layout_marginTop="45dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginEnd="54dp"
                         android:background="@drawable/edit_icon"
@@ -371,7 +371,7 @@
                         android:id="@+id/reload"
                         android:contentDescription="@string/reload_button"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="32dp"
+                        android:layout_marginTop="45dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginEnd="22dp"
                         android:background="@drawable/reload_icon"
@@ -391,13 +391,12 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="115dp"
+                    app:layout_constraintTop_toTopOf="@id/scroll_container"
                     android:visibility="gone">
 
                 <ProgressBar
                         style="?android:attr/progressBarStyle"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:indeterminate="true"
                         android:indeterminateTintMode="src_atop"

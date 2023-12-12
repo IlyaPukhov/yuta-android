@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -41,6 +42,7 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
     protected UserAdapter membersAdapter;
     private TextView error;
     private TextView emptySearch;
+    private TextView addedText;
     private boolean isTeamNameUnique;
     private List<User> searchUsers;
     protected List<User> addedMembers;
@@ -63,6 +65,7 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
         searchField = dialog.findViewById(R.id.find_name);
         error = dialog.findViewById(R.id.error_text);
         emptySearch = dialog.findViewById(R.id.empty_search_text);
+        addedText = dialog.findViewById(R.id.added_members);
 
         setupEditView(teamName);
         setupEditView(searchField);
@@ -70,7 +73,10 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
         searchButton.setOnClickListener(v -> searchUsers());
-        submitButton.setOnClickListener(v -> createTeam());
+        submitButton.setOnClickListener(v -> {
+            hideKeyboard(teamName);
+            createTeam();
+        });
     }
 
     private void createTeam() {
@@ -92,7 +98,7 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
         });
     }
 
-    protected void updateList(UserAdapter adapter, List<User> users) {
+    private void updateList(@NonNull UserAdapter adapter, @NonNull List<User> users) {
         messageVisibility(emptySearch, !users.isEmpty());
         adapter.updateList(users);
     }
@@ -124,18 +130,23 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
         LinearLayoutManager searchLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         searchUsersView.setLayoutManager(searchLayoutManager);
 
-        membersAdapter = new UserAdapter(getContext(), addedMembers, null);
+        membersAdapter = new UserAdapter(this,addedMembers, null);
         addedMembersView.setAdapter(membersAdapter);
 
-        searchAdapter = new UserAdapter(getContext(), searchUsers, membersAdapter);
+        searchAdapter = new UserAdapter(this, searchUsers, membersAdapter);
         searchUsersView.setAdapter(searchAdapter);
     }
 
-    private void messageVisibility(View message, boolean isValid) {
+    public void updateAddedTextVisibility() {
+        addedText.setVisibility((addedMembers != null && !addedMembers.isEmpty()) ? VISIBLE : GONE);
+    }
+
+
+    private void messageVisibility(@NonNull View message, boolean isValid) {
         message.setVisibility(isValid ? GONE : VISIBLE);
     }
 
-    private void setupEditView(EditText editText) {
+    private void setupEditView(@NonNull EditText editText) {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {

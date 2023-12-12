@@ -31,7 +31,7 @@ public class DeletePhotoDialog extends CustomInteractiveDialog {
         });
     }
 
-    protected static void deletePhoto(Fragment fragment) {
+    protected void deletePhoto(Fragment fragment) {
         User user = getCurrentUser();
         RequestUtils.deleteUserPhotoRequest(user);
         if (fragment != null) {

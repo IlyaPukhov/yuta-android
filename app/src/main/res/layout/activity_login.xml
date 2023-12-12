@@ -8,25 +8,29 @@
         tools:context=".ui.LoginActivity"
         tools:ignore="Overdraw">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/header"
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="90dp"
             android:background="@color/blue"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center"
                 android:text="@string/header_text"
                 android:textAppearance="@style/header_text"
-                android:layout_centerInParent="true" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/header_text"
+                android:textAlignment="center" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
             android:layout_width="match_parent"
@@ -41,7 +45,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/auth_form"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             app:layout_constraintStart_toStartOf="parent"
@@ -51,8 +55,8 @@
 
         <TextView
                 android:id="@+id/auth_text"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:text="@string/auth_text"
                 android:textAppearance="@style/auth_text"
                 android:textAlignment="center"
@@ -64,7 +68,7 @@
 
         <ImageView
                 android:id="@+id/separator"
-                android:layout_width="100dp"
+                android:layout_width="0dp"
                 android:layout_height="5dp"
                 android:src="@drawable/separator"
                 android:contentDescription="@string/separator"
@@ -78,7 +82,7 @@
         <RelativeLayout
                 android:id="@+id/login_field"
                 android:elevation="10dp"
-                android:layout_width="358dp"
+                android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:background="@drawable/field_background"
                 android:layout_centerHorizontal="true"
@@ -87,8 +91,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/separator"
                 android:layout_marginTop="28dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginStart="32dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginStart="25dp"
                 android:backgroundTint="#F2E2E2E2">
 
             <EditText
@@ -104,7 +108,8 @@
                     android:background="@null"
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="10dp"
-                    android:inputType="text|textNoSuggestions" />
+                    android:inputType="text|textNoSuggestions"
+                    android:maxLength="50" />
 
             <ImageView
                     android:id="@+id/login_icon"
@@ -119,7 +124,7 @@
         <RelativeLayout
                 android:id="@+id/password_field"
                 android:elevation="10dp"
-                android:layout_width="358dp"
+                android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:background="@drawable/field_background"
                 android:layout_marginTop="20dp"
@@ -128,8 +133,8 @@
                 app:layout_constraintTop_toBottomOf="@id/login_field"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
                 android:backgroundTint="#F2E2E2E2">
 
             <EditText
@@ -145,7 +150,8 @@
                     android:background="@null"
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="10dp"
-                    android:inputType="text|textPassword" />
+                    android:inputType="text|textPassword"
+                    android:maxLength="50" />
 
             <ImageView
                     android:id="@+id/password_icon"
@@ -160,8 +166,8 @@
 
         <Button
                 android:id="@+id/login_button"
-                android:layout_width="200dp"
-                android:layout_height="48dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:text="@string/login_button"
                 android:textAppearance="@style/login_button"
@@ -174,24 +180,37 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="8dp"
+                android:paddingHorizontal="40dp"
+                android:paddingVertical="5dp"
+                android:autoSizeTextType="uniform"
+                android:minHeight="30dp"
+                android:textAlignment="center"
+                tools:ignore="TouchTargetSizeCheck"
+                app:layout_constraintVertical_bias="1.0"
+                android:textSize="16sp"
+                android:enabled="false" />
+
+        <TextView
+                android:id="@+id/error_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/error_message"
+                android:text="@string/error_message"
+                android:visibility="gone"
+                android:textAlignment="center"
+                app:layout_constraintTop_toBottomOf="@+id/password_field"
+                android:layout_marginTop="18dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="35dp"
+                android:layout_marginEnd="35dp"
+                app:layout_constraintBottom_toTopOf="@+id/login_button"
+                android:layout_marginBottom="12dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-            android:id="@+id/error_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/error_message"
-            android:text="@string/error_message"
-            android:visibility="gone"
-            android:textAlignment="center"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/auth_form"
-            android:layout_marginTop="28dp" />
-
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/footer"
             android:layout_width="match_parent"
             android:layout_height="80dp"
@@ -201,22 +220,27 @@
             app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
-                android:layout_width="match_parent"
-                android:layout_height="24dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="18dp"
                 android:text="@string/footer_text"
                 android:textAppearance="@style/footer_text"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:id="@+id/footer_text" />
 
         <TextView
-                android:layout_width="match_parent"
-                android:layout_height="17dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:text="@string/footer_description"
                 android:textAppearance="@style/footer_description"
                 android:textAlignment="center"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="40dp" />
-    </RelativeLayout>
+                android:id="@+id/footer_desc"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/footer_text" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

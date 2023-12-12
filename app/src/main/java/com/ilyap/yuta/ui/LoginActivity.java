@@ -14,10 +14,15 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -32,6 +37,9 @@ import com.ilyap.yuta.utils.RequestViewModel;
 public class LoginActivity extends AppCompatActivity {
     private TextView errorText;
     private RequestViewModel viewModel;
+    private Button loginButton;
+    private EditText loginView;
+    private EditText passwordView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,15 +55,22 @@ public class LoginActivity extends AppCompatActivity {
             openNetworkDialog();
         }
 
+        loginView = findViewById(R.id.login);
+        passwordView = findViewById(R.id.password);
+        setupEditView(loginView);
+        setupEditView(passwordView);
+
         errorText = findViewById(R.id.error_text);
-        Button buttonLogin = findViewById(R.id.login_button);
-        buttonLogin.setOnClickListener(v -> verifyLogin());
+        loginButton = findViewById(R.id.login_button);
+        loginButton.setOnClickListener(v -> {
+            hideKeyboard();
+            verifyLogin();
+        });
     }
 
     private void verifyLogin() {
-        errorText.setVisibility(GONE);
-        String login = getTextFromField(R.id.login);
-        String password = getTextFromField(R.id.password);
+        String login = loginView.getText().toString();
+        String password = passwordView.getText().toString();
 
         CustomDialog loadingDialog = new LoadingDialog(this);
         loadingDialog.start();
@@ -94,7 +109,37 @@ public class LoginActivity extends AppCompatActivity {
         return activeNetwork != null && (activeNetwork.getType() == TYPE_WIFI || activeNetwork.getType() == TYPE_MOBILE);
     }
 
-    private String getTextFromField(int fieldId) {
-        return ((EditText) findViewById(fieldId)).getText().toString();
+    private void setupEditView(@NonNull EditText editText) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                errorText.setVisibility(GONE);
+                updateLoginButtonEnable();
+            }
+        });
+    }
+
+    private void updateLoginButtonEnable() {
+        String loginText = loginView.getText().toString().trim();
+        String passwordText = passwordView.getText().toString().trim();
+        loginButton.setEnabled(!loginText.isEmpty() && !passwordText.isEmpty());
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(INPUT_METHOD_SERVICE);
+        View view = this.getCurrentFocus();
+        if (view == null) {
+            view = new View(this);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        view.clearFocus();
     }
 }

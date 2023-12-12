@@ -1,5 +1,6 @@
 package com.ilyap.yuta.ui.adapters;
 
+import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
 
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -48,7 +50,7 @@ public class CarouselAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.V
         private final TextView carouselNumberTextView;
         private final ViewPager2 imagePager;
         private final LinearLayout dotsLayout;
-        private final Button btnPrev, btnNext;
+        private final ImageButton btnPrev, btnNext;
         private final Button editTeam, deleteTeam;
         private Team team;
 
@@ -75,7 +77,7 @@ public class CarouselAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.V
             dotsLayout.removeAllViews();
             setupDots(pages.size());
             setupNavButtons(pages);
-            setupDataButtons(team.getLeader().getId());
+            setupTeamButtons(team.getLeader().getId());
 
             imagePager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
                 @Override
@@ -86,21 +88,26 @@ public class CarouselAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.V
             });
         }
 
-        private void setupDataButtons(int leaderId) {
+        private void setupTeamButtons(int leaderId) {
             if (leaderId == getUserId(getContext())) {
                 editTeam.setVisibility(VISIBLE);
                 deleteTeam.setVisibility(VISIBLE);
-                editTeam.setOnClickListener(v -> openEditTeam());
-                deleteTeam.setOnClickListener(v -> openDeleteTeam());
+                editTeam.setOnClickListener(v -> openEditTeamDialog());
+                deleteTeam.setOnClickListener(v -> openDeleteTeamDialog());
+            } else {
+                editTeam.setVisibility(GONE);
+                deleteTeam.setVisibility(GONE);
+                editTeam.setOnClickListener(null);
+                deleteTeam.setOnClickListener(null);
             }
         }
 
-        private void openDeleteTeam() {
+        private void openDeleteTeamDialog() {
             CustomDialog deleteTeamDialog = new DeleteTeamDialog(getContext(), fragment, team);
             deleteTeamDialog.start();
         }
 
-        private void openEditTeam() {
+        private void openEditTeamDialog() {
             CustomDialog editTeamDialog = new EditTeamDialog(getContext(), fragment, team.getId());
             editTeamDialog.start();
         }
@@ -135,8 +142,8 @@ public class CarouselAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.V
 
         private <T> void setupNavButtons(@NonNull List<List<T>> pages) {
             if (pages.size() < 2) {
-                btnPrev.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.light_gray));
-                btnNext.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.light_gray));
+                btnPrev.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.light_gray));
+                btnNext.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.light_gray));
             }
 
             btnPrev.setOnClickListener(v -> {

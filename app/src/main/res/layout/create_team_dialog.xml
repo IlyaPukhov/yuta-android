@@ -21,22 +21,9 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="25dp">
 
-            <Button
-                    android:id="@+id/close"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:contentDescription="@string/close_button"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/close_icon"
-                    style="@style/orange_button_style"
-                    tools:ignore="TouchTargetSizeCheck" />
-
             <TextView
                     android:id="@+id/delete_desc"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/create_team_desc"
                     android:textAppearance="@style/dialog_desc"
@@ -46,13 +33,13 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/separator"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp" />
+                    android:layout_marginTop="25dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp" />
 
             <TextView
                     android:id="@+id/added_members"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/added_members_desc"
                     android:textAppearance="@style/dialog_desc"
@@ -63,12 +50,13 @@
                     android:layout_marginTop="20dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginStart="20dp" />
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginStart="25dp"
+                    android:visibility="gone" />
 
             <TextView
                     android:id="@+id/find_desc"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/add_member_desc"
                     android:textAppearance="@style/dialog_desc"
@@ -76,31 +64,31 @@
                     android:fontFamily="@font/montserrat_medium"
                     android:autoSizeTextType="uniform"
                     app:layout_constraintTop_toBottomOf="@+id/addedMembers"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="15dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginStart="25dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="20dp" />
+                    android:layout_marginEnd="25dp" />
 
             <TextView
                     android:id="@+id/create_text"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/create_team_text"
                     android:textAppearance="@style/reload_text"
                     android:textAlignment="center"
                     android:fontFamily="@font/montserrat_semibold"
                     android:autoSizeTextType="uniform"
-                    app:layout_constraintTop_toBottomOf="@id/close"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginTop="5dp" />
+                    android:layout_marginTop="45dp" />
 
             <ImageView
                     android:id="@+id/separator"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:src="@drawable/separator"
                     android:contentDescription="@string/separator"
@@ -128,8 +116,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginTop="15dp"
                     app:layout_constraintHorizontal_bias="0.0"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp" />
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp" />
 
             <EditText
                     android:id="@+id/find_name"
@@ -148,13 +136,13 @@
                     app:layout_constraintTop_toBottomOf="@+id/find_desc"
                     android:layout_marginTop="15dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
                     app:layout_constraintEnd_toEndOf="parent" />
 
             <Button
                     android:id="@+id/btnSearch"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/blue_button_background"
                     android:textAppearance="@style/pick_button"
@@ -198,52 +186,51 @@
                     android:minHeight="35dip"
                     android:enabled="false"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:gravity="center_horizontal"
                     app:layout_constraintVertical_bias="1.0" />
 
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/addedMembers"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@+id/added_members"
                     android:layout_marginTop="15dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginStart="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginEnd="24dp"
                     android:nestedScrollingEnabled="false" />
 
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/searchUsers"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/btnSearch"
                     android:layout_marginTop="15dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginStart="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginEnd="24dp"
                     android:nestedScrollingEnabled="false" />
 
             <TextView
                     android:id="@+id/error_text"
                     android:text="@string/error_team_message"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/error_team_message"
+                    android:textAppearance="@style/error_field_message"
                     android:textAlignment="textStart"
                     app:layout_constraintTop_toBottomOf="@id/team_name"
                     android:layout_marginTop="3dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="20dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="20dp"
-                    android:visibility="gone" />
+                    app:layout_constraintStart_toStartOf="@+id/team_name"
+                    app:layout_constraintEnd_toEndOf="@+id/team_name"
+                    android:layout_marginEnd="10dp"
+                    android:visibility="gone"
+                    android:layout_marginStart="10dp" />
 
             <TextView
                     android:id="@+id/empty_search_text"
                     android:text="@string/empty_search_message"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/empty_search_message"
                     android:textAlignment="center"
@@ -258,4 +245,17 @@
                     android:layout_marginBottom="25dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <Button
+            android:id="@+id/close"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:contentDescription="@string/close_button"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/close_icon"
+            style="@style/orange_button_style"
+            tools:ignore="TouchTargetSizeCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,9 +5,13 @@ import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.ilyap.yuta.R;
@@ -20,6 +24,7 @@ import com.ilyap.yuta.utils.RequestViewModel;
 public class UpdateUserDialog extends CustomInteractiveDialog {
     private RequestViewModel viewModel;
     private TextView errorText;
+    private Button submitButton;
 
     public UpdateUserDialog(Context context, ProfileFragment profileFragment) {
         super(context, profileFragment);
@@ -33,9 +38,14 @@ public class UpdateUserDialog extends CustomInteractiveDialog {
 
         errorText = dialog.findViewById(R.id.error_text);
         EditText password = dialog.findViewById(R.id.submit_password);
+        setupEditView(password);
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
-        dialog.findViewById(R.id.submit).setOnClickListener(v -> updateUserData(password.getText().toString()));
+        submitButton = dialog.findViewById(R.id.submit);
+        submitButton.setOnClickListener(v -> {
+            hideKeyboard(password);
+            updateUserData(password.getText().toString());
+        });
     }
 
     private void updateUserData(String password) {
@@ -49,6 +59,24 @@ public class UpdateUserDialog extends CustomInteractiveDialog {
                 dismiss();
             } else {
                 errorText.setVisibility(VISIBLE);
+            }
+        });
+    }
+
+    private void setupEditView(@NonNull EditText editText) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                errorText.setVisibility(GONE);
+                submitButton.setEnabled(!s.toString().trim().equals(""));
             }
         });
     }
