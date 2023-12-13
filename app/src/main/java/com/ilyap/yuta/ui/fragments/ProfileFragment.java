@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
@@ -38,6 +39,7 @@ public class ProfileFragment extends Fragment {
     protected View view;
     protected View progressLayout;
     protected User user;
+    protected ImageView imageView;
     protected RequestViewModel viewModel;
     protected boolean fromTeams;
 
@@ -53,6 +55,7 @@ public class ProfileFragment extends Fragment {
         }
 
         progressLayout = view.findViewById(R.id.progressLayout);
+        imageView = view.findViewById(R.id.photo);
 
         viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
         updateProfile();
@@ -60,7 +63,7 @@ public class ProfileFragment extends Fragment {
         view.findViewById(R.id.log_out).setOnClickListener(v -> logOut(requireActivity()));
         view.findViewById(R.id.reload).setOnClickListener(v -> openReloadDialog());
         view.findViewById(R.id.edit).setOnClickListener(v -> openEditUserDialog());
-        view.findViewById(R.id.photo).setOnClickListener(v -> openPhotoDialog());
+        imageView.setOnClickListener(v -> openPhotoDialog());
 
         return view;
     }
@@ -71,6 +74,7 @@ public class ProfileFragment extends Fragment {
 
     protected void updateProfile(int userId) {
         progressLayout.setVisibility(VISIBLE);
+        imageView.setEnabled(false);
         viewModel.getResultLiveData().removeObservers(getViewLifecycleOwner());
         if (userId >= 0) {
             viewModel.getUser(userId);
@@ -80,6 +84,7 @@ public class ProfileFragment extends Fragment {
                 updateImage();
                 fillViews();
                 progressLayout.setVisibility(GONE);
+                imageView.setEnabled(true);
                 setCurrentUser(user);
             });
         }
@@ -110,7 +115,7 @@ public class ProfileFragment extends Fragment {
     }
 
     public void updateImage() {
-        loadImage(requireContext(), user.getCroppedPhotoUrl(), view.findViewById(R.id.photo));
+        loadImage(requireContext(), user.getCroppedPhotoUrl(), imageView);
     }
 
     private void contactsContainerVisibility(@NonNull int... fields) {

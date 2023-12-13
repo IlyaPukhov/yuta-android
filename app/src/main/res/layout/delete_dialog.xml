@@ -64,26 +64,17 @@
 
     <Button
             android:id="@+id/submit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/login_button"
-            style="@style/orange_button_style"
-            android:textAppearance="@style/reload_button"
+            style="@style/orange_button"
             android:text="@string/delete_button"
             android:textAlignment="textStart"
-            android:fontFamily="@font/montserrat_bold"
-            android:autoSizeTextType="uniform"
             android:drawablePadding="10dp"
             app:drawableLeftCompat="@drawable/delete_photo_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="22dp"
-            android:paddingHorizontal="35dp"
-            android:paddingVertical="5dp"
             tools:ignore="TouchTargetSizeCheck"
             app:layout_constraintTop_toBottomOf="@id/delete_desc"
-            android:layout_marginTop="30dp"
-            android:minHeight="35dip" />
+            android:layout_marginTop="30dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
