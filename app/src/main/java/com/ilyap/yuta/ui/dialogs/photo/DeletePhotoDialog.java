@@ -35,7 +35,7 @@ public class DeletePhotoDialog extends CustomInteractiveDialog {
         User user = getCurrentUser();
         RequestUtils.deleteUserPhotoRequest(user);
         if (fragment != null) {
-            ((ProfileFragment) fragment).updateImage(user);
+            ((ProfileFragment) fragment).updateProfile();
         }
     }
 }

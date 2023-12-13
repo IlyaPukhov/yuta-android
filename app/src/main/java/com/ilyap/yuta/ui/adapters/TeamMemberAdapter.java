@@ -53,7 +53,7 @@ public class TeamMemberAdapter extends BaseAdapter<TeamMember, BaseAdapter.ViewH
         public void bind(@NonNull TeamMember member) {
             User user = member.getMember();
             User leader = member.getTeam().getLeader();
-            loadImage(getContext(), user.getCroppedPhoto(), imageView);
+            loadImage(getContext(), user.getCroppedPhotoUrl(), imageView);
 
             if (leader.equals(user)) {
                 teamLeaderIcon.setVisibility(VISIBLE);
