@@ -3,8 +3,8 @@ package com.ilyap.yuta.models;
 public class User {
     private int id;
     private String login;
-    private String photo;
-    private String croppedPhoto;
+    private String photoUrl;
+    private String croppedPhotoUrl;
     private String lastName;
     private String firstName;
     private String patronymic;
@@ -30,20 +30,20 @@ public class User {
         this.id = id;
     }
 
-    public String getPhoto() {
-        return photo;
+    public String getPhotoUrl() {
+        return photoUrl;
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
-    public String getCroppedPhoto() {
-        return croppedPhoto;
+    public String getCroppedPhotoUrl() {
+        return croppedPhotoUrl;
     }
 
-    public void setCroppedPhoto(String croppedPhoto) {
-        this.croppedPhoto = croppedPhoto;
+    public void setCroppedPhotoUrl(String croppedPhotoUrl) {
+        this.croppedPhotoUrl = croppedPhotoUrl;
     }
 
     public String getLastName() {

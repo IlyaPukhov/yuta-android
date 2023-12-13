@@ -54,7 +54,7 @@ public class UserAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User>>
         @Override
         public void bind(User user) {
             if (user != null) {
-                loadImage(getContext(), user.getCroppedPhoto(), avatar);
+                loadImage(getContext(), user.getCroppedPhotoUrl(), avatar);
 
                 String userName = user.getLastName() + " " + user.getFirstName() + (user.getPatronymic() == null ? "" : " " + user.getPatronymic());
                 name.setText(userName);

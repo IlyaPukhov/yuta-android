@@ -77,6 +77,7 @@ public class ProfileFragment extends Fragment {
             viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
                 if (!(result instanceof User)) return;
                 user = (User) result;
+                updateImage();
                 fillViews();
                 progressLayout.setVisibility(GONE);
                 setCurrentUser(user);
@@ -85,8 +86,6 @@ public class ProfileFragment extends Fragment {
     }
 
     private void fillViews() {
-        loadImage(requireContext(), user.getCroppedPhoto(), view.findViewById(R.id.photo));
-
         String fullName = user.getLastName() + " " + user.getFirstName() + (user.getPatronymic() == null ? "" : " " + user.getPatronymic());
         String faculty = getString(R.string.faculty) + ": " + user.getFaculty();
         String direction = getString(R.string.direction) + ": " + user.getDirection();
@@ -108,6 +107,10 @@ public class ProfileFragment extends Fragment {
         setDataInTextView(R.id.vk, user.getVk());
 
         contactsContainerVisibility(R.id.phone_number, R.id.email, R.id.vk);
+    }
+
+    public void updateImage() {
+        loadImage(requireContext(), user.getCroppedPhotoUrl(), view.findViewById(R.id.photo));
     }
 
     private void contactsContainerVisibility(@NonNull int... fields) {
@@ -147,11 +150,6 @@ public class ProfileFragment extends Fragment {
         } else {
             textView.setVisibility(GONE);
         }
-    }
-
-    public void updateImage(User currentUser) {
-        user = currentUser;
-        loadImage(requireContext(), user.getCroppedPhoto(), view.findViewById(R.id.photo));
     }
 
     public final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(

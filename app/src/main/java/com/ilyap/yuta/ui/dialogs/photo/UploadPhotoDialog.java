@@ -38,7 +38,7 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
         user = getCurrentUser();
 
         imageView = dialog.findViewById(R.id.photo);
-        loadImage(activity, user.getCroppedPhoto(), imageView);
+        loadImage(activity, user.getCroppedPhotoUrl(), imageView);
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
         dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> setImage(null));
@@ -66,11 +66,11 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
 
     private void updatePhoto() {
         if (selectedImageUri != null) {
-            user.setPhoto(String.valueOf(selectedImageUri));
-            user.setCroppedPhoto(String.valueOf(selectedImageUri));
+            user.setPhotoUrl(String.valueOf(selectedImageUri));
+            user.setCroppedPhotoUrl(String.valueOf(selectedImageUri));
             RequestUtils.uploadUserPhotoRequest(user);
             if (fragment != null) {
-                ((ProfileFragment) fragment).updateImage(user);
+                ((ProfileFragment) fragment).updateProfile();
             }
         }
     }

@@ -26,7 +26,6 @@ import com.ilyap.yuta.utils.RequestUtils;
 @SuppressWarnings("ConstantConditions")
 public class CropPhotoDialog extends CustomInteractiveDialog {
     private CropImageView cropImageView;
-    private User user;
 
     public CropPhotoDialog(Context context, Fragment fragment) {
         super(context, fragment);
@@ -36,7 +35,7 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
     @Override
     public void start() {
         super.start();
-        user = getCurrentUser();
+        User user = getCurrentUser();
         cropImageView = dialog.findViewById(R.id.cropImageView);
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
@@ -45,7 +44,7 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
             dismiss();
         });
 
-        loadImage(user.getPhoto(), cropImageView);
+        loadImage(user.getPhotoUrl(), cropImageView);
     }
 
     private void cropPhoto() {
@@ -54,7 +53,7 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
         Rect cropRect = cropImageView.getCropRect();
         RequestUtils.cropUserPhotoRequest(factWidth, factHeight, cropRect.width(), cropRect.height(), cropRect.left, cropRect.top);
         if (fragment != null) {
-            ((ProfileFragment) fragment).updateImage(user);
+            ((ProfileFragment) fragment).updateProfile();
         }
     }
 
