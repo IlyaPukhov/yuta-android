@@ -34,13 +34,6 @@
         <item name="android:textColorHint">#73000000</item>
     </style>
 
-    <style name="login_button">
-        <item name="android:fontFamily">@font/montserrat_bold</item>
-        <item name="android:textSize">13sp</item>
-        <item name="android:letterSpacing">0.12</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-
     <style name="loading">
         <item name="android:fontFamily">@font/montserrat_regular</item>
         <item name="android:textSize">18sp</item>
@@ -71,16 +64,16 @@
         <item name="cornerSize">50%</item>
     </style>
 
-    <style name="orange_button_style" parent="Widget.MaterialComponents.Button.UnelevatedButton">
-        <item name="backgroundTint">@color/orange_button</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-
     <style name="classic_button_style" parent="Widget.MaterialComponents.Button">
         <item name="backgroundTint">@null</item>
     </style>
 
-    <style name="blue_button_style" parent="orange_button_style">
+    <style name="orange_button_style" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/orange</item>
+    </style>
+
+    <style name="blue_button" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:textColor">@color/white</item>
         <item name="backgroundTint">@color/blue_button</item>
     </style>
 
@@ -127,13 +120,6 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="reload_button">
-        <item name="android:fontFamily">@font/montserrat_bold</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:letterSpacing">0.12</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-
     <style name="reload_text">
         <item name="android:fontFamily">@font/montserrat_semibold</item>
         <item name="android:textSize">20sp</item>
@@ -154,12 +140,11 @@
         <item name="android:textColor">@color/dark_gray</item>
     </style>
 
-    <style name="pick_button" parent="reload_button">
+    <style name="pick_button">
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+        <item name="android:letterSpacing">0.12</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:textSize">13sp</item>
-    </style>
-
-    <style name="crop_button" parent="reload_button">
-        <item name="android:textSize">15sp</item>
     </style>
 
     <style name="active_teams" parent="Widget.AppCompat.Button.Borderless">
@@ -169,7 +154,7 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
-    <style name="card_name" >
+    <style name="card_name">
         <item name="android:fontFamily">@font/montserrat_bold</item>
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/dark_gray</item>
@@ -182,7 +167,7 @@
         <item name="android:letterSpacing">0.05</item>
     </style>
 
-    <style name="list_member_name" >
+    <style name="list_member_name">
         <item name="android:fontFamily">@font/montserrat_semibold</item>
         <item name="android:textSize">13sp</item>
         <item name="android:letterSpacing">0.02</item>
@@ -193,14 +178,14 @@
         <item name="android:textColor">@color/blue</item>
     </style>
 
-    <style name="error_field_message" >
+    <style name="error_field_message">
         <item name="android:fontFamily">@font/montserrat_medium</item>
         <item name="android:textSize">12sp</item>
         <item name="android:letterSpacing">0.08</item>
         <item name="android:textColor">#E6DF2121</item>
     </style>
 
-    <style name="error_message" >
+    <style name="error_message">
         <item name="android:fontFamily">@font/montserrat_semibold</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">#E6DF2121</item>
@@ -211,5 +196,22 @@
         <item name="android:textSize">15sp</item>
         <item name="android:letterSpacing">0.02</item>
         <item name="android:textColor">@color/dark_gray</item>
+    </style>
+
+    <style name="orange_button" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="backgroundTint">@color/orange_button</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/login_button</item>
+        <item name="android:letterSpacing">0.12</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+        <item name="android:paddingHorizontal">45dp</item>
+        <item name="android:paddingVertical">8dp</item>
+        <item name="android:minWidth">120dip</item>
+        <item name="android:minHeight">45dip</item>
+        <item name="layout_constrainedWidth">true</item>
     </style>
 </resources>

@@ -89,21 +89,12 @@
 
     <Button
             android:id="@+id/save_miniature"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:background="@drawable/login_button"
-            style="@style/orange_button_style"
-            android:textAppearance="@style/crop_button"
+            style="@style/orange_button"
             android:text="@string/save_button"
-            android:textAlignment="textStart"
-            android:fontFamily="@font/montserrat_bold"
-            android:autoSizeTextType="uniform"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="22dp"
-            android:paddingHorizontal="55dp"
-            android:paddingVertical="6dp"
             tools:ignore="TouchTargetSizeCheck"
             app:layout_constraintTop_toBottomOf="@+id/crop_desc"
             android:layout_marginTop="390dp" />
