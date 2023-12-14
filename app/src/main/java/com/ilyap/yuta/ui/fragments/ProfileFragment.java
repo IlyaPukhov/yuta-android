@@ -54,18 +54,25 @@ public class ProfileFragment extends Fragment {
             fromTeams = getArguments().getBoolean("fromTeams", false);
         }
 
-        progressLayout = view.findViewById(R.id.progressLayout);
-        imageView = view.findViewById(R.id.photo);
-
+        setupViews();
         viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
         updateProfile();
 
+        return view;
+    }
+
+    private void setupViews() {
+        if (fromTeams) {
+            View backButton = view.findViewById(R.id.back_button);
+            backButton.setVisibility(VISIBLE);
+            backButton.setOnClickListener(v -> handleBackPressed());
+        }
+        progressLayout = view.findViewById(R.id.progressLayout);
+        imageView = view.findViewById(R.id.photo);
         view.findViewById(R.id.log_out).setOnClickListener(v -> logOut(requireActivity()));
         view.findViewById(R.id.reload).setOnClickListener(v -> openReloadDialog());
         view.findViewById(R.id.edit).setOnClickListener(v -> openEditUserDialog());
         imageView.setOnClickListener(v -> openPhotoDialog());
-
-        return view;
     }
 
     public void updateProfile() {
