@@ -3,6 +3,7 @@ package com.ilyap.yuta.ui.fragments;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
+import static com.ilyap.yuta.utils.UserUtils.logOut;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -61,9 +62,10 @@ public class TeamsFragment extends Fragment {
         teamsSwitchInitialize();
 
         if (lastPickedButtonId == 0) {
-            lastPickedButtonId = managedTeamsButton.getId();
+            lastPickedButtonId = memberTeamsButton.getId();
         }
 
+        view.findViewById(R.id.log_out).setOnClickListener(v -> logOut(requireActivity()));
         view.findViewById(R.id.create_team).setOnClickListener(v -> openCreateTeamDialog());
         return view;
     }
@@ -92,7 +94,7 @@ public class TeamsFragment extends Fragment {
     }
 
     public void updateCarousels() {
-        updateCarousels(managedTeamsButton);
+        updateCarousels(memberTeamsButton);
     }
 
     private void updateCarousels(Button button) {

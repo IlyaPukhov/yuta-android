@@ -29,6 +29,7 @@ public class ReadonlyProfileFragment extends ProfileFragment {
             fromTeams = true;
         }
 
+        imageView = view.findViewById(R.id.photo);
         progressLayout = view.findViewById(R.id.progressLayout);
         viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
         updateProfile(userId);

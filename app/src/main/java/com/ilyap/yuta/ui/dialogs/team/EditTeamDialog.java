@@ -27,6 +27,7 @@ public class EditTeamDialog extends CreateTeamDialog {
         setupViews();
         getTeam(teamId);
 
+        submitButton.setEnabled(false);
         submitButton.setOnClickListener(v -> {
             hideKeyboard(submitButton);
             editTeam();

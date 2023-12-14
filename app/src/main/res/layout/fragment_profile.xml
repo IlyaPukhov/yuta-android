@@ -23,10 +23,10 @@
 
             <Button
                     android:layout_width="22dp"
-                    android:layout_height="22dp"
+                    android:layout_height="17dp"
                     android:id="@+id/back_button"
                     android:contentDescription="@string/exit_button"
-                    android:background="@drawable/exit_icon"
+                    android:background="@drawable/back_button"
                     style="@style/classic_button_style"
                     tools:ignore="TouchTargetSizeCheck"
                     android:layout_marginTop="20dp"
@@ -307,7 +307,6 @@
                         android:visibility="gone"
                         android:textIsSelectable="true"
                         android:textAlignment="center"
-                        android:autoSizeTextType="uniform"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/biography"

@@ -80,10 +80,32 @@ public class CarouselAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.V
             setupTeamButtons(team.getLeader().getId());
 
             imagePager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+                private int myState;
+                private int currentPosition;
+
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    if (myState == ViewPager2.SCROLL_STATE_DRAGGING && currentPosition == position) {
+                        if (position == 0) {
+                            imagePager.setCurrentItem(pages.size() - 1);
+                        } else if (position == pages.size() - 1) {
+                            imagePager.setCurrentItem(0);
+                        }
+                    }
+                    super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+                }
+
                 @Override
                 public void onPageSelected(int position) {
+                    currentPosition = position;
                     super.onPageSelected(position);
                     updateDots(position);
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+                    myState = state;
+                    super.onPageScrollStateChanged(state);
                 }
             });
         }
