@@ -40,7 +40,7 @@ public class DeleteTeamDialog extends CustomInteractiveDialog {
 
     private void setupTextView(String name) {
         String text = getContext().getString(R.string.delete_team_desc) + " \"" + name + "\"?";
-        ((TextView) dialog.findViewById(R.id.delete_desc)).setText(text);
+        ((TextView) dialog.findViewById(R.id.name_desc)).setText(text);
     }
 
     private void deleteTeam(Fragment fragment, @NonNull Team team) {

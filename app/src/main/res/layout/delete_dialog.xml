@@ -36,7 +36,7 @@
             android:layout_marginTop="5dp" />
 
     <TextView
-            android:id="@+id/delete_desc"
+            android:id="@+id/name_desc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/delete_photo_desc"
@@ -74,7 +74,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="22dp"
             tools:ignore="TouchTargetSizeCheck"
-            app:layout_constraintTop_toBottomOf="@id/delete_desc"
+            app:layout_constraintTop_toBottomOf="@id/name_desc"
             android:layout_marginTop="30dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

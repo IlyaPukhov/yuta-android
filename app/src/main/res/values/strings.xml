@@ -6,9 +6,9 @@
     <string name="ystu_photo">ystu_photo</string>
     <string name="auth_text">Авторизация</string>
     <string name="separator">separator</string>
-    <string name="login">Логин</string>
+    <string name="login">Логин*</string>
     <string name="login_icon">Login</string>
-    <string name="password">Пароль</string>
+    <string name="password">Пароль*</string>
     <string name="password_icon">password_icon</string>
     <string name="login_button">ВОЙТИ</string>
     <string name="error_message">Неверный логин или пароль</string>
@@ -60,6 +60,7 @@
     <string name="member_button">Вы участник</string>
     <string name="manager_button">Вы руководитель</string>
     <string name="create_team">Создать команду</string>
+    <string name="create_project">Создать проект</string>
     <string name="team_leader">team leader</string>
     <string name="card_phone">card phone</string>
     <string name="previous_cards">previous cards</string>
@@ -68,20 +69,22 @@
     <string name="edit_profile_button">обновить пользователя</string>
     <string name="edit_team_button">обновить команду</string>
     <string name="delete_team_button">удалить команду</string>
-    <string name="empty_text">Ой, команды не найдены…</string>
+    <string name="empty_teams_text">Ой, команды не найдены…</string>
+    <string name="empty_projects_text">Ой, проекты не найдены…</string>
     <string name="error_update_message">Неправильный пароль :(</string>
     <string name="add_team_member">добавить участника</string>
     <string name="remove_team_member">удалить участника</string>
     <string name="create_team_text">Создание команды</string>
     <string name="create_team_desc">Придумайте краткое название команды:</string>
-    <string name="team_name">Название команды</string>
+    <string name="team_name">Название команды*</string>
     <string name="add_member_desc">Добавьте участников команды:</string>
     <string name="added_members_desc">Добавленные участники:</string>
     <string name="find_name">ФИО</string>
     <string name="search_button">ПОИСК</string>
     <string name="error_team_message">Команда с данным названием уже существует!</string>
     <string name="create_team_button">СОЗДАТЬ</string>
-    <string name="edit_team_text">Изменение команды</string>
+    <string name="edit_team_text">Редактирование команды</string>
     <string name="empty_search_message">Таких пользователей нет!</string>
     <string name="logout_button">выйти из профиля</string>
+    <string name="tech_task_button">Техническое задание</string>
 </resources>

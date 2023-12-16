@@ -53,6 +53,7 @@ public class CarouselAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.V
         private final ImageButton btnPrev, btnNext;
         private final Button editTeam, deleteTeam;
         private Team team;
+        private ViewPager2.OnPageChangeCallback viewPagerCallback;
 
         public CarouselViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -78,8 +79,14 @@ public class CarouselAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.V
             setupDots(pages.size());
             setupNavButtons(pages);
             setupTeamButtons(team.getLeader().getId());
+            setupViewPagerCyclic(pages);
+        }
 
-            imagePager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+        private <T> void setupViewPagerCyclic(@NonNull List<List<T>> pages) {
+            if (viewPagerCallback != null) {
+                imagePager.unregisterOnPageChangeCallback(viewPagerCallback);
+            }
+            viewPagerCallback = new ViewPager2.OnPageChangeCallback() {
                 private int myState;
                 private int currentPosition;
 
@@ -107,7 +114,9 @@ public class CarouselAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.V
                     myState = state;
                     super.onPageScrollStateChanged(state);
                 }
-            });
+            };
+
+            imagePager.registerOnPageChangeCallback(viewPagerCallback);
         }
 
         private void setupTeamButtons(int leaderId) {

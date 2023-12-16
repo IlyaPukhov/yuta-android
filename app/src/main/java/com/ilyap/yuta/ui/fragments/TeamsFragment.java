@@ -126,9 +126,9 @@ public class TeamsFragment extends Fragment {
             fillCarousels(othersTeamsMembers);
         }
 
-        button.setTextAppearance(R.style.active_teams);
+        button.setTextAppearance(R.style.active_toggle);
         button.setChecked(true);
-        otherButton.setTextAppearance(R.style.default_teams);
+        otherButton.setTextAppearance(R.style.default_toggle);
         otherButton.setChecked(false);
         lastPickedButtonId = button.getId();
     }
