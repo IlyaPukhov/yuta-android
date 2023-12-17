@@ -48,7 +48,7 @@
                 android:layout_height="20dp"
                 android:id="@+id/deleteTeam"
                 android:contentDescription="@string/delete_team_button"
-                android:background="@drawable/delete_photo_icon"
+                android:background="@drawable/delete_icon"
                 style="@style/orange_button_style"
                 tools:ignore="TouchTargetSizeCheck"
                 app:layout_constraintTop_toTopOf="@+id/editTeam"

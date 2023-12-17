@@ -149,7 +149,7 @@
                 android:textAppearance="@style/pick_button"
                 android:fontFamily="@font/montserrat_bold"
                 android:autoSizeTextType="uniform"
-                android:src="@drawable/delete_photo_icon"
+                android:src="@drawable/delete_icon"
                 app:layout_constraintStart_toStartOf="parent"
                 android:paddingHorizontal="35dp"
                 android:paddingVertical="6dp"

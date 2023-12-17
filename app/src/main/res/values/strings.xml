@@ -87,4 +87,10 @@
     <string name="empty_search_message">Таких пользователей нет!</string>
     <string name="logout_button">выйти из профиля</string>
     <string name="tech_task_button">Техническое задание</string>
+    <string name="project_status_header">Статус: </string>
+    <string name="project_deadline_header">Сдача проекта: </string>
+    <string name="project_desc_header">Описание: </string>
+    <string name="team">Команда</string>
+    <string name="edit_project">Редактировать проект</string>
+    <string name="delete_project">Удалить проект</string>
 </resources>
