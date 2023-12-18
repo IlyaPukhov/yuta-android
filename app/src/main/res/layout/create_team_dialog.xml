@@ -167,7 +167,7 @@
             <Button
                     android:id="@+id/submit"
                     style="@style/orange_button"
-                    android:text="@string/create_team_button"
+                    android:text="@string/create_button"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:ignore="TouchTargetSizeCheck"
@@ -182,7 +182,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@+id/added_members"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="13dp"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -218,7 +218,7 @@
 
             <TextView
                     android:id="@+id/empty_search_text"
-                    android:text="@string/empty_search_message"
+                    android:text="@string/empty_user_search_message"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/empty_search_message"

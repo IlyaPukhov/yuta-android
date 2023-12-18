@@ -27,7 +27,7 @@
             app:layout_constraintTop_toBottomOf="@id/photoBack"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintWidth_max="120dp"
+            app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp" />

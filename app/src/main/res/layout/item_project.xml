@@ -153,16 +153,7 @@
                         android:layout_height="wrap_content"
                         android:drawablePadding="7dp"
                         android:text="@string/project_deadline_header"
-                        app:drawableLeftCompat="@drawable/deadline_icon" />
-
-                <TextView
-                        android:textIsSelectable="true"
-                        android:textAppearance="@style/project_parameter_header"
-                        android:textAlignment="textStart"
-                        android:fontFamily="medium"
-                        android:autoSizeTextType="uniform"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        app:drawableLeftCompat="@drawable/deadline_icon"
                         android:id="@+id/project_deadline" />
             </LinearLayout>
 

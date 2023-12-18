@@ -87,7 +87,7 @@
                         android:layout_marginTop="25dp"
                         android:layout_marginStart="25dp"
                         android:layout_marginEnd="25dp"
-                        app:layout_constraintWidth_max="wrap">
+                        app:layout_constrainedWidth="true">
 
                     <ToggleButton
                             android:id="@+id/manager_button"
