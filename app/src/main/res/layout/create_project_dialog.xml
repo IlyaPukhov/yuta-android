@@ -228,6 +228,46 @@
                     android:paddingLeft="8dp"
                     android:minWidth="58dip" />
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/status_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/date_field"
+                    android:layout_marginTop="24dp">
+
+                <TextView
+                        android:id="@+id/status_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/status_desc"
+                        android:textAppearance="@style/dialog_desc"
+                        android:textAlignment="textStart"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:autoSizeTextType="uniform"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="24dp"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                <Spinner
+                        android:id="@+id/status"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/dialog_field_desc"
+                        android:background="@drawable/edit_field_background"
+                        app:layout_constraintTop_toBottomOf="@id/status_text"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="13dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:minHeight="38dip"
+                        android:textSize="13sp"
+                        tools:ignore="TouchTargetSizeCheck"
+                        app:layout_constraintHorizontal_bias="0.0" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <EditText
                     android:id="@+id/project_desc"
                     android:maxLength="150"
@@ -245,7 +285,7 @@
                     android:layout_alignParentEnd="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/date_field"
+                    app:layout_constraintTop_toBottomOf="@id/status_container"
                     android:gravity="start|top"
                     android:focusableInTouchMode="true"
                     android:focusable="true"
@@ -299,7 +339,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/radio_button"
-                        android:checked="true"
                         android:id="@+id/create_with_team"
                         android:text="@string/create_project_with_team"
                         android:textAppearance="@style/pick_button"
@@ -313,125 +352,135 @@
                         tools:ignore="TouchTargetSizeCheck" />
             </RadioGroup>
 
-            <TextView
-                    android:id="@+id/added_team_text"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/pick_team_container"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/added_team_desc"
-                    android:textAppearance="@style/dialog_desc"
-                    android:textAlignment="textStart"
-                    android:fontFamily="@font/montserrat_medium"
-                    android:autoSizeTextType="uniform"
                     app:layout_constraintTop_toBottomOf="@id/radio_group"
                     android:layout_marginTop="15dp"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="25dp"
-                    android:layout_marginStart="25dp"
-                    android:visibility="gone" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/added_team"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/added_team_text"
-                    android:layout_marginTop="13dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="24dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="24dp"
-                    android:nestedScrollingEnabled="false"
-                    tools:itemCount="1" />
-
-            <TextView
-                    android:id="@+id/find_desc"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/add_team_desc"
-                    android:textAppearance="@style/dialog_desc"
-                    android:textAlignment="textStart"
-                    android:fontFamily="@font/montserrat_medium"
-                    android:autoSizeTextType="uniform"
-                    app:layout_constraintTop_toBottomOf="@id/added_team"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="25dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="25dp"
-                    android:layout_marginTop="15dp" />
-
-            <EditText
-                    android:id="@+id/find_team"
-                    android:importantForAutofill="no"
-                    android:inputType="text|textAutoComplete|textAutoCorrect"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:maxLength="150"
-                    android:hint="@string/find_team"
-                    android:textAppearance="@style/login"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/edit_field_background"
-                    android:layout_alignParentEnd="true"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="10dp"
-                    app:layout_constraintTop_toBottomOf="@id/find_desc"
-                    android:layout_marginTop="15dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginEnd="24dp"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-            <Button
-                    android:id="@+id/btn_search"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/blue_button_background"
-                    android:textAppearance="@style/pick_button"
-                    android:text="@string/search_button"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:drawablePadding="10dp"
-                    app:drawableLeftCompat="@drawable/find_icon"
-                    app:layout_constraintEnd_toEndOf="@id/find_team"
-                    android:paddingVertical="5dp"
-                    tools:ignore="TouchTargetSizeCheck"
-                    app:layout_constraintTop_toBottomOf="@id/find_team"
-                    android:layout_marginTop="10dp"
-                    android:textAlignment="center"
-                    android:paddingHorizontal="40dp"
-                    android:autoSizeTextType="uniform"
-                    android:minWidth="120dip"
-                    android:minHeight="35dip"
-                    android:enabled="false"
-                    android:clickable="true"
-                    style="@style/blue_button" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/search_teams"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/btn_search"
-                    android:layout_marginTop="15dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="24dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="24dp"
-                    android:nestedScrollingEnabled="false" />
-
-            <TextView
-                    android:id="@+id/empty_search_text"
-                    android:text="@string/empty_team_search_message"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/empty_search_message"
-                    android:textAlignment="center"
-                    app:layout_constraintTop_toBottomOf="@id/btn_search"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="20dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="20dp"
-                    android:visibility="gone"
-                    android:layout_marginTop="25dp"
                     app:layout_constraintBottom_toTopOf="@id/submit"
-                    android:layout_marginBottom="25dp" />
+                    android:layout_marginBottom="25dp"
+                    android:visibility="gone">
+
+                <TextView
+                        android:id="@+id/added_team_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/added_team_desc"
+                        android:textAppearance="@style/dialog_desc"
+                        android:textAlignment="textStart"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:autoSizeTextType="uniform"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginStart="25dp"
+                        android:visibility="gone" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/added_team"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/added_team_text"
+                        android:layout_marginTop="13dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="24dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginEnd="24dp"
+                        android:nestedScrollingEnabled="false"
+                        tools:itemCount="1" />
+
+                <TextView
+                        android:id="@+id/find_desc"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/add_team_desc"
+                        android:textAppearance="@style/dialog_desc"
+                        android:textAlignment="textStart"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:autoSizeTextType="uniform"
+                        app:layout_constraintTop_toBottomOf="@id/added_team"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="25dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginTop="15dp" />
+
+                <EditText
+                        android:id="@+id/find_team"
+                        android:importantForAutofill="no"
+                        android:inputType="text|textAutoComplete|textAutoCorrect"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:maxLength="150"
+                        android:hint="@string/find_team"
+                        android:textAppearance="@style/login"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/edit_field_background"
+                        android:layout_alignParentEnd="true"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="10dp"
+                        app:layout_constraintTop_toBottomOf="@id/find_desc"
+                        android:layout_marginTop="15dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="24dp"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                <Button
+                        android:id="@+id/btn_search"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/blue_button_background"
+                        android:textAppearance="@style/pick_button"
+                        android:text="@string/search_button"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:drawablePadding="10dp"
+                        app:drawableLeftCompat="@drawable/find_icon"
+                        app:layout_constraintEnd_toEndOf="@id/find_team"
+                        android:paddingVertical="5dp"
+                        tools:ignore="TouchTargetSizeCheck"
+                        app:layout_constraintTop_toBottomOf="@id/find_team"
+                        android:layout_marginTop="10dp"
+                        android:textAlignment="center"
+                        android:paddingHorizontal="40dp"
+                        android:autoSizeTextType="uniform"
+                        android:minWidth="120dip"
+                        android:minHeight="35dip"
+                        android:enabled="false"
+                        android:clickable="true"
+                        style="@style/blue_button" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/search_teams"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/btn_search"
+                        android:layout_marginTop="15dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="24dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginEnd="24dp"
+                        android:nestedScrollingEnabled="false" />
+
+                <TextView
+                        android:id="@+id/empty_search_text"
+                        android:text="@string/empty_team_search_message"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/empty_search_message"
+                        android:textAlignment="center"
+                        app:layout_constraintTop_toBottomOf="@id/btn_search"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginEnd="20dp"
+                        android:visibility="gone"
+                        android:layout_marginTop="25dp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <Button
                     android:id="@+id/submit"
@@ -440,7 +489,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:ignore="TouchTargetSizeCheck"
-                    app:layout_constraintTop_toBottomOf="@id/search_teams"
+                    app:layout_constraintTop_toBottomOf="@id/pick_team_container"
                     android:layout_marginTop="25dp"
                     android:enabled="false"
                     app:layout_constraintBottom_toBottomOf="parent"
