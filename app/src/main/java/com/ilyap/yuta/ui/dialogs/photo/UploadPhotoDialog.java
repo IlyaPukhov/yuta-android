@@ -41,7 +41,7 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
         loadImage(activity, user.getCroppedPhotoUrl(), imageView);
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
-        dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> setImage(null));
+        dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> loadImage(activity, user.getCroppedPhotoUrl(), imageView));
         dialog.findViewById(R.id.pick_miniature).setOnClickListener(v -> {
             updatePhoto();
             CustomDialog editPhotoDialog = new CropPhotoDialog(activity, fragment);

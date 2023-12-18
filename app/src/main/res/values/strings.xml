@@ -114,4 +114,5 @@
     <string name="added_team_desc">Прикрепленная команда:</string>
     <string name="add_team_desc">Прикрепите команду к проекту:</string>
     <string name="pick_date">выбор даты</string>
+    <string name="status_desc">Статус проекта:</string>
 </resources>

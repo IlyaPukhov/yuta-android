@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 @SuppressWarnings("ConstantConditions")
 public class EditUserDialog extends CustomInteractiveDialog {
     private static final int PHONE_NUMBER_LENGTH = 10;
-    private static final String VK_REGEX = "(https?://)?(www\\.)?vk\\.com/(\\w|\\d)+?/?";
+    private static final String VK_REGEX = "(https?://)?(www\\.)?vk\\.com/(\\w|\\d|[._])+?/?";
     private boolean isPhoneValid, isEmailValid, isVkValid;
     private RequestViewModel viewModel;
     private EditText biographyView;

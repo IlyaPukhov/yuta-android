@@ -73,7 +73,7 @@ public class TeamsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        updateCarousels(view.findViewById(lastPickedButtonId));
+        updateCarousels();
     }
 
     private void fillCarousels(@NonNull List<List<TeamMember>> teamMembers) {
@@ -94,7 +94,7 @@ public class TeamsFragment extends Fragment {
     }
 
     public void updateCarousels() {
-        updateCarousels(memberTeamsButton);
+        updateCarousels(view.findViewById(lastPickedButtonId));
     }
 
     private void updateCarousels(Button button) {
