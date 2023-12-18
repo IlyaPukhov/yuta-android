@@ -29,10 +29,10 @@
             android:layout_height="wrap_content"
             app:layout_constrainedWidth="true"
             app:layout_constrainedHeight="true"
-            app:layout_constraintTop_toTopOf="@+id/constraintLayout"
-            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
-            app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
-            app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+            app:layout_constraintTop_toTopOf="@id/constraintLayout"
+            app:layout_constraintBottom_toBottomOf="@id/constraintLayout"
+            app:layout_constraintEnd_toEndOf="@id/constraintLayout"
+            app:layout_constraintStart_toStartOf="@id/constraintLayout"
             android:textAppearance="@style/more_member_text"
             android:id="@+id/plus_members" />
 

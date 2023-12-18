@@ -72,7 +72,7 @@
                         android:layout_marginTop="10dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/study_icon"
+                        app:layout_constraintTop_toBottomOf="@id/study_icon"
                         android:layout_marginStart="30dp"
                         android:layout_marginEnd="30dp"
                         tools:ignore="SpeakableTextPresentCheck" />
@@ -91,7 +91,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginEnd="30dp"
-                        app:layout_constraintTop_toBottomOf="@+id/faculty"
+                        app:layout_constraintTop_toBottomOf="@id/faculty"
                         android:layout_marginStart="30dp" />
 
                 <TextView
@@ -109,7 +109,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginStart="30dp"
                         android:layout_marginEnd="30dp"
-                        app:layout_constraintTop_toBottomOf="@+id/direction" />
+                        app:layout_constraintTop_toBottomOf="@id/direction" />
 
                 <LinearLayout
                         android:layout_width="0dp"
@@ -118,7 +118,7 @@
                         android:layout_alignParentTop="true"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/group"
+                        app:layout_constraintTop_toBottomOf="@id/group"
                         android:orientation="horizontal"
                         android:weightSum="3"
                         android:id="@+id/productivity"
@@ -220,7 +220,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:orientation="vertical"
-                        app:layout_constraintTop_toBottomOf="@+id/productivity"
+                        app:layout_constraintTop_toBottomOf="@id/productivity"
                         android:layout_marginTop="30dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -286,7 +286,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginTop="25dp"
-                        app:layout_constraintTop_toBottomOf="@+id/separator" />
+                        app:layout_constraintTop_toBottomOf="@id/separator" />
 
                 <ImageView
                         android:id="@+id/separator"
@@ -300,7 +300,7 @@
                         android:layout_marginEnd="95dp"
                         android:layout_marginStart="95dp"
                         android:layout_marginTop="25dp"
-                        app:layout_constraintTop_toBottomOf="@+id/biography" />
+                        app:layout_constraintTop_toBottomOf="@id/biography" />
 
                 <TextView
                         android:textAppearance="@style/bio_text"
@@ -316,7 +316,7 @@
                         android:layout_marginStart="28dp"
                         android:layout_marginEnd="28dp"
                         android:textStyle="italic"
-                        app:layout_constraintTop_toBottomOf="@+id/age" />
+                        app:layout_constraintTop_toBottomOf="@id/age" />
 
                 <TextView
                         android:textIsSelectable="true"
@@ -410,10 +410,10 @@
                     android:layout_width="128dp"
                     android:layout_height="128dp"
                     android:background="@drawable/photo_circle"
-                    app:layout_constraintEnd_toEndOf="@+id/photo"
-                    app:layout_constraintStart_toStartOf="@+id/photo"
-                    app:layout_constraintTop_toTopOf="@+id/photo"
-                    app:layout_constraintBottom_toBottomOf="@+id/photo" />
+                    app:layout_constraintEnd_toEndOf="@id/photo"
+                    app:layout_constraintStart_toStartOf="@id/photo"
+                    app:layout_constraintTop_toTopOf="@id/photo"
+                    app:layout_constraintBottom_toBottomOf="@id/photo" />
 
             <com.google.android.material.imageview.ShapeableImageView
                     android:background="@drawable/photo_filler"
@@ -429,7 +429,7 @@
                     android:padding="2dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/scroll_container"
+                    app:layout_constraintBottom_toTopOf="@id/scroll_container"
                     android:layout_marginBottom="-62dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

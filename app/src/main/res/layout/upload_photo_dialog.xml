@@ -66,10 +66,10 @@
             android:layout_width="164dp"
             android:layout_height="164dp"
             android:background="@drawable/photo_circle"
-            app:layout_constraintEnd_toEndOf="@+id/photo"
-            app:layout_constraintStart_toStartOf="@+id/photo"
-            app:layout_constraintTop_toTopOf="@+id/photo"
-            app:layout_constraintBottom_toBottomOf="@+id/photo" />
+            app:layout_constraintEnd_toEndOf="@id/photo"
+            app:layout_constraintStart_toStartOf="@id/photo"
+            app:layout_constraintTop_toTopOf="@id/photo"
+            app:layout_constraintBottom_toBottomOf="@id/photo" />
 
     <com.google.android.material.imageview.ShapeableImageView
             android:background="@drawable/photo_filler"
@@ -87,7 +87,7 @@
             android:layout_marginEnd="152dp"
             app:strokeWidth="3dp"
             android:padding="2dp"
-            app:layout_constraintTop_toBottomOf="@+id/buttons" />
+            app:layout_constraintTop_toBottomOf="@id/buttons" />
 
     <Button
             android:id="@+id/pick_miniature"

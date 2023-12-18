@@ -23,8 +23,8 @@
             android:src="@drawable/team_leader_icon"
             android:visibility="gone"
             android:id="@+id/teamLeaderIcon"
-            app:layout_constraintTop_toTopOf="@+id/card_background"
-            app:layout_constraintStart_toStartOf="@+id/card_background"
+            app:layout_constraintTop_toTopOf="@id/card_background"
+            app:layout_constraintStart_toStartOf="@id/card_background"
             android:layout_marginTop="11dp"
             android:layout_marginStart="16dp" />
 

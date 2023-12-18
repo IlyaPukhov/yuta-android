@@ -39,8 +39,8 @@
             android:contentDescription="@string/ystu_photo"
             android:cropToPadding="true"
             android:scaleType="centerCrop"
-            app:layout_constraintBottom_toTopOf="@+id/footer"
-            app:layout_constraintTop_toBottomOf="@+id/header"
+            app:layout_constraintBottom_toTopOf="@id/footer"
+            app:layout_constraintTop_toBottomOf="@id/header"
             android:id="@+id/card_background" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -50,8 +50,8 @@
             android:layout_centerInParent="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/footer"
-            app:layout_constraintTop_toBottomOf="@+id/header">
+            app:layout_constraintBottom_toTopOf="@id/footer"
+            app:layout_constraintTop_toBottomOf="@id/header">
 
         <TextView
                 android:id="@+id/auth_text"
@@ -103,7 +103,7 @@
                     android:hint="@string/login"
                     android:textAppearance="@style/login"
                     android:layout_marginStart="10dp"
-                    android:layout_toEndOf="@+id/login_icon"
+                    android:layout_toEndOf="@id/login_icon"
                     android:layout_centerVertical="true"
                     android:background="@null"
                     android:layout_alignParentEnd="true"
@@ -145,7 +145,7 @@
                     android:hint="@string/password"
                     android:textAppearance="@style/login"
                     android:layout_marginStart="10dp"
-                    android:layout_toEndOf="@+id/password_icon"
+                    android:layout_toEndOf="@id/password_icon"
                     android:layout_centerVertical="true"
                     android:background="@null"
                     android:layout_alignParentEnd="true"
@@ -190,13 +190,13 @@
                 android:text="@string/error_message"
                 android:visibility="gone"
                 android:textAlignment="center"
-                app:layout_constraintTop_toBottomOf="@+id/password_field"
+                app:layout_constraintTop_toBottomOf="@id/password_field"
                 android:layout_marginTop="18dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginStart="35dp"
                 android:layout_marginEnd="35dp"
-                app:layout_constraintBottom_toTopOf="@+id/login_button"
+                app:layout_constraintBottom_toTopOf="@id/login_button"
                 android:layout_marginBottom="12dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
