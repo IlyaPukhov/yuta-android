@@ -28,6 +28,7 @@ import com.ilyap.yuta.ui.dialogs.team.EditTeamDialog;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings("ConstantConditions")
 public class CarouselAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.ViewHolder<List<TeamMember>>> {
@@ -68,7 +69,12 @@ public class CarouselAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.V
 
         @Override
         public void bind(@NonNull List<TeamMember> carousel) {
-            team = carousel.get(0).getTeam();
+            Optional<TeamMember> optionalTeamMember = carousel.stream().findFirst();
+            if (!optionalTeamMember.isPresent()) {
+                return;
+            }
+
+            team = optionalTeamMember.get().getTeam();
             carouselNumberTextView.setText(team.getName());
             List<List<TeamMember>> pages = getPagesList(carousel);
 
