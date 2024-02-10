@@ -57,13 +57,13 @@ public class CarouselAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.V
 
         public CarouselViewHolder(@NonNull View itemView) {
             super(itemView);
-            carouselNumberTextView = itemView.findViewById(R.id.teamName);
-            imagePager = itemView.findViewById(R.id.imagePager);
-            dotsLayout = itemView.findViewById(R.id.dotsLayout);
-            btnPrev = itemView.findViewById(R.id.btnPrev);
-            btnNext = itemView.findViewById(R.id.btnNext);
-            editTeam = itemView.findViewById(R.id.editTeam);
-            deleteTeam = itemView.findViewById(R.id.deleteTeam);
+            this.carouselNumberTextView = itemView.findViewById(R.id.teamName);
+            this.imagePager = itemView.findViewById(R.id.imagePager);
+            this.dotsLayout = itemView.findViewById(R.id.dotsLayout);
+            this.btnPrev = itemView.findViewById(R.id.btnPrev);
+            this.btnNext = itemView.findViewById(R.id.btnNext);
+            this.editTeam = itemView.findViewById(R.id.editTeam);
+            this.deleteTeam = itemView.findViewById(R.id.deleteTeam);
         }
 
         @Override

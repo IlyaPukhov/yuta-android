@@ -35,6 +35,9 @@ import com.ilyap.yuta.ui.dialogs.user.EditUserDialog;
 import com.ilyap.yuta.ui.dialogs.user.UpdateUserDialog;
 import com.ilyap.yuta.utils.RequestViewModel;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class ProfileFragment extends Fragment {
     protected View view;
     protected View progressLayout;
@@ -42,9 +45,6 @@ public class ProfileFragment extends Fragment {
     protected ImageView imageView;
     protected RequestViewModel viewModel;
     protected boolean fromTeams;
-
-    public ProfileFragment() {
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -115,7 +115,7 @@ public class ProfileFragment extends Fragment {
         setDataInTextView(R.id.tasks_count, tasksCount);
         setDataInTextView(R.id.teams_count, String.valueOf(user.getTeamsCount()));
         setDataInTextView(R.id.phone_number, user.getPhoneNumber());
-        setDataInTextView(R.id.email, user.geteMail());
+        setDataInTextView(R.id.email, user.getEMail());
         setDataInTextView(R.id.vk, user.getVk());
 
         contactsContainerVisibility(R.id.phone_number, R.id.email, R.id.vk);

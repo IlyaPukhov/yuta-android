@@ -7,7 +7,6 @@ import com.ilyap.yuta.models.User;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -15,14 +14,17 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-public final class RequestUtils {
+import lombok.SneakyThrows;
+import lombok.experimental.UtilityClass;
+
+/** @noinspection BlockingMethodInNonBlockingContext*/
+@UtilityClass
+public class RequestUtils {
     public static final String ROOT_URL = "http://192.168.1.226:8000";
 
-    private RequestUtils() {
-    }
-
     @NonNull
-    public static String postRequest(String urlString, Map<String, Object> params) throws IOException {
+    @SneakyThrows
+    public static String postRequest(String urlString, Map<String, Object> params) {
         URL url = new URL(urlString);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 
@@ -47,7 +49,8 @@ public final class RequestUtils {
     }
 
     @NonNull
-    public static String getRequest(String urlString) throws IOException {
+    @SneakyThrows
+    public static String getRequest(String urlString) {
         URL url = new URL(urlString);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {

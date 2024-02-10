@@ -32,6 +32,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class TeamsFragment extends Fragment {
     private ToggleButton managedTeamsButton;
     private ToggleButton memberTeamsButton;
@@ -40,13 +43,9 @@ public class TeamsFragment extends Fragment {
     private View view;
     private RequestViewModel viewModel;
     private CarouselAdapter carouselAdapter;
-
     private static int lastPickedButtonId;
     private List<List<TeamMember>> managedTeamsMembers;
     private List<List<TeamMember>> othersTeamsMembers;
-
-    public TeamsFragment() {
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

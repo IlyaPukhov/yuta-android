@@ -14,15 +14,14 @@ import androidx.fragment.app.Fragment;
 
 import com.ilyap.yuta.R;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class ProjectsFragment extends Fragment {
     private ToggleButton managedProjectsButton;
     private ToggleButton memberProjectsButton;
     private View view;
-
     private static int lastPickedButtonId;
-
-    public ProjectsFragment() {
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

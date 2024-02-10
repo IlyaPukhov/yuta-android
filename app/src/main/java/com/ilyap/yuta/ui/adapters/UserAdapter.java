@@ -45,10 +45,10 @@ public class UserAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User>>
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.name);
-            avatar = itemView.findViewById(R.id.avatar);
-            buttonAdd = itemView.findViewById(R.id.btnAdd);
-            buttonRemove = itemView.findViewById(R.id.btnRemove);
+            this.name = itemView.findViewById(R.id.name);
+            this.avatar = itemView.findViewById(R.id.avatar);
+            this.buttonAdd = itemView.findViewById(R.id.btnAdd);
+            this.buttonRemove = itemView.findViewById(R.id.btnRemove);
         }
 
         @Override

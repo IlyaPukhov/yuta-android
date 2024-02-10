@@ -1,9 +1,8 @@
 package com.ilyap.yuta.models;
 
-public class UpdateResponse {
-    private boolean success;
+import lombok.Value;
 
-    public boolean isSuccess() {
-        return success;
-    }
+@Value
+public class UpdateResponse {
+    boolean success;
 }

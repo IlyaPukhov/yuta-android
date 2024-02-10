@@ -92,7 +92,7 @@ public class EditUserDialog extends CustomInteractiveDialog {
     private void setEditUser(@NonNull User user) {
         user.setBiography(getData(biographyView));
         user.setPhoneNumber(getData(phoneNumberView));
-        user.seteMail(getData(emailView));
+        user.setEMail(getData(emailView));
         user.setVk(getData(vkView));
     }
 
@@ -112,7 +112,7 @@ public class EditUserDialog extends CustomInteractiveDialog {
             vkView.setText(vkUser);
         }
 
-        String emailUser = user.geteMail();
+        String emailUser = user.getEMail();
         if (emailUser != null) {
             emailView.setText(emailUser);
         }

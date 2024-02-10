@@ -2,10 +2,9 @@ package com.ilyap.yuta.models;
 
 import java.util.List;
 
-public class SearchResponse {
-    private List<User> users;
+import lombok.Value;
 
-    public List<User> getUsers() {
-        return users;
-    }
+@Value
+public class SearchResponse {
+    List<User> users;
 }
