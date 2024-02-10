@@ -1,9 +1,8 @@
 package com.ilyap.yuta.models;
 
-public class CheckTeamNameResponse {
-    private boolean unique;
+import lombok.Value;
 
-    public boolean isUnique() {
-        return unique;
-    }
+@Value
+public class CheckTeamNameResponse {
+    boolean unique;
 }

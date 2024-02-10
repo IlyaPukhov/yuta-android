@@ -4,10 +4,10 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public final class JsonUtils {
+import lombok.experimental.UtilityClass;
 
-    private JsonUtils() {
-    }
+@UtilityClass
+public class JsonUtils {
 
     private static final Gson gson = new GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)

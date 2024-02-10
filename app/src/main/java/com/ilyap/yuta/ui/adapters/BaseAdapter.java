@@ -9,14 +9,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public abstract class BaseAdapter<T, VH extends BaseAdapter.ViewHolder<T>> extends RecyclerView.Adapter<VH> implements ListAdapterUpdater<T> {
-    private final List<T> items;
-    private final Context context;
+import lombok.AllArgsConstructor;
 
-    public BaseAdapter(Context context, List<T> items) {
-        this.context = context;
-        this.items = items;
-    }
+@AllArgsConstructor
+public abstract class BaseAdapter<T, VH extends BaseAdapter.ViewHolder<T>> extends RecyclerView.Adapter<VH> implements ListAdapterUpdater<T> {
+    private final Context context;
+    private final List<T> items;
 
     @Override
     public void onBindViewHolder(@NonNull VH holder, int position) {

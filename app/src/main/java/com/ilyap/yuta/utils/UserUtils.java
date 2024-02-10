@@ -19,12 +19,16 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.LoginActivity;
 
-public final class UserUtils {
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
+public class UserUtils {
+    @Getter
+    @Setter
     private static User currentUser;
     private static SharedPreferences sharedPreferences;
-
-    private UserUtils() {
-    }
 
     public static void loadImage(Context context, String path, ImageView imageView) {
         Glide.with(context)
@@ -41,14 +45,6 @@ public final class UserUtils {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt("user_id", id).apply();
         }
-    }
-
-    public static void setCurrentUser(User user) {
-        currentUser = user;
-    }
-
-    public static User getCurrentUser() {
-        return currentUser;
     }
 
     public static void logOut(Activity activity) {
