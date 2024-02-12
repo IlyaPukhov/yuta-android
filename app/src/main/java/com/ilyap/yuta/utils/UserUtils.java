@@ -3,7 +3,7 @@ package com.ilyap.yuta.utils;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
-import static com.ilyap.yuta.utils.RequestUtils.ROOT_URL;
+import static com.ilyap.yuta.utils.RequestUtils.rootUrl;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,20 +19,16 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.LoginActivity;
 
-import lombok.Getter;
-import lombok.Setter;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class UserUtils {
-    @Getter
-    @Setter
-    private static User currentUser;
-    private static SharedPreferences sharedPreferences;
+    private User currentUser;
+    private SharedPreferences sharedPreferences;
 
     public static void loadImage(Context context, String path, ImageView imageView) {
         Glide.with(context)
-                .load(ROOT_URL + path)
+                .load(rootUrl + path)
                 .dontTransform()
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .priority(Priority.IMMEDIATE)
@@ -64,5 +60,13 @@ public class UserUtils {
 
     private static SharedPreferences getSharedPreferences(@NonNull Context context) {
         return context.getSharedPreferences("session", Context.MODE_PRIVATE);
+    }
+
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+
+    public static void setCurrentUser(User currentUser) {
+        UserUtils.currentUser = currentUser;
     }
 }

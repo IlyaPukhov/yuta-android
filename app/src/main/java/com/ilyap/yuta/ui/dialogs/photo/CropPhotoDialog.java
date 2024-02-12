@@ -1,6 +1,6 @@
 package com.ilyap.yuta.ui.dialogs.photo;
 
-import static com.ilyap.yuta.utils.RequestUtils.ROOT_URL;
+import static com.ilyap.yuta.utils.RequestUtils.rootUrl;
 import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
 
 import android.content.Context;
@@ -60,7 +60,7 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
     private void loadImage(String path, CropImageView cropImageView) {
         Glide.with(cropImageView)
                 .asBitmap()
-                .load(ROOT_URL + path)
+                .load(rootUrl + path)
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .apply(RequestOptions.centerInsideTransform())

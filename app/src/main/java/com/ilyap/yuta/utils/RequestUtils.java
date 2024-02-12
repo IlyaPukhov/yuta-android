@@ -1,9 +1,9 @@
 package com.ilyap.yuta.utils;
 
 import androidx.annotation.NonNull;
-
 import com.ilyap.yuta.models.User;
-
+import lombok.SneakyThrows;
+import lombok.experimental.UtilityClass;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -14,13 +14,9 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-import lombok.SneakyThrows;
-import lombok.experimental.UtilityClass;
-
-/** @noinspection BlockingMethodInNonBlockingContext*/
 @UtilityClass
 public class RequestUtils {
-    public static final String ROOT_URL = "http://192.168.1.226:8000";
+    public static String rootUrl;
 
     @NonNull
     @SneakyThrows
@@ -61,6 +57,11 @@ public class RequestUtils {
         } finally {
             urlConnection.disconnect();
         }
+    }
+
+    //TODO убрать в релизе
+    public static void setRootUrl(String ipv4) {
+        rootUrl = String.format("http://%s:8000", ipv4);
     }
 
     public static void deleteUserPhotoRequest(User user) {
