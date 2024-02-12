@@ -1,6 +1,6 @@
 package com.ilyap.yuta.utils;
 
-import static com.ilyap.yuta.utils.RequestUtils.ROOT_URL;
+import static com.ilyap.yuta.utils.RequestUtils.rootUrl;
 import static com.ilyap.yuta.utils.RequestUtils.getRequest;
 import static com.ilyap.yuta.utils.RequestUtils.postRequest;
 
@@ -28,11 +28,14 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collector;
 
 public final class RequestViewModel extends ViewModel {
-    private static final String ROOT_API_URL = ROOT_URL + "/api/";
+//    private static final String ROOT_API_URL = rootUrl + "/api/";
+    private static String ROOT_API_URL;
+
     private final Executor executor = Executors.newSingleThreadExecutor();
     private final MutableLiveData<Object> resultLiveData = new MutableLiveData<>();
 
     public LiveData<Object> getResultLiveData() {
+        ROOT_API_URL = rootUrl + "/api/";
         return resultLiveData;
     }
 

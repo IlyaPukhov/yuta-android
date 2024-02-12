@@ -32,6 +32,7 @@ import com.ilyap.yuta.models.AuthResponse;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.LoadingDialog;
 import com.ilyap.yuta.ui.dialogs.NetworkDialog;
+import com.ilyap.yuta.utils.RequestUtils;
 import com.ilyap.yuta.utils.RequestViewModel;
 
 public class LoginActivity extends AppCompatActivity {
@@ -74,6 +75,8 @@ public class LoginActivity extends AppCompatActivity {
 
         CustomDialog loadingDialog = new LoadingDialog(this);
         loadingDialog.start();
+
+        RequestUtils.setRootUrl(((EditText) findViewById(R.id.ipv4)).getText().toString());
 
         viewModel.getResultLiveData().removeObservers(this);
         viewModel.auth(login, password);
