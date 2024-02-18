@@ -8,9 +8,11 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
 import static com.ilyap.yuta.utils.UserUtils.setUserId;
+import static com.ilyap.yuta.utils.UserUtils.getSharedPreferences;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -34,6 +36,7 @@ import com.ilyap.yuta.ui.dialogs.LoadingDialog;
 import com.ilyap.yuta.ui.dialogs.NetworkDialog;
 import com.ilyap.yuta.utils.RequestUtils;
 import com.ilyap.yuta.utils.RequestViewModel;
+import com.ilyap.yuta.utils.UserUtils;
 
 public class LoginActivity extends AppCompatActivity {
     private TextView errorText;
@@ -50,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (hasInternetConnection() && getUserId(this) >= 0) {
             openApp();
+            RequestUtils.setRootUrl(UserUtils.getSharedPreferences(this).getString("ipv4", ""));
         }
 
         if (!hasInternetConnection()) {
@@ -76,7 +80,9 @@ public class LoginActivity extends AppCompatActivity {
         CustomDialog loadingDialog = new LoadingDialog(this);
         loadingDialog.start();
 
-        RequestUtils.setRootUrl(((EditText) findViewById(R.id.ipv4)).getText().toString());
+        // TODO
+        SharedPreferences.Editor editor = UserUtils.getSharedPreferences(this).edit();
+        editor.putString("ipv4", ((EditText) findViewById(R.id.ipv4)).getText().toString()).apply();
 
         viewModel.getResultLiveData().removeObservers(this);
         viewModel.auth(login, password);

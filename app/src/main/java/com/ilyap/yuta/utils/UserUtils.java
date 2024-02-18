@@ -58,7 +58,7 @@ public class UserUtils {
         return getSharedPreferences(context).getInt("user_id", -1);
     }
 
-    private static SharedPreferences getSharedPreferences(@NonNull Context context) {
+    public static SharedPreferences getSharedPreferences(@NonNull Context context) {
         return context.getSharedPreferences("session", Context.MODE_PRIVATE);
     }
 
