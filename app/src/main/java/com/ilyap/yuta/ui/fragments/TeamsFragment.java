@@ -1,10 +1,5 @@
 package com.ilyap.yuta.ui.fragments;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static com.ilyap.yuta.utils.UserUtils.getUserId;
-import static com.ilyap.yuta.utils.UserUtils.logOut;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,13 +7,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.Team;
 import com.ilyap.yuta.models.TeamMember;
@@ -26,13 +19,17 @@ import com.ilyap.yuta.models.TeamResponse;
 import com.ilyap.yuta.ui.adapters.CarouselAdapter;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.team.CreateTeamDialog;
+import com.ilyap.yuta.ui.dialogs.user.LogoutDialog;
 import com.ilyap.yuta.utils.RequestViewModel;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import lombok.NoArgsConstructor;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static com.ilyap.yuta.utils.UserUtils.getUserId;
 
 @NoArgsConstructor
 public class TeamsFragment extends Fragment {
@@ -64,7 +61,7 @@ public class TeamsFragment extends Fragment {
             lastPickedButtonId = memberTeamsButton.getId();
         }
 
-        view.findViewById(R.id.log_out).setOnClickListener(v -> logOut(requireActivity()));
+        view.findViewById(R.id.log_out).setOnClickListener(v -> openLogoutDialog());
         view.findViewById(R.id.create_team).setOnClickListener(v -> openCreateTeamDialog());
         return view;
     }
@@ -161,5 +158,10 @@ public class TeamsFragment extends Fragment {
         memberTeamsButton = view.findViewById(R.id.member_button);
         managedTeamsButton.setOnClickListener(this::onToggleButtonClick);
         memberTeamsButton.setOnClickListener(this::onToggleButtonClick);
+    }
+
+    private void openLogoutDialog() {
+        CustomDialog logoutDialog = new LogoutDialog(view.getContext(), this);
+        logoutDialog.start();
     }
 }

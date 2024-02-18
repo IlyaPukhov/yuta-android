@@ -115,4 +115,6 @@
     <string name="add_team_desc">Прикрепите команду к проекту:</string>
     <string name="pick_date">выбор даты</string>
     <string name="status_desc">Статус проекта:</string>
+    <string name="logout_button_text">ДА, ВЫЙТИ</string>
+    <string name="logout_desc">Вы действительно хотите выйти из приложения?</string>
 </resources>

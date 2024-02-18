@@ -1,19 +1,16 @@
 package com.ilyap.yuta.ui.fragments;
 
-import static com.ilyap.yuta.utils.UserUtils.logOut;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ToggleButton;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
 import com.ilyap.yuta.R;
-
+import com.ilyap.yuta.ui.dialogs.CustomDialog;
+import com.ilyap.yuta.ui.dialogs.user.LogoutDialog;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
@@ -34,7 +31,7 @@ public class ProjectsFragment extends Fragment {
             lastPickedButtonId = memberProjectsButton.getId();
         }
 
-        view.findViewById(R.id.log_out).setOnClickListener(v -> logOut(requireActivity()));
+        view.findViewById(R.id.log_out).setOnClickListener(v -> openLogoutDialog());
         return view;
     }
 
@@ -73,5 +70,10 @@ public class ProjectsFragment extends Fragment {
         memberProjectsButton = view.findViewById(R.id.member_button);
         managedProjectsButton.setOnClickListener(this::onToggleButtonClick);
         memberProjectsButton.setOnClickListener(this::onToggleButtonClick);
+    }
+
+    private void openLogoutDialog() {
+        CustomDialog logoutDialog = new LogoutDialog(view.getContext(), this);
+        logoutDialog.start();
     }
 }

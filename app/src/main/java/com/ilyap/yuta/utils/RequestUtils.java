@@ -2,6 +2,7 @@ package com.ilyap.yuta.utils;
 
 import androidx.annotation.NonNull;
 import com.ilyap.yuta.models.User;
+import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import org.json.JSONObject;
@@ -16,7 +17,8 @@ import java.util.Map;
 
 @UtilityClass
 public class RequestUtils {
-    public static String rootUrl;
+    @Getter
+    private static String rootUrl;
 
     @NonNull
     @SneakyThrows

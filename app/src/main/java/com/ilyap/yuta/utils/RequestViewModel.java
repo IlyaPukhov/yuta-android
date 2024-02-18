@@ -1,9 +1,5 @@
 package com.ilyap.yuta.utils;
 
-import static com.ilyap.yuta.utils.RequestUtils.rootUrl;
-import static com.ilyap.yuta.utils.RequestUtils.getRequest;
-import static com.ilyap.yuta.utils.RequestUtils.postRequest;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -27,15 +23,13 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.stream.Collector;
 
-public final class RequestViewModel extends ViewModel {
-//    private static final String ROOT_API_URL = rootUrl + "/api/";
-    private static String ROOT_API_URL;
+import static com.ilyap.yuta.utils.RequestUtils.*;
 
+public final class RequestViewModel extends ViewModel {
     private final Executor executor = Executors.newSingleThreadExecutor();
     private final MutableLiveData<Object> resultLiveData = new MutableLiveData<>();
 
     public LiveData<Object> getResultLiveData() {
-        ROOT_API_URL = rootUrl + "/api/";
         return resultLiveData;
     }
 
@@ -45,7 +39,7 @@ public final class RequestViewModel extends ViewModel {
             HashMap<String, Object> params = new HashMap<>();
             params.put("action", "delete_team");
             params.put("team_id", teamId);
-            String json = postRequest(ROOT_API_URL + "teams", params);
+            String json = postRequest(getFullUrl("teams"), params);
             resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
         });
     }
@@ -56,7 +50,7 @@ public final class RequestViewModel extends ViewModel {
             HashMap<String, Object> params = new HashMap<>();
             params.put("action", "get_team_info");
             params.put("team_id", teamId);
-            String json = postRequest(ROOT_API_URL + "teams", params);
+            String json = postRequest(getFullUrl("teams"), params);
             resultLiveData.postValue(JsonUtils.parse(json, Team.class));
         });
     }
@@ -69,7 +63,7 @@ public final class RequestViewModel extends ViewModel {
             params.put("user_name", userName);
             params.put("leader_id", leaderId);
             params.put("members_id", getMembersIdArray(members));
-            String json = postRequest(ROOT_API_URL + "teams", params);
+            String json = postRequest(getFullUrl("teams"), params);
             resultLiveData.postValue(JsonUtils.parse(json, SearchResponse.class));
         });
     }
@@ -83,7 +77,7 @@ public final class RequestViewModel extends ViewModel {
                 params.put("team_id", teamId);
             }
             params.put("team_name", name);
-            String json = postRequest(ROOT_API_URL + "teams", params);
+            String json = postRequest(getFullUrl("teams"), params);
             resultLiveData.postValue(JsonUtils.parse(json, CheckTeamNameResponse.class));
         });
     }
@@ -100,7 +94,7 @@ public final class RequestViewModel extends ViewModel {
             params.put("team_id", teamId);
             params.put("team_name", teamName);
             params.put("members_id", getMembersIdArray(members));
-            String json = postRequest(ROOT_API_URL + "teams", params);
+            String json = postRequest(getFullUrl("teams"), params);
             resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
         });
     }
@@ -113,7 +107,7 @@ public final class RequestViewModel extends ViewModel {
             params.put("team_name", teamName);
             params.put("leader_id", leaderId);
             params.put("members_id", getMembersIdArray(members));
-            String json = postRequest(ROOT_API_URL + "teams", params);
+            String json = postRequest(getFullUrl("teams"), params);
             resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
         });
     }
@@ -131,7 +125,7 @@ public final class RequestViewModel extends ViewModel {
             params.put("user_id", userId);
             params.put("action", "update_data");
             params.put("password", password);
-            String json = postRequest(ROOT_API_URL + "profile", params);
+            String json = postRequest(getFullUrl("profile"), params);
             resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
         });
     }
@@ -163,7 +157,7 @@ public final class RequestViewModel extends ViewModel {
                 params.put("vk", vk);
             }
 
-            String json = postRequest(ROOT_API_URL + "profile", params);
+            String json = postRequest(getFullUrl("profile"), params);
             resultLiveData.postValue(JsonUtils.parse(json, EditUserResponse.class));
         });
     }
@@ -174,7 +168,7 @@ public final class RequestViewModel extends ViewModel {
             HashMap<String, Object> params = new HashMap<>();
             params.put("login", login);
             params.put("password", password);
-            String json = postRequest(ROOT_API_URL + "authorization", params);
+            String json = postRequest(getFullUrl("authorization"), params);
             resultLiveData.postValue(JsonUtils.parse(json, AuthResponse.class));
         });
     }
@@ -182,7 +176,7 @@ public final class RequestViewModel extends ViewModel {
     public void getUser(int userId) {
         clearResultLiveData();
         executor.execute(() -> {
-            String json = getRequest(ROOT_API_URL + "profile?user_id=" + userId);
+            String json = getRequest(getFullUrl("profile?user_id=" + userId));
             resultLiveData.postValue(JsonUtils.parse(json, User.class));
         });
     }
@@ -190,13 +184,16 @@ public final class RequestViewModel extends ViewModel {
     public void getTeams(int userId) {
         clearResultLiveData();
         executor.execute(() -> {
-            String json = getRequest(ROOT_API_URL + "teams?user_id=" + userId);
+            String json = getRequest(getFullUrl("teams?user_id=" + userId));
             resultLiveData.postValue(JsonUtils.parse(json, TeamResponse.class));
         });
     }
 
-
     private void clearResultLiveData() {
         resultLiveData.setValue(null);
+    }
+
+    private String getFullUrl(String path) {
+        return String.format("%s/api/%s", getRootUrl(), path);
     }
 }
