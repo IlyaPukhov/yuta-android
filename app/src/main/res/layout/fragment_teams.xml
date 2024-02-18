@@ -13,7 +13,7 @@
             android:src="@drawable/logo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/scrollView"
+            app:layout_constraintTop_toTopOf="@id/scrollView"
             android:layout_marginTop="32dp"
             android:id="@+id/card_background" />
 
@@ -60,16 +60,16 @@
                         android:id="@+id/create_team"
                         android:background="@drawable/blue_button_background"
                         style="@style/blue_button"
-                        android:textAppearance="@style/active_teams"
+                        android:textAppearance="@style/active_toggle"
                         android:text="@string/create_team"
                         android:textAlignment="center"
-                        app:layout_constraintStart_toStartOf="@+id/toggleGroup"
+                        app:layout_constraintStart_toStartOf="@id/toggleGroup"
                         android:paddingHorizontal="21dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         tools:ignore="RtlHardcoded,TouchTargetSizeCheck"
                         android:autoSizeTextType="uniform"
-                        android:drawableLeft="@drawable/create_team_icon"
+                        android:drawableLeft="@drawable/create_icon"
                         app:layout_constraintTop_toTopOf="parent"
                         android:layout_marginTop="25dp"
                         android:drawablePadding="10dp" />
@@ -87,11 +87,11 @@
                         android:layout_marginTop="25dp"
                         android:layout_marginStart="25dp"
                         android:layout_marginEnd="25dp"
-                        app:layout_constraintWidth_max="wrap">
+                        app:layout_constrainedWidth="true">
 
                     <ToggleButton
                             android:id="@+id/manager_button"
-                            android:textAppearance="@style/active_teams"
+                            android:textAppearance="@style/active_toggle"
                             android:hapticFeedbackEnabled="false"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
                             android:stateListAnimator="@null"
                             tools:ignore="TouchTargetSizeCheck"
                             android:paddingHorizontal="30dp"
-                            app:layout_constraintEnd_toStartOf="@+id/member_button"
+                            app:layout_constraintEnd_toStartOf="@id/member_button"
                             android:layout_marginEnd="-10dp"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -109,7 +109,7 @@
 
                     <ToggleButton
                             android:id="@+id/member_button"
-                            android:textAppearance="@style/default_teams"
+                            android:textAppearance="@style/default_toggle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:hapticFeedbackEnabled="false"
@@ -133,8 +133,8 @@
                         android:textColor="@color/light_gray"
                         android:textAppearance="@style/error_message"
                         android:textAlignment="center"
-                        android:text="@string/empty_text"
-                        app:layout_constraintTop_toBottomOf="@+id/toggleGroup"
+                        android:text="@string/empty_teams_text"
+                        app:layout_constraintTop_toBottomOf="@id/toggleGroup"
                         android:layout_marginTop="40dp"
                         android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
@@ -146,7 +146,7 @@
                         android:id="@+id/recyclerView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@+id/toggleGroup"
+                        app:layout_constraintTop_toBottomOf="@id/toggleGroup"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:nestedScrollingEnabled="false"

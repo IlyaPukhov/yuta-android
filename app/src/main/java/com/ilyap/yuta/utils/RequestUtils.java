@@ -1,13 +1,13 @@
 package com.ilyap.yuta.utils;
 
 import androidx.annotation.NonNull;
-
 import com.ilyap.yuta.models.User;
-
+import lombok.Getter;
+import lombok.SneakyThrows;
+import lombok.experimental.UtilityClass;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -15,14 +15,14 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-public final class RequestUtils {
-    public static final String ROOT_URL = "http://192.168.1.226:8000";
-
-    private RequestUtils() {
-    }
+@UtilityClass
+public class RequestUtils {
+    @Getter
+    private static String rootUrl;
 
     @NonNull
-    public static String postRequest(String urlString, Map<String, Object> params) throws IOException {
+    @SneakyThrows
+    public static String postRequest(String urlString, Map<String, Object> params) {
         URL url = new URL(urlString);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 
@@ -47,7 +47,8 @@ public final class RequestUtils {
     }
 
     @NonNull
-    public static String getRequest(String urlString) throws IOException {
+    @SneakyThrows
+    public static String getRequest(String urlString) {
         URL url = new URL(urlString);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
@@ -58,6 +59,11 @@ public final class RequestUtils {
         } finally {
             urlConnection.disconnect();
         }
+    }
+
+    //TODO убрать в релизе
+    public static void setRootUrl(String ipv4) {
+        rootUrl = String.format("http://%s:8000", ipv4);
     }
 
     public static void deleteUserPhotoRequest(User user) {

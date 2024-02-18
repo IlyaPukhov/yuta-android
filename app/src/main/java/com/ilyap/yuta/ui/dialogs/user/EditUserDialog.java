@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 @SuppressWarnings("ConstantConditions")
 public class EditUserDialog extends CustomInteractiveDialog {
     private static final int PHONE_NUMBER_LENGTH = 10;
-    private static final String VK_REGEX = "(https?://)?(www\\.)?vk\\.com/(\\w|\\d)+?/?";
+    private static final String VK_REGEX = "(https?://)?(www\\.)?vk\\.com/(\\w|\\d|[._])+?/?";
     private boolean isPhoneValid, isEmailValid, isVkValid;
     private RequestViewModel viewModel;
     private EditText biographyView;
@@ -92,7 +92,7 @@ public class EditUserDialog extends CustomInteractiveDialog {
     private void setEditUser(@NonNull User user) {
         user.setBiography(getData(biographyView));
         user.setPhoneNumber(getData(phoneNumberView));
-        user.seteMail(getData(emailView));
+        user.setEMail(getData(emailView));
         user.setVk(getData(vkView));
     }
 
@@ -112,7 +112,7 @@ public class EditUserDialog extends CustomInteractiveDialog {
             vkView.setText(vkUser);
         }
 
-        String emailUser = user.geteMail();
+        String emailUser = user.getEMail();
         if (emailUser != null) {
             emailView.setText(emailUser);
         }

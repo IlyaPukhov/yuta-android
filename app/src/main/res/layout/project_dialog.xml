@@ -18,10 +18,10 @@
             app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
-                android:id="@+id/update_photo"
+                android:id="@+id/edit_project"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/update_photo_item"
+                android:text="@string/edit_project"
                 android:background="@drawable/drop_dialog_background"
                 android:padding="10dp"
                 android:clickable="true"
@@ -34,26 +34,10 @@
                 tools:ignore="TouchTargetSizeCheck" />
 
         <TextView
-                android:id="@+id/edit_miniature"
+                android:id="@+id/delete_project"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/edit_miniature_item"
-                android:background="@drawable/drop_dialog_background"
-                android:padding="10dp"
-                android:clickable="true"
-                android:textAppearance="@style/drop_dialog_item"
-                android:textAlignment="textStart"
-                android:fontFamily="@font/montserrat_medium"
-                android:autoSizeTextType="uniform"
-                android:drawablePadding="15dp"
-                app:drawableLeftCompat="@drawable/edit_miniature_icon"
-                tools:ignore="TouchTargetSizeCheck" />
-
-        <TextView
-                android:id="@+id/delete_photo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/delete_photo_item"
+                android:text="@string/delete_project"
                 android:background="@drawable/drop_dialog_background"
                 android:padding="10dp"
                 android:clickable="true"

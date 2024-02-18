@@ -1,9 +1,5 @@
 package com.ilyap.yuta.utils;
 
-import static com.ilyap.yuta.utils.RequestUtils.ROOT_URL;
-import static com.ilyap.yuta.utils.RequestUtils.getRequest;
-import static com.ilyap.yuta.utils.RequestUtils.postRequest;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -20,7 +16,6 @@ import com.ilyap.yuta.models.User;
 
 import org.json.JSONArray;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,8 +23,9 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.stream.Collector;
 
+import static com.ilyap.yuta.utils.RequestUtils.*;
+
 public final class RequestViewModel extends ViewModel {
-    private static final String ROOT_API_URL = ROOT_URL + "/api/";
     private final Executor executor = Executors.newSingleThreadExecutor();
     private final MutableLiveData<Object> resultLiveData = new MutableLiveData<>();
 
@@ -43,12 +39,8 @@ public final class RequestViewModel extends ViewModel {
             HashMap<String, Object> params = new HashMap<>();
             params.put("action", "delete_team");
             params.put("team_id", teamId);
-            try {
-                String json = postRequest(ROOT_API_URL + "teams", params);
-                resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            String json = postRequest(getFullUrl("teams"), params);
+            resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
         });
     }
 
@@ -58,12 +50,8 @@ public final class RequestViewModel extends ViewModel {
             HashMap<String, Object> params = new HashMap<>();
             params.put("action", "get_team_info");
             params.put("team_id", teamId);
-            try {
-                String json = postRequest(ROOT_API_URL + "teams", params);
-                resultLiveData.postValue(JsonUtils.parse(json, Team.class));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            String json = postRequest(getFullUrl("teams"), params);
+            resultLiveData.postValue(JsonUtils.parse(json, Team.class));
         });
     }
 
@@ -75,12 +63,8 @@ public final class RequestViewModel extends ViewModel {
             params.put("user_name", userName);
             params.put("leader_id", leaderId);
             params.put("members_id", getMembersIdArray(members));
-            try {
-                String json = postRequest(ROOT_API_URL + "teams", params);
-                resultLiveData.postValue(JsonUtils.parse(json, SearchResponse.class));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            String json = postRequest(getFullUrl("teams"), params);
+            resultLiveData.postValue(JsonUtils.parse(json, SearchResponse.class));
         });
     }
 
@@ -93,12 +77,8 @@ public final class RequestViewModel extends ViewModel {
                 params.put("team_id", teamId);
             }
             params.put("team_name", name);
-            try {
-                String json = postRequest(ROOT_API_URL + "teams", params);
-                resultLiveData.postValue(JsonUtils.parse(json, CheckTeamNameResponse.class));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            String json = postRequest(getFullUrl("teams"), params);
+            resultLiveData.postValue(JsonUtils.parse(json, CheckTeamNameResponse.class));
         });
     }
 
@@ -114,12 +94,8 @@ public final class RequestViewModel extends ViewModel {
             params.put("team_id", teamId);
             params.put("team_name", teamName);
             params.put("members_id", getMembersIdArray(members));
-            try {
-                String json = postRequest(ROOT_API_URL + "teams", params);
-                resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            String json = postRequest(getFullUrl("teams"), params);
+            resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
         });
     }
 
@@ -131,12 +107,8 @@ public final class RequestViewModel extends ViewModel {
             params.put("team_name", teamName);
             params.put("leader_id", leaderId);
             params.put("members_id", getMembersIdArray(members));
-            try {
-                String json = postRequest(ROOT_API_URL + "teams", params);
-                resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            String json = postRequest(getFullUrl("teams"), params);
+            resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
         });
     }
 
@@ -153,12 +125,8 @@ public final class RequestViewModel extends ViewModel {
             params.put("user_id", userId);
             params.put("action", "update_data");
             params.put("password", password);
-            try {
-                String json = postRequest(ROOT_API_URL + "profile", params);
-                resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            String json = postRequest(getFullUrl("profile"), params);
+            resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
         });
     }
 
@@ -179,7 +147,7 @@ public final class RequestViewModel extends ViewModel {
                 params.put("phone_number", phone);
             }
 
-            String email = user.geteMail();
+            String email = user.getEMail();
             if (email != null) {
                 params.put("e_mail", email);
             }
@@ -189,12 +157,8 @@ public final class RequestViewModel extends ViewModel {
                 params.put("vk", vk);
             }
 
-            try {
-                String json = postRequest(ROOT_API_URL + "profile", params);
-                resultLiveData.postValue(JsonUtils.parse(json, EditUserResponse.class));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            String json = postRequest(getFullUrl("profile"), params);
+            resultLiveData.postValue(JsonUtils.parse(json, EditUserResponse.class));
         });
     }
 
@@ -204,41 +168,32 @@ public final class RequestViewModel extends ViewModel {
             HashMap<String, Object> params = new HashMap<>();
             params.put("login", login);
             params.put("password", password);
-            try {
-                String json = postRequest(ROOT_API_URL + "authorization", params);
-                resultLiveData.postValue(JsonUtils.parse(json, AuthResponse.class));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            String json = postRequest(getFullUrl("authorization"), params);
+            resultLiveData.postValue(JsonUtils.parse(json, AuthResponse.class));
         });
     }
 
     public void getUser(int userId) {
         clearResultLiveData();
         executor.execute(() -> {
-            try {
-                String json = getRequest(ROOT_API_URL + "profile?user_id=" + userId);
-                resultLiveData.postValue(JsonUtils.parse(json, User.class));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            String json = getRequest(getFullUrl("profile?user_id=" + userId));
+            resultLiveData.postValue(JsonUtils.parse(json, User.class));
         });
     }
 
     public void getTeams(int userId) {
         clearResultLiveData();
         executor.execute(() -> {
-            try {
-                String json = getRequest(ROOT_API_URL + "teams?user_id=" + userId);
-                resultLiveData.postValue(JsonUtils.parse(json, TeamResponse.class));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            String json = getRequest(getFullUrl("teams?user_id=" + userId));
+            resultLiveData.postValue(JsonUtils.parse(json, TeamResponse.class));
         });
     }
 
-
     private void clearResultLiveData() {
         resultLiveData.setValue(null);
+    }
+
+    private String getFullUrl(String path) {
+        return String.format("%s/api/%s", getRootUrl(), path);
     }
 }

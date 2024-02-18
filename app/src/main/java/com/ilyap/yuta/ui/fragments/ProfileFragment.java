@@ -1,13 +1,5 @@
 package com.ilyap.yuta.ui.fragments;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static com.ilyap.yuta.ui.dialogs.photo.UploadPhotoDialog.PICK_IMAGE_REQUEST;
-import static com.ilyap.yuta.utils.UserUtils.getUserId;
-import static com.ilyap.yuta.utils.UserUtils.loadImage;
-import static com.ilyap.yuta.utils.UserUtils.logOut;
-import static com.ilyap.yuta.utils.UserUtils.setCurrentUser;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -24,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.ilyap.yuta.MainActivity;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
@@ -32,9 +22,17 @@ import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.photo.PhotoDialog;
 import com.ilyap.yuta.ui.dialogs.photo.UploadPhotoDialog;
 import com.ilyap.yuta.ui.dialogs.user.EditUserDialog;
+import com.ilyap.yuta.ui.dialogs.user.LogoutDialog;
 import com.ilyap.yuta.ui.dialogs.user.UpdateUserDialog;
 import com.ilyap.yuta.utils.RequestViewModel;
+import lombok.NoArgsConstructor;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static com.ilyap.yuta.ui.dialogs.photo.UploadPhotoDialog.PICK_IMAGE_REQUEST;
+import static com.ilyap.yuta.utils.UserUtils.*;
+
+@NoArgsConstructor
 public class ProfileFragment extends Fragment {
     protected View view;
     protected View progressLayout;
@@ -42,9 +40,6 @@ public class ProfileFragment extends Fragment {
     protected ImageView imageView;
     protected RequestViewModel viewModel;
     protected boolean fromTeams;
-
-    public ProfileFragment() {
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -69,7 +64,7 @@ public class ProfileFragment extends Fragment {
         }
         progressLayout = view.findViewById(R.id.progressLayout);
         imageView = view.findViewById(R.id.photo);
-        view.findViewById(R.id.log_out).setOnClickListener(v -> logOut(requireActivity()));
+        view.findViewById(R.id.log_out).setOnClickListener(v -> openLogoutDialog());
         view.findViewById(R.id.reload).setOnClickListener(v -> openReloadDialog());
         view.findViewById(R.id.edit).setOnClickListener(v -> openEditUserDialog());
         imageView.setOnClickListener(v -> openPhotoDialog());
@@ -115,7 +110,7 @@ public class ProfileFragment extends Fragment {
         setDataInTextView(R.id.tasks_count, tasksCount);
         setDataInTextView(R.id.teams_count, String.valueOf(user.getTeamsCount()));
         setDataInTextView(R.id.phone_number, user.getPhoneNumber());
-        setDataInTextView(R.id.email, user.geteMail());
+        setDataInTextView(R.id.email, user.getEMail());
         setDataInTextView(R.id.vk, user.getVk());
 
         contactsContainerVisibility(R.id.phone_number, R.id.email, R.id.vk);
@@ -149,6 +144,11 @@ public class ProfileFragment extends Fragment {
     private void openPhotoDialog() {
         CustomDialog photoDialog = new PhotoDialog(view.getContext(), this);
         photoDialog.start();
+    }
+
+    private void openLogoutDialog() {
+        CustomDialog logoutDialog = new LogoutDialog(view.getContext(), this);
+        logoutDialog.start();
     }
 
     private void setDataInTextView(int id, String text) {

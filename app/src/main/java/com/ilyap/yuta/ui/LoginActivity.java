@@ -1,16 +1,8 @@
 package com.ilyap.yuta.ui;
 
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static android.net.ConnectivityManager.TYPE_MOBILE;
-import static android.net.ConnectivityManager.TYPE_WIFI;
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static com.ilyap.yuta.utils.UserUtils.getUserId;
-import static com.ilyap.yuta.utils.UserUtils.setUserId;
-
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -21,18 +13,27 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.ilyap.yuta.MainActivity;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.AuthResponse;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.LoadingDialog;
 import com.ilyap.yuta.ui.dialogs.NetworkDialog;
+import com.ilyap.yuta.utils.RequestUtils;
 import com.ilyap.yuta.utils.RequestViewModel;
+import com.ilyap.yuta.utils.UserUtils;
+
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static android.net.ConnectivityManager.TYPE_MOBILE;
+import static android.net.ConnectivityManager.TYPE_WIFI;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static com.ilyap.yuta.utils.UserUtils.getUserId;
+import static com.ilyap.yuta.utils.UserUtils.setUserId;
 
 public class LoginActivity extends AppCompatActivity {
     private TextView errorText;
@@ -48,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
 
         if (hasInternetConnection() && getUserId(this) >= 0) {
+            RequestUtils.setRootUrl(UserUtils.getSharedPreferences(this).getString("ipv4", ""));
             openApp();
         }
 
@@ -72,11 +74,16 @@ public class LoginActivity extends AppCompatActivity {
         String login = loginView.getText().toString();
         String password = passwordView.getText().toString();
 
+        // TODO
+        SharedPreferences.Editor editor = UserUtils.getSharedPreferences(this).edit();
+        editor.putString("ipv4", ((EditText) findViewById(R.id.ipv4)).getText().toString()).apply();
+        RequestUtils.setRootUrl(UserUtils.getSharedPreferences(this).getString("ipv4", ""));
+
         CustomDialog loadingDialog = new LoadingDialog(this);
         loadingDialog.start();
 
-        viewModel.getResultLiveData().removeObservers(this);
         viewModel.auth(login, password);
+        viewModel.getResultLiveData().removeObservers(this);
         viewModel.getResultLiveData().observe(this, result -> {
             if (!(result instanceof AuthResponse)) return;
             AuthResponse response = (AuthResponse) result;

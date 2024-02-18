@@ -1,8 +1,5 @@
 package com.ilyap.yuta.ui.dialogs.photo;
 
-import static com.ilyap.yuta.utils.RequestUtils.ROOT_URL;
-import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -22,6 +19,7 @@ import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestUtils;
+import com.ilyap.yuta.utils.UserUtils;
 
 @SuppressWarnings("ConstantConditions")
 public class CropPhotoDialog extends CustomInteractiveDialog {
@@ -35,7 +33,7 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
     @Override
     public void start() {
         super.start();
-        User user = getCurrentUser();
+        User user = UserUtils.getCurrentUser();
         cropImageView = dialog.findViewById(R.id.cropImageView);
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
@@ -60,7 +58,7 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
     private void loadImage(String path, CropImageView cropImageView) {
         Glide.with(cropImageView)
                 .asBitmap()
-                .load(ROOT_URL + path)
+                .load(RequestUtils.getRootUrl() + path)
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .apply(RequestOptions.centerInsideTransform())

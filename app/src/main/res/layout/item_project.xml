@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/project_background"
+            android:id="@+id/project_card"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="45dp"
+            android:layout_marginEnd="45dp"
+            android:elevation="6dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
+
+        <View
+                android:layout_width="0dp"
+                android:layout_height="115dp"
+                android:background="@drawable/project_card_header"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                android:id="@+id/view" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/project_header"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                app:layout_constrainedWidth="true"
+                android:layout_marginTop="15dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                    android:background="@drawable/photo_filler"
+                    android:layout_width="51dp"
+                    android:layout_height="51dp"
+                    android:id="@+id/photo"
+                    android:clickable="true"
+                    android:scaleType="centerCrop"
+                    app:shapeAppearanceOverlay="@style/rectangle_image_view"
+                    app:strokeColor="@color/blue"
+                    android:contentDescription="@string/avatar"
+                    app:strokeWidth="2dp"
+                    android:padding="1dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                    android:id="@+id/project_name"
+                    android:textAppearance="@style/project_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/photo"
+                    android:textAlignment="textStart"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constrainedWidth="true"
+                    android:layout_marginStart="18dp"
+                    app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+                android:id="@+id/tech_task_button"
+                android:background="@drawable/blue_button_background"
+                style="@style/blue_button"
+                android:textAppearance="@style/tech_task_button"
+                android:text="@string/tech_task_button"
+                android:paddingHorizontal="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                tools:ignore="RtlHardcoded,TouchTargetSizeCheck"
+                android:autoSizeTextType="none"
+                android:drawableLeft="@drawable/tech_task_icon"
+                android:layout_marginTop="10dp"
+                android:drawablePadding="10dp"
+                app:layout_constraintTop_toBottomOf="@id/project_header"
+                app:layout_constraintBottom_toBottomOf="@id/view"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintEnd_toEndOf="@id/project_header"
+                android:textAlignment="viewStart"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:minHeight="25dip" />
+
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/contacts_container"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                app:layout_constraintTop_toBottomOf="@id/view"
+                android:layout_marginTop="12dp"
+                app:layout_constraintHorizontal_bias="0.0">
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                <TextView
+                        android:textIsSelectable="true"
+                        android:textAppearance="@style/project_parameter_header"
+                        android:textAlignment="textStart"
+                        android:autoSizeTextType="uniform"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/project_status_header"
+                        android:drawablePadding="8dp"
+                        app:drawableLeftCompat="@drawable/status_icon" />
+
+                <TextView
+                        android:textIsSelectable="true"
+                        android:textAppearance="@style/project_parameter_header"
+                        android:textAlignment="textStart"
+                        android:fontFamily="medium"
+                        android:autoSizeTextType="uniform"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/project_status" />
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                <TextView
+                        android:textAppearance="@style/project_parameter_header"
+                        android:textAlignment="center"
+                        android:autoSizeTextType="uniform"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="7dp"
+                        android:text="@string/project_deadline_header"
+                        app:drawableLeftCompat="@drawable/deadline_icon"
+                        android:id="@+id/project_deadline" />
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                <TextView
+                        android:textIsSelectable="true"
+                        android:textAppearance="@style/project_parameter_header"
+                        android:textAlignment="center"
+                        android:autoSizeTextType="uniform"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="10dp"
+                        android:text="@string/project_desc_header"
+                        app:drawableLeftCompat="@drawable/description_icon" />
+
+                <TextView
+                        android:textIsSelectable="true"
+                        android:textAppearance="@style/project_parameter_header"
+                        android:textAlignment="textStart"
+                        android:fontFamily="medium"
+                        android:autoSizeTextType="uniform"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/project_description" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+                android:id="@+id/team_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/team"
+                android:textAppearance="@style/team_text"
+                android:textAlignment="center"
+                android:autoSizeTextType="uniform"
+                app:layout_constraintStart_toStartOf="@id/contacts_container"
+                app:layout_constraintEnd_toEndOf="@id/contacts_container"
+                app:layout_constraintTop_toBottomOf="@id/contacts_container"
+                android:layout_marginTop="13dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/team_preview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constrainedHeight="true"
+                app:layout_constraintTop_toBottomOf="@id/team_text"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="@id/team_text"
+                app:layout_constraintEnd_toEndOf="@id/team_text"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="15dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

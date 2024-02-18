@@ -33,7 +33,7 @@ public class UserAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User>>
     @NonNull
     @Override
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user_list, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user_search, parent, false);
         return new UserViewHolder(view);
     }
 
@@ -45,10 +45,10 @@ public class UserAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User>>
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.name);
-            avatar = itemView.findViewById(R.id.avatar);
-            buttonAdd = itemView.findViewById(R.id.btnAdd);
-            buttonRemove = itemView.findViewById(R.id.btnRemove);
+            this.name = itemView.findViewById(R.id.name);
+            this.avatar = itemView.findViewById(R.id.avatar);
+            this.buttonAdd = itemView.findViewById(R.id.btnAdd);
+            this.buttonRemove = itemView.findViewById(R.id.btnRemove);
         }
 
         @Override

@@ -10,10 +10,10 @@ import androidx.fragment.app.Fragment;
 
 import com.ilyap.yuta.R;
 
-public class TasksFragment extends Fragment {
+import lombok.NoArgsConstructor;
 
-    public TasksFragment() {
-    }
+@NoArgsConstructor
+public class TasksFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,

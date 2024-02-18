@@ -28,6 +28,7 @@ import com.ilyap.yuta.ui.dialogs.team.EditTeamDialog;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings("ConstantConditions")
 public class CarouselAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.ViewHolder<List<TeamMember>>> {
@@ -53,21 +54,27 @@ public class CarouselAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.V
         private final ImageButton btnPrev, btnNext;
         private final Button editTeam, deleteTeam;
         private Team team;
+        private ViewPager2.OnPageChangeCallback viewPagerCallback;
 
         public CarouselViewHolder(@NonNull View itemView) {
             super(itemView);
-            carouselNumberTextView = itemView.findViewById(R.id.teamName);
-            imagePager = itemView.findViewById(R.id.imagePager);
-            dotsLayout = itemView.findViewById(R.id.dotsLayout);
-            btnPrev = itemView.findViewById(R.id.btnPrev);
-            btnNext = itemView.findViewById(R.id.btnNext);
-            editTeam = itemView.findViewById(R.id.editTeam);
-            deleteTeam = itemView.findViewById(R.id.deleteTeam);
+            this.carouselNumberTextView = itemView.findViewById(R.id.teamName);
+            this.imagePager = itemView.findViewById(R.id.imagePager);
+            this.dotsLayout = itemView.findViewById(R.id.dotsLayout);
+            this.btnPrev = itemView.findViewById(R.id.btnPrev);
+            this.btnNext = itemView.findViewById(R.id.btnNext);
+            this.editTeam = itemView.findViewById(R.id.editTeam);
+            this.deleteTeam = itemView.findViewById(R.id.deleteTeam);
         }
 
         @Override
         public void bind(@NonNull List<TeamMember> carousel) {
-            team = carousel.get(0).getTeam();
+            Optional<TeamMember> optionalTeamMember = carousel.stream().findFirst();
+            if (!optionalTeamMember.isPresent()) {
+                return;
+            }
+
+            team = optionalTeamMember.get().getTeam();
             carouselNumberTextView.setText(team.getName());
             List<List<TeamMember>> pages = getPagesList(carousel);
 
@@ -78,8 +85,14 @@ public class CarouselAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.V
             setupDots(pages.size());
             setupNavButtons(pages);
             setupTeamButtons(team.getLeader().getId());
+            setupViewPagerCyclic(pages);
+        }
 
-            imagePager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+        private <T> void setupViewPagerCyclic(@NonNull List<List<T>> pages) {
+            if (viewPagerCallback != null) {
+                imagePager.unregisterOnPageChangeCallback(viewPagerCallback);
+            }
+            viewPagerCallback = new ViewPager2.OnPageChangeCallback() {
                 private int myState;
                 private int currentPosition;
 
@@ -107,7 +120,9 @@ public class CarouselAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.V
                     myState = state;
                     super.onPageScrollStateChanged(state);
                 }
-            });
+            };
+
+            imagePager.registerOnPageChangeCallback(viewPagerCallback);
         }
 
         private void setupTeamButtons(int leaderId) {

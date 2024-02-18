@@ -3,8 +3,6 @@ package com.ilyap.yuta.utils;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
-import static com.ilyap.yuta.utils.RequestUtils.ROOT_URL;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -19,16 +17,16 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.LoginActivity;
 
-public final class UserUtils {
-    private static User currentUser;
-    private static SharedPreferences sharedPreferences;
+import lombok.experimental.UtilityClass;
 
-    private UserUtils() {
-    }
+@UtilityClass
+public class UserUtils {
+    private User currentUser;
+    private SharedPreferences sharedPreferences;
 
     public static void loadImage(Context context, String path, ImageView imageView) {
         Glide.with(context)
-                .load(ROOT_URL + path)
+                .load(RequestUtils.getRootUrl() + path)
                 .dontTransform()
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .priority(Priority.IMMEDIATE)
@@ -41,14 +39,6 @@ public final class UserUtils {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt("user_id", id).apply();
         }
-    }
-
-    public static void setCurrentUser(User user) {
-        currentUser = user;
-    }
-
-    public static User getCurrentUser() {
-        return currentUser;
     }
 
     public static void logOut(Activity activity) {
@@ -66,7 +56,15 @@ public final class UserUtils {
         return getSharedPreferences(context).getInt("user_id", -1);
     }
 
-    private static SharedPreferences getSharedPreferences(@NonNull Context context) {
+    public static SharedPreferences getSharedPreferences(@NonNull Context context) {
         return context.getSharedPreferences("session", Context.MODE_PRIVATE);
+    }
+
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+
+    public static void setCurrentUser(User currentUser) {
+        UserUtils.currentUser = currentUser;
     }
 }

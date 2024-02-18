@@ -14,11 +14,11 @@ import androidx.lifecycle.ViewModelProvider;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.utils.RequestViewModel;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class ReadonlyProfileFragment extends ProfileFragment {
     private int userId;
-
-    public ReadonlyProfileFragment() {
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,

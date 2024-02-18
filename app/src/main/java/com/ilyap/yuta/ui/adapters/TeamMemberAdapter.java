@@ -43,10 +43,10 @@ public class TeamMemberAdapter extends BaseAdapter<TeamMember, BaseAdapter.ViewH
 
         public TeamMemberViewHolder(@NonNull View itemView) {
             super(itemView);
-            card = itemView.findViewById(R.id.card);
-            imageView = itemView.findViewById(R.id.avatar);
-            name = itemView.findViewById(R.id.name);
-            teamLeaderIcon = itemView.findViewById(R.id.teamLeaderIcon);
+            this.card = itemView.findViewById(R.id.card);
+            this.imageView = itemView.findViewById(R.id.avatar);
+            this.name = itemView.findViewById(R.id.name);
+            this.teamLeaderIcon = itemView.findViewById(R.id.teamLeaderIcon);
         }
 
         @Override

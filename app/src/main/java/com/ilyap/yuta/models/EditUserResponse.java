@@ -1,9 +1,8 @@
 package com.ilyap.yuta.models;
 
-public class EditUserResponse {
-    private boolean modified;
+import lombok.Value;
 
-    public boolean isModified() {
-        return modified;
-    }
+@Value
+public class EditUserResponse {
+    boolean modified;
 }
