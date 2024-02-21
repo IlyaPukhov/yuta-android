@@ -36,7 +36,7 @@
     <ImageView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:src="@drawable/login_background"
+            android:src="@drawable/background_login"
             android:contentDescription="@string/ystu_photo"
             android:cropToPadding="true"
             android:scaleType="centerCrop"
@@ -103,7 +103,7 @@
                 android:elevation="10dp"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:background="@drawable/field_background"
+                android:background="@drawable/background_field"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/separator"
                 app:layout_constraintStart_toStartOf="parent"
@@ -132,7 +132,7 @@
 
             <ImageView
                     android:id="@+id/login_icon"
-                    android:src="@drawable/login_icon"
+                    android:src="@drawable/ic_login"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:contentDescription="@string/login_icon"
@@ -145,7 +145,7 @@
                 android:elevation="10dp"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:background="@drawable/field_background"
+                android:background="@drawable/background_field"
                 android:layout_marginTop="20dp"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/login_field"
@@ -174,7 +174,7 @@
 
             <ImageView
                     android:id="@+id/password_icon"
-                    android:src="@drawable/password_icon"
+                    android:src="@drawable/ic_password"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:contentDescription="@string/password_icon"

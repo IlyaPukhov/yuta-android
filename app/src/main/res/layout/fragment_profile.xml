@@ -26,7 +26,7 @@
                     android:layout_height="17dp"
                     android:id="@+id/back_button"
                     android:contentDescription="@string/exit_button"
-                    android:background="@drawable/back_button"
+                    android:background="@drawable/button_back"
                     style="@style/classic_button_style"
                     tools:ignore="TouchTargetSizeCheck"
                     android:layout_marginTop="20dp"
@@ -40,7 +40,7 @@
                     android:layout_height="22dp"
                     android:id="@+id/log_out"
                     android:contentDescription="@string/logout_button"
-                    android:background="@drawable/exit_icon"
+                    android:background="@drawable/ic_exit"
                     style="@style/classic_button_style"
                     tools:ignore="TouchTargetSizeCheck"
                     android:layout_marginTop="20dp"
@@ -52,7 +52,7 @@
                     android:id="@+id/scroll_container"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/scrollview_background"
+                    android:background="@drawable/background_scrollview"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -123,7 +123,7 @@
                         android:weightSum="3"
                         android:id="@+id/productivity"
                         android:layout_marginTop="24dp"
-                        android:divider="@drawable/productivity_separator"
+                        android:divider="@drawable/separator_productivity"
                         android:showDividers="middle"
                         android:gravity="center_horizontal"
                         android:baselineAligned="false"
@@ -240,7 +240,7 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/phone_number"
                             android:drawablePadding="10dp"
-                            app:drawableLeftCompat="@drawable/phone_icon"
+                            app:drawableLeftCompat="@drawable/ic_phone"
                             android:autoLink="phone"
                             android:textColorLink="@color/black" />
 
@@ -256,7 +256,7 @@
                             android:id="@+id/email"
                             android:layout_marginTop="12dp"
                             android:drawablePadding="10dp"
-                            app:drawableLeftCompat="@drawable/email_icon"
+                            app:drawableLeftCompat="@drawable/ic_email"
                             android:autoLink="email"
                             android:textColorLink="@color/black" />
 
@@ -273,7 +273,7 @@
                             android:layout_marginTop="12dp"
                             android:drawablePadding="10dp"
                             android:textColorLink="@color/black"
-                            app:drawableLeftCompat="@drawable/vk_icon"
+                            app:drawableLeftCompat="@drawable/ic_vk"
                             android:autoLink="web" />
                 </LinearLayout>
 
@@ -281,7 +281,7 @@
                         android:id="@+id/study_icon"
                         android:layout_width="50dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/study_info_icon"
+                        android:src="@drawable/ic_study_info"
                         android:contentDescription="@string/study_info"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -292,7 +292,7 @@
                         android:id="@+id/separator"
                         android:layout_width="0dp"
                         android:layout_height="2dp"
-                        android:src="@drawable/profile_separator"
+                        android:src="@drawable/separator_profile"
                         android:contentDescription="@string/separator"
                         android:layout_centerHorizontal="true"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -360,7 +360,7 @@
                         android:layout_marginTop="45dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginEnd="54dp"
-                        android:background="@drawable/edit_icon"
+                        android:background="@drawable/ic_edit"
                         style="@style/classic_button_style"
                         tools:ignore="TouchTargetSizeCheck" />
 
@@ -373,7 +373,7 @@
                         android:layout_marginTop="45dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginEnd="22dp"
-                        android:background="@drawable/reload_icon"
+                        android:background="@drawable/ic_reload"
                         style="@style/classic_button_style"
                         tools:ignore="TouchTargetSizeCheck" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -382,7 +382,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
-                    android:background="@drawable/scrollview_background"
+                    android:background="@drawable/background_scrollview"
                     android:animateLayoutChanges="true"
                     android:id="@+id/progressLayout"
                     android:layout_width="0dp"

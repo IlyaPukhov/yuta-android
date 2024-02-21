@@ -8,13 +8,13 @@
 
     <ImageView
             android:contentDescription="@string/yuta_logo"
-            android:layout_height="51dp"
-            android:layout_width="135dp"
+            android:layout_height="70dp"
+            android:layout_width="wrap_content"
             android:src="@drawable/logo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/scrollView"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="22dp"
             android:id="@+id/card_background" />
 
     <androidx.core.widget.NestedScrollView
@@ -37,7 +37,7 @@
                     android:layout_height="22dp"
                     android:id="@+id/log_out"
                     android:contentDescription="@string/exit_button"
-                    android:background="@drawable/exit_icon"
+                    android:background="@drawable/ic_exit"
                     style="@style/classic_button_style"
                     tools:ignore="TouchTargetSizeCheck"
                     android:layout_marginTop="20dp"
@@ -49,7 +49,7 @@
                     android:id="@+id/scroll_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/scrollview_background"
+                    android:background="@drawable/background_scrollview"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +58,7 @@
 
                 <Button
                         android:id="@+id/create_team"
-                        android:background="@drawable/blue_button_background"
+                        android:background="@drawable/button_blue"
                         style="@style/blue_button"
                         android:textAppearance="@style/active_toggle"
                         android:text="@string/create_team"
@@ -69,7 +69,7 @@
                         android:layout_height="wrap_content"
                         tools:ignore="RtlHardcoded,TouchTargetSizeCheck"
                         android:autoSizeTextType="uniform"
-                        android:drawableLeft="@drawable/create_icon"
+                        android:drawableLeft="@drawable/ic_create"
                         app:layout_constraintTop_toTopOf="parent"
                         android:layout_marginTop="25dp"
                         android:drawablePadding="10dp" />
@@ -78,7 +78,7 @@
                         android:id="@+id/toggleGroup"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/switch_background"
+                        android:background="@drawable/background_switch"
                         android:orientation="horizontal"
                         app:checkedButton="@id/manager_button"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -97,7 +97,7 @@
                             android:layout_height="wrap_content"
                             android:textOn="@string/manager_button"
                             android:textOff="@string/manager_button"
-                            android:background="@drawable/switch_button"
+                            android:background="@drawable/button_switch"
                             android:stateListAnimator="@null"
                             tools:ignore="TouchTargetSizeCheck"
                             android:paddingHorizontal="30dp"
@@ -115,7 +115,7 @@
                             android:hapticFeedbackEnabled="false"
                             android:textOn="@string/member_button"
                             android:textOff="@string/member_button"
-                            android:background="@drawable/switch_button"
+                            android:background="@drawable/button_switch"
                             android:stateListAnimator="@null"
                             tools:ignore="TouchTargetSizeCheck"
                             android:paddingHorizontal="40dp"
@@ -159,7 +159,7 @@
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:background="@drawable/scrollview_background"
+            android:background="@drawable/background_scrollview"
             android:animateLayoutChanges="true"
             android:visibility="gone"
             android:id="@+id/progressLayout"

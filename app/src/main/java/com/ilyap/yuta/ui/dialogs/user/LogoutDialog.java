@@ -11,7 +11,7 @@ public class LogoutDialog extends CustomInteractiveDialog {
 
     public LogoutDialog(Context context, Fragment fragment) {
         super(context, fragment);
-        setDialogLayout(R.layout.logout_dialog);
+        setDialogLayout(R.layout.dialog_logout);
     }
 
     @Override

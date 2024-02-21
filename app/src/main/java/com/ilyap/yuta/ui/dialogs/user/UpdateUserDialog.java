@@ -28,7 +28,7 @@ public class UpdateUserDialog extends CustomInteractiveDialog {
 
     public UpdateUserDialog(Context context, ProfileFragment profileFragment) {
         super(context, profileFragment);
-        setDialogLayout(R.layout.update_user_dialog);
+        setDialogLayout(R.layout.dialog_update_user);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class UpdateUserDialog extends CustomInteractiveDialog {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 errorText.setVisibility(GONE);
-                submitButton.setEnabled(!s.toString().trim().equals(""));
+                submitButton.setEnabled(!s.toString().trim().isEmpty());
             }
         });
     }

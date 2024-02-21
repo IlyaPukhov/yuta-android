@@ -44,7 +44,7 @@ public class EditUserDialog extends CustomInteractiveDialog {
 
     public EditUserDialog(Context context, ProfileFragment profileFragment) {
         super(context, profileFragment);
-        setDialogLayout(R.layout.edit_user_dialog);
+        setDialogLayout(R.layout.dialog_edit_user);
     }
 
     @Override
@@ -122,7 +122,7 @@ public class EditUserDialog extends CustomInteractiveDialog {
         if (editText != null) {
             String text = editText.getText().toString().trim();
 
-            if (!text.equals("")) {
+            if (!text.isEmpty()) {
                 return text;
             }
         }

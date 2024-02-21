@@ -21,7 +21,7 @@ public class DeleteTeamDialog extends CustomInteractiveDialog {
 
     public DeleteTeamDialog(Context context, Fragment fragment, Team team) {
         super(context, fragment);
-        setDialogLayout(R.layout.delete_dialog);
+        setDialogLayout(R.layout.dialog_delete);
         this.team = team;
     }
 

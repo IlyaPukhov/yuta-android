@@ -79,7 +79,7 @@
 
     <style name="blue_button" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:textColor">@color/white</item>
-        <item name="backgroundTint">@color/blue_button</item>
+        <item name="backgroundTint">@color/button_blue</item>
     </style>
 
     <style name="name_text">
@@ -236,10 +236,10 @@
     </style>
 
     <style name="orange_button" parent="Widget.MaterialComponents.Button.UnelevatedButton">
-        <item name="backgroundTint">@color/orange_button</item>
+        <item name="backgroundTint">@color/button_orange</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@drawable/login_button</item>
+        <item name="android:background">@drawable/button_login</item>
         <item name="android:letterSpacing">0.12</item>
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/white</item>

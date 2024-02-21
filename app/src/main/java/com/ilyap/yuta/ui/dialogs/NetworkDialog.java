@@ -8,6 +8,6 @@ public class NetworkDialog extends CustomDialog {
 
     public NetworkDialog(Activity activity) {
         super(activity);
-        setDialogLayout(R.layout.network_dialog);
+        setDialogLayout(R.layout.dialog_network);
     }
 }

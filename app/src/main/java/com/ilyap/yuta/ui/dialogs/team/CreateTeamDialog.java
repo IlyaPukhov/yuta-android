@@ -49,7 +49,7 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
 
     public CreateTeamDialog(Context context, Fragment fragment) {
         super(context, fragment);
-        setDialogLayout(R.layout.create_team_dialog);
+        setDialogLayout(R.layout.dialog_create_team);
     }
 
     @Override
@@ -113,7 +113,7 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
         if (editText != null) {
             String text = editText.getText().toString().trim();
 
-            if (!text.equals("")) {
+            if (!text.isEmpty()) {
                 return text;
             }
         }
@@ -166,7 +166,7 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
                         messageVisibility(error, isTeamNameUnique);
                     });
                 } else if (editText == searchField) {
-                    searchButton.setEnabled(!s.equals(null) && !s.toString().trim().equals(""));
+                    searchButton.setEnabled(!s.equals(null) && !s.toString().trim().isEmpty());
                 }
             }
         });
