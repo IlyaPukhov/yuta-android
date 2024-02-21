@@ -29,7 +29,7 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
 
     public UploadPhotoDialog(Context context, Fragment fragment) {
         super(context, fragment);
-        setDialogLayout(R.layout.upload_photo_dialog);
+        setDialogLayout(R.layout.dialog_upload_photo);
     }
 
     @Override

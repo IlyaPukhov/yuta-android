@@ -11,7 +11,7 @@ import com.ilyap.yuta.ui.fragments.ProfileFragment;
 public class PhotoDialog extends CustomInteractiveDialog {
     public PhotoDialog(Context context, ProfileFragment profileFragment) {
         super(context, profileFragment);
-        setDialogLayout(R.layout.photo_dialog);
+        setDialogLayout(R.layout.dialog_photo);
     }
 
     @Override

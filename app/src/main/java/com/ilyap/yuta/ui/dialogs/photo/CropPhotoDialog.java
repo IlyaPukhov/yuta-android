@@ -27,7 +27,7 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
 
     public CropPhotoDialog(Context context, Fragment fragment) {
         super(context, fragment);
-        setDialogLayout(R.layout.crop_photo_dialog);
+        setDialogLayout(R.layout.dialog_crop_photo);
     }
 
     @Override

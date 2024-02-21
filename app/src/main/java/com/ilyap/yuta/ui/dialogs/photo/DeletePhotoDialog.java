@@ -17,7 +17,7 @@ public class DeletePhotoDialog extends CustomInteractiveDialog {
 
     public DeletePhotoDialog(Context context, Fragment fragment) {
         super(context, fragment);
-        setDialogLayout(R.layout.delete_dialog);
+        setDialogLayout(R.layout.dialog_delete);
     }
 
     @Override

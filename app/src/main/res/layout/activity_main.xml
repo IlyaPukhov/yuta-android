@@ -22,7 +22,7 @@
             app:itemTextAppearanceActive="@style/nav_item"
             app:itemTextAppearanceInactive="@style/nav_item"
             app:itemTextAppearanceActiveBoldEnabled="true"
-            app:itemBackground="@drawable/active_item"
+            app:itemBackground="@drawable/tab_active"
             app:itemTextColor="@color/white" />
 
     <fragment

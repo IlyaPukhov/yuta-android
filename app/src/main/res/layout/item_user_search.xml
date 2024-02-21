@@ -4,7 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/edit_field_background"
+        android:background="@drawable/background_edit_field"
         android:layout_marginBottom="10dp"
         android:padding="8dp">
 
@@ -41,7 +41,7 @@
             android:layout_width="28dp"
             android:layout_height="28dp"
             style="@style/orange_button_style"
-            android:background="@drawable/plus_icon"
+            android:background="@drawable/ic_plus"
             tools:ignore="TouchTargetSizeCheck"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -54,7 +54,7 @@
             android:layout_width="28dp"
             android:layout_height="28dp"
             style="@style/orange_button_style"
-            android:background="@drawable/minus_icon"
+            android:background="@drawable/ic_minus"
             tools:ignore="TouchTargetSizeCheck"
             android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent"

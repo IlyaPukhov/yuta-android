@@ -17,7 +17,7 @@ public class DeleteProjectDialog extends CustomInteractiveDialog {
 
     public DeleteProjectDialog(Context context, Fragment fragment) {
         super(context, fragment);
-        setDialogLayout(R.layout.delete_dialog);
+        setDialogLayout(R.layout.dialog_delete);
 //        this.project = project;
     }
 
