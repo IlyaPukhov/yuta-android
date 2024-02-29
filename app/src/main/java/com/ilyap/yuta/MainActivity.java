@@ -8,7 +8,9 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import lombok.Getter;
 
+@Getter
 public class MainActivity extends AppCompatActivity {
     private NavController navController;
 
@@ -20,9 +22,5 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
-    }
-
-    public NavController getNavController() {
-        return navController;
     }
 }

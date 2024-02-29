@@ -60,8 +60,8 @@
     <string name="save_button">СОХРАНИТЬ</string>
     <string name="member_button">Вы участник</string>
     <string name="manager_button">Вы руководитель</string>
-    <string name="create_team">Создать команду</string>
-    <string name="create_project">Создать проект</string>
+    <string name="create_team">Создание команды</string>
+    <string name="create_project">Создание проекта</string>
     <string name="team_leader">team leader</string>
     <string name="card_phone">card phone</string>
     <string name="previous_cards">previous cards</string>
@@ -108,7 +108,7 @@
     <string name="date_input">дд.мм.гггг</string>
     <string name="deadline_header">Дедлайн проекта*</string>
     <string name="project_desc">Краткое описание проекта*</string>
-    <string name="create_project_team_mode">Команда:</string>
+    <string name="create_project_team_mode">Вы можете:</string>
     <string name="create_project_without_team">Создать проект без команды и добавить её позже</string>
     <string name="create_project_with_team">Прикрепить к проекту одну из своих команд</string>
     <string name="added_team_desc">Прикрепленная команда:</string>
@@ -117,4 +117,7 @@
     <string name="status_desc">Статус проекта:</string>
     <string name="logout_button_text">ДА, ВЫЙТИ</string>
     <string name="logout_desc">Вы действительно хотите выйти из приложения?</string>
+    <string name="project_in_process">в работе</string>
+    <string name="project_paused">приостановлен</string>
+    <string name="project_complete">завершен</string>
 </resources>

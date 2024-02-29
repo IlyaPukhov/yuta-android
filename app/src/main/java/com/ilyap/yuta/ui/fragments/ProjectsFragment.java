@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
+import com.ilyap.yuta.ui.dialogs.project.CreateProjectDialog;
 import com.ilyap.yuta.ui.dialogs.user.LogoutDialog;
 import lombok.NoArgsConstructor;
 
@@ -31,6 +32,7 @@ public class ProjectsFragment extends Fragment {
             lastPickedButtonId = memberProjectsButton.getId();
         }
 
+        view.findViewById(R.id.create_project).setOnClickListener(v -> openCreateProjectDialog());
         view.findViewById(R.id.log_out).setOnClickListener(v -> openLogoutDialog());
         return view;
     }
@@ -70,6 +72,11 @@ public class ProjectsFragment extends Fragment {
         memberProjectsButton = view.findViewById(R.id.member_button);
         managedProjectsButton.setOnClickListener(this::onToggleButtonClick);
         memberProjectsButton.setOnClickListener(this::onToggleButtonClick);
+    }
+
+    private void openCreateProjectDialog() {
+        CustomDialog createProjectDialog = new CreateProjectDialog(view.getContext(), this);
+        createProjectDialog.start();
     }
 
     private void openLogoutDialog() {

@@ -61,8 +61,8 @@ public class TeamsFragment extends Fragment {
             lastPickedButtonId = memberTeamsButton.getId();
         }
 
-        view.findViewById(R.id.log_out).setOnClickListener(v -> openLogoutDialog());
         view.findViewById(R.id.create_team).setOnClickListener(v -> openCreateTeamDialog());
+        view.findViewById(R.id.log_out).setOnClickListener(v -> openLogoutDialog());
         return view;
     }
 
@@ -103,11 +103,6 @@ public class TeamsFragment extends Fragment {
 
     private void openTab(@NonNull Button button) {
         button.performClick();
-    }
-
-    private void openCreateTeamDialog() {
-        CustomDialog createTeamDialog = new CreateTeamDialog(view.getContext(), this);
-        createTeamDialog.start();
     }
 
     private void onToggleButtonClick(View view) {
@@ -158,6 +153,11 @@ public class TeamsFragment extends Fragment {
         memberTeamsButton = view.findViewById(R.id.member_button);
         managedTeamsButton.setOnClickListener(this::onToggleButtonClick);
         memberTeamsButton.setOnClickListener(this::onToggleButtonClick);
+    }
+
+    private void openCreateTeamDialog() {
+        CustomDialog createTeamDialog = new CreateTeamDialog(view.getContext(), this);
+        createTeamDialog.start();
     }
 
     private void openLogoutDialog() {
