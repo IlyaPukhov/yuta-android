@@ -120,7 +120,7 @@
                         android:id="@+id/pick_tech_task"
                         android:textAppearance="@style/pick_file_button"
                         style="@style/classic_button_style"
-                        android:layout_width="160dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/pick_tech_task"
                         android:background="@drawable/background_edit_field"
@@ -131,15 +131,14 @@
                         app:layout_constraintStart_toStartOf="parent"
                         android:minHeight="38dip"
                         android:textColor="@color/dark_gray"
-                        android:paddingLeft="0dp"
-                        android:paddingRight="0dp"
                         app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
                         android:id="@+id/file_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/tech_task_not_picked"
+                        android:hint="@string/tech_task_not_picked"
+                        android:textColorHint="@color/dark_gray"
                         android:textAppearance="@style/pick_file_button"
                         android:textAlignment="textStart"
                         android:ellipsize="end"

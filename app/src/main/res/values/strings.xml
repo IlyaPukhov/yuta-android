@@ -55,6 +55,7 @@
     <string name="pick_button">Выбрать фотографию</string>
     <string name="delete_photo">delete photo</string>
     <string name="pick_image">Выберите изображение</string>
+    <string name="pick_tech_task_file">Выберите техническое задание (pdf)</string>
     <string name="crop_text">Выбор миниатюры</string>
     <string name="crop_desc">Выберите область для маленьких фотографий.\nВыбранная миниатюра будет использоваться в профиле.</string>
     <string name="save_button">СОХРАНИТЬ</string>
@@ -117,7 +118,4 @@
     <string name="status_desc">Статус проекта:</string>
     <string name="logout_button_text">ДА, ВЫЙТИ</string>
     <string name="logout_desc">Вы действительно хотите выйти из приложения?</string>
-    <string name="project_in_process">в работе</string>
-    <string name="project_paused">приостановлен</string>
-    <string name="project_complete">завершен</string>
 </resources>

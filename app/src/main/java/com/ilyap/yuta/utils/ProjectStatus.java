@@ -1,15 +1,18 @@
 package com.ilyap.yuta.utils;
 
-import com.ilyap.yuta.R;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
-@Getter
 @RequiredArgsConstructor
 public enum ProjectStatus {
-    PROCESS(R.string.project_in_process),
-    PAUSE(R.string.project_paused),
-    COMPLETE(R.string.project_complete);
+    PROCESS("в работе"),
+    PAUSE("приостановлен"),
+    COMPLETE("завершен");
 
-    private final int stringId;
+    private final String text;
+
+    @Override
+    public @NotNull String toString() {
+        return text;
+    }
 }

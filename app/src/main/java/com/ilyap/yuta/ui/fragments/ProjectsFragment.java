@@ -1,11 +1,15 @@
 package com.ilyap.yuta.ui.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ToggleButton;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.ilyap.yuta.R;
@@ -13,6 +17,8 @@ import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.project.CreateProjectDialog;
 import com.ilyap.yuta.ui.dialogs.user.LogoutDialog;
 import lombok.NoArgsConstructor;
+
+import static com.ilyap.yuta.ui.dialogs.project.CreateProjectDialog.PICK_PDF_REQUEST;
 
 @NoArgsConstructor
 public class ProjectsFragment extends Fragment {
@@ -66,6 +72,15 @@ public class ProjectsFragment extends Fragment {
         otherButton.setChecked(false);
         lastPickedButtonId = button.getId();
     }
+
+    public final ActivityResultLauncher<Intent> pdfPickerLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    CreateProjectDialog.handleActivityResult(PICK_PDF_REQUEST, Activity.RESULT_OK, result.getData());
+                }
+            }
+    );
 
     private void projectsSwitchInitialize() {
         managedProjectsButton = view.findViewById(R.id.manager_button);
