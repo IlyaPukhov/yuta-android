@@ -141,7 +141,6 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
         addedText.setVisibility((addedMembers != null && !addedMembers.isEmpty()) ? VISIBLE : GONE);
     }
 
-
     private void messageVisibility(@NonNull View message, boolean isValid) {
         message.setVisibility(isValid ? GONE : VISIBLE);
     }
