@@ -53,30 +53,28 @@ public class UserAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User>>
 
         @Override
         public void bind(User user) {
-            if (user != null) {
-                loadImage(getContext(), user.getCroppedPhotoUrl(), avatar);
+            loadImage(getContext(), user.getCroppedPhotoUrl(), avatar);
 
-                String userName = user.getLastName() + " " + user.getFirstName() + (user.getPatronymic() == null ? "" : " " + user.getPatronymic());
-                name.setText(userName);
+            String userName = user.getLastName() + " " + user.getFirstName() + (user.getPatronymic() == null ? "" : " " + user.getPatronymic());
+            name.setText(userName);
 
-                if (membersAdapter != null) {
-                    buttonRemove.setVisibility(GONE);
-                    buttonAdd.setVisibility(VISIBLE);
+            if (membersAdapter != null) {
+                buttonRemove.setVisibility(GONE);
+                buttonAdd.setVisibility(VISIBLE);
 
-                    buttonAdd.setOnClickListener(v -> {
-                        removeItem(user);
-                        membersAdapter.insertItem(user);
-                        ((CreateTeamDialog) dialog).updateAddedTextVisibility();
-                    });
-                } else {
-                    buttonAdd.setVisibility(GONE);
-                    buttonRemove.setVisibility(VISIBLE);
+                buttonAdd.setOnClickListener(v -> {
+                    removeItem(user);
+                    membersAdapter.insertItem(user);
+                    ((CreateTeamDialog) dialog).updateAddedTextVisibility();
+                });
+            } else {
+                buttonAdd.setVisibility(GONE);
+                buttonRemove.setVisibility(VISIBLE);
 
-                    buttonRemove.setOnClickListener(v -> {
-                        removeItem(user);
-                        ((CreateTeamDialog) dialog).updateAddedTextVisibility();
-                    });
-                }
+                buttonRemove.setOnClickListener(v -> {
+                    removeItem(user);
+                    ((CreateTeamDialog) dialog).updateAddedTextVisibility();
+                });
             }
         }
     }

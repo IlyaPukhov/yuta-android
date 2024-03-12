@@ -16,18 +16,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.User;
-import com.ilyap.yuta.ui.adapters.UserAdapter;
+import com.ilyap.yuta.models.Team;
+import com.ilyap.yuta.ui.adapters.TeamAdapter;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProjectsFragment;
 import com.ilyap.yuta.utils.RequestViewModel;
 import lombok.SneakyThrows;
 
+import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -44,13 +48,20 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
     @SuppressLint("StaticFieldLeak")
     private static TextView fileName;
     protected RequestViewModel viewModel;
-    private Button submitButton;
+    protected Button submitButton;
+    private Button searchButton;
     private TextView dateField;
+    private TextView addedText;
+    protected TeamAdapter searchAdapter;
+    protected TeamAdapter teamAdapter;
     private static Uri techTaskUri;
     private View pickTeamContainer;
     private EditText projectName;
     private EditText projectDesc;
     private TextView emptySearch;
+    private final List<Team> addedTeams = new ArrayList<>();
+    private final List<Team> searchTeams = new ArrayList<>();
+    private EditText searchField;
 
     public CreateProjectDialog(Context context, Fragment fragment) {
         super(context, fragment);
@@ -62,12 +73,15 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
         super.start();
         viewModel = new ViewModelProvider(fragment).get(RequestViewModel.class);
 
-
         fileName = dialog.findViewById(R.id.file_name);
         fileName.setText("");
-        submitButton = dialog.findViewById(R.id.submit);
         pickTeamContainer = dialog.findViewById(R.id.pick_team_container);
 
+        searchField = dialog.findViewById(R.id.find_name);
+        searchButton = dialog.findViewById(R.id.btn_search);
+        submitButton = dialog.findViewById(R.id.submit);
+
+        addedText = dialog.findViewById(R.id.added_team_text);
         emptySearch = dialog.findViewById(R.id.empty_search_text);
         projectName = dialog.findViewById(R.id.project_name);
         projectDesc = dialog.findViewById(R.id.project_desc);
@@ -79,6 +93,7 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
 
         dialog.findViewById(R.id.pick_tech_task).setOnClickListener(v -> pickTechTask());
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
+        searchButton.setOnClickListener(v -> searchTeam());
         submitButton.setOnClickListener(v -> {
             hideKeyboard(submitButton);
             createProject();
@@ -95,17 +110,20 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
         // optional
         Path techTaskPath = Paths.get(techTaskUri.getPath());
         InputStream inputStream = Files.newInputStream(techTaskPath);
-
-        int teamId = -1;
-
-        // EDIT String status = spinner.getSelectedItem().toString();
+        //int teamId = -1;
     }
 
     private void radioGroupInitialize() {
         ((RadioGroup) dialog.findViewById(R.id.radio_group)).setOnCheckedChangeListener(
-                (group, checkedId) ->
-                        pickTeamContainer.setVisibility(checkedId == RADIO_CREATE_WITH_TEAM ? VISIBLE : GONE
-                        ));
+                (group, checkedId) -> {
+                    if (checkedId == RADIO_CREATE_WITH_TEAM) {
+                        pickTeamContainer.setVisibility(VISIBLE);
+                        recyclerViewInitialize();
+                    } else {
+                        pickTeamContainer.setVisibility(GONE);
+                    }
+                }
+        );
     }
 
     private void pickTechTask() {
@@ -123,23 +141,8 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
 
     private static void setTechTask(Uri uri) {
         techTaskUri = uri;
-        fileName.setText(uri.getLastPathSegment());
+        fileName.setText(new File(uri.getPath()).getName());
     }
-
-//    EDIT
-//    private void statusSpinnerInitialize() {
-//        spinner = findViewById(R.id.status);
-//        ArrayAdapter<ProjectStatus> adapter = new ArrayAdapter<>(
-//                getContext(),
-//                android.R.layout.simple_spinner_item,
-//                ProjectStatus.values()
-//        );
-//
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinner.setAdapter(adapter);
-//        spinner.setSelection(0);
-
-//    }
 
     private void datePickerInitialize() {
         dateField = dialog.findViewById(R.id.date_field);
@@ -148,13 +151,14 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
             Calendar calendar = getInstance();
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(
-                    getContext(),
+                    activity,
                     (view, year1, month1, dayOfMonth) -> {
                         dateField.setText(String.format(
                                 Locale.getDefault(), "%02d.%02d.%04d", dayOfMonth, month1 + 1, year1)
                         );
                         calendar.clear();
                         calendar.set(year1, month1, dayOfMonth);
+                        updateSubmitButtonState();
                     },
                     calendar.get(DAY_OF_MONTH),
                     calendar.get(MONTH),
@@ -165,7 +169,7 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
         });
     }
 
-    private String getData(EditText editText) {
+    private String getData(TextView editText) {
         if (editText != null) {
             String text = editText.getText().toString().trim();
 
@@ -185,30 +189,30 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
 //        });
     }
 
-    private void updateList(@NonNull UserAdapter adapter, @NonNull List<User> users) {
-        messageVisibility(emptySearch, !users.isEmpty());
-        adapter.updateList(users);
+    private void updateList(@NonNull TeamAdapter adapter, @NonNull List<Team> teams) {
+        messageVisibility(emptySearch, !teams.isEmpty());
+        adapter.updateList(teams);
     }
 
-    private void recyclerViewsInitialize() {
-//        RecyclerView searchUsersView = dialog.findViewById(R.id.searchUsers);
-//        RecyclerView addedMembersView = dialog.findViewById(R.id.addedMembers);
-//
-//        LinearLayoutManager addedLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-//        addedMembersView.setLayoutManager(addedLayoutManager);
-//
-//        LinearLayoutManager searchLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-//        searchUsersView.setLayoutManager(searchLayoutManager);
-//
-//        membersAdapter = new UserAdapter(this,addedMembers, null);
-//        addedMembersView.setAdapter(membersAdapter);
-//
-//        searchAdapter = new UserAdapter(this, searchUsers, membersAdapter);
-//        searchUsersView.setAdapter(searchAdapter);
+    private void recyclerViewInitialize() {
+        RecyclerView searchTeamView = dialog.findViewById(R.id.search_teams);
+        RecyclerView addedTeamsView = dialog.findViewById(R.id.added_teams);
+
+        LinearLayoutManager searchLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        searchTeamView.setLayoutManager(searchLayoutManager);
+
+        LinearLayoutManager addedLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        addedTeamsView.setLayoutManager(addedLayoutManager);
+
+        teamAdapter = new TeamAdapter(this, addedTeams, null);
+        addedTeamsView.setAdapter(teamAdapter);
+
+        searchAdapter = new TeamAdapter(this, searchTeams, teamAdapter);
+        searchTeamView.setAdapter(searchAdapter);
     }
 
     public void updateAddedTextVisibility() {
-//        addedText.setVisibility((addedTeam != null && !addedTeam.isEmpty()) ? VISIBLE : GONE);
+        addedText.setVisibility((addedTeams != null && !addedTeams.isEmpty()) ? VISIBLE : GONE);
     }
 
     private void messageVisibility(@NonNull View message, boolean isValid) {
@@ -227,9 +231,26 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                editText.setEnabled(!s.equals(null) && !s.toString().trim().isEmpty());
+                if (editText == projectName || editText == projectDesc) {
+                    updateSubmitButtonState();
+                } else if (editText == searchField) {
+                    searchButton.setEnabled(isFilledTextViews(s));
+                }
             }
         });
     }
 
+    private void updateSubmitButtonState() {
+        boolean isValid = isFilledTextViews(projectName.getText(), projectDesc.getText(), dateField.getText());
+        submitButton.setEnabled(isValid);
+    }
+
+    private boolean isFilledTextViews(CharSequence... sequences) {
+        for (CharSequence s : sequences) {
+            if (s.equals(null) || s.toString().trim().isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

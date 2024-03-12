@@ -131,7 +131,8 @@
                         app:layout_constraintStart_toStartOf="parent"
                         android:minHeight="38dip"
                         android:textColor="@color/dark_gray"
-                        app:layout_constraintVertical_bias="0.0" />
+                        app:layout_constraintVertical_bias="0.0"
+                        app:rippleColor="@color/black" />
 
                 <TextView
                         android:id="@+id/file_name"
@@ -148,7 +149,9 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toEndOf="@id/pick_tech_task"
-                        app:layout_constrainedWidth="true" />
+                        app:layout_constrainedWidth="true"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
@@ -315,11 +318,11 @@
                     android:gravity="top">
 
                 <RadioButton
+                        android:id="@+id/create_without_team"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/radio_button"
                         android:checked="true"
-                        android:id="@+id/create_without_team"
                         android:text="@string/create_project_without_team"
                         android:textAppearance="@style/pick_button"
                         android:textColor="@color/dark_gray"
@@ -331,10 +334,10 @@
                         tools:ignore="TouchTargetSizeCheck" />
 
                 <RadioButton
+                        android:id="@+id/create_with_team"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/radio_button"
-                        android:id="@+id/create_with_team"
                         android:text="@string/create_project_with_team"
                         android:textAppearance="@style/pick_button"
                         android:textColor="@color/dark_gray"
@@ -352,11 +355,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/radio_group"
-                    android:layout_marginTop="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/submit"
-                    android:layout_marginBottom="25dp"
                     android:visibility="gone">
 
                 <TextView
@@ -369,6 +369,7 @@
                         android:fontFamily="@font/montserrat_medium"
                         android:autoSizeTextType="uniform"
                         app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="15dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginEnd="25dp"
@@ -376,7 +377,7 @@
                         android:visibility="gone" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/added_team"
+                        android:id="@+id/added_teams"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         app:layout_constraintTop_toBottomOf="@id/added_team_text"
@@ -397,7 +398,7 @@
                         android:textAlignment="textStart"
                         android:fontFamily="@font/montserrat_medium"
                         android:autoSizeTextType="uniform"
-                        app:layout_constraintTop_toBottomOf="@id/added_team"
+                        app:layout_constraintTop_toBottomOf="@id/added_teams"
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginStart="25dp"
                         app:layout_constraintEnd_toEndOf="parent"

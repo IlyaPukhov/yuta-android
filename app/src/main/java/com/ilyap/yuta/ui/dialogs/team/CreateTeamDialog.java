@@ -33,6 +33,8 @@ import java.util.List;
 
 @SuppressWarnings("ConstantConditions")
 public class CreateTeamDialog extends CustomInteractiveDialog {
+    private final List<User> searchUsers = new ArrayList<>();
+    protected final List<User> addedMembers = new ArrayList<>();
     protected RequestViewModel viewModel;
     protected EditText teamName;
     private EditText searchField;
@@ -44,8 +46,6 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
     private TextView emptySearch;
     private TextView addedText;
     private boolean isTeamNameUnique;
-    private List<User> searchUsers;
-    protected List<User> addedMembers;
 
     public CreateTeamDialog(Context context, Fragment fragment) {
         super(context, fragment);
@@ -55,8 +55,6 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
     @Override
     public void start() {
         super.start();
-        searchUsers = new ArrayList<>();
-        addedMembers = new ArrayList<>();
         viewModel = new ViewModelProvider(fragment).get(RequestViewModel.class);
 
         submitButton = dialog.findViewById(R.id.submit);
@@ -130,7 +128,7 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
         LinearLayoutManager searchLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         searchUsersView.setLayoutManager(searchLayoutManager);
 
-        membersAdapter = new UserAdapter(this,addedMembers, null);
+        membersAdapter = new UserAdapter(this, addedMembers, null);
         addedMembersView.setAdapter(membersAdapter);
 
         searchAdapter = new UserAdapter(this, searchUsers, membersAdapter);

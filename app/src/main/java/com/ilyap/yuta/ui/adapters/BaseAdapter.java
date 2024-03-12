@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
 @AllArgsConstructor
 public abstract class BaseAdapter<T, VH extends BaseAdapter.ViewHolder<T>> extends RecyclerView.Adapter<VH> implements ListAdapterUpdater<T> {
     private final Context context;
@@ -46,10 +48,6 @@ public abstract class BaseAdapter<T, VH extends BaseAdapter.ViewHolder<T>> exten
     @Override
     public int getItemCount() {
         return items.size();
-    }
-
-    public Context getContext() {
-        return context;
     }
 
     public abstract static class ViewHolder<T> extends RecyclerView.ViewHolder {

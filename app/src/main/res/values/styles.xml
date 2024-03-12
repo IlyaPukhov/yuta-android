@@ -69,7 +69,7 @@
         <item name="cornerSize">10dp</item>
     </style>
 
-    <style name="classic_button_style" parent="Widget.MaterialComponents.Button">
+    <style name="classic_button_style" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="backgroundTint">@null</item>
     </style>
 
@@ -155,6 +155,7 @@
     <style name="pick_file_button" parent="pick_button">
         <item name="android:textColor">@color/dark_gray</item>
         <item name="android:fontFamily">@font/montserrat_medium</item>
+
     </style>
 
     <style name="active_toggle" parent="Widget.AppCompat.Button.Borderless">

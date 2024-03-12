@@ -4,16 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.ilyap.yuta.models.AuthResponse;
 import com.ilyap.yuta.models.CheckTeamNameResponse;
 import com.ilyap.yuta.models.EditUserResponse;
+import com.ilyap.yuta.models.ProjectResponse;
+import com.ilyap.yuta.models.ProjectsResponse;
 import com.ilyap.yuta.models.SearchResponse;
 import com.ilyap.yuta.models.Team;
-import com.ilyap.yuta.models.TeamResponse;
+import com.ilyap.yuta.models.TeamsResponse;
 import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.models.User;
-
 import org.json.JSONArray;
 
 import java.util.HashMap;
@@ -23,7 +23,9 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.stream.Collector;
 
-import static com.ilyap.yuta.utils.RequestUtils.*;
+import static com.ilyap.yuta.utils.RequestUtils.getRequest;
+import static com.ilyap.yuta.utils.RequestUtils.getRootUrl;
+import static com.ilyap.yuta.utils.RequestUtils.postRequest;
 
 public final class RequestViewModel extends ViewModel {
     private final Executor executor = Executors.newSingleThreadExecutor();
@@ -33,6 +35,73 @@ public final class RequestViewModel extends ViewModel {
         return resultLiveData;
     }
 
+    public void deleteProject(int projectId) {
+        clearResultLiveData();
+        executor.execute(() -> {
+            Map<String, Object> params = new HashMap<>();
+            params.put("team_id", projectId);
+            String json = postRequest(getFullUrl("projects"), params);
+            resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
+        });
+    }
+
+    public void getProject(int projectId) {
+        clearResultLiveData();
+        executor.execute(() -> {
+            String json = getRequest(getFullUrl("projects?project_id=") + projectId);
+            resultLiveData.postValue(JsonUtils.parse(json, ProjectResponse.class));
+        });
+    }
+
+//    public void searchTeams(String userName, int leaderId, List<User> members) {
+//        clearResultLiveData();
+//        executor.execute(() -> {
+//            HashMap<String, Object> params = new HashMap<>();
+//            params.put("action", "search_user");
+//            params.put("user_name", userName);
+//            params.put("leader_id", leaderId);
+//            params.put("members_id", getMembersIdArray(members));
+//            String json = postRequest(getFullUrl("teams"), params);
+//            resultLiveData.postValue(JsonUtils.parse(json, ProjectsResponse.class));
+//        });
+//    }
+
+//    public void editTeam(int teamId, String teamName, List<User> members) {
+//        clearResultLiveData();
+//        executor.execute(() -> {
+//            HashMap<String, Object> params = new HashMap<>();
+//            params.put("action", "edit_team");
+//            params.put("team_id", teamId);
+//            params.put("team_name", teamName);
+//            params.put("members_id", getMembersIdArray(members));
+//            String json = postRequest(getFullUrl("teams"), params);
+//            resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
+//        });
+//    }
+
+//    public void createProject(int leaderId, String teamName, List<User> members) {
+//        clearResultLiveData();
+//        executor.execute(() -> {
+//            HashMap<String, Object> params = new HashMap<>();
+//            params.put("action", "create_team");
+//            params.put("team_name", teamName);
+//            params.put("leader_id", leaderId);
+//            params.put("members_id", getMembersIdArray(members));
+//            String json = postRequest(getFullUrl("teams"), params);
+//            resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
+//        });
+//    }
+
+    public void getProjects(int userId) {
+        clearResultLiveData();
+        executor.execute(() -> {
+            String json = getRequest(getFullUrl("projects?user_id=" + userId));
+            resultLiveData.postValue(JsonUtils.parse(json, ProjectsResponse.class));
+        });
+    }
+
+
+    // TEAMS
     public void deleteTeam(int teamId) {
         clearResultLiveData();
         executor.execute(() -> {
@@ -112,12 +181,22 @@ public final class RequestViewModel extends ViewModel {
         });
     }
 
+    public void getTeams(int userId) {
+        clearResultLiveData();
+        executor.execute(() -> {
+            String json = getRequest(getFullUrl("teams?user_id=" + userId));
+            resultLiveData.postValue(JsonUtils.parse(json, TeamsResponse.class));
+        });
+    }
+
     private static JSONArray getMembersIdArray(@NonNull List<User> members) {
         return members.stream()
                 .map(User::getId)
                 .collect(Collector.of(JSONArray::new, JSONArray::put, JSONArray::put));
     }
 
+
+    // PROFILE
     public void updateUserData(int userId, String password) {
         clearResultLiveData();
         executor.execute(() -> {
@@ -162,6 +241,16 @@ public final class RequestViewModel extends ViewModel {
         });
     }
 
+    public void getUser(int userId) {
+        clearResultLiveData();
+        executor.execute(() -> {
+            String json = getRequest(getFullUrl("profile?user_id=" + userId));
+            resultLiveData.postValue(JsonUtils.parse(json, User.class));
+        });
+    }
+
+
+    // AUTHORIZATION
     public void auth(String login, String password) {
         clearResultLiveData();
         executor.execute(() -> {
@@ -173,21 +262,6 @@ public final class RequestViewModel extends ViewModel {
         });
     }
 
-    public void getUser(int userId) {
-        clearResultLiveData();
-        executor.execute(() -> {
-            String json = getRequest(getFullUrl("profile?user_id=" + userId));
-            resultLiveData.postValue(JsonUtils.parse(json, User.class));
-        });
-    }
-
-    public void getTeams(int userId) {
-        clearResultLiveData();
-        executor.execute(() -> {
-            String json = getRequest(getFullUrl("teams?user_id=" + userId));
-            resultLiveData.postValue(JsonUtils.parse(json, TeamResponse.class));
-        });
-    }
 
     private void clearResultLiveData() {
         resultLiveData.setValue(null);

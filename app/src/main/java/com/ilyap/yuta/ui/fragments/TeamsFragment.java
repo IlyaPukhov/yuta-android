@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.Team;
 import com.ilyap.yuta.models.TeamMember;
-import com.ilyap.yuta.models.TeamResponse;
+import com.ilyap.yuta.models.TeamsResponse;
 import com.ilyap.yuta.ui.adapters.CarouselAdapter;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.team.CreateTeamDialog;
@@ -81,11 +81,11 @@ public class TeamsFragment extends Fragment {
         viewModel.getResultLiveData().removeObservers(getViewLifecycleOwner());
         viewModel.getTeams(getUserId(requireActivity()));
         viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
-            if (!(result instanceof TeamResponse)) return;
+            if (!(result instanceof TeamsResponse)) return;
             progressLayout.setVisibility(GONE);
-            TeamResponse teamResponse = (TeamResponse) result;
-            managedTeamsMembers = getTeamMembers(teamResponse.getManagedTeams());
-            othersTeamsMembers = getTeamMembers(teamResponse.getOthersTeams());
+            TeamsResponse teamsResponse = (TeamsResponse) result;
+            managedTeamsMembers = getTeamMembers(teamsResponse.getManagedTeams());
+            othersTeamsMembers = getTeamMembers(teamsResponse.getOthersTeams());
         });
     }
 
@@ -96,7 +96,7 @@ public class TeamsFragment extends Fragment {
     private void updateCarousels(Button button) {
         updateTeams();
         viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
-            if (!(result instanceof TeamResponse)) return;
+            if (!(result instanceof TeamsResponse)) return;
             openTab(button);
         });
     }
