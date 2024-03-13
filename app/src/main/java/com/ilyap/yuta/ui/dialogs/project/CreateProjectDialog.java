@@ -19,7 +19,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.ilyap.yuta.R;
+import com.ilyap.yuta.models.SearchTeamResponse;
 import com.ilyap.yuta.models.Team;
+import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.ui.adapters.TeamAdapter;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProjectsFragment;
@@ -27,10 +29,10 @@ import com.ilyap.yuta.utils.RequestViewModel;
 import lombok.SneakyThrows;
 
 import java.io.File;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -39,7 +41,10 @@ import java.util.Locale;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
-import static java.util.Calendar.*;
+import static java.util.Calendar.DAY_OF_MONTH;
+import static java.util.Calendar.MONTH;
+import static java.util.Calendar.YEAR;
+import static java.util.Calendar.getInstance;
 
 @SuppressWarnings("ConstantConditions")
 public class CreateProjectDialog extends CustomInteractiveDialog {
@@ -103,14 +108,33 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
     @SneakyThrows
     private void createProject() {
         int managerId = getUserId(activity);
-        String name = projectName.getText().toString();
-        String deadline = dateField.getText().toString();
-        String description = projectDesc.getText().toString();
-
-        // optional
+        String name = getData(projectName);
+        String description = getData(projectDesc);
+        String deadline = getFormattedDate(getData(dateField));
         Path techTaskPath = Paths.get(techTaskUri.getPath());
-        InputStream inputStream = Files.newInputStream(techTaskPath);
-        //int teamId = -1;
+        int teamId = getCurrentTeamId();
+
+        viewModel.getResultLiveData().removeObservers(fragment);
+        viewModel.createProject(managerId, name, description, deadline, techTaskPath, teamId);
+        viewModel.getResultLiveData().observe(fragment, result -> {
+            if (!(result instanceof UpdateResponse)) return;
+//            ((ProjectsFragment) fragment).updateProjects();
+            dismiss();
+        });
+    }
+
+    private int getCurrentTeamId() {
+        return addedTeams.stream()
+                .findFirst()
+                .map(Team::getId)
+                .orElse(-1);
+    }
+
+    private String getFormattedDate(String date) {
+        DateTimeFormatter sourceDateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        LocalDateTime localDateTime = LocalDateTime.parse(date, sourceDateFormatter);
+
+        return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MMM-dd"));
     }
 
     private void radioGroupInitialize() {
@@ -181,12 +205,12 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
     }
 
     private void searchTeam() {
-//        viewModel.getResultLiveData().removeObservers(fragment);
-//        viewModel.searchUsers(getData(searchField), getUserId(activity), addedMembers);
-//        viewModel.getResultLiveData().observe(fragment, result -> {
-//            if (!(result instanceof SearchResponse)) return;
-//            updateList(searchAdapter, ((SearchResponse) result).getUsers());
-//        });
+        viewModel.getResultLiveData().removeObservers(fragment);
+        viewModel.searchTeams(getData(searchField), getUserId(activity), getCurrentTeamId());
+        viewModel.getResultLiveData().observe(fragment, result -> {
+            if (!(result instanceof SearchTeamResponse)) return;
+            updateList(searchAdapter, ((SearchTeamResponse) result).getTeams());
+        });
     }
 
     private void updateList(@NonNull TeamAdapter adapter, @NonNull List<Team> teams) {

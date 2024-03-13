@@ -42,7 +42,7 @@ public class DeleteProjectDialog extends CustomInteractiveDialog {
 
     private void deleteProject(Fragment fragment, @NonNull Project project) {
         viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.deleteTeam(project.getId());
+        viewModel.deleteProject(project.getId());
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
 //            ((ProjectsFragment) fragment).updateProjectsList();

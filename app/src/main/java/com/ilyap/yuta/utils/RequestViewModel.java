@@ -9,15 +9,22 @@ import com.ilyap.yuta.models.CheckTeamNameResponse;
 import com.ilyap.yuta.models.EditUserResponse;
 import com.ilyap.yuta.models.ProjectResponse;
 import com.ilyap.yuta.models.ProjectsResponse;
-import com.ilyap.yuta.models.SearchResponse;
+import com.ilyap.yuta.models.SearchTeamResponse;
+import com.ilyap.yuta.models.SearchUserResponse;
 import com.ilyap.yuta.models.Team;
 import com.ilyap.yuta.models.TeamsResponse;
 import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.models.User;
+import lombok.Cleanup;
 import org.json.JSONArray;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -25,6 +32,7 @@ import java.util.stream.Collector;
 
 import static com.ilyap.yuta.utils.RequestUtils.getRequest;
 import static com.ilyap.yuta.utils.RequestUtils.getRootUrl;
+import static com.ilyap.yuta.utils.RequestUtils.postFormDataRequest;
 import static com.ilyap.yuta.utils.RequestUtils.postRequest;
 
 public final class RequestViewModel extends ViewModel {
@@ -35,6 +43,7 @@ public final class RequestViewModel extends ViewModel {
         return resultLiveData;
     }
 
+    // PROJECTS
     public void deleteProject(int projectId) {
         clearResultLiveData();
         executor.execute(() -> {
@@ -53,44 +62,72 @@ public final class RequestViewModel extends ViewModel {
         });
     }
 
-//    public void searchTeams(String userName, int leaderId, List<User> members) {
-//        clearResultLiveData();
-//        executor.execute(() -> {
-//            HashMap<String, Object> params = new HashMap<>();
-//            params.put("action", "search_user");
-//            params.put("user_name", userName);
-//            params.put("leader_id", leaderId);
-//            params.put("members_id", getMembersIdArray(members));
-//            String json = postRequest(getFullUrl("teams"), params);
-//            resultLiveData.postValue(JsonUtils.parse(json, ProjectsResponse.class));
-//        });
-//    }
+    public void searchTeams(String name, int leaderId, int teamId) {
+        clearResultLiveData();
+        executor.execute(() -> {
+            String requestString = String.format(Locale.getDefault(),
+                    "projects?team_name=%s&leader_id=%d%s", name, leaderId,
+                    teamId >= 0 ? "&project_team_id=" + teamId : "");
 
-//    public void editTeam(int teamId, String teamName, List<User> members) {
-//        clearResultLiveData();
-//        executor.execute(() -> {
-//            HashMap<String, Object> params = new HashMap<>();
-//            params.put("action", "edit_team");
-//            params.put("team_id", teamId);
-//            params.put("team_name", teamName);
-//            params.put("members_id", getMembersIdArray(members));
-//            String json = postRequest(getFullUrl("teams"), params);
-//            resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
-//        });
-//    }
+            String json = getRequest(getFullUrl(requestString));
+            resultLiveData.postValue(JsonUtils.parse(json, SearchTeamResponse.class));
+        });
+    }
 
-//    public void createProject(int leaderId, String teamName, List<User> members) {
-//        clearResultLiveData();
-//        executor.execute(() -> {
-//            HashMap<String, Object> params = new HashMap<>();
-//            params.put("action", "create_team");
-//            params.put("team_name", teamName);
-//            params.put("leader_id", leaderId);
-//            params.put("members_id", getMembersIdArray(members));
-//            String json = postRequest(getFullUrl("teams"), params);
-//            resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
-//        });
-//    }
+    public void editProject(int projectId, String name, String description, String deadline, String status, Path techTaskPath, int teamId) {
+        clearResultLiveData();
+        executor.execute(() -> {
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("project_id", projectId);
+            params.put("project_name", name);
+            params.put("project_description", description);
+            params.put("project_deadline", deadline);
+            params.put("project_status", status);
+            if (teamId >= 0) {
+                params.put("project_team_id", teamId);
+            }
+
+            String json;
+            if (techTaskPath != null) {
+                try {
+                    @Cleanup InputStream is = Files.newInputStream(techTaskPath);
+                    json = postFormDataRequest(getFullUrl("projects"), params, is);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                json = postRequest(getFullUrl("projects"), params);
+            }
+            resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
+        });
+    }
+
+    public void createProject(int managerId, String name, String description, String deadline, Path techTaskPath, int teamId) {
+        clearResultLiveData();
+        executor.execute(() -> {
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("manager_id", managerId);
+            params.put("project_name", name);
+            params.put("project_description", description);
+            params.put("project_deadline", deadline);
+            if (teamId >= 0) {
+                params.put("project_team_id", teamId);
+            }
+
+            String json;
+            if (techTaskPath != null) {
+                try {
+                    @Cleanup InputStream is = Files.newInputStream(techTaskPath);
+                    json = postFormDataRequest(getFullUrl("projects"), params, is);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                json = postRequest(getFullUrl("projects"), params);
+            }
+            resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
+        });
+    }
 
     public void getProjects(int userId) {
         clearResultLiveData();
@@ -133,7 +170,7 @@ public final class RequestViewModel extends ViewModel {
             params.put("leader_id", leaderId);
             params.put("members_id", getMembersIdArray(members));
             String json = postRequest(getFullUrl("teams"), params);
-            resultLiveData.postValue(JsonUtils.parse(json, SearchResponse.class));
+            resultLiveData.postValue(JsonUtils.parse(json, SearchUserResponse.class));
         });
     }
 
