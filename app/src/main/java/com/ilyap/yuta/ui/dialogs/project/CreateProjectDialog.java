@@ -51,18 +51,18 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
     private static final int RADIO_CREATE_WITH_TEAM = R.id.create_with_team;
     public static final int PICK_PDF_REQUEST = 1;
     @SuppressLint("StaticFieldLeak")
-    private static TextView fileName;
+    protected static TextView fileName;
     protected RequestViewModel viewModel;
     protected Button submitButton;
     private Button searchButton;
-    private TextView dateField;
+    protected TextView deadlineField;
     private TextView addedText;
     protected TeamAdapter searchAdapter;
     protected TeamAdapter teamAdapter;
-    private static Uri techTaskUri;
+    protected static Uri techTaskUri;
     private View pickTeamContainer;
-    private EditText projectName;
-    private EditText projectDesc;
+    protected EditText projectName;
+    protected EditText projectDesc;
     private TextView emptySearch;
     private final List<Team> addedTeams = new ArrayList<>();
     private final List<Team> searchTeams = new ArrayList<>();
@@ -110,7 +110,7 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
         int managerId = getUserId(activity);
         String name = getData(projectName);
         String description = getData(projectDesc);
-        String deadline = getFormattedDate(getData(dateField));
+        String deadline = getFormattedDate(getData(deadlineField));
         Path techTaskPath = Paths.get(techTaskUri.getPath());
         int teamId = getCurrentTeamId();
 
@@ -118,19 +118,19 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
         viewModel.createProject(managerId, name, description, deadline, techTaskPath, teamId);
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
-//            ((ProjectsFragment) fragment).updateProjects();
+            ((ProjectsFragment) fragment).updateProjects();
             dismiss();
         });
     }
 
-    private int getCurrentTeamId() {
+    protected int getCurrentTeamId() {
         return addedTeams.stream()
                 .findFirst()
                 .map(Team::getId)
                 .orElse(-1);
     }
 
-    private String getFormattedDate(String date) {
+    protected String getFormattedDate(String date) {
         DateTimeFormatter sourceDateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         LocalDateTime localDateTime = LocalDateTime.parse(date, sourceDateFormatter);
 
@@ -169,7 +169,7 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
     }
 
     private void datePickerInitialize() {
-        dateField = dialog.findViewById(R.id.date_field);
+        deadlineField = dialog.findViewById(R.id.date_field);
 
         dialog.findViewById(R.id.pick_date).setOnClickListener(v -> {
             Calendar calendar = getInstance();
@@ -177,7 +177,7 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
             DatePickerDialog datePickerDialog = new DatePickerDialog(
                     activity,
                     (view, year1, month1, dayOfMonth) -> {
-                        dateField.setText(String.format(
+                        deadlineField.setText(String.format(
                                 Locale.getDefault(), "%02d.%02d.%04d", dayOfMonth, month1 + 1, year1)
                         );
                         calendar.clear();
@@ -193,7 +193,7 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
         });
     }
 
-    private String getData(TextView editText) {
+    protected String getData(TextView editText) {
         if (editText != null) {
             String text = editText.getText().toString().trim();
 
@@ -265,7 +265,7 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
     }
 
     private void updateSubmitButtonState() {
-        boolean isValid = isFilledTextViews(projectName.getText(), projectDesc.getText(), dateField.getText());
+        boolean isValid = isFilledTextViews(projectName.getText(), projectDesc.getText(), deadlineField.getText());
         submitButton.setEnabled(isValid);
     }
 
