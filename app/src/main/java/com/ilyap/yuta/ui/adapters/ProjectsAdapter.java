@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.ProjectDto;
+import lombok.SneakyThrows;
 
 import java.util.List;
 
@@ -40,6 +42,7 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
 
     public class ProjectViewHolder extends ViewHolder<ProjectDto> {
         long downloadId;
+        private final String TECH_TASK_NAME = getContext().getString(R.string.tech_task_filename);
 
         private final TextView name;
         private final ImageView photo;
@@ -71,12 +74,14 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
             //TODO TEAM
         }
 
+        @SneakyThrows
         public void openTechTask(String path) {
             DownloadManager.Request request = new DownloadManager.Request(
                     Uri.parse(path))
                     .setTitle(getContext().getString(R.string.tech_task))
                     .setDescription(getContext().getString(R.string.downloading))
-                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
+                    .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, TECH_TASK_NAME);
 
             DownloadManager manager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
             downloadId = manager.enqueue(request);
@@ -94,7 +99,13 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
         }
 
         private void openPdf() {
-
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            Uri uri = Uri.parse(
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + TECH_TASK_NAME
+            );
+            intent.setDataAndType(uri, "application/pdf");
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            getContext().startActivity(intent);
         }
     }
 }
