@@ -16,14 +16,14 @@ import java.util.List;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-public class TeamAdapter extends BaseAdapter<Team, BaseAdapter.ViewHolder<Team>> {
+public class TeamSearchAdapter extends BaseAdapter<Team, BaseAdapter.ViewHolder<Team>> {
     private final CustomDialog dialog;
-    private final TeamAdapter addedTeamAdapter;
+    private final TeamSearchAdapter addedTeamSearchAdapter;
 
-    public TeamAdapter(CustomDialog dialog, List<Team> items, TeamAdapter teamAdapter) {
+    public TeamSearchAdapter(CustomDialog dialog, List<Team> items, TeamSearchAdapter teamSearchAdapter) {
         super(dialog.getContext(), items);
         this.dialog = dialog;
-        this.addedTeamAdapter = teamAdapter;
+        this.addedTeamSearchAdapter = teamSearchAdapter;
     }
 
     @NonNull
@@ -49,14 +49,14 @@ public class TeamAdapter extends BaseAdapter<Team, BaseAdapter.ViewHolder<Team>>
         public void bind(Team team) {
             name.setText(team.getName());
 
-            if (addedTeamAdapter != null) {
+            if (addedTeamSearchAdapter != null) {
                 buttonRemove.setVisibility(GONE);
                 buttonAdd.setVisibility(VISIBLE);
 
                 buttonAdd.setOnClickListener(v -> {
                     removeItem(team);
-                    addedTeamAdapter.getItems().clear();
-                    addedTeamAdapter.insertItem(team);
+                    addedTeamSearchAdapter.getItems().clear();
+                    addedTeamSearchAdapter.insertItem(team);
                     ((CreateProjectDialog) dialog).updateAddedTextVisibility();
                 });
             } else {

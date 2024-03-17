@@ -6,6 +6,6 @@ import java.util.List;
 
 @Value
 public class ProjectsResponse {
-    List<Team> managedProjects;
-    List<Team> othersProjects;
+    List<ProjectDto> managedProjects;
+    List<ProjectDto> othersProjects;
 }

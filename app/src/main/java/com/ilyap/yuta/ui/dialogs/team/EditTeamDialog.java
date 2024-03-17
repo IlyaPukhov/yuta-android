@@ -60,7 +60,7 @@ public class EditTeamDialog extends CreateTeamDialog {
         viewModel.editTeam(teamId, getData(teamName), addedMembers);
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
-            ((TeamsFragment) fragment).updateCarousels();
+            ((TeamsFragment) fragment).updateList();
             dismiss();
         });
     }

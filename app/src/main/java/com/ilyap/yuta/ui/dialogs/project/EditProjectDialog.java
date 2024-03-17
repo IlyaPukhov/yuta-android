@@ -9,6 +9,7 @@ import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.Project;
 import com.ilyap.yuta.models.ProjectResponse;
 import com.ilyap.yuta.models.Team;
+import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.ui.fragments.ProjectsFragment;
 import com.ilyap.yuta.utils.ProjectStatus;
 
@@ -62,7 +63,7 @@ public class EditProjectDialog extends CreateProjectDialog {
     private void setupProject() {
         List<Team> teamList = new ArrayList<>();
         teamList.add(project.getTeam());
-        teamAdapter.updateList(teamList);
+        teamSearchAdapter.updateList(teamList);
 
         projectName.setText(project.getName());
         projectDesc.setText(project.getDescription());
@@ -85,7 +86,7 @@ public class EditProjectDialog extends CreateProjectDialog {
         viewModel.editProject(projectId, name, description, deadline, status, techTaskPath, teamId);
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
-            ((ProjectsFragment) fragment).updateProjects();
+            ((ProjectsFragment) fragment).updateList();
             dismiss();
         });
     }

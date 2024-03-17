@@ -118,4 +118,5 @@
     <string name="status_desc">Статус проекта:</string>
     <string name="logout_button_text">ДА, ВЫЙТИ</string>
     <string name="logout_desc">Вы действительно хотите выйти из приложения?</string>
+    <string name="downloading">Загрузка</string>
 </resources>

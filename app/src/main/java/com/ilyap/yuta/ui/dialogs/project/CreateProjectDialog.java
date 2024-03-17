@@ -22,7 +22,7 @@ import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.SearchTeamResponse;
 import com.ilyap.yuta.models.Team;
 import com.ilyap.yuta.models.UpdateResponse;
-import com.ilyap.yuta.ui.adapters.TeamAdapter;
+import com.ilyap.yuta.ui.adapters.TeamSearchAdapter;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProjectsFragment;
 import com.ilyap.yuta.utils.RequestViewModel;
@@ -57,8 +57,8 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
     private Button searchButton;
     protected TextView deadlineField;
     private TextView addedText;
-    protected TeamAdapter searchAdapter;
-    protected TeamAdapter teamAdapter;
+    protected TeamSearchAdapter searchAdapter;
+    protected TeamSearchAdapter teamSearchAdapter;
     protected static Uri techTaskUri;
     private View pickTeamContainer;
     protected EditText projectName;
@@ -118,7 +118,7 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
         viewModel.createProject(managerId, name, description, deadline, techTaskPath, teamId);
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
-            ((ProjectsFragment) fragment).updateProjects();
+            ((ProjectsFragment) fragment).updateList();
             dismiss();
         });
     }
@@ -213,7 +213,7 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
         });
     }
 
-    private void updateList(@NonNull TeamAdapter adapter, @NonNull List<Team> teams) {
+    private void updateList(@NonNull TeamSearchAdapter adapter, @NonNull List<Team> teams) {
         messageVisibility(emptySearch, !teams.isEmpty());
         adapter.updateList(teams);
     }
@@ -228,10 +228,10 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
         LinearLayoutManager addedLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         addedTeamsView.setLayoutManager(addedLayoutManager);
 
-        teamAdapter = new TeamAdapter(this, addedTeams, null);
-        addedTeamsView.setAdapter(teamAdapter);
+        teamSearchAdapter = new TeamSearchAdapter(this, addedTeams, null);
+        addedTeamsView.setAdapter(teamSearchAdapter);
 
-        searchAdapter = new TeamAdapter(this, searchTeams, teamAdapter);
+        searchAdapter = new TeamSearchAdapter(this, searchTeams, teamSearchAdapter);
         searchTeamView.setAdapter(searchAdapter);
     }
 

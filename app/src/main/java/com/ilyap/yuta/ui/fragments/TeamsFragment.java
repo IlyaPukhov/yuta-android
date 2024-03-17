@@ -16,7 +16,7 @@ import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.Team;
 import com.ilyap.yuta.models.TeamMember;
 import com.ilyap.yuta.models.TeamsResponse;
-import com.ilyap.yuta.ui.adapters.CarouselAdapter;
+import com.ilyap.yuta.ui.adapters.TeamsAdapter;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.team.CreateTeamDialog;
 import com.ilyap.yuta.ui.dialogs.user.LogoutDialog;
@@ -39,7 +39,7 @@ public class TeamsFragment extends Fragment {
     private View progressLayout;
     private View view;
     private RequestViewModel viewModel;
-    private CarouselAdapter carouselAdapter;
+    private TeamsAdapter teamsAdapter;
     private static int lastPickedButtonId;
     private List<List<TeamMember>> managedTeamsMembers;
     private List<List<TeamMember>> othersTeamsMembers;
@@ -69,15 +69,15 @@ public class TeamsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        updateCarousels();
+        updateList();
     }
 
-    private void fillCarousels(@NonNull List<List<TeamMember>> teamMembers) {
+    private void fillProjects(@NonNull List<List<TeamMember>> teamMembers) {
         emptyText.setVisibility(teamMembers.isEmpty() ? VISIBLE : GONE);
-        carouselAdapter.updateList(teamMembers);
+        teamsAdapter.updateList(teamMembers);
     }
 
-    private void updateTeams() {
+    private void getTeams() {
         viewModel.getResultLiveData().removeObservers(getViewLifecycleOwner());
         viewModel.getTeams(getUserId(requireActivity()));
         viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
@@ -89,12 +89,12 @@ public class TeamsFragment extends Fragment {
         });
     }
 
-    public void updateCarousels() {
-        updateCarousels(view.findViewById(lastPickedButtonId));
+    public void updateList() {
+        updateList(view.findViewById(lastPickedButtonId));
     }
 
-    private void updateCarousels(Button button) {
-        updateTeams();
+    private void updateList(Button button) {
+        getTeams();
         viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
             if (!(result instanceof TeamsResponse)) return;
             openTab(button);
@@ -111,10 +111,10 @@ public class TeamsFragment extends Fragment {
 
         if (button.getId() == managedTeamsButton.getId()) {
             otherButton = memberTeamsButton;
-            fillCarousels(managedTeamsMembers);
+            fillProjects(managedTeamsMembers);
         } else {
             otherButton = managedTeamsButton;
-            fillCarousels(othersTeamsMembers);
+            fillProjects(othersTeamsMembers);
         }
 
         button.setTextAppearance(R.style.active_toggle);
@@ -143,9 +143,9 @@ public class TeamsFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
-        List<List<TeamMember>> carouselList = new ArrayList<>();
-        carouselAdapter = new CarouselAdapter(requireActivity(), carouselList, this);
-        recyclerView.setAdapter(carouselAdapter);
+        List<List<TeamMember>> teamList = new ArrayList<>();
+        teamsAdapter = new TeamsAdapter(requireActivity(), teamList, this);
+        recyclerView.setAdapter(teamsAdapter);
     }
 
     private void teamsSwitchInitialize() {

@@ -23,7 +23,7 @@ import com.ilyap.yuta.models.CheckTeamNameResponse;
 import com.ilyap.yuta.models.SearchUserResponse;
 import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.models.User;
-import com.ilyap.yuta.ui.adapters.UserAdapter;
+import com.ilyap.yuta.ui.adapters.UserSearchAdapter;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.TeamsFragment;
 import com.ilyap.yuta.utils.RequestViewModel;
@@ -40,8 +40,8 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
     private EditText searchField;
     protected Button submitButton;
     private Button searchButton;
-    protected UserAdapter searchAdapter;
-    protected UserAdapter membersAdapter;
+    protected UserSearchAdapter searchAdapter;
+    protected UserSearchAdapter membersAdapter;
     private TextView error;
     private TextView emptySearch;
     private TextView addedText;
@@ -82,7 +82,7 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
         viewModel.createTeam(getUserId(activity), getData(teamName), addedMembers);
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
-            ((TeamsFragment) fragment).updateCarousels();
+            ((TeamsFragment) fragment).updateList();
             dismiss();
         });
     }
@@ -96,7 +96,7 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
         });
     }
 
-    private void updateList(@NonNull UserAdapter adapter, @NonNull List<User> users) {
+    private void updateList(@NonNull UserSearchAdapter adapter, @NonNull List<User> users) {
         messageVisibility(emptySearch, !users.isEmpty());
         adapter.updateList(users);
     }
@@ -128,10 +128,10 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
         LinearLayoutManager searchLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         searchUsersView.setLayoutManager(searchLayoutManager);
 
-        membersAdapter = new UserAdapter(this, addedMembers, null);
+        membersAdapter = new UserSearchAdapter(this, addedMembers, null);
         addedMembersView.setAdapter(membersAdapter);
 
-        searchAdapter = new UserAdapter(this, searchUsers, membersAdapter);
+        searchAdapter = new UserSearchAdapter(this, searchUsers, membersAdapter);
         searchUsersView.setAdapter(searchAdapter);
     }
 
