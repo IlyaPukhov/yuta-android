@@ -64,7 +64,7 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
         @Override
         public void bind(ProjectDto project) {
             loadImage(getContext(), project.getPhotoUrl(), photo);
-            openTechTask(project.getTechnicalTaskUrl());
+            button.setOnClickListener(v -> openTechTask(project.getTechnicalTaskUrl()));
 
             name.setText(project.getName());
             status.setText(project.getStatus());
