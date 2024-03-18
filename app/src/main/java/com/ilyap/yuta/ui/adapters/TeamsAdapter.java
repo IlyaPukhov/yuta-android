@@ -1,9 +1,5 @@
 package com.ilyap.yuta.ui.adapters;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static com.ilyap.yuta.utils.UserUtils.getUserId;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +9,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
-
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.Team;
 import com.ilyap.yuta.models.TeamMember;
@@ -29,6 +23,10 @@ import com.ilyap.yuta.ui.dialogs.team.EditTeamDialog;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static com.ilyap.yuta.utils.UserUtils.getUserId;
 
 @SuppressWarnings("ConstantConditions")
 public class TeamsAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.ViewHolder<List<TeamMember>>> {

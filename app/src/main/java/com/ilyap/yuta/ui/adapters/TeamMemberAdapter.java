@@ -1,9 +1,5 @@
 package com.ilyap.yuta.ui.adapters;
 
-import static android.view.View.VISIBLE;
-import static com.ilyap.yuta.utils.UserUtils.getUserId;
-import static com.ilyap.yuta.utils.UserUtils.loadImage;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,16 +7,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
-
 import com.ilyap.yuta.MainActivity;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.TeamMember;
 import com.ilyap.yuta.models.User;
 
 import java.util.List;
+
+import static android.view.View.VISIBLE;
+import static com.ilyap.yuta.utils.UserUtils.getUserId;
+import static com.ilyap.yuta.utils.UserUtils.loadImage;
 
 public class TeamMemberAdapter extends BaseAdapter<TeamMember, BaseAdapter.ViewHolder<TeamMember>> {
 
@@ -31,7 +29,7 @@ public class TeamMemberAdapter extends BaseAdapter<TeamMember, BaseAdapter.ViewH
     @NonNull
     @Override
     public TeamMemberViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_carousel_card, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_team_member_card, parent, false);
         return new TeamMemberViewHolder(view);
     }
 

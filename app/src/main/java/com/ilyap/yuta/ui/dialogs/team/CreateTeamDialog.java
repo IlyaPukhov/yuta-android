@@ -1,9 +1,5 @@
 package com.ilyap.yuta.ui.dialogs.team;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static com.ilyap.yuta.utils.UserUtils.getUserId;
-
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,13 +7,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.CheckTeamNameResponse;
 import com.ilyap.yuta.models.SearchUserResponse;
@@ -30,6 +24,10 @@ import com.ilyap.yuta.utils.RequestViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static com.ilyap.yuta.utils.UserUtils.getUserId;
 
 @SuppressWarnings("ConstantConditions")
 public class CreateTeamDialog extends CustomInteractiveDialog {

@@ -82,10 +82,10 @@ public final class RequestViewModel extends ViewModel {
             params.put("project_name", name);
             params.put("project_description", description);
             params.put("project_deadline", deadline);
-            params.put("project_status", status);
             if (teamId >= 0) {
                 params.put("project_team_id", teamId);
             }
+            params.put("project_status", status);
 
             String json;
             if (techTaskPath != null) {

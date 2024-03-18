@@ -18,11 +18,19 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.ProjectDto;
+import com.ilyap.yuta.ui.dialogs.CustomDialog;
+import com.ilyap.yuta.ui.dialogs.project.ProjectDialog;
 import lombok.SneakyThrows;
 
 import java.util.List;
 
+import static android.app.DownloadManager.ACTION_DOWNLOAD_COMPLETE;
+import static android.app.DownloadManager.EXTRA_DOWNLOAD_ID;
+import static android.app.DownloadManager.Request;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED;
+import static com.ilyap.yuta.utils.UserUtils.getUserId;
 import static com.ilyap.yuta.utils.UserUtils.loadImage;
 
 public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHolder<ProjectDto>> {
@@ -46,16 +54,18 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
 
         private final TextView name;
         private final ImageView photo;
-        private final Button button;
+        private final Button buttonTechTask;
+        private final Button menu;
         private final TextView status;
         private final TextView deadline;
         private final TextView description;
 
         public ProjectViewHolder(@NonNull View itemView) {
             super(itemView);
+            this.menu = itemView.findViewById(R.id.project_menu);
             this.name = itemView.findViewById(R.id.project_name);
             this.photo = itemView.findViewById(R.id.photo);
-            this.button = itemView.findViewById(R.id.tech_task_button);
+            this.buttonTechTask = itemView.findViewById(R.id.tech_task_button);
             this.status = itemView.findViewById(R.id.project_status);
             this.deadline = itemView.findViewById(R.id.project_deadline);
             this.description = itemView.findViewById(R.id.project_description);
@@ -63,24 +73,39 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
 
         @Override
         public void bind(ProjectDto project) {
+            setupProjectFields(project);
+            setupMenu(project);
+
+            //TODO TEAM
+        }
+
+        private void setupProjectFields(ProjectDto project) {
             loadImage(getContext(), project.getPhotoUrl(), photo);
-            button.setOnClickListener(v -> openTechTask(project.getTechnicalTaskUrl()));
+            buttonTechTask.setOnClickListener(v -> openTechTask(project.getTechnicalTaskUrl()));
 
             name.setText(project.getName());
             status.setText(project.getStatus());
             deadline.setText(project.getStringDeadline());
             description.setText(project.getDescription());
+        }
 
-            //TODO TEAM
+        private void setupMenu(ProjectDto project) {
+            if (project.getManager().getId() == getUserId(getContext())) {
+                menu.setVisibility(VISIBLE);
+                menu.setOnClickListener(v -> openMenu(project));
+            } else {
+                menu.setVisibility(GONE);
+                menu.setOnClickListener(null);
+            }
         }
 
         @SneakyThrows
         public void openTechTask(String path) {
-            DownloadManager.Request request = new DownloadManager.Request(
+            Request request = new Request(
                     Uri.parse(path))
                     .setTitle(getContext().getString(R.string.tech_task))
                     .setDescription(getContext().getString(R.string.downloading))
-                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
+                    .setNotificationVisibility(Request.VISIBILITY_VISIBLE)
                     .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, TECH_TASK_NAME);
 
             DownloadManager manager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
@@ -88,14 +113,14 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
 
             BroadcastReceiver onComplete = new BroadcastReceiver() {
                 public void onReceive(Context context, Intent intent) {
-                    long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+                    long id = intent.getLongExtra(EXTRA_DOWNLOAD_ID, -1);
                     if (id == downloadId) {
                         openPdf();
                     }
                 }
             };
             ContextCompat.registerReceiver(getContext(), onComplete,
-                    new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE), RECEIVER_NOT_EXPORTED);
+                    new IntentFilter(ACTION_DOWNLOAD_COMPLETE), RECEIVER_NOT_EXPORTED);
         }
 
         private void openPdf() {
@@ -106,6 +131,11 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
             intent.setDataAndType(uri, "application/pdf");
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             getContext().startActivity(intent);
+        }
+
+        private void openMenu(ProjectDto project) {
+            CustomDialog projectDialog = new ProjectDialog(getContext(), fragment, project);
+            projectDialog.start();
         }
     }
 }

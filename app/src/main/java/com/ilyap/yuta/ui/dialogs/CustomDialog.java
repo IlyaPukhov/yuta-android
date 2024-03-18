@@ -1,19 +1,18 @@
 package com.ilyap.yuta.ui.dialogs;
 
-import static android.content.Context.INPUT_METHOD_SERVICE;
-import static android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS;
-
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
 import java.util.Objects;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
+import static android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS;
 
 public abstract class CustomDialog extends AlertDialog {
     protected final Activity activity;

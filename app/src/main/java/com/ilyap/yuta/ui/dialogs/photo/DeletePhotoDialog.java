@@ -1,16 +1,14 @@
 package com.ilyap.yuta.ui.dialogs.photo;
 
-import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
-
 import android.content.Context;
-
 import androidx.fragment.app.Fragment;
-
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestUtils;
+
+import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
 
 @SuppressWarnings("ConstantConditions")
 public class DeletePhotoDialog extends CustomInteractiveDialog {

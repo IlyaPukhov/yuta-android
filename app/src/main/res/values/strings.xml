@@ -77,7 +77,6 @@
     <string name="add_team_member">добавить участника</string>
     <string name="remove_team_member">удалить участника</string>
     <string name="create_team_text">Создание команды</string>
-    <string name="create_project_text">Создание проекта</string>
     <string name="create_team_desc">Придумайте краткое название команды:</string>
     <string name="create_project_desc">Придумайте краткое название проекта:</string>
     <string name="team_name">Название команды*</string>
@@ -120,4 +119,5 @@
     <string name="logout_desc">Вы действительно хотите выйти из приложения?</string>
     <string name="downloading">Загрузка</string>
     <string name="tech_task_filename">tech_task.pdf</string>
+    <string name="project_menu">меню проекта</string>
 </resources>

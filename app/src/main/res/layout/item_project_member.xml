@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="56dp"
+        android:layout_height="72dp"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="47dp"
+            android:layout_height="47dp"
+            android:background="@drawable/photo_circle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/photoBack"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:backgroundTint="@color/white"
+            android:background="@drawable/photo_circle"
+            app:layout_constraintEnd_toEndOf="@id/photoBack"
+            app:layout_constraintStart_toStartOf="@id/photoBack"
+            app:layout_constraintTop_toTopOf="@id/photoBack"
+            app:layout_constraintBottom_toBottomOf="@id/photoBack"
+            android:id="@+id/constraintLayout" />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constrainedWidth="true"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintTop_toTopOf="@id/constraintLayout"
+            app:layout_constraintBottom_toBottomOf="@id/constraintLayout"
+            app:layout_constraintEnd_toEndOf="@id/constraintLayout"
+            app:layout_constraintStart_toStartOf="@id/constraintLayout"
+            android:textAppearance="@style/more_member_text"
+            android:id="@+id/plus_members"
+            android:visibility="gone" />
+
+    <TextView
+            android:textAppearance="@style/project_member"
+            android:textAlignment="center"
+            android:autoSizeTextType="none"
+            android:textColor="@color/dark_gray"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/name"
+            app:layout_constraintTop_toBottomOf="@id/photoBack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+            android:background="@drawable/photo_filler"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:id="@+id/avatar"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/rounded_image_view"
+            android:contentDescription="@string/avatar"
+            android:padding="1dp"
+            app:layout_constraintEnd_toEndOf="@id/photoBack"
+            app:layout_constraintStart_toStartOf="@id/photoBack"
+            app:layout_constraintTop_toTopOf="@id/photoBack"
+            app:layout_constraintBottom_toBottomOf="@id/photoBack" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/member"
+            android:clickable="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

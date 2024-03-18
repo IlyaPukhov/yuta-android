@@ -1,8 +1,8 @@
 package com.ilyap.yuta.models;
 
-import java.util.List;
-
 import lombok.Value;
+
+import java.util.List;
 
 @Value
 public class SearchUserResponse {

@@ -2,21 +2,21 @@ package com.ilyap.yuta.ui.dialogs.project;
 
 import android.content.Context;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.Project;
+import com.ilyap.yuta.models.ProjectDto;
 import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
+import com.ilyap.yuta.ui.fragments.ProjectsFragment;
 import com.ilyap.yuta.utils.RequestViewModel;
 
 @SuppressWarnings("ConstantConditions")
 public class DeleteProjectDialog extends CustomInteractiveDialog {
     private RequestViewModel viewModel;
-    private final Project project;
+    private final ProjectDto project;
 
-    public DeleteProjectDialog(Context context, Fragment fragment, Project project) {
+    public DeleteProjectDialog(Context context, Fragment fragment, ProjectDto project) {
         super(context, fragment);
         setDialogLayout(R.layout.dialog_delete);
         this.project = project;
@@ -40,12 +40,12 @@ public class DeleteProjectDialog extends CustomInteractiveDialog {
         ((TextView) dialog.findViewById(R.id.name_desc)).setText(text);
     }
 
-    private void deleteProject(Fragment fragment, @NonNull Project project) {
+    private void deleteProject(Fragment fragment, ProjectDto project) {
         viewModel.getResultLiveData().removeObservers(fragment);
         viewModel.deleteProject(project.getId());
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
-//            ((ProjectsFragment) fragment).updateProjectsList();
+            ((ProjectsFragment) fragment).updateList();
             dismiss();
         });
     }

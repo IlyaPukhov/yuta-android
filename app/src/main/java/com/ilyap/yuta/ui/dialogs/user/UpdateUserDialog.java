@@ -1,24 +1,22 @@
 package com.ilyap.yuta.ui.dialogs.user;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static com.ilyap.yuta.utils.UserUtils.getUserId;
-
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestViewModel;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static com.ilyap.yuta.utils.UserUtils.getUserId;
 
 @SuppressWarnings("ConstantConditions")
 public class UpdateUserDialog extends CustomInteractiveDialog {
@@ -54,7 +52,7 @@ public class UpdateUserDialog extends CustomInteractiveDialog {
         viewModel.updateUserData(getUserId(activity), password);
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
-            if (((UpdateResponse) result).isSuccess()) {
+            if (((UpdateResponse) result).getStatus().equals("OK")) {
                 ((ProfileFragment) fragment).updateProfile();
                 dismiss();
             } else {

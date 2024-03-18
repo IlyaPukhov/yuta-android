@@ -1,22 +1,20 @@
 package com.ilyap.yuta.ui.adapters;
 
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.TeamMember;
 
 import java.util.List;
+
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 public class HorizontalCarouselAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.ViewHolder<List<TeamMember>>> {
 

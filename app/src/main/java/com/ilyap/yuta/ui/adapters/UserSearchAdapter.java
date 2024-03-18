@@ -1,24 +1,22 @@
 package com.ilyap.yuta.ui.adapters;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static com.ilyap.yuta.utils.UserUtils.loadImage;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
-
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.team.CreateTeamDialog;
 
 import java.util.List;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static com.ilyap.yuta.utils.UserUtils.loadImage;
 
 public class UserSearchAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User>> {
     private final CustomDialog dialog;

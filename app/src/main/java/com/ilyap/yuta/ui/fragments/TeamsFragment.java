@@ -72,7 +72,7 @@ public class TeamsFragment extends Fragment {
         updateList();
     }
 
-    private void fillProjects(@NonNull List<List<TeamMember>> teamMembers) {
+    private void fillTeams(@NonNull List<List<TeamMember>> teamMembers) {
         emptyText.setVisibility(teamMembers.isEmpty() ? VISIBLE : GONE);
         teamsAdapter.updateList(teamMembers);
     }
@@ -111,10 +111,10 @@ public class TeamsFragment extends Fragment {
 
         if (button.getId() == managedTeamsButton.getId()) {
             otherButton = memberTeamsButton;
-            fillProjects(managedTeamsMembers);
+            fillTeams(managedTeamsMembers);
         } else {
             otherButton = managedTeamsButton;
-            fillProjects(othersTeamsMembers);
+            fillTeams(othersTeamsMembers);
         }
 
         button.setTextAppearance(R.style.active_toggle);

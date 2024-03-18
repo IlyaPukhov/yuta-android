@@ -30,7 +30,9 @@ import lombok.NoArgsConstructor;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.ui.dialogs.photo.UploadPhotoDialog.PICK_IMAGE_REQUEST;
-import static com.ilyap.yuta.utils.UserUtils.*;
+import static com.ilyap.yuta.utils.UserUtils.getUserId;
+import static com.ilyap.yuta.utils.UserUtils.loadImage;
+import static com.ilyap.yuta.utils.UserUtils.setCurrentUser;
 
 @NoArgsConstructor
 public class ProfileFragment extends Fragment {

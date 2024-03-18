@@ -1,23 +1,21 @@
 package com.ilyap.yuta.ui.dialogs.photo;
 
-import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
-import static com.ilyap.yuta.utils.UserUtils.loadImage;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.widget.ImageView;
-
 import androidx.fragment.app.Fragment;
-
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestUtils;
+
+import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
+import static com.ilyap.yuta.utils.UserUtils.loadImage;
 
 @SuppressWarnings("ConstantConditions")
 public class UploadPhotoDialog extends CustomInteractiveDialog {

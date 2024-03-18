@@ -1,10 +1,5 @@
 package com.ilyap.yuta.ui.dialogs.user;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
-import static com.ilyap.yuta.utils.UserUtils.getUserId;
-
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,10 +8,8 @@ import android.view.KeyEvent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.EditUserResponse;
 import com.ilyap.yuta.models.User;
@@ -26,6 +19,11 @@ import com.ilyap.yuta.utils.RequestViewModel;
 import com.santalu.maskara.widget.MaskEditText;
 
 import java.util.regex.Pattern;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
+import static com.ilyap.yuta.utils.UserUtils.getUserId;
 
 @SuppressWarnings("ConstantConditions")
 public class EditUserDialog extends CustomInteractiveDialog {
