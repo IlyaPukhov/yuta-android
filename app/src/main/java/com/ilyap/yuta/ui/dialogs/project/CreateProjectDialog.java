@@ -48,29 +48,40 @@ import static java.util.Calendar.getInstance;
 
 @SuppressWarnings("ConstantConditions")
 public class CreateProjectDialog extends CustomInteractiveDialog {
-    private static final int RADIO_CREATE_WITH_TEAM = R.id.create_with_team;
     public static final int PICK_PDF_REQUEST = 1;
+    private static final int RADIO_CREATE_WITH_TEAM = R.id.create_with_team;
     @SuppressLint("StaticFieldLeak")
     protected static TextView fileName;
-    protected RequestViewModel viewModel;
-    protected Button submitButton;
-    private Button searchButton;
-    protected TextView deadlineField;
-    private TextView addedText;
-    protected TeamSearchAdapter searchAdapter;
-    protected TeamSearchAdapter teamSearchAdapter;
     protected static Uri techTaskUri;
-    private View pickTeamContainer;
-    protected EditText projectName;
-    protected EditText projectDesc;
-    private TextView emptySearch;
     private final List<Team> addedTeams = new ArrayList<>();
     private final List<Team> searchTeams = new ArrayList<>();
+    protected RequestViewModel viewModel;
+    protected Button submitButton;
+    protected TextView deadlineField;
+    protected TeamSearchAdapter searchAdapter;
+    protected TeamSearchAdapter teamSearchAdapter;
+    protected EditText projectName;
+    protected EditText projectDesc;
+    private Button searchButton;
+    private TextView addedText;
+    private View pickTeamContainer;
+    private TextView emptySearch;
     private EditText searchField;
 
     public CreateProjectDialog(Context context, Fragment fragment) {
         super(context, fragment);
         setDialogLayout(R.layout.dialog_create_project);
+    }
+
+    public static void handleActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PICK_PDF_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+            setTechTask(data.getData());
+        }
+    }
+
+    private static void setTechTask(Uri uri) {
+        techTaskUri = uri;
+        fileName.setText(new File(uri.getPath()).getName());
     }
 
     @Override
@@ -155,17 +166,6 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
         intent.setType("application/pdf");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         ((ProjectsFragment) fragment).pdfPickerLauncher.launch(Intent.createChooser(intent, activity.getString(R.string.pick_tech_task_file)));
-    }
-
-    public static void handleActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PICK_PDF_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
-            setTechTask(data.getData());
-        }
-    }
-
-    private static void setTechTask(Uri uri) {
-        techTaskUri = uri;
-        fileName.setText(new File(uri.getPath()).getName());
     }
 
     private void datePickerInitialize() {

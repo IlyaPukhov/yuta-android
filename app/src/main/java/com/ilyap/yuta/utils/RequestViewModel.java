@@ -39,6 +39,12 @@ public final class RequestViewModel extends ViewModel {
     private final Executor executor = Executors.newSingleThreadExecutor();
     private final MutableLiveData<Object> resultLiveData = new MutableLiveData<>();
 
+    private static JSONArray getMembersIdArray(@NonNull List<User> members) {
+        return members.stream()
+                .map(User::getId)
+                .collect(Collector.of(JSONArray::new, JSONArray::put, JSONArray::put));
+    }
+
     public LiveData<Object> getResultLiveData() {
         return resultLiveData;
     }
@@ -137,7 +143,6 @@ public final class RequestViewModel extends ViewModel {
         });
     }
 
-
     // TEAMS
     public void deleteTeam(int teamId) {
         clearResultLiveData();
@@ -225,13 +230,6 @@ public final class RequestViewModel extends ViewModel {
             resultLiveData.postValue(JsonUtils.parse(json, TeamsResponse.class));
         });
     }
-
-    private static JSONArray getMembersIdArray(@NonNull List<User> members) {
-        return members.stream()
-                .map(User::getId)
-                .collect(Collector.of(JSONArray::new, JSONArray::put, JSONArray::put));
-    }
-
 
     // PROFILE
     public void updateUserData(int userId, String password) {

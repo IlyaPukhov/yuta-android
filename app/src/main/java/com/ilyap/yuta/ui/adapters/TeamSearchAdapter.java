@@ -17,6 +17,7 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 public class TeamSearchAdapter extends BaseAdapter<Team, BaseAdapter.ViewHolder<Team>> {
+    private static final int MAX_TEAMS_COUNT = 1;
     private final CustomDialog dialog;
     private final TeamSearchAdapter addedTeamSearchAdapter;
 
@@ -33,7 +34,12 @@ public class TeamSearchAdapter extends BaseAdapter<Team, BaseAdapter.ViewHolder<
         return new TeamViewHolder(view);
     }
 
-    public class TeamViewHolder extends ViewHolder<Team> {
+    @Override
+    public int getItemCount() {
+        return Math.min(getItems().size(), MAX_TEAMS_COUNT);
+    }
+
+    public class TeamViewHolder extends BaseAdapter.ViewHolder<Team> {
         private final TextView name;
         private final Button buttonAdd;
         private final Button buttonRemove;

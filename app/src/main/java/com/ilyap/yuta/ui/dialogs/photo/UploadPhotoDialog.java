@@ -19,15 +19,26 @@ import static com.ilyap.yuta.utils.UserUtils.loadImage;
 
 @SuppressWarnings("ConstantConditions")
 public class UploadPhotoDialog extends CustomInteractiveDialog {
+    public static final int PICK_IMAGE_REQUEST = 1;
     @SuppressLint("StaticFieldLeak")
     private static ImageView imageView;
-    public static final int PICK_IMAGE_REQUEST = 1;
     private static Uri selectedImageUri;
     private static User user;
 
     public UploadPhotoDialog(Context context, Fragment fragment) {
         super(context, fragment);
         setDialogLayout(R.layout.dialog_upload_photo);
+    }
+
+    public static void handleActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+            setImage(data.getData());
+        }
+    }
+
+    private static void setImage(Uri uri) {
+        selectedImageUri = uri;
+        imageView.setImageURI(selectedImageUri);
     }
 
     @Override
@@ -56,12 +67,6 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
         ((ProfileFragment) fragment).imagePickerLauncher.launch(Intent.createChooser(intent, activity.getString(R.string.pick_image)));
     }
 
-    public static void handleActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
-            setImage(data.getData());
-        }
-    }
-
     private void updatePhoto() {
         if (selectedImageUri != null) {
             user.setPhotoUrl(String.valueOf(selectedImageUri));
@@ -71,10 +76,5 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
                 ((ProfileFragment) fragment).updateProfile();
             }
         }
-    }
-
-    private static void setImage(Uri uri) {
-        selectedImageUri = uri;
-        imageView.setImageURI(selectedImageUri);
     }
 }

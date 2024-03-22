@@ -16,12 +16,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.ilyap.yuta.R;
+import com.ilyap.yuta.models.Project;
 import com.ilyap.yuta.models.ProjectDto;
+import com.ilyap.yuta.models.ProjectResponse;
+import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.project.ProjectDialog;
+import com.ilyap.yuta.utils.RequestViewModel;
 import lombok.SneakyThrows;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.DownloadManager.ACTION_DOWNLOAD_COMPLETE;
@@ -49,9 +57,7 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
     }
 
     public class ProjectViewHolder extends ViewHolder<ProjectDto> {
-        long downloadId;
         private final String TECH_TASK_NAME = getContext().getString(R.string.tech_task_filename);
-
         private final TextView name;
         private final ImageView photo;
         private final Button buttonTechTask;
@@ -59,6 +65,8 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
         private final TextView status;
         private final TextView deadline;
         private final TextView description;
+        private final RecyclerView teamPreview;
+        long downloadId;
 
         public ProjectViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,14 +77,34 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
             this.status = itemView.findViewById(R.id.project_status);
             this.deadline = itemView.findViewById(R.id.project_deadline);
             this.description = itemView.findViewById(R.id.project_description);
+
+            this.teamPreview = itemView.findViewById(R.id.team_preview);
         }
 
         @Override
         public void bind(ProjectDto project) {
             setupProjectFields(project);
             setupMenu(project);
+            setupTeamPreview(project.getId());
+        }
 
-            //TODO TEAM
+        private void setupTeamPreview(int projectId) {
+            RequestViewModel viewModel = new ViewModelProvider(fragment).get(RequestViewModel.class);
+            viewModel.getResultLiveData().removeObservers(fragment.getViewLifecycleOwner());
+            viewModel.getProject(projectId);
+
+            viewModel.getResultLiveData().observe(fragment.getViewLifecycleOwner(), result -> {
+                if (!(result instanceof ProjectResponse)) return;
+                Project project = ((ProjectResponse) result).getProject();
+
+                List<User> teamMembers = new ArrayList<>();
+                teamMembers.add(project.getTeam().getLeader());
+                teamMembers.addAll(project.getTeam().getMembers());
+
+                LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+                teamPreview.setLayoutManager(layoutManager);
+                teamPreview.setAdapter(new ProjectTeamPreviewAdapter(getContext(), teamMembers));
+            });
         }
 
         private void setupProjectFields(ProjectDto project) {

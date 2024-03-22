@@ -30,24 +30,6 @@ public class HorizontalCarouselAdapter extends BaseAdapter<List<TeamMember>, Bas
         return new HorizontalViewHolder(view);
     }
 
-    public class HorizontalViewHolder extends BaseAdapter.ViewHolder<List<TeamMember>> {
-        private final RecyclerView horizontalRecyclerView;
-
-        public HorizontalViewHolder(@NonNull View itemView) {
-            super(itemView);
-            horizontalRecyclerView = itemView.findViewById(R.id.horizontalRecyclerView);
-        }
-
-        @Override
-        public void bind(List<TeamMember> members) {
-            LinearLayoutManager layoutManager = new SpanningLinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
-            horizontalRecyclerView.setLayoutManager(layoutManager);
-
-            TeamMemberAdapter teamMemberAdapter = new TeamMemberAdapter(getContext(), members);
-            horizontalRecyclerView.setAdapter(teamMemberAdapter);
-        }
-    }
-
     private static class SpanningLinearLayoutManager extends LinearLayoutManager {
 
         public SpanningLinearLayoutManager(Context context, int orientation, boolean reverseLayout) {
@@ -102,6 +84,24 @@ public class HorizontalCarouselAdapter extends BaseAdapter<List<TeamMember>, Bas
 
         private int getVerticalSpace() {
             return getHeight() - getPaddingBottom() - getPaddingTop();
+        }
+    }
+
+    public class HorizontalViewHolder extends BaseAdapter.ViewHolder<List<TeamMember>> {
+        private final RecyclerView horizontalRecyclerView;
+
+        public HorizontalViewHolder(@NonNull View itemView) {
+            super(itemView);
+            horizontalRecyclerView = itemView.findViewById(R.id.horizontalRecyclerView);
+        }
+
+        @Override
+        public void bind(List<TeamMember> members) {
+            LinearLayoutManager layoutManager = new SpanningLinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
+            horizontalRecyclerView.setLayoutManager(layoutManager);
+
+            TeamMemberAdapter teamMemberAdapter = new TeamMemberAdapter(getContext(), members);
+            horizontalRecyclerView.setAdapter(teamMemberAdapter);
         }
     }
 }

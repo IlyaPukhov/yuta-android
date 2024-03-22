@@ -31,15 +31,15 @@ import static com.ilyap.yuta.utils.UserUtils.getUserId;
 
 @SuppressWarnings("ConstantConditions")
 public class CreateTeamDialog extends CustomInteractiveDialog {
-    private final List<User> searchUsers = new ArrayList<>();
     protected final List<User> addedMembers = new ArrayList<>();
+    private final List<User> searchUsers = new ArrayList<>();
     protected RequestViewModel viewModel;
     protected EditText teamName;
-    private EditText searchField;
     protected Button submitButton;
-    private Button searchButton;
     protected UserSearchAdapter searchAdapter;
     protected UserSearchAdapter membersAdapter;
+    private EditText searchField;
+    private Button searchButton;
     private TextView error;
     private TextView emptySearch;
     private TextView addedText;

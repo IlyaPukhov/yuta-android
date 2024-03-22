@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public abstract class BaseAdapter<T, VH extends BaseAdapter.ViewHolder<T>> exten
     private final List<T> items;
 
     @Override
-    public void onBindViewHolder(@NonNull VH holder, int position) {
+    public void onBindViewHolder(@NotNull VH holder, int position) {
         holder.bind(items.get(position));
     }
 

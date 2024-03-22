@@ -36,6 +36,15 @@ import static com.ilyap.yuta.utils.UserUtils.getUserId;
 
 @NoArgsConstructor
 public class ProjectsFragment extends Fragment {
+    private static int lastPickedButtonId;
+    public final ActivityResultLauncher<Intent> pdfPickerLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    CreateProjectDialog.handleActivityResult(PICK_PDF_REQUEST, Activity.RESULT_OK, result.getData());
+                }
+            }
+    );
     private ToggleButton managedProjectsButton;
     private ToggleButton memberProjectsButton;
     private TextView emptyText;
@@ -45,7 +54,6 @@ public class ProjectsFragment extends Fragment {
     private List<ProjectDto> managedProjectsMembers;
     private List<ProjectDto> othersProjectsMembers;
     private ProjectsAdapter projectsAdapter;
-    private static int lastPickedButtonId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -138,15 +146,6 @@ public class ProjectsFragment extends Fragment {
         otherButton.setChecked(false);
         lastPickedButtonId = button.getId();
     }
-
-    public final ActivityResultLauncher<Intent> pdfPickerLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    CreateProjectDialog.handleActivityResult(PICK_PDF_REQUEST, Activity.RESULT_OK, result.getData());
-                }
-            }
-    );
 
     private void projectsSwitchInitialize() {
         managedProjectsButton = view.findViewById(R.id.manager_button);

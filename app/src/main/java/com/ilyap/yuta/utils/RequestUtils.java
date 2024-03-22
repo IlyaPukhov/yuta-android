@@ -22,13 +22,12 @@ import java.util.Map;
 
 @UtilityClass
 public class RequestUtils {
-    @Getter
-    private static String rootUrl;
-
     private static final int MAX_BUFFER_SIZE = 1024 * 1024;
     private static final String CRLF = "\r\n";
     private static final String TWO_HYPHENS = "--";
     private static final String BOUNDARY = "*****";
+    @Getter
+    private static String rootUrl;
 
     @NonNull
     @SneakyThrows

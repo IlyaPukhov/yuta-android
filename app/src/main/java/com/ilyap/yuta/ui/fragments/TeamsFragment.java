@@ -33,6 +33,7 @@ import static com.ilyap.yuta.utils.UserUtils.getUserId;
 
 @NoArgsConstructor
 public class TeamsFragment extends Fragment {
+    private static int lastPickedButtonId;
     private ToggleButton managedTeamsButton;
     private ToggleButton memberTeamsButton;
     private TextView emptyText;
@@ -40,7 +41,6 @@ public class TeamsFragment extends Fragment {
     private View view;
     private RequestViewModel viewModel;
     private TeamsAdapter teamsAdapter;
-    private static int lastPickedButtonId;
     private List<List<TeamMember>> managedTeamsMembers;
     private List<List<TeamMember>> othersTeamsMembers;
 

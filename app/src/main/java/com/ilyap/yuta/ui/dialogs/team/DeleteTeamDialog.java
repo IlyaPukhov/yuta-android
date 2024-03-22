@@ -14,8 +14,8 @@ import com.ilyap.yuta.utils.RequestViewModel;
 
 @SuppressWarnings("ConstantConditions")
 public class DeleteTeamDialog extends CustomInteractiveDialog {
-    private RequestViewModel viewModel;
     private final Team team;
+    private RequestViewModel viewModel;
 
     public DeleteTeamDialog(Context context, Fragment fragment, Team team) {
         super(context, fragment);

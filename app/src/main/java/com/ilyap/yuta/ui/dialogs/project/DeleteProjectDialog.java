@@ -13,8 +13,8 @@ import com.ilyap.yuta.utils.RequestViewModel;
 
 @SuppressWarnings("ConstantConditions")
 public class DeleteProjectDialog extends CustomInteractiveDialog {
-    private RequestViewModel viewModel;
     private final ProjectDto project;
+    private RequestViewModel viewModel;
 
     public DeleteProjectDialog(Context context, Fragment fragment, ProjectDto project) {
         super(context, fragment);
