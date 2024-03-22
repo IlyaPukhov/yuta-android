@@ -103,7 +103,7 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
 
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
                 teamPreview.setLayoutManager(layoutManager);
-                teamPreview.setAdapter(new ProjectTeamPreviewAdapter(getContext(), teamMembers));
+                teamPreview.setAdapter(new ProjectTeamPreviewAdapter(getContext(), teamMembers, itemView));
             });
         }
 

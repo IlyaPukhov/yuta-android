@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -24,9 +25,11 @@ public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.Vie
     private static final int MAX_MEMBERS_COUNT = 4;
     private static final int MORE_USERS = 1;
     private static final int ENOUGH_USERS = 0;
+    private final View projectView;
 
-    public ProjectTeamPreviewAdapter(Context context, List<User> items) {
+    public ProjectTeamPreviewAdapter(Context context, List<User> items, View projectView) {
         super(context, items);
+        this.projectView = projectView;
     }
 
     @Override
@@ -96,11 +99,20 @@ public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.Vie
     public class MoreUsersViewHolder extends ViewHolder<User> {
         private final TextView remainingMembersCount;
         private final View member;
+        private final View teamContainer;
+        private final View closeButton;
+        private final View teamRecyclerView;
+        private boolean isOpen;
 
         public MoreUsersViewHolder(@NonNull View itemView) {
             super(itemView);
             this.remainingMembersCount = itemView.findViewById(R.id.plus_members);
             this.member = itemView.findViewById(R.id.member);
+
+            this.teamContainer = projectView.findViewById(R.id.team_container);
+            this.closeButton = projectView.findViewById(R.id.close);
+            this.teamRecyclerView = projectView.findViewById(R.id.team_list);
+            this.isOpen = false;
         }
 
         @Override
@@ -110,8 +122,34 @@ public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.Vie
             remainingMembersCount.setText(text);
 
             member.setOnClickListener(v -> {
-                // TODO: 22.03.2024  
+                setupFullTeamView(getItems());
+                slideUp(teamContainer);
             });
+
+            closeButton.setOnClickListener(v -> slideDown(teamContainer));
+        }
+
+        private void setupFullTeamView(List<User> team) {
+            // TODO: 23.03.2024 team view 
+
+
+        }
+
+
+        public void slideUp(View view) {
+            view.setVisibility(View.VISIBLE);
+            TranslateAnimation animate = new TranslateAnimation(0, 0, view.getHeight(), 0);
+            animate.setDuration(500);
+            animate.setFillAfter(true);
+            view.startAnimation(animate);
+            isOpen = !isOpen;
+        }
+
+        public void slideDown(View view) {
+            TranslateAnimation animate = new TranslateAnimation(0, 0, 0, view.getHeight());
+            animate.setDuration(500);
+            animate.setFillAfter(true);
+            view.startAnimation(animate);
         }
     }
 }
