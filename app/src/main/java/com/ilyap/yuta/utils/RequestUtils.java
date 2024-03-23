@@ -1,7 +1,6 @@
 package com.ilyap.yuta.utils;
 
 import androidx.annotation.NonNull;
-import com.ilyap.yuta.models.User;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
@@ -115,17 +114,5 @@ public class RequestUtils {
     //TODO убрать в релизе
     public static void setRootUrl(String ipv4) {
         rootUrl = String.format("http://%s:8000", ipv4);
-    }
-
-    public static void deleteUserPhotoRequest(User user) {
-        // TODO
-    }
-
-    public static void uploadUserPhotoRequest(User user) {
-        // TODO
-    }
-
-    public static void cropUserPhotoRequest(int imageWidth, int imageHeight, int croppedWidth, int croppedHeight, int offsetX, int offsetY) {
-        // TODO
     }
 }

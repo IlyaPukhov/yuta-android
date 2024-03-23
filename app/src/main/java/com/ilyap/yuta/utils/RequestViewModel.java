@@ -17,6 +17,7 @@ import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.models.UserResponse;
 import lombok.Cleanup;
+import lombok.SneakyThrows;
 import org.json.JSONArray;
 
 import java.io.IOException;
@@ -210,6 +211,51 @@ public final class RequestViewModel extends ViewModel {
     }
 
     // PROFILE
+
+    public void updateMiniatureUserPhoto(int userId, int imageViewWidth, int imageViewHeight, int croppedWidth, int croppedHeight, int offsetX, int offsetY) {
+        clearResultLiveData();
+        executor.execute(() -> {
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("user_id", userId);
+            params.put("container_width", imageViewWidth);
+            params.put("container_height", imageViewHeight);
+            params.put("width", croppedWidth);
+            params.put("height", croppedHeight);
+            params.put("delta_x", offsetX);
+            params.put("delta_y", offsetY);
+            String json = postRequest(getFullUrl("profile"), params);
+            resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
+        });
+    }
+
+    public void updateUserPhoto(int userId, @NonNull Path photoPath) {
+        clearResultLiveData();
+        executor.execute(() -> {
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("user_id", userId);
+
+            String json;
+            try {
+                @Cleanup InputStream is = Files.newInputStream(photoPath);
+                json = postFormDataRequest(getFullUrl("profile"), params, is);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
+        });
+    }
+
+    public void deleteUserPhoto(int userId) {
+        clearResultLiveData();
+        executor.execute(() -> {
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("user_id", userId);
+            String json = postRequest(getFullUrl("profile"), params);
+            resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
+        });
+    }
+
+
     public void updateUserData(int userId, String password) {
         clearResultLiveData();
         executor.execute(() -> {
