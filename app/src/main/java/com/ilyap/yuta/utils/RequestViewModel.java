@@ -17,7 +17,6 @@ import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.models.UserResponse;
 import lombok.Cleanup;
-import lombok.SneakyThrows;
 import org.json.JSONArray;
 
 import java.io.IOException;
@@ -77,18 +76,7 @@ public final class RequestViewModel extends ViewModel {
             }
             params.put("project_status", status);
 
-            String json;
-            if (techTaskPath != null) {
-                try {
-                    @Cleanup InputStream is = Files.newInputStream(techTaskPath);
-                    json = postFormDataRequest(getFullUrl("projects"), params, is);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            } else {
-                json = postRequest(getFullUrl("projects"), params);
-            }
-            resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
+            resultLiveData.postValue(JsonUtils.parse(getTechTaskJson(techTaskPath, params), UpdateResponse.class));
         });
     }
 
@@ -104,19 +92,23 @@ public final class RequestViewModel extends ViewModel {
                 params.put("project_team_id", teamId);
             }
 
-            String json;
-            if (techTaskPath != null) {
-                try {
-                    @Cleanup InputStream is = Files.newInputStream(techTaskPath);
-                    json = postFormDataRequest(getFullUrl("projects"), params, is);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            } else {
-                json = postRequest(getFullUrl("projects"), params);
-            }
-            resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
+            resultLiveData.postValue(JsonUtils.parse(getTechTaskJson(techTaskPath, params), UpdateResponse.class));
         });
+    }
+
+    private String getTechTaskJson(Path techTaskPath, HashMap<String, Object> params) {
+        String json;
+        if (techTaskPath != null) {
+            try {
+                @Cleanup InputStream is = Files.newInputStream(techTaskPath);
+                json = postFormDataRequest(getFullUrl("projects"), params, is);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            json = postRequest(getFullUrl("projects"), params);
+        }
+        return json;
     }
 
     public void getProject(int projectId) {

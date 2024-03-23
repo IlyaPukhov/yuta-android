@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.ilyap.yuta.MainActivity;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
+import com.ilyap.yuta.models.UserResponse;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.photo.PhotoDialog;
 import com.ilyap.yuta.ui.dialogs.photo.UploadPhotoDialog;
@@ -91,8 +92,8 @@ public class ProfileFragment extends Fragment {
         if (userId >= 0) {
             viewModel.getUser(userId);
             viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
-                if (!(result instanceof User)) return;
-                user = (User) result;
+                if (!(result instanceof UserResponse)) return;
+                user = ((UserResponse) result).getUser();
                 updateImage();
                 fillViews();
                 progressLayout.setVisibility(GONE);
