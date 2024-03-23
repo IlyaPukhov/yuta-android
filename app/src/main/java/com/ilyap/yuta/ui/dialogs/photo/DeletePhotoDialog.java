@@ -2,16 +2,18 @@ package com.ilyap.yuta.ui.dialogs.photo;
 
 import android.content.Context;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.User;
+import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
-import com.ilyap.yuta.utils.RequestUtils;
+import com.ilyap.yuta.utils.RequestViewModel;
 
 import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
 
 @SuppressWarnings("ConstantConditions")
 public class DeletePhotoDialog extends CustomInteractiveDialog {
+    private RequestViewModel viewModel;
 
     public DeletePhotoDialog(Context context, Fragment fragment) {
         super(context, fragment);
@@ -21,6 +23,7 @@ public class DeletePhotoDialog extends CustomInteractiveDialog {
     @Override
     public void start() {
         super.start();
+        viewModel = new ViewModelProvider(fragment).get(RequestViewModel.class);
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
         dialog.findViewById(R.id.submit).setOnClickListener(v -> {
@@ -30,10 +33,12 @@ public class DeletePhotoDialog extends CustomInteractiveDialog {
     }
 
     protected void deletePhoto(Fragment fragment) {
-        User user = getCurrentUser();
-        RequestUtils.deleteUserPhotoRequest(user);
-        if (fragment != null) {
+        viewModel.getResultLiveData().removeObservers(fragment);
+        viewModel.deleteUserPhoto(getCurrentUser().getId());
+        viewModel.getResultLiveData().observe(fragment, result -> {
+            if (!(result instanceof UpdateResponse)) return;
             ((ProfileFragment) fragment).updateProfile();
-        }
+            dismiss();
+        });
     }
 }

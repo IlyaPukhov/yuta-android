@@ -5,6 +5,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.Team;
+import com.ilyap.yuta.models.TeamResponse;
 import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.ui.fragments.TeamsFragment;
 import com.ilyap.yuta.utils.RequestViewModel;
@@ -41,8 +42,8 @@ public class EditTeamDialog extends CreateTeamDialog {
         viewModel.getResultLiveData().removeObservers(fragment);
         viewModel.getTeam(teamId);
         viewModel.getResultLiveData().observe(fragment, result -> {
-            if (!(result instanceof Team)) return;
-            team = (Team) result;
+            if (!(result instanceof TeamResponse)) return;
+            team = ((TeamResponse) result).getTeam();
             setupTeam();
         });
     }
@@ -66,7 +67,7 @@ public class EditTeamDialog extends CreateTeamDialog {
     @Override
     protected RequestViewModel isNameUnique(String name) {
         viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.checkTeamName(name, teamId);
+        viewModel.checkUniqueTeamName(name, teamId);
         return viewModel;
     }
 }
