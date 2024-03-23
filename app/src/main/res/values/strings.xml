@@ -55,13 +55,14 @@
     <string name="pick_button">Выбрать фотографию</string>
     <string name="delete_photo">delete photo</string>
     <string name="pick_image">Выберите изображение</string>
+    <string name="pick_tech_task_file">Выберите техническое задание (pdf)</string>
     <string name="crop_text">Выбор миниатюры</string>
     <string name="crop_desc">Выберите область для маленьких фотографий.\nВыбранная миниатюра будет использоваться в профиле.</string>
     <string name="save_button">СОХРАНИТЬ</string>
     <string name="member_button">Вы участник</string>
     <string name="manager_button">Вы руководитель</string>
-    <string name="create_team">Создать команду</string>
-    <string name="create_project">Создать проект</string>
+    <string name="create_team">Создание команды</string>
+    <string name="create_project">Создание проекта</string>
     <string name="team_leader">team leader</string>
     <string name="card_phone">card phone</string>
     <string name="previous_cards">previous cards</string>
@@ -76,7 +77,6 @@
     <string name="add_team_member">добавить участника</string>
     <string name="remove_team_member">удалить участника</string>
     <string name="create_team_text">Создание команды</string>
-    <string name="create_project_text">Создание проекта</string>
     <string name="create_team_desc">Придумайте краткое название команды:</string>
     <string name="create_project_desc">Придумайте краткое название проекта:</string>
     <string name="team_name">Название команды*</string>
@@ -108,7 +108,7 @@
     <string name="date_input">дд.мм.гггг</string>
     <string name="deadline_header">Дедлайн проекта*</string>
     <string name="project_desc">Краткое описание проекта*</string>
-    <string name="create_project_team_mode">Команда:</string>
+    <string name="create_project_team_mode">Вы можете:</string>
     <string name="create_project_without_team">Создать проект без команды и добавить её позже</string>
     <string name="create_project_with_team">Прикрепить к проекту одну из своих команд</string>
     <string name="added_team_desc">Прикрепленная команда:</string>
@@ -117,4 +117,7 @@
     <string name="status_desc">Статус проекта:</string>
     <string name="logout_button_text">ДА, ВЫЙТИ</string>
     <string name="logout_desc">Вы действительно хотите выйти из приложения?</string>
+    <string name="downloading">Загрузка</string>
+    <string name="tech_task_filename">tech_task.pdf</string>
+    <string name="project_menu">меню проекта</string>
 </resources>

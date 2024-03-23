@@ -3,21 +3,22 @@ package com.ilyap.yuta.ui.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import lombok.AllArgsConstructor;
-
+@Getter
 @AllArgsConstructor
 public abstract class BaseAdapter<T, VH extends BaseAdapter.ViewHolder<T>> extends RecyclerView.Adapter<VH> implements ListAdapterUpdater<T> {
     private final Context context;
     private final List<T> items;
 
     @Override
-    public void onBindViewHolder(@NonNull VH holder, int position) {
+    public void onBindViewHolder(@NotNull VH holder, int position) {
         holder.bind(items.get(position));
     }
 
@@ -46,10 +47,6 @@ public abstract class BaseAdapter<T, VH extends BaseAdapter.ViewHolder<T>> exten
     @Override
     public int getItemCount() {
         return items.size();
-    }
-
-    public Context getContext() {
-        return context;
     }
 
     public abstract static class ViewHolder<T> extends RecyclerView.ViewHolder {

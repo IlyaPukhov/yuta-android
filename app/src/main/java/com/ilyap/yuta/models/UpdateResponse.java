@@ -4,5 +4,6 @@ import lombok.Value;
 
 @Value
 public class UpdateResponse {
-    boolean success;
+    String status;
+    String error;
 }

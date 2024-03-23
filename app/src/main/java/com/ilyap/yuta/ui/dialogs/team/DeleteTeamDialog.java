@@ -2,11 +2,9 @@ package com.ilyap.yuta.ui.dialogs.team;
 
 import android.content.Context;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.Team;
 import com.ilyap.yuta.models.UpdateResponse;
@@ -16,8 +14,8 @@ import com.ilyap.yuta.utils.RequestViewModel;
 
 @SuppressWarnings("ConstantConditions")
 public class DeleteTeamDialog extends CustomInteractiveDialog {
-    private RequestViewModel viewModel;
     private final Team team;
+    private RequestViewModel viewModel;
 
     public DeleteTeamDialog(Context context, Fragment fragment, Team team) {
         super(context, fragment);
@@ -48,7 +46,7 @@ public class DeleteTeamDialog extends CustomInteractiveDialog {
         viewModel.deleteTeam(team.getId());
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
-            ((TeamsFragment) fragment).updateCarousels();
+            ((TeamsFragment) fragment).updateList();
             dismiss();
         });
     }

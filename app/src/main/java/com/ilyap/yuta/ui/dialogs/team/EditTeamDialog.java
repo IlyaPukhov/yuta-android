@@ -2,9 +2,7 @@ package com.ilyap.yuta.ui.dialogs.team;
 
 import android.content.Context;
 import android.widget.TextView;
-
 import androidx.fragment.app.Fragment;
-
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.Team;
 import com.ilyap.yuta.models.UpdateResponse;
@@ -60,7 +58,7 @@ public class EditTeamDialog extends CreateTeamDialog {
         viewModel.editTeam(teamId, getData(teamName), addedMembers);
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
-            ((TeamsFragment) fragment).updateCarousels();
+            ((TeamsFragment) fragment).updateList();
             dismiss();
         });
     }

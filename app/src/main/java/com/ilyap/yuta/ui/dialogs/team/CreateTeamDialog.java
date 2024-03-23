@@ -1,9 +1,5 @@
 package com.ilyap.yuta.ui.dialogs.team;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static com.ilyap.yuta.utils.UserUtils.getUserId;
-
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,19 +7,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.CheckTeamNameResponse;
-import com.ilyap.yuta.models.SearchResponse;
+import com.ilyap.yuta.models.SearchUserResponse;
 import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.models.User;
-import com.ilyap.yuta.ui.adapters.UserAdapter;
+import com.ilyap.yuta.ui.adapters.UserSearchAdapter;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.TeamsFragment;
 import com.ilyap.yuta.utils.RequestViewModel;
@@ -31,21 +25,25 @@ import com.ilyap.yuta.utils.RequestViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static com.ilyap.yuta.utils.UserUtils.getUserId;
+
 @SuppressWarnings("ConstantConditions")
 public class CreateTeamDialog extends CustomInteractiveDialog {
+    protected final List<User> addedMembers = new ArrayList<>();
+    private final List<User> searchUsers = new ArrayList<>();
     protected RequestViewModel viewModel;
     protected EditText teamName;
-    private EditText searchField;
     protected Button submitButton;
+    protected UserSearchAdapter searchAdapter;
+    protected UserSearchAdapter membersAdapter;
+    private EditText searchField;
     private Button searchButton;
-    protected UserAdapter searchAdapter;
-    protected UserAdapter membersAdapter;
     private TextView error;
     private TextView emptySearch;
     private TextView addedText;
     private boolean isTeamNameUnique;
-    private List<User> searchUsers;
-    protected List<User> addedMembers;
 
     public CreateTeamDialog(Context context, Fragment fragment) {
         super(context, fragment);
@@ -55,8 +53,6 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
     @Override
     public void start() {
         super.start();
-        searchUsers = new ArrayList<>();
-        addedMembers = new ArrayList<>();
         viewModel = new ViewModelProvider(fragment).get(RequestViewModel.class);
 
         submitButton = dialog.findViewById(R.id.submit);
@@ -84,7 +80,7 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
         viewModel.createTeam(getUserId(activity), getData(teamName), addedMembers);
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
-            ((TeamsFragment) fragment).updateCarousels();
+            ((TeamsFragment) fragment).updateList();
             dismiss();
         });
     }
@@ -93,12 +89,12 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
         viewModel.getResultLiveData().removeObservers(fragment);
         viewModel.searchUsers(getData(searchField), getUserId(activity), addedMembers);
         viewModel.getResultLiveData().observe(fragment, result -> {
-            if (!(result instanceof SearchResponse)) return;
-            updateList(searchAdapter, ((SearchResponse) result).getUsers());
+            if (!(result instanceof SearchUserResponse)) return;
+            updateList(searchAdapter, ((SearchUserResponse) result).getUsers());
         });
     }
 
-    private void updateList(@NonNull UserAdapter adapter, @NonNull List<User> users) {
+    private void updateList(@NonNull UserSearchAdapter adapter, @NonNull List<User> users) {
         messageVisibility(emptySearch, !users.isEmpty());
         adapter.updateList(users);
     }
@@ -130,17 +126,16 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
         LinearLayoutManager searchLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         searchUsersView.setLayoutManager(searchLayoutManager);
 
-        membersAdapter = new UserAdapter(this,addedMembers, null);
+        membersAdapter = new UserSearchAdapter(this, addedMembers, null);
         addedMembersView.setAdapter(membersAdapter);
 
-        searchAdapter = new UserAdapter(this, searchUsers, membersAdapter);
+        searchAdapter = new UserSearchAdapter(this, searchUsers, membersAdapter);
         searchUsersView.setAdapter(searchAdapter);
     }
 
     public void updateAddedTextVisibility() {
         addedText.setVisibility((addedMembers != null && !addedMembers.isEmpty()) ? VISIBLE : GONE);
     }
-
 
     private void messageVisibility(@NonNull View message, boolean isValid) {
         message.setVisibility(isValid ? GONE : VISIBLE);

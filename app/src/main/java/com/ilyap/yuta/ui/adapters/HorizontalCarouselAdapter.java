@@ -1,22 +1,20 @@
 package com.ilyap.yuta.ui.adapters;
 
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.TeamMember;
 
 import java.util.List;
+
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 public class HorizontalCarouselAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.ViewHolder<List<TeamMember>>> {
 
@@ -30,24 +28,6 @@ public class HorizontalCarouselAdapter extends BaseAdapter<List<TeamMember>, Bas
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_horizontal_carousel, parent, false);
         view.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         return new HorizontalViewHolder(view);
-    }
-
-    public class HorizontalViewHolder extends BaseAdapter.ViewHolder<List<TeamMember>> {
-        private final RecyclerView horizontalRecyclerView;
-
-        public HorizontalViewHolder(@NonNull View itemView) {
-            super(itemView);
-            horizontalRecyclerView = itemView.findViewById(R.id.horizontalRecyclerView);
-        }
-
-        @Override
-        public void bind(List<TeamMember> members) {
-            LinearLayoutManager layoutManager = new SpanningLinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
-            horizontalRecyclerView.setLayoutManager(layoutManager);
-
-            TeamMemberAdapter teamMemberAdapter = new TeamMemberAdapter(getContext(), members);
-            horizontalRecyclerView.setAdapter(teamMemberAdapter);
-        }
     }
 
     private static class SpanningLinearLayoutManager extends LinearLayoutManager {
@@ -104,6 +84,24 @@ public class HorizontalCarouselAdapter extends BaseAdapter<List<TeamMember>, Bas
 
         private int getVerticalSpace() {
             return getHeight() - getPaddingBottom() - getPaddingTop();
+        }
+    }
+
+    public class HorizontalViewHolder extends BaseAdapter.ViewHolder<List<TeamMember>> {
+        private final RecyclerView horizontalRecyclerView;
+
+        public HorizontalViewHolder(@NonNull View itemView) {
+            super(itemView);
+            horizontalRecyclerView = itemView.findViewById(R.id.horizontalRecyclerView);
+        }
+
+        @Override
+        public void bind(List<TeamMember> members) {
+            LinearLayoutManager layoutManager = new SpanningLinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
+            horizontalRecyclerView.setLayoutManager(layoutManager);
+
+            TeamMemberAdapter teamMemberAdapter = new TeamMemberAdapter(getContext(), members);
+            horizontalRecyclerView.setAdapter(teamMemberAdapter);
         }
     }
 }

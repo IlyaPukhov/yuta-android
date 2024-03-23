@@ -129,12 +129,12 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 errorText.setVisibility(GONE);
-                updateLoginButtonEnable();
+                updateLoginButtonState();
             }
         });
     }
 
-    private void updateLoginButtonEnable() {
+    private void updateLoginButtonState() {
         String loginText = loginView.getText().toString().trim();
         String passwordText = passwordView.getText().toString().trim();
         loginButton.setEnabled(!loginText.isEmpty() && !passwordText.isEmpty());

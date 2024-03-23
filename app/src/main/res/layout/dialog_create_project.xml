@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -10,7 +11,7 @@
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="none"
+            android:scrollbars="vertical"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -119,7 +120,7 @@
                         android:id="@+id/pick_tech_task"
                         android:textAppearance="@style/pick_file_button"
                         style="@style/classic_button_style"
-                        android:layout_width="160dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/pick_tech_task"
                         android:background="@drawable/background_edit_field"
@@ -130,15 +131,15 @@
                         app:layout_constraintStart_toStartOf="parent"
                         android:minHeight="38dip"
                         android:textColor="@color/dark_gray"
-                        android:paddingLeft="0dp"
-                        android:paddingRight="0dp"
-                        app:layout_constraintVertical_bias="0.0" />
+                        app:layout_constraintVertical_bias="0.0"
+                        app:rippleColor="@color/black" />
 
                 <TextView
                         android:id="@+id/file_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/tech_task_not_picked"
+                        android:hint="@string/tech_task_not_picked"
+                        android:textColorHint="@color/dark_gray"
                         android:textAppearance="@style/pick_file_button"
                         android:textAlignment="textStart"
                         android:ellipsize="end"
@@ -148,7 +149,9 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toEndOf="@id/pick_tech_task"
-                        app:layout_constrainedWidth="true" />
+                        app:layout_constrainedWidth="true"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
@@ -183,15 +186,8 @@
                     android:layout_marginStart="24dp"
                     android:layout_marginEnd="24dp" />
 
-            <com.santalu.maskara.widget.MaskEditText
-                    app:mask="дд.мм.гггг"
-                    app:maskCharacter="д|м|г"
-                    app:maskStyle="completable"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
+            <TextView
                     android:id="@+id/date_field"
-                    android:importantForAutofill="no"
-                    android:inputType="date"
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:hint="@string/date_input"
@@ -208,13 +204,13 @@
                     android:minHeight="38dip"
                     android:paddingHorizontal="12dp"
                     android:textSize="13sp"
-                    tools:ignore="TouchTargetSizeCheck" />
+                    android:gravity="center_vertical" />
 
             <ImageView
                     android:id="@+id/pick_date"
                     android:contentDescription="@string/pick_date"
                     app:srcCompat="@drawable/ic_calendar"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="0dp"
                     app:layout_constraintTop_toTopOf="@id/date_field"
                     app:layout_constraintEnd_toEndOf="@id/date_field"
@@ -226,14 +222,16 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:paddingLeft="8dp"
-                    android:minWidth="58dip" />
+                    android:minWidth="58dip"
+                    app:layout_constraintStart_toStartOf="@+id/date_field" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/status_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/date_field"
-                    android:layout_marginTop="24dp">
+                    android:layout_marginTop="24dp"
+                    android:visibility="gone">
 
                 <TextView
                         android:id="@+id/status_text"
@@ -320,11 +318,11 @@
                     android:gravity="top">
 
                 <RadioButton
+                        android:id="@+id/create_without_team"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/radio_button"
                         android:checked="true"
-                        android:id="@+id/create_without_team"
                         android:text="@string/create_project_without_team"
                         android:textAppearance="@style/pick_button"
                         android:textColor="@color/dark_gray"
@@ -336,10 +334,10 @@
                         tools:ignore="TouchTargetSizeCheck" />
 
                 <RadioButton
+                        android:id="@+id/create_with_team"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/radio_button"
-                        android:id="@+id/create_with_team"
                         android:text="@string/create_project_with_team"
                         android:textAppearance="@style/pick_button"
                         android:textColor="@color/dark_gray"
@@ -357,11 +355,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/radio_group"
-                    android:layout_marginTop="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/submit"
-                    android:layout_marginBottom="25dp"
                     android:visibility="gone">
 
                 <TextView
@@ -374,6 +369,7 @@
                         android:fontFamily="@font/montserrat_medium"
                         android:autoSizeTextType="uniform"
                         app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="15dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginEnd="25dp"
@@ -381,7 +377,7 @@
                         android:visibility="gone" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/added_team"
+                        android:id="@+id/added_teams"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         app:layout_constraintTop_toBottomOf="@id/added_team_text"
@@ -402,7 +398,7 @@
                         android:textAlignment="textStart"
                         android:fontFamily="@font/montserrat_medium"
                         android:autoSizeTextType="uniform"
-                        app:layout_constraintTop_toBottomOf="@id/added_team"
+                        app:layout_constraintTop_toBottomOf="@id/added_teams"
                         app:layout_constraintStart_toStartOf="parent"
                         android:layout_marginStart="25dp"
                         app:layout_constraintEnd_toEndOf="parent"

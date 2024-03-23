@@ -1,20 +1,17 @@
 package com.ilyap.yuta.ui.fragments;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.utils.RequestViewModel;
-
 import lombok.NoArgsConstructor;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 @NoArgsConstructor
 public class ReadonlyProfileFragment extends ProfileFragment {

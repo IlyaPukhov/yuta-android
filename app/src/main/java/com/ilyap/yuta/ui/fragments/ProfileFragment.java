@@ -30,23 +30,33 @@ import lombok.NoArgsConstructor;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.ui.dialogs.photo.UploadPhotoDialog.PICK_IMAGE_REQUEST;
-import static com.ilyap.yuta.utils.UserUtils.*;
+import static com.ilyap.yuta.utils.UserUtils.getUserId;
+import static com.ilyap.yuta.utils.UserUtils.loadImage;
+import static com.ilyap.yuta.utils.UserUtils.setCurrentUser;
 
 @NoArgsConstructor
 public class ProfileFragment extends Fragment {
+    public final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    UploadPhotoDialog.handleActivityResult(PICK_IMAGE_REQUEST, Activity.RESULT_OK, result.getData());
+                }
+            }
+    );
     protected View view;
     protected View progressLayout;
     protected User user;
     protected ImageView imageView;
     protected RequestViewModel viewModel;
-    protected boolean fromTeams;
+    protected int fromFragment;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         if (getArguments() != null) {
-            fromTeams = getArguments().getBoolean("fromTeams", false);
+            fromFragment = getArguments().getInt("fromFragment", -1);
         }
 
         setupViews();
@@ -57,7 +67,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setupViews() {
-        if (fromTeams) {
+        if (fromFragment > 0) {
             View backButton = view.findViewById(R.id.back_button);
             backButton.setVisibility(VISIBLE);
             backButton.setOnClickListener(v -> handleBackPressed());
@@ -164,20 +174,11 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    public final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    UploadPhotoDialog.handleActivityResult(PICK_IMAGE_REQUEST, Activity.RESULT_OK, result.getData());
-                }
-            }
-    );
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (fromTeams) {
+        if (fromFragment > 0) {
             OnBackPressedCallback callback = new OnBackPressedCallback(true) {
                 @Override
                 public void handleOnBackPressed() {
@@ -189,6 +190,6 @@ public class ProfileFragment extends Fragment {
     }
 
     protected void handleBackPressed() {
-        ((MainActivity) requireActivity()).getNavController().navigate(R.id.teamsFragment);
+        ((MainActivity) requireActivity()).getNavController().navigate(fromFragment);
     }
 }
