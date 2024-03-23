@@ -1,28 +1,25 @@
 package com.ilyap.yuta.ui.adapters;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
-import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.navigation.NavController;
-import com.ilyap.yuta.MainActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
+import com.ilyap.yuta.ui.adapters.viewholders.ProjectMemberViewHolder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 import static android.view.View.VISIBLE;
-import static com.ilyap.yuta.utils.UserUtils.getUserId;
-import static com.ilyap.yuta.utils.UserUtils.loadImage;
 
 public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User>> {
-    private static final int MAX_MEMBERS_COUNT = 4;
+    private static final int MAX_MEMBERS_COUNT = 5;
     private static final int MORE_USERS = 1;
     private static final int ENOUGH_USERS = 0;
     private final View projectView;
@@ -39,11 +36,11 @@ public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.Vie
         ViewHolder<User> viewHolder;
         switch (viewType) {
             case ENOUGH_USERS:
-                viewHolder = new UserViewHolder(view);
+                viewHolder = new ProjectMemberViewHolder(view, getContext());
                 break;
             case MORE_USERS:
             default:
-                viewHolder = new MoreUsersViewHolder(view);
+                viewHolder = new ProjectMoreMembersViewHolder(view);
                 break;
         }
         return viewHolder;
@@ -51,7 +48,7 @@ public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.Vie
 
     @Override
     public int getItemViewType(int position) {
-        if (position > 4) {
+        if (position >= MAX_MEMBERS_COUNT) {
             return MORE_USERS;
         } else {
             return ENOUGH_USERS;
@@ -60,51 +57,18 @@ public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.Vie
 
     @Override
     public int getItemCount() {
-        return Math.min(getItems().size(), MAX_MEMBERS_COUNT + 1);
+        return Math.min(getItems().size(), MAX_MEMBERS_COUNT);
     }
 
-    public class UserViewHolder extends ViewHolder<User> {
-        private final ImageView imageView;
-        private final TextView name;
-        private final View member;
-
-        public UserViewHolder(@NonNull View itemView) {
-            super(itemView);
-            this.name = itemView.findViewById(R.id.name);
-            this.imageView = itemView.findViewById(R.id.avatar);
-            this.member = itemView.findViewById(R.id.member);
-        }
-
-        @Override
-        public void bind(User user) {
-            imageView.setVisibility(VISIBLE);
-            loadImage(getContext(), user.getCroppedPhotoUrl(), imageView);
-
-            String userName = user.getLastName() + " " + user.getFirstName();
-            name.setText(userName);
-
-            member.setOnClickListener(v -> {
-                NavController navController = ((MainActivity) getContext()).getNavController();
-                if (getUserId(getContext()) == user.getId()) {
-                    navController.navigate(R.id.action_projectsFragment_to_profileFragment);
-                } else {
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("userId", user.getId());
-                    navController.navigate(R.id.action_projectsFragment_to_readonlyProfileFragment, bundle);
-                }
-            });
-        }
-    }
-
-    public class MoreUsersViewHolder extends ViewHolder<User> {
+    public class ProjectMoreMembersViewHolder extends ViewHolder<User> {
         private final TextView remainingMembersCount;
         private final View member;
         private final View teamContainer;
         private final View closeButton;
-        private final View teamRecyclerView;
+        private final RecyclerView teamRecyclerView;
         private boolean isOpen;
 
-        public MoreUsersViewHolder(@NonNull View itemView) {
+        public ProjectMoreMembersViewHolder(@NonNull View itemView) {
             super(itemView);
             this.remainingMembersCount = itemView.findViewById(R.id.plus_members);
             this.member = itemView.findViewById(R.id.member);
@@ -118,7 +82,7 @@ public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.Vie
         @Override
         public void bind(User user) {
             remainingMembersCount.setVisibility(VISIBLE);
-            String text = "+" + (getItems().size() - MAX_MEMBERS_COUNT);
+            String text = "+" + (getItems().size() - MAX_MEMBERS_COUNT - 1);
             remainingMembersCount.setText(text);
 
             member.setOnClickListener(v -> {
@@ -130,11 +94,9 @@ public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.Vie
         }
 
         private void setupFullTeamView(List<User> team) {
-            // TODO: 23.03.2024 team view 
-
-
+            teamRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), MAX_MEMBERS_COUNT));
+            teamRecyclerView.setAdapter(new ProjectFullTeamAdapter(getContext(), team));
         }
-
 
         public void slideUp(View view) {
             view.setVisibility(View.VISIBLE);

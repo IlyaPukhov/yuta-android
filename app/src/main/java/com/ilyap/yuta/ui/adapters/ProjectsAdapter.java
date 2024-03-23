@@ -101,8 +101,7 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
                 teamMembers.add(project.getTeam().getLeader());
                 teamMembers.addAll(project.getTeam().getMembers());
 
-                LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-                teamPreview.setLayoutManager(layoutManager);
+                teamPreview.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
                 teamPreview.setAdapter(new ProjectTeamPreviewAdapter(getContext(), teamMembers, itemView));
             });
         }
