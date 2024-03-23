@@ -101,7 +101,7 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
 
     protected RequestViewModel isNameUnique(String name) {
         viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.checkTeamName(name);
+        viewModel.checkUniqueTeamName(name);
         return viewModel;
     }
 
@@ -117,18 +117,13 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
     }
 
     private void recyclerViewsInitialize() {
-        RecyclerView searchUsersView = dialog.findViewById(R.id.searchUsers);
         RecyclerView addedMembersView = dialog.findViewById(R.id.addedMembers);
-
-        LinearLayoutManager addedLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        addedMembersView.setLayoutManager(addedLayoutManager);
-
-        LinearLayoutManager searchLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        searchUsersView.setLayoutManager(searchLayoutManager);
-
+        addedMembersView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         membersAdapter = new UserSearchAdapter(this, addedMembers, null);
         addedMembersView.setAdapter(membersAdapter);
 
+        RecyclerView searchUsersView = dialog.findViewById(R.id.searchUsers);
+        searchUsersView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         searchAdapter = new UserSearchAdapter(this, searchUsers, membersAdapter);
         searchUsersView.setAdapter(searchAdapter);
     }

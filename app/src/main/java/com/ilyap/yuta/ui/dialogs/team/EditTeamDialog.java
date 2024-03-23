@@ -66,7 +66,7 @@ public class EditTeamDialog extends CreateTeamDialog {
     @Override
     protected RequestViewModel isNameUnique(String name) {
         viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.checkTeamName(name, teamId);
+        viewModel.checkUniqueTeamName(name, teamId);
         return viewModel;
     }
 }
