@@ -30,7 +30,7 @@ public class TeamSearchAdapter extends BaseAdapter<Team, BaseAdapter.ViewHolder<
     @NonNull
     @Override
     public TeamViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_team_search, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_team_search_in_project, parent, false);
         return new TeamViewHolder(view);
     }
 
