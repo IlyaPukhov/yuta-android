@@ -129,7 +129,7 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
         viewModel.createProject(managerId, name, description, deadline, techTaskPath, teamId);
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
-            ((ProjectsFragment) fragment).updateList();
+            ((ProjectsFragment) fragment).updateLists();
             dismiss();
         });
     }

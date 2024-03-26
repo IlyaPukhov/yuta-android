@@ -69,7 +69,7 @@ public class TeamsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        updateList();
+        updateLists();
     }
 
     private void fillTeams(@NonNull List<List<TeamMember>> teamMembers) {
@@ -89,11 +89,11 @@ public class TeamsFragment extends Fragment {
         });
     }
 
-    public void updateList() {
-        updateList(view.findViewById(lastPickedButtonId));
+    public void updateLists() {
+        updateLists(view.findViewById(lastPickedButtonId));
     }
 
-    private void updateList(Button button) {
+    private void updateLists(Button button) {
         getTeams();
         viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
             if (!(result instanceof TeamsResponse)) return;

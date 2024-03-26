@@ -82,8 +82,8 @@ public class LoginActivity extends AppCompatActivity {
         CustomDialog loadingDialog = new LoadingDialog(this);
         loadingDialog.start();
 
-        viewModel.auth(login, password);
         viewModel.getResultLiveData().removeObservers(this);
+        viewModel.auth(login, password);
         viewModel.getResultLiveData().observe(this, result -> {
             if (!(result instanceof AuthResponse)) return;
             AuthResponse response = (AuthResponse) result;
