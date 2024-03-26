@@ -198,6 +198,12 @@
         <item name="android:textColor">@color/dark_gray</item>
     </style>
 
+    <style name="search_user_name">
+        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/dark_gray</item>
+    </style>
+
     <style name="default_toggle" parent="active_toggle">
         <item name="android:textColor">@color/blue</item>
     </style>

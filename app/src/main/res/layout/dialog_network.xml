@@ -49,7 +49,7 @@
                 android:layout_height="48dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:src="@drawable/icc_wifi"
+                android:src="@drawable/ic_wifi"
                 android:layout_marginBottom="16dp"
                 app:layout_constraintBottom_toTopOf="@id/textView" />
     </androidx.constraintlayout.widget.ConstraintLayout>

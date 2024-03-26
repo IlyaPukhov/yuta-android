@@ -65,7 +65,6 @@ public class ProjectsFragment extends Fragment {
         progressLayout.setVisibility(VISIBLE);
 
         viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
-        recyclerViewInitialize();
 
         recyclerViewInitialize();
         projectsSwitchInitialize();
@@ -82,7 +81,7 @@ public class ProjectsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        updateList();
+        updateLists();
     }
 
     private void fillProjects(@NonNull List<ProjectDto> projectMembers) {
@@ -102,11 +101,11 @@ public class ProjectsFragment extends Fragment {
         });
     }
 
-    public void updateList() {
-        updateList(view.findViewById(lastPickedButtonId));
+    public void updateLists() {
+        updateLists(view.findViewById(lastPickedButtonId));
     }
 
-    private void updateList(Button button) {
+    private void updateLists(Button button) {
         getProjects();
         viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
             if (!(result instanceof ProjectsResponse)) return;

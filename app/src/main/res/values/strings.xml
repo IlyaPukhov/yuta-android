@@ -120,4 +120,7 @@
     <string name="downloading">Загрузка</string>
     <string name="tech_task_filename">tech_task.pdf</string>
     <string name="project_menu">меню проекта</string>
+    <string name="nav_search">Поиск</string>
+    <string name="user_search_text">Поиск пользователей</string>
+    <string name="find_user_text">Введите фамилию и имя</string>
 </resources>

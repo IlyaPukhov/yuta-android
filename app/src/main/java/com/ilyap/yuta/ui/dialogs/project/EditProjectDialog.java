@@ -86,7 +86,7 @@ public class EditProjectDialog extends CreateProjectDialog {
         viewModel.editProject(projectId, name, description, deadline, status, techTaskPath, teamId);
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
-            ((ProjectsFragment) fragment).updateList();
+            ((ProjectsFragment) fragment).updateLists();
             dismiss();
         });
     }

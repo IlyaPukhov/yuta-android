@@ -31,7 +31,7 @@ public class UserSearchAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<
     @NonNull
     @Override
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user_search, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user_search_in_team, parent, false);
         return new UserViewHolder(view);
     }
 

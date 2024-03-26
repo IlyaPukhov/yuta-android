@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_edit_field"
+        android:layout_marginBottom="10dp"
+        android:padding="18dp">
+
+    <TextView
+            android:textAppearance="@style/list_member_name"
+            android:textAlignment="center"
+            android:autoSizeTextType="uniform"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/name"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="50dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="15sp" />
+
+    <Button
+            android:id="@+id/add_team"
+            android:contentDescription="@string/add_team"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            style="@style/orange_button_style"
+            android:background="@drawable/ic_plus"
+            tools:ignore="TouchTargetSizeCheck"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="10dp" />
+
+    <Button
+            android:id="@+id/remove_team"
+            android:contentDescription="@string/remove_team"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            style="@style/orange_button_style"
+            android:background="@drawable/ic_minus"
+            tools:ignore="TouchTargetSizeCheck"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="10dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

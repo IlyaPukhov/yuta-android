@@ -45,7 +45,7 @@ public class DeleteProjectDialog extends CustomInteractiveDialog {
         viewModel.deleteProject(project.getId());
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
-            ((ProjectsFragment) fragment).updateList();
+            ((ProjectsFragment) fragment).updateLists();
             dismiss();
         });
     }

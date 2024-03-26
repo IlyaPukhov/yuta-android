@@ -80,7 +80,7 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
         viewModel.createTeam(getUserId(activity), getData(teamName), addedMembers);
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
-            ((TeamsFragment) fragment).updateList();
+            ((TeamsFragment) fragment).updateLists();
             dismiss();
         });
     }

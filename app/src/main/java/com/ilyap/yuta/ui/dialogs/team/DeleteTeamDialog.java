@@ -46,7 +46,7 @@ public class DeleteTeamDialog extends CustomInteractiveDialog {
         viewModel.deleteTeam(team.getId());
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
-            ((TeamsFragment) fragment).updateList();
+            ((TeamsFragment) fragment).updateLists();
             dismiss();
         });
     }
