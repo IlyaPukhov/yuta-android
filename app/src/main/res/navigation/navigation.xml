@@ -72,5 +72,10 @@
             android:name="com.ilyap.yuta.ui.fragments.SearchFragment"
             android:label="fragment_search"
             tools:layout="@layout/fragment_search">
+        <action
+                android:id="@+id/action_searchFragment_to_readonlyProfileFragment"
+                app:destination="@id/readonlyProfileFragment"
+                app:popUpTo="@id/searchFragment"
+                app:popUpToInclusive="true" />
     </fragment>
 </navigation>
