@@ -34,8 +34,7 @@
         </activity>
         <activity
                 android:name=".MainActivity"
-                android:exported="true"
-                android:theme="@style/Theme.YUTA.GradientStatusBar" />
+                android:exported="true" />
     </application>
 
 </manifest>

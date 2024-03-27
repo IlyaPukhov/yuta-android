@@ -1,6 +1,7 @@
 package com.ilyap.yuta.utils;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -16,13 +17,9 @@ import com.ilyap.yuta.models.TeamsResponse;
 import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.models.UserResponse;
-import lombok.Cleanup;
 import org.json.JSONArray;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -31,6 +28,8 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.stream.Collector;
 
+import static com.ilyap.yuta.utils.RequestUtils.FILENAME;
+import static com.ilyap.yuta.utils.RequestUtils.FILE_KEY_NAME;
 import static com.ilyap.yuta.utils.RequestUtils.getRequest;
 import static com.ilyap.yuta.utils.RequestUtils.getRootUrl;
 import static com.ilyap.yuta.utils.RequestUtils.postFormDataRequest;
@@ -63,7 +62,8 @@ public final class RequestViewModel extends ViewModel {
         });
     }
 
-    public void editProject(int projectId, String name, String description, String deadline, String status, Path techTaskPath, int teamId) {
+    public void editProject(int projectId, String name, String description,
+                            String deadline, @Nullable String filename, String status, @Nullable InputStream is, int teamId) {
         clearResultLiveData();
         executor.execute(() -> {
             HashMap<String, Object> params = new HashMap<>();
@@ -76,11 +76,12 @@ public final class RequestViewModel extends ViewModel {
             }
             params.put("project_status", status);
 
-            resultLiveData.postValue(JsonUtils.parse(getTechTaskJson(techTaskPath, params), UpdateResponse.class));
+            resultLiveData.postValue(JsonUtils.parse(postProjectJsonRequest(is, params, filename), UpdateResponse.class));
         });
     }
 
-    public void createProject(int managerId, String name, String description, String deadline, Path techTaskPath, int teamId) {
+    public void createProject(int managerId, String name, String description,
+                              String deadline, @Nullable String filename, @Nullable InputStream is, int teamId) {
         clearResultLiveData();
         executor.execute(() -> {
             HashMap<String, Object> params = new HashMap<>();
@@ -92,19 +93,16 @@ public final class RequestViewModel extends ViewModel {
                 params.put("project_team_id", teamId);
             }
 
-            resultLiveData.postValue(JsonUtils.parse(getTechTaskJson(techTaskPath, params), UpdateResponse.class));
+            resultLiveData.postValue(JsonUtils.parse(postProjectJsonRequest(is, params, filename), UpdateResponse.class));
         });
     }
 
-    private String getTechTaskJson(Path techTaskPath, HashMap<String, Object> params) {
+    private String postProjectJsonRequest(@Nullable InputStream is, HashMap<String, Object> params, @Nullable String filename) {
         String json;
-        if (techTaskPath != null) {
-            try {
-                @Cleanup InputStream is = Files.newInputStream(techTaskPath);
-                json = postFormDataRequest(getFullUrl("projects"), params, is);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        if (is != null && filename != null) {
+            params.put(FILENAME, filename);
+            params.put(FILE_KEY_NAME, "project_technical_task");
+            json = postFormDataRequest(getFullUrl("projects"), params, is);
         } else {
             json = postRequest(getFullUrl("projects"), params);
         }
@@ -203,7 +201,6 @@ public final class RequestViewModel extends ViewModel {
     }
 
     // PROFILE
-
     public void updateMiniatureUserPhoto(int userId, int imageViewWidth, int imageViewHeight, int croppedWidth, int croppedHeight, int offsetX, int offsetY) {
         clearResultLiveData();
         executor.execute(() -> {
@@ -220,19 +217,15 @@ public final class RequestViewModel extends ViewModel {
         });
     }
 
-    public void updateUserPhoto(int userId, @NonNull Path photoPath) {
+    public void updateUserPhoto(int userId, InputStream is, String filename) {
         clearResultLiveData();
         executor.execute(() -> {
             HashMap<String, Object> params = new HashMap<>();
             params.put("user_id", userId);
+            params.put(FILENAME, filename);
+            params.put(FILE_KEY_NAME, "photo");
 
-            String json;
-            try {
-                @Cleanup InputStream is = Files.newInputStream(photoPath);
-                json = postFormDataRequest(getFullUrl("profile"), params, is);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            String json = postFormDataRequest(getFullUrl("profile"), params, is);
             resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
         });
     }

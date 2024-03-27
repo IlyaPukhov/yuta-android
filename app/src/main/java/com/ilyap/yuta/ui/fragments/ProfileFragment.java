@@ -94,6 +94,7 @@ public class ProfileFragment extends Fragment {
             viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
                 if (!(result instanceof UserResponse)) return;
                 user = ((UserResponse) result).getUser();
+                user.setId(userId);
                 updateImage();
                 fillViews();
                 progressLayout.setVisibility(GONE);

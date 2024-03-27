@@ -23,7 +23,7 @@ public class ReadonlyProfileFragment extends ProfileFragment {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         if (getArguments() != null) {
             userId = getArguments().getInt("userId", -1);
-            fromTeams = true;
+            fromFragment = getArguments().getInt("fromFragment", -1);
         }
 
         imageView = view.findViewById(R.id.photo);

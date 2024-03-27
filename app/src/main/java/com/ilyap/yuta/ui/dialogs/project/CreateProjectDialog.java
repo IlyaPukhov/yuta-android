@@ -29,9 +29,8 @@ import com.ilyap.yuta.utils.RequestViewModel;
 import lombok.SneakyThrows;
 
 import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
+import java.io.InputStream;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -79,11 +78,6 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
         }
     }
 
-    private static void setTechTask(Uri uri) {
-        techTaskUri = uri;
-        fileName.setText(new File(uri.getPath()).getName());
-    }
-
     @Override
     public void start() {
         super.start();
@@ -91,8 +85,9 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
 
         fileName = dialog.findViewById(R.id.file_name);
         fileName.setText("");
-        pickTeamContainer = dialog.findViewById(R.id.pick_team_container);
+        techTaskUri = null;
 
+        pickTeamContainer = dialog.findViewById(R.id.pick_team_container);
         searchField = dialog.findViewById(R.id.find_name);
         searchButton = dialog.findViewById(R.id.btn_search);
         submitButton = dialog.findViewById(R.id.submit);
@@ -122,16 +117,21 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
         String name = getData(projectName);
         String description = getData(projectDesc);
         String deadline = getFormattedDate(getData(deadlineField));
-        Path techTaskPath = Paths.get(techTaskUri.getPath());
+        InputStream techTaskInputStream = techTaskUri != null ? fragment.requireActivity().getContentResolver().openInputStream(techTaskUri) : null;
         int teamId = getCurrentTeamId();
 
         viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.createProject(managerId, name, description, deadline, techTaskPath, teamId);
+        viewModel.createProject(managerId, name, description, deadline, getData(fileName), techTaskInputStream, teamId);
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
             ((ProjectsFragment) fragment).updateLists();
             dismiss();
         });
+    }
+
+    private static void setTechTask(Uri uri) {
+        techTaskUri = uri;
+        fileName.setText(new File(uri.getPath()).getName());
     }
 
     protected int getCurrentTeamId() {
@@ -143,9 +143,9 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
 
     protected String getFormattedDate(String date) {
         DateTimeFormatter sourceDateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        LocalDateTime localDateTime = LocalDateTime.parse(date, sourceDateFormatter);
+        LocalDate localDate = LocalDate.parse(date, sourceDateFormatter);
 
-        return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MMM-dd"));
+        return localDate.format(DateTimeFormatter.ofPattern("yyyy-MMM-dd"));
     }
 
     private void radioGroupInitialize() {

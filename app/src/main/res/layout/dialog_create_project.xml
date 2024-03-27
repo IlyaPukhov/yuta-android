@@ -162,7 +162,7 @@
                     android:textAppearance="@style/dialog_field_desc"
                     android:textAlignment="textStart"
                     android:fontFamily="@font/montserrat_medium"
-                    android:autoSizeTextType="uniform"
+                    android:autoSizeTextType="none"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/file_pick_container"

@@ -12,10 +12,10 @@ import com.ilyap.yuta.models.Team;
 import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.ui.fragments.ProjectsFragment;
 import com.ilyap.yuta.utils.ProjectStatus;
+import lombok.SneakyThrows;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
+import java.io.InputStream;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,16 +74,17 @@ public class EditProjectDialog extends CreateProjectDialog {
         updateAddedTextVisibility();
     }
 
+    @SneakyThrows
     private void editProject() {
         String name = getData(projectName);
         String description = getData(projectDesc);
         String deadline = getFormattedDate(getData(deadlineField));
-        Path techTaskPath = Paths.get(techTaskUri.getPath());
         String status = spinner.getSelectedItem().toString();
+        InputStream techTaskInputStream = techTaskUri != null ? fragment.requireContext().getContentResolver().openInputStream(techTaskUri) : null;
         int teamId = getCurrentTeamId();
 
         viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.editProject(projectId, name, description, deadline, status, techTaskPath, teamId);
+        viewModel.editProject(projectId, name, description, deadline, getData(fileName), status, techTaskInputStream, teamId);
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
             ((ProjectsFragment) fragment).updateLists();
@@ -93,9 +94,9 @@ public class EditProjectDialog extends CreateProjectDialog {
 
     private String getUnformattedDate(String date) {
         DateTimeFormatter sourceDateFormatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
-        LocalDateTime localDateTime = LocalDateTime.parse(date, sourceDateFormatter);
+        LocalDate localDate = LocalDate.parse(date, sourceDateFormatter);
 
-        return localDateTime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        return localDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 
     private void statusSpinnerInitialize() {

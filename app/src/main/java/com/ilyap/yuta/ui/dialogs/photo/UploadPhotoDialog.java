@@ -15,8 +15,10 @@ import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestViewModel;
+import lombok.SneakyThrows;
 
-import java.nio.file.Paths;
+import java.io.File;
+import java.io.InputStream;
 
 import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
 import static com.ilyap.yuta.utils.UserUtils.loadImage;
@@ -52,6 +54,7 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
         dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> loadImage(activity, user.getCroppedPhotoUrl(), imageView));
         dialog.findViewById(R.id.pick_miniature).setOnClickListener(v -> {
+            if (selectedImageUri == null) return;
             updatePhoto(user);
             CustomDialog editPhotoDialog = new CropPhotoDialog(activity, fragment);
             editPhotoDialog.start();
@@ -61,15 +64,21 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
     }
 
     private void pickPhoto() {
+        String[] mimeTypes = {"image/jpeg", "image/png"};
         Intent intent = new Intent();
-        intent.setType("image/*");
+        intent.setType("image/*")
+                .putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         intent.setAction(Intent.ACTION_GET_CONTENT);
         ((ProfileFragment) fragment).imagePickerLauncher.launch(Intent.createChooser(intent, activity.getString(R.string.pick_image)));
     }
 
+    @SneakyThrows
     private void updatePhoto(User user) {
+        InputStream inputStream = fragment.requireContext().getContentResolver().openInputStream(selectedImageUri);
+        String filename = (new File(selectedImageUri.getPath())).getName();
+
         viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.updateUserPhoto(user.getId(), Paths.get(selectedImageUri.getPath()));
+        viewModel.updateUserPhoto(user.getId(), inputStream, filename);
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
             ((ProfileFragment) fragment).updateProfile();
