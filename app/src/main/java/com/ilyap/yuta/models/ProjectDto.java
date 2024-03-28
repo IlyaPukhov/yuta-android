@@ -12,4 +12,5 @@ public class ProjectDto {
     String stringDeadline;
     String description;
     User manager;
+    Team team;
 }

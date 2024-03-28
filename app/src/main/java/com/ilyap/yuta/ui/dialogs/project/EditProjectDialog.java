@@ -62,7 +62,9 @@ public class EditProjectDialog extends CreateProjectDialog {
 
     private void setupProject() {
         List<Team> teamList = new ArrayList<>();
-        teamList.add(project.getTeam());
+        if (project.getTeam() != null) {
+            teamList.add(project.getTeam());
+        }
         teamSearchAdapter.updateList(teamList);
 
         projectName.setText(project.getName());

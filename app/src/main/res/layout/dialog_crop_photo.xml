@@ -70,7 +70,7 @@
             android:layout_centerInParent="true"
             android:clickable="true"
             android:background="@drawable/photo_filler"
-            android:scaleType="fitCenter"
+            android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:contentDescription="@string/avatar"

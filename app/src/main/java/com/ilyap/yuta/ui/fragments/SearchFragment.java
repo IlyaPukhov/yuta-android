@@ -66,7 +66,9 @@ public class SearchFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 progressLayout.setVisibility(VISIBLE);
-                updateSearchResult(s.toString());
+                if (s.length() != 0) {
+                    updateSearchResult(s.toString());
+                }
             }
         });
     }

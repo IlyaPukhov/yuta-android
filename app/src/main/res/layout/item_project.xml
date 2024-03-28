@@ -16,15 +16,14 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="45dp"
-            android:layout_marginEnd="45dp"
+            android:layout_marginHorizontal="25dp"
             android:elevation="6dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp">
 
         <View
                 android:layout_width="0dp"
-                android:layout_height="115dp"
+                android:layout_height="130dp"
                 android:background="@drawable/header_project_card"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -42,12 +41,12 @@
                 android:layout_marginStart="3dp"
                 android:layout_marginEnd="15dp"
                 app:layout_constrainedWidth="true"
-                android:layout_marginTop="15dp">
+                android:layout_marginTop="20dp">
 
             <com.google.android.material.imageview.ShapeableImageView
                     android:background="@drawable/photo_filler"
-                    android:layout_width="51dp"
-                    android:layout_height="51dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:id="@+id/photo"
                     android:clickable="true"
                     android:scaleType="centerCrop"
@@ -59,9 +58,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginVertical="12dp"
-                    android:elevation="10dp" />
+                    android:layout_marginStart="20dp" />
 
             <TextView
                     android:id="@+id/project_name"
@@ -74,12 +71,13 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constrainedWidth="true"
                     android:layout_marginStart="18dp"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="18dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
-                android:layout_width="32dp"
-                android:layout_height="18dp"
+                android:layout_width="25dp"
+                android:layout_height="14dp"
                 android:id="@+id/project_menu"
                 android:contentDescription="@string/project_menu"
                 android:background="@drawable/ic_project_menu"
@@ -88,7 +86,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="13dp"
-                android:layout_marginEnd="16dp" />
+                android:layout_marginEnd="13dp" />
 
         <Button
                 android:id="@+id/tech_task_button"
@@ -98,15 +96,19 @@
                 android:textAppearance="@style/tech_task_button"
                 android:text="@string/tech_task_button"
                 android:paddingHorizontal="15dp"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="30dp"
                 tools:ignore="RtlHardcoded,TouchTargetSizeCheck"
                 android:autoSizeTextType="none"
                 android:drawableLeft="@drawable/ic_tech_task"
                 android:drawablePadding="10dp"
                 app:layout_constraintBottom_toBottomOf="@id/view"
-                android:layout_marginBottom="10dp"
-                app:layout_constraintEnd_toEndOf="@id/project_header"
+                android:layout_marginVertical="0dp"
+                app:layout_constraintStart_toStartOf="@id/view"
+                app:layout_constraintEnd_toEndOf="@id/view"
+                app:layout_constraintTop_toBottomOf="@id/project_header"
+                android:layout_marginHorizontal="30dp"
+                app:layout_constraintVertical_bias="0.5"
                 android:textAlignment="viewStart"
                 android:paddingTop="0dp"
                 android:paddingBottom="0dp"
@@ -138,7 +140,7 @@
                         android:textAlignment="textStart"
                         android:autoSizeTextType="uniform"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:text="@string/project_status_header"
                         android:drawablePadding="8dp"
                         app:drawableLeftCompat="@drawable/ic_status" />
@@ -150,7 +152,7 @@
                         android:fontFamily="medium"
                         android:autoSizeTextType="uniform"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:id="@+id/project_status" />
             </LinearLayout>
 
@@ -166,8 +168,8 @@
                         android:textAlignment="center"
                         android:autoSizeTextType="uniform"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawablePadding="7dp"
+                        android:layout_height="match_parent"
+                        android:drawablePadding="4dp"
                         android:text="@string/project_deadline_header"
                         app:drawableLeftCompat="@drawable/ic_deadline"
                         android:id="@+id/project_deadline" />
@@ -186,7 +188,7 @@
                         android:textAlignment="center"
                         android:autoSizeTextType="uniform"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:drawablePadding="10dp"
                         android:text="@string/project_desc_header"
                         app:drawableLeftCompat="@drawable/ic_description" />
@@ -198,7 +200,7 @@
                         android:fontFamily="medium"
                         android:autoSizeTextType="uniform"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:id="@+id/project_description" />
             </LinearLayout>
         </LinearLayout>
@@ -220,7 +222,6 @@
                 android:id="@+id/team_preview"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constrainedHeight="true"
                 app:layout_constraintTop_toBottomOf="@id/team_text"
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="@id/team_text"
@@ -239,7 +240,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:visibility="visible">
+                android:visibility="gone">
 
             <Button
                     android:id="@+id/close"

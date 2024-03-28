@@ -36,9 +36,7 @@ public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.Vie
         ViewHolder<User> viewHolder;
         switch (viewType) {
             case ENOUGH_USERS:
-                viewHolder = new ProjectMemberViewHolder(view, getContext(),
-                        getItems().stream().map(User::getId).findFirst().orElse(-1)
-                );
+                viewHolder = new ProjectMemberViewHolder(view, getContext(), getItems().get(0).getId());
                 break;
             case MORE_USERS:
             default:
@@ -101,7 +99,7 @@ public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.Vie
         }
 
         public void slideUp(View view) {
-            view.setVisibility(View.VISIBLE);
+            view.setVisibility(VISIBLE);
             TranslateAnimation animate = new TranslateAnimation(0, 0, view.getHeight(), 0);
             animate.setDuration(500);
             animate.setFillAfter(true);

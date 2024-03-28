@@ -16,17 +16,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.Project;
 import com.ilyap.yuta.models.ProjectDto;
-import com.ilyap.yuta.models.ProjectResponse;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.project.ProjectDialog;
-import com.ilyap.yuta.utils.RequestViewModel;
 import lombok.SneakyThrows;
 
 import java.util.ArrayList;
@@ -83,36 +79,28 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
 
         @Override
         public void bind(ProjectDto project) {
+            setupTeamPreview(project, project.getManager());
             setupProjectFields(project);
             setupMenu(project);
-            setupTeamPreview(project.getId());
         }
 
-        private void setupTeamPreview(int projectId) {
-            RequestViewModel viewModel = new ViewModelProvider(fragment).get(RequestViewModel.class);
-
-            viewModel.getResultLiveData().removeObservers(fragment.getViewLifecycleOwner());
-            viewModel.getProject(projectId);
-            viewModel.getResultLiveData().observe(fragment.getViewLifecycleOwner(), result -> {
-                if (!(result instanceof ProjectResponse)) return;
-                Project project = ((ProjectResponse) result).getProject();
-
-                List<User> teamMembers = new ArrayList<>();
-                teamMembers.add(project.getTeam().getLeader());
+        private void setupTeamPreview(ProjectDto project, User manager) {
+            List<User> teamMembers = new ArrayList<>();
+            teamMembers.add(manager);
+            if (project.getTeam() != null) {
                 teamMembers.addAll(project.getTeam().getMembers());
-
-                teamPreview.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-                teamPreview.setAdapter(new ProjectTeamPreviewAdapter(getContext(), teamMembers, itemView));
-            });
+            }
+            teamPreview.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+            teamPreview.setAdapter(new ProjectTeamPreviewAdapter(getContext(), teamMembers, itemView));
         }
 
         private void setupProjectFields(ProjectDto project) {
             loadImageToImageView(photo, project.getPhotoUrl());
 
             name.setText(project.getName());
-            status.setText(project.getStatus());
-            deadline.setText(project.getStringDeadline());
-            description.setText(project.getDescription());
+            status.setText(String.format(" %s", project.getStatus()));
+            deadline.setText(String.format(" %s", project.getStringDeadline()));
+            description.setText(String.format(" %s", project.getDescription()));
 
             if (project.getTechnicalTaskUrl() != null) {
                 buttonTechTask.setOnClickListener(v -> openTechTask(project.getTechnicalTaskUrl()));

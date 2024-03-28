@@ -24,9 +24,9 @@ public class ProjectMemberViewHolder extends BaseAdapter.ViewHolder<User> {
     private final TextView name;
     private final View member;
     private final ImageView teamLeaderIcon;
-    private final int leaderId;
+    private final int managerId;
 
-    public ProjectMemberViewHolder(@NonNull View itemView, Context context, int leaderId) {
+    public ProjectMemberViewHolder(@NonNull View itemView, Context context, int managerId) {
         super(itemView);
         this.context = context;
         this.name = itemView.findViewById(R.id.name);
@@ -34,7 +34,7 @@ public class ProjectMemberViewHolder extends BaseAdapter.ViewHolder<User> {
         this.member = itemView.findViewById(R.id.member);
         this.teamLeaderIcon = itemView.findViewById(R.id.teamLeaderIcon);
 
-        this.leaderId = leaderId;
+        this.managerId = managerId;
     }
 
     @Override
@@ -42,8 +42,7 @@ public class ProjectMemberViewHolder extends BaseAdapter.ViewHolder<User> {
         imageView.setVisibility(VISIBLE);
         loadImageToImageView(imageView, user.getCroppedPhotoUrl());
 
-
-        if (leaderId != -1 && leaderId == user.getId()) {
+        if (managerId == user.getId()) {
             teamLeaderIcon.setVisibility(VISIBLE);
         }
 

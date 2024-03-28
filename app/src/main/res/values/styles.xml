@@ -173,8 +173,7 @@
 
     <style name="project_member">
         <item name="android:fontFamily">@font/montserrat_medium</item>
-        <item name="android:textSize">7sp</item>
-        <item name="android:letterSpacing">0.02</item>
+        <item name="android:textSize">8sp</item>
         <item name="android:textColor">@color/dark_gray</item>
     </style>
 

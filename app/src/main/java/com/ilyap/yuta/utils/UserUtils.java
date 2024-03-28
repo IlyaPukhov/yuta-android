@@ -10,7 +10,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.LoginActivity;
 import lombok.experimental.UtilityClass;
@@ -20,19 +19,22 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 @UtilityClass
 public class UserUtils {
-    private User currentUser;
-    private SharedPreferences sharedPreferences;
+    private static User currentUser;
+    private static SharedPreferences sharedPreferences;
 
     public static void loadImageToImageView(ImageView imageView, String path) {
-        getConfiguredGlideBuilder(Glide.with(imageView).load(path)).into(imageView);
+        getConfiguredGlideBuilder(Glide.with(imageView).load(getPath(path))).into(imageView);
     }
 
     public static <T> RequestBuilder<T> getConfiguredGlideBuilder(RequestBuilder<T> requestBuilder) {
         return requestBuilder.dontTransform()
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .priority(Priority.IMMEDIATE)
-                .apply(RequestOptions.centerInsideTransform());
+                .priority(Priority.IMMEDIATE);
+    }
+
+    public static String getPath(String path) {
+        return RequestUtils.getRootUrl() + path;
     }
 
     public static void setUserId(Context context, int id) {

@@ -20,6 +20,7 @@ import lombok.SneakyThrows;
 
 import java.io.InputStream;
 
+import static com.ilyap.yuta.ui.dialogs.photo.PhotoDialog.DEFAULT_USER_PHOTO;
 import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
 import static com.ilyap.yuta.utils.UserUtils.loadImageToImageView;
 
@@ -48,7 +49,7 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
         dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> loadImageToImageView(imageView, user.getCroppedPhotoUrl()));
         dialog.findViewById(R.id.pick_miniature).setOnClickListener(v -> {
-            if (selectedImageUri == null) return;
+            if (selectedImageUri == null && user.getPhotoUrl().equals(DEFAULT_USER_PHOTO)) return;
             updatePhoto(user);
         });
         dialog.findViewById(R.id.pick_photo).setOnClickListener(v -> pickPhoto());

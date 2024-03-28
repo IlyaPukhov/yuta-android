@@ -14,12 +14,14 @@ import com.canhub.cropper.CropImageView;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.models.User;
+import com.ilyap.yuta.models.UserResponse;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestViewModel;
 
 import static com.ilyap.yuta.utils.UserUtils.getConfiguredGlideBuilder;
-import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
+import static com.ilyap.yuta.utils.UserUtils.getPath;
+import static com.ilyap.yuta.utils.UserUtils.getUserId;
 
 @SuppressWarnings("ConstantConditions")
 public class CropPhotoDialog extends CustomInteractiveDialog {
@@ -35,23 +37,29 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
     public void start() {
         super.start();
         viewModel = new ViewModelProvider(fragment).get(RequestViewModel.class);
+        int userId = getUserId(getContext());
 
-        User user = getCurrentUser();
+        viewModel.getResultLiveData().removeObservers(fragment.getViewLifecycleOwner());
+        viewModel.getUser(userId);
+        viewModel.getResultLiveData().observe(fragment.getViewLifecycleOwner(), result -> {
+            if (!(result instanceof UserResponse)) return;
+            User user = ((UserResponse) result).getUser();
+            loadImage(user.getPhotoUrl(), cropImageView);
+        });
+
         cropImageView = dialog.findViewById(R.id.cropImageView);
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
-        dialog.findViewById(R.id.save_miniature).setOnClickListener(v -> cropPhoto(user));
-
-        loadImage(user.getPhotoUrl(), cropImageView);
+        dialog.findViewById(R.id.save_miniature).setOnClickListener(v -> cropPhoto(userId));
     }
 
-    private void cropPhoto(User user) {
+    private void cropPhoto(int userId) {
         int factWidth = cropImageView.getWholeImageRect().width();
         int factHeight = cropImageView.getWholeImageRect().height();
         Rect cropRect = cropImageView.getCropRect();
 
         viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.updateMiniatureUserPhoto(user.getId(),
+        viewModel.updateMiniatureUserPhoto(userId,
                 factWidth, factHeight, cropRect.width(), cropRect.height(), cropRect.left, cropRect.top
         );
         viewModel.getResultLiveData().observe(fragment, result -> {
@@ -62,7 +70,7 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
     }
 
     private void loadImage(String path, CropImageView cropImageView) {
-        getConfiguredGlideBuilder(Glide.with(cropImageView).asBitmap().load(path))
+        getConfiguredGlideBuilder(Glide.with(cropImageView).asBitmap().load(getPath(path)))
                 .into(new CustomTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource, Transition<? super Bitmap> transition) {
