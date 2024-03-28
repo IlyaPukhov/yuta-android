@@ -129,7 +129,7 @@ public class ProfileFragment extends Fragment {
     }
 
     public void updateImage() {
-        loadImageToImageView(requireContext(), user.getCroppedPhotoUrl(), imageView);
+        loadImageToImageView(imageView, user.getCroppedPhotoUrl());
     }
 
     private void contactsContainerVisibility(@NonNull int... fields) {

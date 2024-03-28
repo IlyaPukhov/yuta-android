@@ -8,8 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.canhub.cropper.CropImageView;
@@ -18,9 +16,9 @@ import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
-import com.ilyap.yuta.utils.RequestUtils;
 import com.ilyap.yuta.utils.RequestViewModel;
 
+import static com.ilyap.yuta.utils.UserUtils.getConfiguredGlideBuilder;
 import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
 
 @SuppressWarnings("ConstantConditions")
@@ -64,17 +62,7 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
     }
 
     private void loadImage(String path, CropImageView cropImageView) {
-        Glide.with(cropImageView)
-                .asBitmap()
-
-
-                .load(RequestUtils.getRootUrl() + path)
-                .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .apply(RequestOptions.centerInsideTransform())
-
-
-
+        getConfiguredGlideBuilder(Glide.with(cropImageView).asBitmap().load(path))
                 .into(new CustomTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource, Transition<? super Bitmap> transition) {

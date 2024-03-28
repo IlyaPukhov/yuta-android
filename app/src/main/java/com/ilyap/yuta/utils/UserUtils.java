@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
@@ -24,14 +23,12 @@ public class UserUtils {
     private User currentUser;
     private SharedPreferences sharedPreferences;
 
-    public static void loadImageToImageView(Context context, String path, ImageView imageView) {
-        getGlide(context, path).into(imageView);
+    public static void loadImageToImageView(ImageView imageView, String path) {
+        getConfiguredGlideBuilder(Glide.with(imageView).load(path)).into(imageView);
     }
 
-    public static RequestBuilder<Drawable> getGlide(Context context, String path) {
-        return Glide.with(context)
-                .load(RequestUtils.getRootUrl() + path)
-                .dontTransform()
+    public static <T> RequestBuilder<T> getConfiguredGlideBuilder(RequestBuilder<T> requestBuilder) {
+        return requestBuilder.dontTransform()
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .priority(Priority.IMMEDIATE)

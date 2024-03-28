@@ -107,7 +107,7 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
         }
 
         private void setupProjectFields(ProjectDto project) {
-            loadImageToImageView(getContext(), project.getPhotoUrl(), photo);
+            loadImageToImageView(photo, project.getPhotoUrl());
             buttonTechTask.setOnClickListener(v -> openTechTask(project.getTechnicalTaskUrl()));
 
             name.setText(project.getName());

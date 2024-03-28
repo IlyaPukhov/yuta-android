@@ -35,7 +35,7 @@ public class ProjectMemberViewHolder extends BaseAdapter.ViewHolder<User> {
     @Override
     public void bind(User user) {
         imageView.setVisibility(VISIBLE);
-        loadImageToImageView(getContext(), user.getCroppedPhotoUrl(), imageView);
+        loadImageToImageView(imageView, user.getCroppedPhotoUrl());
 
         String userName = user.getLastName() + " " + user.getFirstName();
         name.setText(userName);

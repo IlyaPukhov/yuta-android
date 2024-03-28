@@ -51,7 +51,7 @@ public class UserSearchAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<
 
         @Override
         public void bind(User user) {
-            loadImageToImageView(getContext(), user.getCroppedPhotoUrl(), avatar);
+            loadImageToImageView(avatar, user.getCroppedPhotoUrl());
 
             String userName = user.getLastName() + " " + user.getFirstName() + (user.getPatronymic() == null ? "" : " " + user.getPatronymic());
             name.setText(userName);

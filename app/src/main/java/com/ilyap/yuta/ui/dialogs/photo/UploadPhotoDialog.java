@@ -43,10 +43,10 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
         User user = getCurrentUser();
 
         imageView = dialog.findViewById(R.id.photo);
-        loadImageToImageView(activity, user.getCroppedPhotoUrl(), imageView);
+        loadImageToImageView(imageView, user.getCroppedPhotoUrl());
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
-        dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> loadImageToImageView(activity, user.getCroppedPhotoUrl(), imageView));
+        dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> loadImageToImageView(imageView, user.getCroppedPhotoUrl()));
         dialog.findViewById(R.id.pick_miniature).setOnClickListener(v -> {
             if (selectedImageUri == null) return;
             updatePhoto(user);
