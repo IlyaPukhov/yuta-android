@@ -48,7 +48,8 @@
                 android:autoSizeTextType="uniform"
                 android:drawablePadding="15dp"
                 app:drawableLeftCompat="@drawable/ic_edit_miniature"
-                tools:ignore="TouchTargetSizeCheck" />
+                tools:ignore="TouchTargetSizeCheck"
+                />
 
         <TextView
                 android:id="@+id/delete_photo"

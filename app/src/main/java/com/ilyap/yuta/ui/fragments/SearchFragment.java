@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.ilyap.yuta.R;
+import com.ilyap.yuta.models.SearchUsersResponse;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.adapters.SearchAdapter;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 @NoArgsConstructor
@@ -70,14 +72,13 @@ public class SearchFragment extends Fragment {
     }
 
     private void updateSearchResult(String searchText) {
-        // TODO: 26.03.2024
-        //  viewModel.getResultLiveData().removeObservers(getViewLifecycleOwner());
-        //  viewModel.search(s.toString());
-        //  viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
-        //      if (!(result instanceof SearchResponse)) return;
-        //      progressLayout.setVisibility(GONE);
-        //      users = ((SearchResponse) result).getUsers();
-        //  });
+        viewModel.getResultLiveData().removeObservers(getViewLifecycleOwner());
+        viewModel.searchUsers(searchText);
+        viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
+            if (!(result instanceof SearchUsersResponse)) return;
+            progressLayout.setVisibility(GONE);
+            users = ((SearchUsersResponse) result).getUsers();
+        });
     }
 
     private void recyclerViewInitialize() {

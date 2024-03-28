@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.CheckTeamNameResponse;
-import com.ilyap.yuta.models.SearchUserResponse;
+import com.ilyap.yuta.models.SearchUsersResponse;
 import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.adapters.UserSearchAdapter;
@@ -89,8 +89,8 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
         viewModel.getResultLiveData().removeObservers(fragment);
         viewModel.searchUsers(getData(searchField), getUserId(activity), addedMembers);
         viewModel.getResultLiveData().observe(fragment, result -> {
-            if (!(result instanceof SearchUserResponse)) return;
-            updateList(searchAdapter, ((SearchUserResponse) result).getUsers());
+            if (!(result instanceof SearchUsersResponse)) return;
+            updateList(searchAdapter, ((SearchUsersResponse) result).getUsers());
         });
     }
 

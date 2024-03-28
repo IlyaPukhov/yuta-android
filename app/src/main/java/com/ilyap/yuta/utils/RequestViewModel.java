@@ -10,8 +10,8 @@ import com.ilyap.yuta.models.CheckTeamNameResponse;
 import com.ilyap.yuta.models.EditUserResponse;
 import com.ilyap.yuta.models.ProjectResponse;
 import com.ilyap.yuta.models.ProjectsResponse;
-import com.ilyap.yuta.models.SearchTeamResponse;
-import com.ilyap.yuta.models.SearchUserResponse;
+import com.ilyap.yuta.models.SearchTeamsResponse;
+import com.ilyap.yuta.models.SearchUsersResponse;
 import com.ilyap.yuta.models.TeamResponse;
 import com.ilyap.yuta.models.TeamsResponse;
 import com.ilyap.yuta.models.UpdateResponse;
@@ -58,7 +58,7 @@ public final class RequestViewModel extends ViewModel {
                     teamId >= 0 ? "&project_team_id=" + teamId : "");
 
             String json = getRequest(getFullUrl(requestString));
-            resultLiveData.postValue(JsonUtils.parse(json, SearchTeamResponse.class));
+            resultLiveData.postValue(JsonUtils.parse(json, SearchTeamsResponse.class));
         });
     }
 
@@ -142,7 +142,7 @@ public final class RequestViewModel extends ViewModel {
             String json = getRequest(
                     getFullUrl(String.format("teams?user_name=%s&leader_id=%s&members_id=%s", userName, leaderId, getMembersIdArray(members)))
             );
-            resultLiveData.postValue(JsonUtils.parse(json, SearchUserResponse.class));
+            resultLiveData.postValue(JsonUtils.parse(json, SearchUsersResponse.class));
         });
     }
 
@@ -197,6 +197,15 @@ public final class RequestViewModel extends ViewModel {
         executor.execute(() -> {
             String json = getRequest(getFullUrl("teams?user_id=" + userId));
             resultLiveData.postValue(JsonUtils.parse(json, TeamsResponse.class));
+        });
+    }
+
+    //SEARCH
+    public void searchUsers(String userName){
+        clearResultLiveData();
+        executor.execute(() -> {
+            String json = getRequest(getFullUrl("search?user_name=" + userName));
+            resultLiveData.postValue(JsonUtils.parse(json, SearchUsersResponse.class));
         });
     }
 

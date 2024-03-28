@@ -19,7 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.SearchTeamResponse;
+import com.ilyap.yuta.models.SearchTeamsResponse;
 import com.ilyap.yuta.models.Team;
 import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.ui.adapters.TeamSearchAdapter;
@@ -209,8 +209,8 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
         viewModel.getResultLiveData().removeObservers(fragment);
         viewModel.searchTeams(getData(searchField), getUserId(activity), getCurrentTeamId());
         viewModel.getResultLiveData().observe(fragment, result -> {
-            if (!(result instanceof SearchTeamResponse)) return;
-            updateList(searchAdapter, ((SearchTeamResponse) result).getTeams());
+            if (!(result instanceof SearchTeamsResponse)) return;
+            updateList(searchAdapter, ((SearchTeamsResponse) result).getTeams());
         });
     }
 

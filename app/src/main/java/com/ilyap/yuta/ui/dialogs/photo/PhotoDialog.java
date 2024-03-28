@@ -1,13 +1,19 @@
 package com.ilyap.yuta.ui.dialogs.photo;
 
 import android.content.Context;
+import android.view.View;
 import androidx.fragment.app.Fragment;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 
+import static android.view.View.GONE;
+import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
+
 @SuppressWarnings("ConstantConditions")
 public class PhotoDialog extends CustomInteractiveDialog {
+
+    private static final String DEFAULT_USER_PHOTO = "default_user_photo";
 
     public PhotoDialog(Context context, Fragment fragment) {
         super(context, fragment);
@@ -22,10 +28,17 @@ public class PhotoDialog extends CustomInteractiveDialog {
             openUpdatePhotoDialog();
             dismiss();
         });
-        dialog.findViewById(R.id.edit_miniature).setOnClickListener(v -> {
-            openEditPhotoDialog();
-            dismiss();
-        });
+
+        View editMiniature = dialog.findViewById(R.id.edit_miniature);
+        if (getCurrentUser().getPhotoUrl().contains(DEFAULT_USER_PHOTO)) {
+            editMiniature.setVisibility(GONE);
+        } else {
+            editMiniature.setOnClickListener(v -> {
+                openEditPhotoDialog();
+                dismiss();
+            });
+        }
+
         dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> {
             openDeletePhotoDialog();
             dismiss();
