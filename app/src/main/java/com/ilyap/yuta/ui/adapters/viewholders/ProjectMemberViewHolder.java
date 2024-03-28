@@ -15,7 +15,7 @@ import lombok.Getter;
 
 import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
-import static com.ilyap.yuta.utils.UserUtils.loadImage;
+import static com.ilyap.yuta.utils.UserUtils.loadImageToImageView;
 
 public class ProjectMemberViewHolder extends BaseAdapter.ViewHolder<User> {
     @Getter
@@ -35,7 +35,7 @@ public class ProjectMemberViewHolder extends BaseAdapter.ViewHolder<User> {
     @Override
     public void bind(User user) {
         imageView.setVisibility(VISIBLE);
-        loadImage(getContext(), user.getCroppedPhotoUrl(), imageView);
+        loadImageToImageView(getContext(), user.getCroppedPhotoUrl(), imageView);
 
         String userName = user.getLastName() + " " + user.getFirstName();
         name.setText(userName);

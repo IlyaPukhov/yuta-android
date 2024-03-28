@@ -18,7 +18,7 @@ import java.util.List;
 
 import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
-import static com.ilyap.yuta.utils.UserUtils.loadImage;
+import static com.ilyap.yuta.utils.UserUtils.loadImageToImageView;
 
 public class TeamMemberAdapter extends BaseAdapter<TeamMember, BaseAdapter.ViewHolder<TeamMember>> {
 
@@ -51,7 +51,7 @@ public class TeamMemberAdapter extends BaseAdapter<TeamMember, BaseAdapter.ViewH
         public void bind(@NonNull TeamMember member) {
             User user = member.getMember();
             User leader = member.getTeam().getLeader();
-            loadImage(getContext(), user.getCroppedPhotoUrl(), imageView);
+            loadImageToImageView(getContext(), user.getCroppedPhotoUrl(), imageView);
 
             if (leader.equals(user)) {
                 teamLeaderIcon.setVisibility(VISIBLE);

@@ -66,10 +66,15 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
     private void loadImage(String path, CropImageView cropImageView) {
         Glide.with(cropImageView)
                 .asBitmap()
+
+
                 .load(RequestUtils.getRootUrl() + path)
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .apply(RequestOptions.centerInsideTransform())
+
+
+
                 .into(new CustomTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource, Transition<? super Bitmap> transition) {

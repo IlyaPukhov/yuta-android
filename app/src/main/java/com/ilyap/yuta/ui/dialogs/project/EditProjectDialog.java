@@ -93,7 +93,7 @@ public class EditProjectDialog extends CreateProjectDialog {
     }
 
     private String getUnformattedDate(String date) {
-        DateTimeFormatter sourceDateFormatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
+        DateTimeFormatter sourceDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(date, sourceDateFormatter);
 
         return localDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));

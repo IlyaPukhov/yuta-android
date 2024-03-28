@@ -32,7 +32,7 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.ui.dialogs.photo.UploadPhotoDialog.PICK_IMAGE_REQUEST;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
-import static com.ilyap.yuta.utils.UserUtils.loadImage;
+import static com.ilyap.yuta.utils.UserUtils.loadImageToImageView;
 import static com.ilyap.yuta.utils.UserUtils.setCurrentUser;
 
 @NoArgsConstructor
@@ -129,7 +129,7 @@ public class ProfileFragment extends Fragment {
     }
 
     public void updateImage() {
-        loadImage(requireContext(), user.getCroppedPhotoUrl(), imageView);
+        loadImageToImageView(requireContext(), user.getCroppedPhotoUrl(), imageView);
     }
 
     private void contactsContainerVisibility(@NonNull int... fields) {

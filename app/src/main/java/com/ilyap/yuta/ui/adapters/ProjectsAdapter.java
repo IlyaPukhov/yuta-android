@@ -39,7 +39,7 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
-import static com.ilyap.yuta.utils.UserUtils.loadImage;
+import static com.ilyap.yuta.utils.UserUtils.loadImageToImageView;
 
 public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHolder<ProjectDto>> {
     private final Fragment fragment;
@@ -90,9 +90,9 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
 
         private void setupTeamPreview(int projectId) {
             RequestViewModel viewModel = new ViewModelProvider(fragment).get(RequestViewModel.class);
+
             viewModel.getResultLiveData().removeObservers(fragment.getViewLifecycleOwner());
             viewModel.getProject(projectId);
-
             viewModel.getResultLiveData().observe(fragment.getViewLifecycleOwner(), result -> {
                 if (!(result instanceof ProjectResponse)) return;
                 Project project = ((ProjectResponse) result).getProject();
@@ -107,7 +107,7 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
         }
 
         private void setupProjectFields(ProjectDto project) {
-            loadImage(getContext(), project.getPhotoUrl(), photo);
+            loadImageToImageView(getContext(), project.getPhotoUrl(), photo);
             buttonTechTask.setOnClickListener(v -> openTechTask(project.getTechnicalTaskUrl()));
 
             name.setText(project.getName());

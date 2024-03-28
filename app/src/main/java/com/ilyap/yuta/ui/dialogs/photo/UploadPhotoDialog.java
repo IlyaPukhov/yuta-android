@@ -14,14 +14,14 @@ import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
+import com.ilyap.yuta.utils.FileUtils;
 import com.ilyap.yuta.utils.RequestViewModel;
 import lombok.SneakyThrows;
 
-import java.io.File;
 import java.io.InputStream;
 
 import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
-import static com.ilyap.yuta.utils.UserUtils.loadImage;
+import static com.ilyap.yuta.utils.UserUtils.loadImageToImageView;
 
 @SuppressWarnings("ConstantConditions")
 public class UploadPhotoDialog extends CustomInteractiveDialog {
@@ -36,12 +36,6 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
         setDialogLayout(R.layout.dialog_upload_photo);
     }
 
-    public static void handleActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
-            setImage(data.getData());
-        }
-    }
-
     @Override
     public void start() {
         super.start();
@@ -49,16 +43,13 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
         User user = getCurrentUser();
 
         imageView = dialog.findViewById(R.id.photo);
-        loadImage(activity, user.getCroppedPhotoUrl(), imageView);
+        loadImageToImageView(activity, user.getCroppedPhotoUrl(), imageView);
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
-        dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> loadImage(activity, user.getCroppedPhotoUrl(), imageView));
+        dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> loadImageToImageView(activity, user.getCroppedPhotoUrl(), imageView));
         dialog.findViewById(R.id.pick_miniature).setOnClickListener(v -> {
             if (selectedImageUri == null) return;
             updatePhoto(user);
-            CustomDialog editPhotoDialog = new CropPhotoDialog(activity, fragment);
-            editPhotoDialog.start();
-            dismiss();
         });
         dialog.findViewById(R.id.pick_photo).setOnClickListener(v -> pickPhoto());
     }
@@ -75,18 +66,26 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
     @SneakyThrows
     private void updatePhoto(User user) {
         InputStream inputStream = fragment.requireContext().getContentResolver().openInputStream(selectedImageUri);
-        String filename = (new File(selectedImageUri.getPath())).getName();
+        String filename = FileUtils.getFileName(getContext(), selectedImageUri);
 
         viewModel.getResultLiveData().removeObservers(fragment);
         viewModel.updateUserPhoto(user.getId(), inputStream, filename);
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
-            ((ProfileFragment) fragment).updateProfile();
+            CustomDialog cropPhotoDialog = new CropPhotoDialog(activity, fragment);
+            cropPhotoDialog.start();
+            dismiss();
         });
     }
 
     private static void setImage(Uri uri) {
         selectedImageUri = uri;
         imageView.setImageURI(selectedImageUri);
+    }
+
+    public static void handleActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+            setImage(data.getData());
+        }
     }
 }

@@ -16,7 +16,7 @@ import java.util.List;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.ilyap.yuta.utils.UserUtils.loadImage;
+import static com.ilyap.yuta.utils.UserUtils.loadImageToImageView;
 
 public class UserSearchAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User>> {
     private final CustomDialog dialog;
@@ -51,7 +51,7 @@ public class UserSearchAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<
 
         @Override
         public void bind(User user) {
-            loadImage(getContext(), user.getCroppedPhotoUrl(), avatar);
+            loadImageToImageView(getContext(), user.getCroppedPhotoUrl(), avatar);
 
             String userName = user.getLastName() + " " + user.getFirstName() + (user.getPatronymic() == null ? "" : " " + user.getPatronymic());
             name.setText(userName);

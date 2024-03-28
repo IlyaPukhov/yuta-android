@@ -25,10 +25,10 @@ import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.ui.adapters.TeamSearchAdapter;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProjectsFragment;
+import com.ilyap.yuta.utils.FileUtils;
 import com.ilyap.yuta.utils.RequestViewModel;
 import lombok.SneakyThrows;
 
-import java.io.File;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -117,11 +117,12 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
         String name = getData(projectName);
         String description = getData(projectDesc);
         String deadline = getFormattedDate(getData(deadlineField));
-        InputStream techTaskInputStream = techTaskUri != null ? fragment.requireActivity().getContentResolver().openInputStream(techTaskUri) : null;
+        InputStream techTaskInputStream = techTaskUri != null ? getContext().getContentResolver().openInputStream(techTaskUri) : null;
+        String filename = FileUtils.getFileName(fragment.requireContext(), techTaskUri);
         int teamId = getCurrentTeamId();
 
         viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.createProject(managerId, name, description, deadline, getData(fileName), techTaskInputStream, teamId);
+        viewModel.createProject(managerId, name, description, deadline, filename, techTaskInputStream, teamId);
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
             ((ProjectsFragment) fragment).updateLists();
@@ -131,7 +132,7 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
 
     private static void setTechTask(Uri uri) {
         techTaskUri = uri;
-        fileName.setText(new File(uri.getPath()).getName());
+        fileName.setText(FileUtils.getFileName(fragment.getContext(), uri));
     }
 
     protected int getCurrentTeamId() {
@@ -145,7 +146,7 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
         DateTimeFormatter sourceDateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         LocalDate localDate = LocalDate.parse(date, sourceDateFormatter);
 
-        return localDate.format(DateTimeFormatter.ofPattern("yyyy-MMM-dd"));
+        return localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     private void radioGroupInitialize() {
