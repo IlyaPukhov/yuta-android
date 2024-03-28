@@ -21,6 +21,8 @@ public class ProjectFullTeamAdapter extends BaseAdapter<User, BaseAdapter.ViewHo
     @Override
     public ViewHolder<User> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_project_member, parent, false);
-        return new ProjectMemberViewHolder(view, getContext());
+        return new ProjectMemberViewHolder(view, getContext(),
+                getItems().stream().map(User::getId).findFirst().orElse(-1)
+        );
     }
 }

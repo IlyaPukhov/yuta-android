@@ -123,4 +123,5 @@
     <string name="nav_search">Поиск</string>
     <string name="user_search_text">Поиск пользователей</string>
     <string name="find_user_text">Введите фамилию и имя</string>
+    <string name="tech_task_not_exists">НЕТ ТЗ</string>
 </resources>

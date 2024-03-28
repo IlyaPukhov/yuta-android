@@ -92,6 +92,7 @@
 
         <Button
                 android:id="@+id/tech_task_button"
+                android:enabled="true"
                 android:background="@drawable/button_blue"
                 style="@style/blue_button"
                 android:textAppearance="@style/tech_task_button"

@@ -36,7 +36,9 @@ public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.Vie
         ViewHolder<User> viewHolder;
         switch (viewType) {
             case ENOUGH_USERS:
-                viewHolder = new ProjectMemberViewHolder(view, getContext());
+                viewHolder = new ProjectMemberViewHolder(view, getContext(),
+                        getItems().stream().map(User::getId).findFirst().orElse(-1)
+                );
                 break;
             case MORE_USERS:
             default:

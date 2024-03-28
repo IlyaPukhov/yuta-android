@@ -30,19 +30,21 @@ public class PhotoDialog extends CustomInteractiveDialog {
         });
 
         View editMiniature = dialog.findViewById(R.id.edit_miniature);
+        View deletePhoto = dialog.findViewById(R.id.delete_photo);
         if (getCurrentUser().getPhotoUrl().contains(DEFAULT_USER_PHOTO)) {
             editMiniature.setVisibility(GONE);
+            deletePhoto.setVisibility(GONE);
         } else {
             editMiniature.setOnClickListener(v -> {
                 openEditPhotoDialog();
                 dismiss();
             });
-        }
 
-        dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> {
-            openDeletePhotoDialog();
-            dismiss();
-        });
+            deletePhoto.setOnClickListener(v -> {
+                openDeletePhotoDialog();
+                dismiss();
+            });
+        }
     }
 
     private void openUpdatePhotoDialog() {
