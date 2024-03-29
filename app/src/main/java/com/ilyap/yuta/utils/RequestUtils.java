@@ -90,7 +90,7 @@ public class RequestUtils {
     @SneakyThrows
     public static String postRequest(String urlString, Map<String, Object> params) {
         HttpURLConnection urlConnection = postHttpURLConnection(urlString);
-        urlConnection.setRequestProperty("Content-Type", "application/json;charset=utf-8");
+        urlConnection.setRequestProperty("Content-Type", "application/json");
 
         JSONObject jsonParams = new JSONObject(params);
         try (OutputStreamWriter os = new OutputStreamWriter(urlConnection.getOutputStream(), StandardCharsets.UTF_8)) {

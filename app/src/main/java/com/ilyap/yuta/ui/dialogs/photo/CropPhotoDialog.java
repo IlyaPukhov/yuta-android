@@ -14,14 +14,13 @@ import com.canhub.cropper.CropImageView;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.models.User;
-import com.ilyap.yuta.models.UserResponse;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestViewModel;
 
 import static com.ilyap.yuta.utils.UserUtils.getConfiguredGlideBuilder;
+import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
 import static com.ilyap.yuta.utils.UserUtils.getPath;
-import static com.ilyap.yuta.utils.UserUtils.getUserId;
 
 @SuppressWarnings("ConstantConditions")
 public class CropPhotoDialog extends CustomInteractiveDialog {
@@ -37,20 +36,13 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
     public void start() {
         super.start();
         viewModel = new ViewModelProvider(fragment).get(RequestViewModel.class);
-        int userId = getUserId(getContext());
-
-        viewModel.getResultLiveData().removeObservers(fragment.getViewLifecycleOwner());
-        viewModel.getUser(userId);
-        viewModel.getResultLiveData().observe(fragment.getViewLifecycleOwner(), result -> {
-            if (!(result instanceof UserResponse)) return;
-            User user = ((UserResponse) result).getUser();
-            loadImage(user.getPhotoUrl(), cropImageView);
-        });
+        User user = getCurrentUser();
 
         cropImageView = dialog.findViewById(R.id.cropImageView);
+        loadImage(user.getPhotoUrl(), cropImageView);
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
-        dialog.findViewById(R.id.save_miniature).setOnClickListener(v -> cropPhoto(userId));
+        dialog.findViewById(R.id.save_miniature).setOnClickListener(v -> cropPhoto(user.getId()));
     }
 
     private void cropPhoto(int userId) {

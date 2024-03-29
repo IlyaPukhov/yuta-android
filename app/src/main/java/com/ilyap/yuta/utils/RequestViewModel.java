@@ -44,7 +44,7 @@ public final class RequestViewModel extends ViewModel {
         clearResultLiveData();
         executor.execute(() -> {
             Map<String, Object> params = new HashMap<>();
-            params.put("team_id", projectId);
+            params.put("project_id", projectId);
             String json = postRequest(getFullUrl("projects"), params);
             resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
         });

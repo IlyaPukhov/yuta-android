@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.models.User;
+import com.ilyap.yuta.models.UserResponse;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
@@ -49,8 +50,13 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
         dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> loadImageToImageView(imageView, user.getCroppedPhotoUrl()));
         dialog.findViewById(R.id.pick_miniature).setOnClickListener(v -> {
-            if (selectedImageUri == null && user.getPhotoUrl().equals(DEFAULT_USER_PHOTO)) return;
-            updatePhoto(user);
+            if (user.getPhotoUrl().equals(DEFAULT_USER_PHOTO)) return;
+            if (selectedImageUri != null) {
+                updatePhoto(user.getId());
+            } else {
+                openCropDialog();
+            }
+
         });
         dialog.findViewById(R.id.pick_photo).setOnClickListener(v -> pickPhoto());
     }
@@ -65,17 +71,16 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
     }
 
     @SneakyThrows
-    private void updatePhoto(User user) {
+    private void updatePhoto(int userId) {
         InputStream inputStream = fragment.requireContext().getContentResolver().openInputStream(selectedImageUri);
         String filename = FileUtils.getFileName(getContext(), selectedImageUri);
 
         viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.updateUserPhoto(user.getId(), inputStream, filename);
+        viewModel.updateUserPhoto(userId, inputStream, filename);
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
-            CustomDialog cropPhotoDialog = new CropPhotoDialog(activity, fragment);
-            cropPhotoDialog.start();
-            dismiss();
+            reloadUserData(userId);
+            openCropDialog();
         });
     }
 
@@ -84,9 +89,24 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
         imageView.setImageURI(selectedImageUri);
     }
 
+    private void reloadUserData(int userId) {
+        viewModel.getResultLiveData().removeObservers(fragment.getViewLifecycleOwner());
+        viewModel.getUser(userId);
+        viewModel.getResultLiveData().observe(fragment.getViewLifecycleOwner(), result -> {
+            if (!(result instanceof UserResponse)) return;
+            ((ProfileFragment) fragment).updateProfile();
+        });
+    }
+
     public static void handleActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             setImage(data.getData());
         }
+    }
+
+    private void openCropDialog() {
+        CustomDialog cropPhotoDialog = new CropPhotoDialog(activity, fragment);
+        cropPhotoDialog.start();
+        dismiss();
     }
 }
