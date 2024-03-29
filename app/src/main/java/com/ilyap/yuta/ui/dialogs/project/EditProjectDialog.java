@@ -20,6 +20,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.view.View.VISIBLE;
+
 @SuppressWarnings("ConstantConditions")
 public class EditProjectDialog extends CreateProjectDialog {
     private final int projectId;
@@ -48,6 +50,7 @@ public class EditProjectDialog extends CreateProjectDialog {
     private void setupViews() {
         submitButton.setText(R.string.save_button);
         ((TextView) dialog.findViewById(R.id.create_text)).setText(getContext().getString(R.string.edit_project));
+        dialog.findViewById(R.id.status_container).setVisibility(VISIBLE);
     }
 
     private void getProject(int projectId) {
@@ -64,13 +67,13 @@ public class EditProjectDialog extends CreateProjectDialog {
         List<Team> teamList = new ArrayList<>();
         if (project.getTeam() != null) {
             teamList.add(project.getTeam());
+            teamSearchAdapter.updateList(teamList);
         }
-        teamSearchAdapter.updateList(teamList);
 
         projectName.setText(project.getName());
         projectDesc.setText(project.getDescription());
         fileName.setText(project.getTechnicalTaskName());
-        spinner.setSelection(ProjectStatus.valueOf(project.getStatus()).ordinal());
+        spinner.setSelection(ProjectStatus.fromText(project.getStatus()).ordinal());
         deadlineField.setText(getUnformattedDate(project.getDeadline()));
 
         updateAddedTextVisibility();
@@ -111,5 +114,6 @@ public class EditProjectDialog extends CreateProjectDialog {
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
     }
 }
