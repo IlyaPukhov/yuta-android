@@ -1,6 +1,8 @@
 package com.ilyap.yuta.ui.fragments;
 
+import android.app.Instrumentation;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +25,6 @@ public class ReadonlyProfileFragment extends ProfileFragment {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         if (getArguments() != null) {
             userId = getArguments().getInt("userId", -1);
-            fromFragment = getArguments().getInt("fromFragment", -1);
         }
 
         imageView = view.findViewById(R.id.photo);
@@ -37,7 +38,7 @@ public class ReadonlyProfileFragment extends ProfileFragment {
 
         View backButton = view.findViewById(R.id.back_button);
         backButton.setVisibility(VISIBLE);
-        backButton.setOnClickListener(v -> handleBackPressed());
+        backButton.setOnClickListener(v -> new Instrumentation().sendKeyDownUpSync(KeyEvent.KEYCODE_BACK));
         return view;
     }
 }

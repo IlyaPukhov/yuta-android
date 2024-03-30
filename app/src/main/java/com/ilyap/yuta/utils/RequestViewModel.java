@@ -22,7 +22,6 @@ import org.json.JSONArray;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -34,6 +33,7 @@ import static com.ilyap.yuta.utils.RequestUtils.getRequest;
 import static com.ilyap.yuta.utils.RequestUtils.getRootUrl;
 import static com.ilyap.yuta.utils.RequestUtils.postFormDataRequest;
 import static com.ilyap.yuta.utils.RequestUtils.postRequest;
+import static java.util.stream.Collectors.joining;
 
 public final class RequestViewModel extends ViewModel {
     private final Executor executor = Executors.newSingleThreadExecutor();
@@ -53,11 +53,13 @@ public final class RequestViewModel extends ViewModel {
     public void searchTeams(String name, int leaderId, int teamId) {
         clearResultLiveData();
         executor.execute(() -> {
-            String requestString = String.format(Locale.getDefault(),
-                    "projects?team_name=%s&leader_id=%d%s", name, leaderId,
-                    teamId >= 0 ? "&project_team_id=" + teamId : "");
-
-            String json = getRequest(getFullUrl(requestString));
+            Map<String, Object> params = new HashMap<>();
+            params.put("team_name", name);
+            params.put("leader_id", leaderId);
+            if (teamId >= 0) {
+                params.put("project_team_id", teamId);
+            }
+            String json = getRequest(getFullUrl("projects", params));
             resultLiveData.postValue(JsonUtils.parse(json, SearchTeamsResponse.class));
         });
     }
@@ -112,7 +114,9 @@ public final class RequestViewModel extends ViewModel {
     public void getProject(int projectId) {
         clearResultLiveData();
         executor.execute(() -> {
-            String json = getRequest(getFullUrl("projects?project_id=") + projectId);
+            Map<String, Object> params = new HashMap<>();
+            params.put("project_id", projectId);
+            String json = getRequest(getFullUrl("projects", params));
             resultLiveData.postValue(JsonUtils.parse(json, ProjectResponse.class));
         });
     }
@@ -120,7 +124,9 @@ public final class RequestViewModel extends ViewModel {
     public void getProjects(int userId) {
         clearResultLiveData();
         executor.execute(() -> {
-            String json = getRequest(getFullUrl("projects?user_id=" + userId));
+            Map<String, Object> params = new HashMap<>();
+            params.put("user_id", userId);
+            String json = getRequest(getFullUrl("projects", params));
             resultLiveData.postValue(JsonUtils.parse(json, ProjectsResponse.class));
         });
     }
@@ -139,9 +145,11 @@ public final class RequestViewModel extends ViewModel {
     public void searchUsers(String userName, int leaderId, List<User> members) {
         clearResultLiveData();
         executor.execute(() -> {
-            String json = getRequest(
-                    getFullUrl(String.format("teams?user_name=%s&leader_id=%s&members_id=%s", userName, leaderId, getMembersIdArray(members)))
-            );
+            Map<String, Object> params = new HashMap<>();
+            params.put("user_name", userName);
+            params.put("leader_id", leaderId);
+            params.put("members_id", getMembersIdArray(members));
+            String json = getRequest(getFullUrl("teams", params));
             resultLiveData.postValue(JsonUtils.parse(json, SearchUsersResponse.class));
         });
     }
@@ -149,9 +157,12 @@ public final class RequestViewModel extends ViewModel {
     public void checkUniqueTeamName(String name, int teamId) {
         clearResultLiveData();
         executor.execute(() -> {
-            String json = getRequest(
-                    getFullUrl("teams?team_name=" + name
-                            + (teamId > 0 ? "&team_id=" + teamId : "")));
+            Map<String, Object> params = new HashMap<>();
+            params.put("team_name", name);
+            if (teamId >= 0) {
+                params.put("team_id", teamId);
+            }
+            String json = getRequest(getFullUrl("teams", params));
             resultLiveData.postValue(JsonUtils.parse(json, CheckTeamNameResponse.class));
         });
     }
@@ -187,7 +198,9 @@ public final class RequestViewModel extends ViewModel {
     public void getTeam(int teamId) {
         clearResultLiveData();
         executor.execute(() -> {
-            String json = getRequest(getFullUrl("teams?user_id=" + teamId));
+            Map<String, Object> params = new HashMap<>();
+            params.put("team_id", teamId);
+            String json = getRequest(getFullUrl("teams", params));
             resultLiveData.postValue(JsonUtils.parse(json, TeamResponse.class));
         });
     }
@@ -195,16 +208,20 @@ public final class RequestViewModel extends ViewModel {
     public void getTeams(int userId) {
         clearResultLiveData();
         executor.execute(() -> {
-            String json = getRequest(getFullUrl("teams?user_id=" + userId));
+            Map<String, Object> params = new HashMap<>();
+            params.put("user_id", userId);
+            String json = getRequest(getFullUrl("teams", params));
             resultLiveData.postValue(JsonUtils.parse(json, TeamsResponse.class));
         });
     }
 
     //SEARCH
-    public void searchUsers(String userName){
+    public void searchUsers(String userName) {
         clearResultLiveData();
         executor.execute(() -> {
-            String json = getRequest(getFullUrl("search?user_name=" + userName));
+            Map<String, Object> params = new HashMap<>();
+            params.put("user_name", userName);
+            String json = getRequest(getFullUrl("search", params));
             resultLiveData.postValue(JsonUtils.parse(json, SearchUsersResponse.class));
         });
     }
@@ -279,7 +296,9 @@ public final class RequestViewModel extends ViewModel {
     public void getUser(int userId) {
         clearResultLiveData();
         executor.execute(() -> {
-            String json = getRequest(getFullUrl("profile?user_id=" + userId));
+            Map<String, Object> params = new HashMap<>();
+            params.put("user_id", userId);
+            String json = getRequest(getFullUrl("profile", params));
             resultLiveData.postValue(JsonUtils.parse(json, UserResponse.class));
         });
     }
@@ -313,6 +332,15 @@ public final class RequestViewModel extends ViewModel {
     }
 
     private String getFullUrl(String path) {
-        return String.format("%s/api/%s", getRootUrl(), path);
+        return String.format("%s/api/%s/", getRootUrl(), path);
+    }
+
+    private String getFullUrl(String path, Map<String, Object> params) {
+        String fullPath = String.format("%s/api/%s", getRootUrl(), path);
+        String queryParams = params.entrySet().stream()
+                .map(e -> e.getKey() + "=" + e.getValue())
+                .collect(joining("&", "?", ""));
+
+        return fullPath + queryParams;
     }
 }

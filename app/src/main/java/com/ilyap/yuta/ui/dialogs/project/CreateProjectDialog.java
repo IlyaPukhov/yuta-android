@@ -152,6 +152,7 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
     private void radioGroupInitialize() {
         ((RadioGroup) dialog.findViewById(R.id.radio_group)).setOnCheckedChangeListener(
                 (group, checkedId) -> {
+                    updateSubmitButtonState();
                     if (checkedId == RADIO_CREATE_WITH_TEAM) {
                         pickTeamContainer.setVisibility(VISIBLE);
                         recyclerViewInitialize();
@@ -266,7 +267,9 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
     }
 
     private void updateSubmitButtonState() {
-        boolean isValid = isFilledTextViews(projectName.getText(), projectDesc.getText(), deadlineField.getText());
+        boolean isValid = isFilledTextViews(projectName.getText(), projectDesc.getText(), deadlineField.getText())
+                && (pickTeamContainer.getVisibility() == GONE || !addedTeams.isEmpty());
+
         submitButton.setEnabled(isValid);
     }
 

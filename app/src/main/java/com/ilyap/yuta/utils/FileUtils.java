@@ -10,6 +10,8 @@ import lombok.experimental.UtilityClass;
 public class FileUtils {
 
     public static String getFileName(Context context, Uri uri) {
+        if (uri == null) return null;
+
         String result = null;
         if (uri.getScheme().equals("content")) {
             try (Cursor cursor = context.getContentResolver().query(uri, new String[]{

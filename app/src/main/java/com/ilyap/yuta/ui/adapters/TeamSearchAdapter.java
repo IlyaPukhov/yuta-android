@@ -17,7 +17,6 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 public class TeamSearchAdapter extends BaseAdapter<Team, BaseAdapter.ViewHolder<Team>> {
-    private static final int MAX_TEAMS_COUNT = 1;
     private final CustomDialog dialog;
     private final TeamSearchAdapter addedTeamSearchAdapter;
 
@@ -32,11 +31,6 @@ public class TeamSearchAdapter extends BaseAdapter<Team, BaseAdapter.ViewHolder<
     public TeamViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_team_search_in_project, parent, false);
         return new TeamViewHolder(view);
-    }
-
-    @Override
-    public int getItemCount() {
-        return Math.min(getItems().size(), MAX_TEAMS_COUNT);
     }
 
     public class TeamViewHolder extends BaseAdapter.ViewHolder<Team> {

@@ -5,14 +5,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_marginBottom="15dp"
-        android:background="@drawable/item_user_search"
+        android:background="@color/item_user_search"
         android:paddingHorizontal="35dp">
 
     <TextView
             android:textAppearance="@style/search_user_name"
-            android:textAlignment="center"
-            android:autoSizeTextType="uniform"
+            android:textAlignment="textStart"
+            android:autoSizeTextType="none"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/name"

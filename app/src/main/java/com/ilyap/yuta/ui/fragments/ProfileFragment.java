@@ -8,14 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import com.ilyap.yuta.MainActivity;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.models.UserResponse;
@@ -50,15 +47,11 @@ public class ProfileFragment extends Fragment {
     protected User user;
     protected ImageView imageView;
     protected RequestViewModel viewModel;
-    protected int fromFragment;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
-        if (getArguments() != null) {
-            fromFragment = getArguments().getInt("fromFragment", -1);
-        }
 
         setupViews();
         viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
@@ -68,11 +61,6 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setupViews() {
-        if (fromFragment > 0) {
-            View backButton = view.findViewById(R.id.back_button);
-            backButton.setVisibility(VISIBLE);
-            backButton.setOnClickListener(v -> handleBackPressed());
-        }
         progressLayout = view.findViewById(R.id.progressLayout);
         imageView = view.findViewById(R.id.photo);
         view.findViewById(R.id.log_out).setOnClickListener(v -> openLogoutDialog());
@@ -174,24 +162,5 @@ public class ProfileFragment extends Fragment {
         } else {
             textView.setVisibility(GONE);
         }
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        if (fromFragment > 0) {
-            OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-                @Override
-                public void handleOnBackPressed() {
-                    handleBackPressed();
-                }
-            };
-            requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
-        }
-    }
-
-    protected void handleBackPressed() {
-        ((MainActivity) requireActivity()).getNavController().navigate(fromFragment);
     }
 }

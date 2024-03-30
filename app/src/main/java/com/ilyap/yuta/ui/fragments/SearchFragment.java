@@ -32,10 +32,11 @@ import static android.view.View.VISIBLE;
 
 @NoArgsConstructor
 public class SearchFragment extends Fragment {
-    private View progressLayout;
+    private View emptyText;
     private List<User> users;
     private View view;
     private RequestViewModel viewModel;
+    private SearchAdapter searchAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,7 +44,7 @@ public class SearchFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_search, container, false);
         viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
 
-        progressLayout = view.findViewById(R.id.progressLayout);
+        emptyText = view.findViewById(R.id.empty_text);
         EditText searchField = view.findViewById(R.id.search_user);
 
         recyclerViewInitialize();
@@ -51,6 +52,12 @@ public class SearchFragment extends Fragment {
 
         view.findViewById(R.id.log_out).setOnClickListener(v -> openLogoutDialog());
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateList(users);
     }
 
     private void setupEditView(@NonNull EditText editText) {
@@ -65,9 +72,11 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                progressLayout.setVisibility(VISIBLE);
                 if (s.length() != 0) {
                     updateSearchResult(s.toString());
+                } else {
+                    users.clear();
+                    updateList(users);
                 }
             }
         });
@@ -78,14 +87,20 @@ public class SearchFragment extends Fragment {
         viewModel.searchUsers(searchText);
         viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
             if (!(result instanceof SearchUsersResponse)) return;
-            progressLayout.setVisibility(GONE);
             users = ((SearchUsersResponse) result).getUsers();
+            emptyText.setVisibility(users.isEmpty() ? VISIBLE : GONE);
+            updateList(users);
         });
+    }
+
+    private void updateList(List<User> users) {
+        searchAdapter.updateList(users);
     }
 
     private void recyclerViewInitialize() {
         RecyclerView recyclerView = view.findViewById(R.id.search_list);
         users = new ArrayList<>();
+        searchAdapter = new SearchAdapter(requireActivity(), users);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
 
@@ -93,7 +108,7 @@ public class SearchFragment extends Fragment {
         dividerItemDecoration.setDrawable(Objects.requireNonNull(AppCompatResources.getDrawable(requireContext(), R.drawable.divider)));
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        recyclerView.setAdapter(new SearchAdapter(requireActivity(), users));
+        recyclerView.setAdapter(searchAdapter);
     }
 
     private void openLogoutDialog() {
