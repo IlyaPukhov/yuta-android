@@ -5,9 +5,8 @@ import lombok.Data;
 @Data
 public class User {
     private int id;
-    private String login;
-    private String photoUrl;
-    private String croppedPhotoUrl;
+    private String photo;
+    private String croppedPhoto;
     private String lastName;
     private String firstName;
     private String patronymic;

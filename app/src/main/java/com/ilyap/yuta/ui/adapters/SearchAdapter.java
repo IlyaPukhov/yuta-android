@@ -13,7 +13,6 @@ import androidx.navigation.NavController;
 import com.ilyap.yuta.MainActivity;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
-import com.ilyap.yuta.ui.fragments.ProfileFragment;
 
 import java.util.List;
 
@@ -48,7 +47,7 @@ public class SearchAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User
 
         @Override
         public void bind(User user) {
-            loadImageToImageView(avatar, user.getCroppedPhotoUrl());
+            loadImageToImageView(avatar, user.getCroppedPhoto());
 
             String fullName = user.getLastName() + " " + user.getFirstName() + (user.getPatronymic() == null ? "" : " " + user.getPatronymic());
             name.setText(fullName);
@@ -56,16 +55,12 @@ public class SearchAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User
             userLayout.setOnClickListener(v -> {
                 hideKeyboard();
 
-                NavController navController = ((MainActivity) getContext()).getNavController();
                 if (getUserId(getContext()) == user.getId()) {
 //                    navController.navigate(R.id.action_searchFragment_to_profileFragment);
-                    // TODO: 30.03.2024  
-                    ((MainActivity) getContext()).getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.nav_host_fragment, new ProfileFragment())
-                            .addToBackStack(null)
-                            .commit();
+                    // TODO: 30.03.2024
+                    ((MainActivity) getContext()).selectNavTab(R.id.profileFragment); //????????????????
                 } else {
+                    NavController navController = ((MainActivity) getContext()).getNavController();
                     Bundle bundle = new Bundle();
                     bundle.putInt("userId", user.getId());
                     navController.navigate(R.id.action_searchFragment_to_readonlyProfileFragment, bundle);

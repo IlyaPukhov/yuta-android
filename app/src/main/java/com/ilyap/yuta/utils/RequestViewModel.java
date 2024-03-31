@@ -336,7 +336,7 @@ public final class RequestViewModel extends ViewModel {
     }
 
     private String getFullUrl(String path, Map<String, Object> params) {
-        String fullPath = String.format("%s/api/%s", getRootUrl(), path);
+        String fullPath = getFullUrl(path);
         String queryParams = params.entrySet().stream()
                 .map(e -> e.getKey() + "=" + e.getValue())
                 .collect(joining("&", "?", ""));

@@ -40,7 +40,7 @@ public class ProjectMemberViewHolder extends BaseAdapter.ViewHolder<User> {
     @Override
     public void bind(User user) {
         imageView.setVisibility(VISIBLE);
-        loadImageToImageView(imageView, user.getCroppedPhotoUrl());
+        loadImageToImageView(imageView, user.getCroppedPhoto());
 
         if (managerId == user.getId()) {
             teamLeaderIcon.setVisibility(VISIBLE);

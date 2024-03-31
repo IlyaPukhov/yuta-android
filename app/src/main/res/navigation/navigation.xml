@@ -26,13 +26,6 @@
             android:label="fragment_projects"
             tools:layout="@layout/fragment_projects">
         <action
-                android:id="@+id/action_projectsFragment_to_profileFragment"
-                app:destination="@id/profileFragment"
-                app:enterAnim="@anim/nav_default_enter_anim"
-                app:exitAnim="@anim/nav_default_exit_anim"
-                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-                app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-        <action
                 android:id="@+id/action_projectsFragment_to_readonlyProfileFragment"
                 app:destination="@id/readonlyProfileFragment"
                 app:enterAnim="@anim/nav_default_enter_anim"
@@ -51,13 +44,6 @@
             android:label="fragment_teams"
             tools:layout="@layout/fragment_teams">
         <action
-                android:id="@+id/action_teamsFragment_to_profileFragment"
-                app:destination="@id/profileFragment"
-                app:enterAnim="@anim/nav_default_enter_anim"
-                app:exitAnim="@anim/nav_default_exit_anim"
-                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-                app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-        <action
                 android:id="@+id/action_teamsFragment_to_readonlyProfileFragment"
                 app:destination="@id/readonlyProfileFragment"
                 app:enterAnim="@anim/nav_default_enter_anim"
@@ -70,13 +56,6 @@
             android:name="com.ilyap.yuta.ui.fragments.SearchFragment"
             android:label="fragment_search"
             tools:layout="@layout/fragment_search">
-        <action
-                android:id="@+id/action_searchFragment_to_profileFragment"
-                app:destination="@id/profileFragment"
-                app:enterAnim="@anim/nav_default_enter_anim"
-                app:exitAnim="@anim/nav_default_exit_anim"
-                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-                app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
                 android:id="@+id/action_searchFragment_to_readonlyProfileFragment"
                 app:destination="@id/readonlyProfileFragment"

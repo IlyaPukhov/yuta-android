@@ -45,12 +45,12 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
         User user = getCurrentUser();
 
         imageView = dialog.findViewById(R.id.photo);
-        loadImageToImageView(imageView, user.getCroppedPhotoUrl());
+        loadImageToImageView(imageView, user.getCroppedPhoto());
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
-        dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> loadImageToImageView(imageView, user.getCroppedPhotoUrl()));
+        dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> loadImageToImageView(imageView, user.getCroppedPhoto()));
         dialog.findViewById(R.id.pick_miniature).setOnClickListener(v -> {
-            if (user.getPhotoUrl().equals(DEFAULT_USER_PHOTO)) return;
+            if (user.getPhoto().equals(DEFAULT_USER_PHOTO)) return;
             if (selectedImageUri != null) {
                 updatePhoto(user.getId());
             } else {
@@ -106,7 +106,10 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
 
     private void openCropDialog() {
         CustomDialog cropPhotoDialog = new CropPhotoDialog(activity, fragment);
-        cropPhotoDialog.start();
-        dismiss();
+        viewModel.getResultLiveData().observe(fragment.getViewLifecycleOwner(), result -> {
+            if (!(result instanceof UserResponse)) return;
+            cropPhotoDialog.start();
+            dismiss();
+        });
     }
 }

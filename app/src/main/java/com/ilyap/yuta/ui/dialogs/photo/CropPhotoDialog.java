@@ -39,7 +39,7 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
         User user = getCurrentUser();
 
         cropImageView = dialog.findViewById(R.id.cropImageView);
-        loadImage(user.getPhotoUrl(), cropImageView);
+        loadImage(user.getPhoto(), cropImageView);
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
         dialog.findViewById(R.id.save_miniature).setOnClickListener(v -> cropPhoto(user.getId()));
