@@ -48,7 +48,7 @@ import static java.util.Calendar.getInstance;
 @SuppressWarnings("ConstantConditions")
 public class CreateProjectDialog extends CustomInteractiveDialog {
     public static final int PICK_PDF_REQUEST = 1;
-    private static final int RADIO_CREATE_WITH_TEAM = R.id.create_with_team;
+    protected static final int RADIO_CREATE_WITH_TEAM = R.id.create_with_team;
     @SuppressLint("StaticFieldLeak")
     protected static TextView fileName;
     protected static Uri techTaskUri;
@@ -66,6 +66,7 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
     private View pickTeamContainer;
     private TextView emptySearch;
     private EditText searchField;
+    protected RadioGroup radioGroup;
 
     public CreateProjectDialog(Context context, Fragment fragment) {
         super(context, fragment);
@@ -87,6 +88,7 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
         fileName.setText("");
         techTaskUri = null;
 
+        radioGroup = dialog.findViewById(R.id.radio_group);
         pickTeamContainer = dialog.findViewById(R.id.pick_team_container);
         searchField = dialog.findViewById(R.id.find_name);
         searchButton = dialog.findViewById(R.id.btn_search);
@@ -99,8 +101,9 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
 
         setupEditView(projectName);
         setupEditView(projectDesc);
+        setupEditView(searchField);
         datePickerInitialize();
-        radioGroupInitialize();
+        radioGroupInitialize(radioGroup);
 
         dialog.findViewById(R.id.pick_tech_task).setOnClickListener(v -> pickTechTask());
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
@@ -149,16 +152,17 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
         return localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
-    private void radioGroupInitialize() {
-        ((RadioGroup) dialog.findViewById(R.id.radio_group)).setOnCheckedChangeListener(
+    private void radioGroupInitialize(RadioGroup radioGroup) {
+        radioGroup.setOnCheckedChangeListener(
                 (group, checkedId) -> {
-                    updateSubmitButtonState();
                     if (checkedId == RADIO_CREATE_WITH_TEAM) {
                         pickTeamContainer.setVisibility(VISIBLE);
                         recyclerViewInitialize();
                     } else {
                         pickTeamContainer.setVisibility(GONE);
+                        addedTeams.clear();
                     }
+                    updateSubmitButtonState();
                 }
         );
     }

@@ -11,6 +11,7 @@ import com.ilyap.yuta.models.ProjectResponse;
 import com.ilyap.yuta.models.Team;
 import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.ui.fragments.ProjectsFragment;
+import com.ilyap.yuta.utils.FileUtils;
 import com.ilyap.yuta.utils.ProjectStatus;
 import lombok.SneakyThrows;
 
@@ -66,6 +67,7 @@ public class EditProjectDialog extends CreateProjectDialog {
     private void setupProject() {
         List<Team> teamList = new ArrayList<>();
         if (project.getTeam() != null) {
+            radioGroup.check(RADIO_CREATE_WITH_TEAM);
             teamList.add(project.getTeam());
             teamSearchAdapter.updateList(teamList);
         }
@@ -85,11 +87,12 @@ public class EditProjectDialog extends CreateProjectDialog {
         String description = getData(projectDesc);
         String deadline = getFormattedDate(getData(deadlineField));
         String status = spinner.getSelectedItem().toString();
-        InputStream techTaskInputStream = techTaskUri != null ? fragment.requireContext().getContentResolver().openInputStream(techTaskUri) : null;
+        InputStream techTaskInputStream = techTaskUri != null ? getContext().getContentResolver().openInputStream(techTaskUri) : null;
+        String filename = FileUtils.getFileName(fragment.requireContext(), techTaskUri);
         int teamId = getCurrentTeamId();
 
         viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.editProject(projectId, name, description, deadline, getData(fileName), status, techTaskInputStream, teamId);
+        viewModel.editProject(projectId, name, description, deadline, filename, status, techTaskInputStream, teamId);
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
             ((ProjectsFragment) fragment).updateLists();
