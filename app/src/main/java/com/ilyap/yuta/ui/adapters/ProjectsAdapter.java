@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,6 +38,8 @@ import static android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMP
 import static android.content.Context.DOWNLOAD_SERVICE;
 import static android.content.Intent.ACTION_VIEW;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -132,6 +135,7 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
             String filename = path.substring(path.lastIndexOf('/') + 1);
 
             File file = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS) + "/" + filename);
+            file.deleteOnExit();
             file.delete();
 
             Request request = new Request(
@@ -148,7 +152,7 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
                 public void onReceive(Context context, Intent intent) {
                     long id = intent.getLongExtra(EXTRA_DOWNLOAD_ID, -1);
                     if (id == downloadId) {
-                        openPdf(Uri.fromFile(file));
+                        openPdf(file);
                         getContext().unregisterReceiver(this);
                     }
                 }
@@ -157,10 +161,14 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
                     new IntentFilter(ACTION_DOWNLOAD_COMPLETE), RECEIVER_EXPORTED);
         }
 
-        private void openPdf(Uri uri) {
+        private void openPdf(File file) {
+            Uri uri = FileProvider.getUriForFile(getContext(),
+                    getContext().getApplicationContext().getPackageName() + ".provider", file);
+
             Intent intent = new Intent(ACTION_VIEW);
+            intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_NEW_TASK);
             intent.setDataAndType(uri, "application/pdf");
-            intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(FLAG_GRANT_READ_URI_PERMISSION);
             getContext().startActivity(intent);
         }
 
