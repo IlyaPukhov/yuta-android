@@ -3,6 +3,7 @@ package com.ilyap.yuta.ui.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,8 @@ import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 @Getter
 @AllArgsConstructor
@@ -55,5 +58,12 @@ public abstract class BaseAdapter<T, VH extends BaseAdapter.ViewHolder<T>> exten
         }
 
         public abstract void bind(T item);
+    }
+
+    void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
+        View view = new View(context);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        view.clearFocus();
     }
 }

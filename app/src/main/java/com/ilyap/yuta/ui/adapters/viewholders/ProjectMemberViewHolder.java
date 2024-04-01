@@ -50,10 +50,10 @@ public class ProjectMemberViewHolder extends BaseAdapter.ViewHolder<User> {
         name.setText(userName);
 
         member.setOnClickListener(v -> {
-            NavController navController = ((MainActivity) getContext()).getNavController();
             if (getUserId(getContext()) == user.getId()) {
-                navController.navigate(R.id.action_projectsFragment_to_profileFragment);
+                ((MainActivity) getContext()).selectNavTab(R.id.profileFragment);
             } else {
+                NavController navController = ((MainActivity) getContext()).getNavController();
                 Bundle bundle = new Bundle();
                 bundle.putInt("userId", user.getId());
                 navController.navigate(R.id.action_projectsFragment_to_readonlyProfileFragment, bundle);

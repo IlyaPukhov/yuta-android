@@ -125,4 +125,5 @@
     <string name="user_search_text">Поиск пользователей</string>
     <string name="find_user_text">Введите фамилию и имя</string>
     <string name="tech_task_not_exists">НЕТ ТЗ</string>
+    <string name="back_press">Нажмите ещё раз, если хотите выйти</string>
 </resources>

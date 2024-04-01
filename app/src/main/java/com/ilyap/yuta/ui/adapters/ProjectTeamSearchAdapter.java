@@ -16,11 +16,11 @@ import java.util.List;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-public class TeamSearchAdapter extends BaseAdapter<Team, BaseAdapter.ViewHolder<Team>> {
+public class ProjectTeamSearchAdapter extends BaseAdapter<Team, BaseAdapter.ViewHolder<Team>> {
     private final CustomDialog dialog;
-    private final TeamSearchAdapter addedTeamSearchAdapter;
+    private final ProjectTeamSearchAdapter addedTeamSearchAdapter;
 
-    public TeamSearchAdapter(CustomDialog dialog, List<Team> items, TeamSearchAdapter teamSearchAdapter) {
+    public ProjectTeamSearchAdapter(CustomDialog dialog, List<Team> items, ProjectTeamSearchAdapter teamSearchAdapter) {
         super(dialog.getContext(), items);
         this.dialog = dialog;
         this.addedTeamSearchAdapter = teamSearchAdapter;
@@ -41,8 +41,8 @@ public class TeamSearchAdapter extends BaseAdapter<Team, BaseAdapter.ViewHolder<
         public TeamViewHolder(@NonNull View itemView) {
             super(itemView);
             this.name = itemView.findViewById(R.id.name);
-            this.buttonAdd = itemView.findViewById(R.id.btnAdd);
-            this.buttonRemove = itemView.findViewById(R.id.btnRemove);
+            this.buttonAdd = itemView.findViewById(R.id.add_team);
+            this.buttonRemove = itemView.findViewById(R.id.remove_team);
         }
 
         @Override
@@ -57,6 +57,7 @@ public class TeamSearchAdapter extends BaseAdapter<Team, BaseAdapter.ViewHolder<
                     removeItem(team);
                     addedTeamSearchAdapter.getItems().clear();
                     addedTeamSearchAdapter.insertItem(team);
+                    ((CreateProjectDialog) dialog).updateSubmitButtonState();
                     ((CreateProjectDialog) dialog).updateAddedTextVisibility();
                 });
             } else {
@@ -65,6 +66,7 @@ public class TeamSearchAdapter extends BaseAdapter<Team, BaseAdapter.ViewHolder<
 
                 buttonRemove.setOnClickListener(v -> {
                     removeItem(team);
+                    ((CreateProjectDialog) dialog).updateSubmitButtonState();
                     ((CreateProjectDialog) dialog).updateAddedTextVisibility();
                 });
             }

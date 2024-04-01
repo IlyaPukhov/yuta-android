@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.SearchUsersResponse;
 import com.ilyap.yuta.models.User;
-import com.ilyap.yuta.ui.adapters.SearchAdapter;
+import com.ilyap.yuta.ui.adapters.UserSearchAdapter;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.user.LogoutDialog;
 import com.ilyap.yuta.utils.RequestViewModel;
@@ -36,7 +36,8 @@ public class SearchFragment extends Fragment {
     private List<User> users;
     private View view;
     private RequestViewModel viewModel;
-    private SearchAdapter searchAdapter;
+    private UserSearchAdapter searchAdapter;
+    private View progressLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,6 +46,7 @@ public class SearchFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
 
         emptyText = view.findViewById(R.id.empty_text);
+        progressLayout = view.findViewById(R.id.progressLayout);
         EditText searchField = view.findViewById(R.id.search_user);
 
         recyclerViewInitialize();
@@ -75,7 +77,7 @@ public class SearchFragment extends Fragment {
                 if (s.length() != 0) {
                     updateSearchResult(s.toString());
                 } else {
-                    users.clear();
+                    searchAdapter.getItems().clear();
                     updateList(users);
                 }
             }
@@ -83,10 +85,13 @@ public class SearchFragment extends Fragment {
     }
 
     private void updateSearchResult(String searchText) {
+        progressLayout.setVisibility(VISIBLE);
         viewModel.getResultLiveData().removeObservers(getViewLifecycleOwner());
         viewModel.searchUsers(searchText);
         viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
             if (!(result instanceof SearchUsersResponse)) return;
+            progressLayout.setVisibility(GONE);
+
             users = ((SearchUsersResponse) result).getUsers();
             emptyText.setVisibility(users.isEmpty() ? VISIBLE : GONE);
             updateList(users);
@@ -100,7 +105,7 @@ public class SearchFragment extends Fragment {
     private void recyclerViewInitialize() {
         RecyclerView recyclerView = view.findViewById(R.id.search_list);
         users = new ArrayList<>();
-        searchAdapter = new SearchAdapter(requireActivity(), users);
+        searchAdapter = new UserSearchAdapter(requireActivity(), users);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
 

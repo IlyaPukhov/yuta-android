@@ -17,7 +17,7 @@ import com.ilyap.yuta.models.CheckTeamNameResponse;
 import com.ilyap.yuta.models.SearchUsersResponse;
 import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.models.User;
-import com.ilyap.yuta.ui.adapters.UserSearchAdapter;
+import com.ilyap.yuta.ui.adapters.TeamUserSearchAdapter;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.TeamsFragment;
 import com.ilyap.yuta.utils.RequestViewModel;
@@ -36,8 +36,8 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
     protected RequestViewModel viewModel;
     protected EditText teamName;
     protected Button submitButton;
-    protected UserSearchAdapter searchAdapter;
-    protected UserSearchAdapter membersAdapter;
+    protected TeamUserSearchAdapter searchAdapter;
+    protected TeamUserSearchAdapter membersAdapter;
     private EditText searchField;
     private Button searchButton;
     private TextView error;
@@ -68,7 +68,10 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
         recyclerViewsInitialize();
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
-        searchButton.setOnClickListener(v -> searchUsers());
+        searchButton.setOnClickListener(v -> {
+            hideKeyboard(searchButton);
+            searchUsers();
+        });
         submitButton.setOnClickListener(v -> {
             hideKeyboard(teamName);
             createTeam();
@@ -94,7 +97,7 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
         });
     }
 
-    private void updateList(@NonNull UserSearchAdapter adapter, @NonNull List<User> users) {
+    private void updateList(@NonNull TeamUserSearchAdapter adapter, @NonNull List<User> users) {
         messageVisibility(emptySearch, !users.isEmpty());
         adapter.updateList(users);
     }
@@ -119,12 +122,12 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
     private void recyclerViewsInitialize() {
         RecyclerView addedMembersView = dialog.findViewById(R.id.addedMembers);
         addedMembersView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        membersAdapter = new UserSearchAdapter(this, addedMembers, null);
+        membersAdapter = new TeamUserSearchAdapter(this, addedMembers, null);
         addedMembersView.setAdapter(membersAdapter);
 
         RecyclerView searchUsersView = dialog.findViewById(R.id.searchUsers);
         searchUsersView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        searchAdapter = new UserSearchAdapter(this, searchUsers, membersAdapter);
+        searchAdapter = new TeamUserSearchAdapter(this, searchUsers, membersAdapter);
         searchUsersView.setAdapter(searchAdapter);
     }
 

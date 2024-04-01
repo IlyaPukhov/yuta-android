@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.ProjectDto;
 import com.ilyap.yuta.models.User;
+import com.ilyap.yuta.ui.adapters.layout_managers.SpanningLinearLayoutManager;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.project.ProjectDialog;
 import lombok.SneakyThrows;
@@ -90,7 +91,7 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
             if (project.getTeam() != null) {
                 teamMembers.addAll(project.getTeam().getMembers());
             }
-            teamPreview.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+            teamPreview.setLayoutManager(new SpanningLinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
             teamPreview.setAdapter(new ProjectTeamPreviewAdapter(getContext(), teamMembers, itemView));
         }
 

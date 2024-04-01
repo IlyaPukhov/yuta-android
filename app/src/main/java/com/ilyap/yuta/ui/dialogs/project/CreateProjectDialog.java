@@ -22,7 +22,7 @@ import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.SearchTeamsResponse;
 import com.ilyap.yuta.models.Team;
 import com.ilyap.yuta.models.UpdateResponse;
-import com.ilyap.yuta.ui.adapters.TeamSearchAdapter;
+import com.ilyap.yuta.ui.adapters.ProjectTeamSearchAdapter;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProjectsFragment;
 import com.ilyap.yuta.utils.FileUtils;
@@ -57,8 +57,8 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
     protected RequestViewModel viewModel;
     protected Button submitButton;
     protected TextView deadlineField;
-    protected TeamSearchAdapter searchAdapter;
-    protected TeamSearchAdapter teamSearchAdapter;
+    protected ProjectTeamSearchAdapter searchAdapter;
+    protected ProjectTeamSearchAdapter addedTeamSearchAdapter;
     protected EditText projectName;
     protected EditText projectDesc;
     private Button searchButton;
@@ -90,7 +90,7 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
 
         radioGroup = dialog.findViewById(R.id.radio_group);
         pickTeamContainer = dialog.findViewById(R.id.pick_team_container);
-        searchField = dialog.findViewById(R.id.find_name);
+        searchField = dialog.findViewById(R.id.find_team);
         searchButton = dialog.findViewById(R.id.btn_search);
         submitButton = dialog.findViewById(R.id.submit);
 
@@ -103,11 +103,15 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
         setupEditView(projectDesc);
         setupEditView(searchField);
         datePickerInitialize();
+        recyclerViewInitialize();
         radioGroupInitialize(radioGroup);
 
         dialog.findViewById(R.id.pick_tech_task).setOnClickListener(v -> pickTechTask());
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
-        searchButton.setOnClickListener(v -> searchTeam());
+        searchButton.setOnClickListener(v -> {
+            hideKeyboard(searchButton);
+            searchTeam();
+        });
         submitButton.setOnClickListener(v -> {
             hideKeyboard(submitButton);
             createProject();
@@ -157,10 +161,9 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
                 (group, checkedId) -> {
                     if (checkedId == RADIO_CREATE_WITH_TEAM) {
                         pickTeamContainer.setVisibility(VISIBLE);
-                        recyclerViewInitialize();
                     } else {
                         pickTeamContainer.setVisibility(GONE);
-                        addedTeams.clear();
+                        addedTeamSearchAdapter.getItems().clear();
                     }
                     updateSubmitButtonState();
                 }
@@ -219,7 +222,7 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
         });
     }
 
-    private void updateList(@NonNull TeamSearchAdapter adapter, @NonNull List<Team> teams) {
+    private void updateList(@NonNull ProjectTeamSearchAdapter adapter, @NonNull List<Team> teams) {
         messageVisibility(emptySearch, !teams.isEmpty());
         adapter.updateList(teams);
     }
@@ -234,10 +237,10 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
         LinearLayoutManager addedLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         addedTeamsView.setLayoutManager(addedLayoutManager);
 
-        teamSearchAdapter = new TeamSearchAdapter(this, addedTeams, null);
-        addedTeamsView.setAdapter(teamSearchAdapter);
+        addedTeamSearchAdapter = new ProjectTeamSearchAdapter(this, addedTeams, null);
+        addedTeamsView.setAdapter(addedTeamSearchAdapter);
 
-        searchAdapter = new TeamSearchAdapter(this, searchTeams, teamSearchAdapter);
+        searchAdapter = new ProjectTeamSearchAdapter(this, searchTeams, addedTeamSearchAdapter);
         searchTeamView.setAdapter(searchAdapter);
     }
 
@@ -270,7 +273,7 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
         });
     }
 
-    private void updateSubmitButtonState() {
+    public void updateSubmitButtonState() {
         boolean isValid = isFilledTextViews(projectName.getText(), projectDesc.getText(), deadlineField.getText())
                 && (pickTeamContainer.getVisibility() == GONE || !addedTeams.isEmpty());
 

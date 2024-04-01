@@ -1,6 +1,8 @@
 package com.ilyap.yuta.ui.dialogs.project;
 
 import android.content.Context;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -37,9 +39,9 @@ public class EditProjectDialog extends CreateProjectDialog {
     @Override
     public void start() {
         super.start();
-        statusSpinnerInitialize();
         setupViews();
         getProject(projectId);
+        statusSpinnerInitialize();
 
         submitButton.setEnabled(false);
         submitButton.setOnClickListener(v -> {
@@ -69,7 +71,7 @@ public class EditProjectDialog extends CreateProjectDialog {
         if (project.getTeam() != null) {
             radioGroup.check(RADIO_CREATE_WITH_TEAM);
             teamList.add(project.getTeam());
-            teamSearchAdapter.updateList(teamList);
+            addedTeamSearchAdapter.updateList(teamList);
         }
 
         projectName.setText(project.getName());
@@ -118,5 +120,17 @@ public class EditProjectDialog extends CreateProjectDialog {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position != ProjectStatus.fromText(project.getStatus()).ordinal()) {
+                    updateSubmitButtonState();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 }

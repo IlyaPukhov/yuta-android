@@ -13,7 +13,7 @@ import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
 @SuppressWarnings("ConstantConditions")
 public class PhotoDialog extends CustomInteractiveDialog {
 
-    public static final String DEFAULT_USER_PHOTO = "default_user_photo";
+    public static final String DEFAULT_USER_PHOTO = "default-user-photo";
 
     public PhotoDialog(Context context, Fragment fragment) {
         super(context, fragment);

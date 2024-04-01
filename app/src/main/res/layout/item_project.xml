@@ -78,11 +78,13 @@
         <Button
                 android:layout_width="25dp"
                 android:layout_height="14dp"
+                android:paddingLeft="10dp"
+                android:paddingBottom="10dp"
                 android:id="@+id/project_menu"
                 android:contentDescription="@string/project_menu"
                 android:background="@drawable/ic_project_menu"
                 style="@style/classic_button_style"
-                tools:ignore="TouchTargetSizeCheck"
+                tools:ignore="RtlHardcoded,RtlSymmetry,TouchTargetSizeCheck"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="13dp"
@@ -220,7 +222,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/team_preview"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintTop_toBottomOf="@id/team_text"

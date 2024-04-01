@@ -62,7 +62,7 @@ public class RequestUtils {
             os.writeBytes(TWO_HYPHENS + BOUNDARY + CRLF);
             os.writeBytes("Content-Disposition: form-data; " +
                     "name=\"" + entry.getKey() + "\"" + CRLF);
-            os.writeBytes("Content-Type: text/plain;charset=utf-8" + CRLF);
+            os.writeBytes("Content-Type: text/plain" + CRLF);
             os.writeBytes(CRLF);
 
             os.writeBytes(entry.getValue() + CRLF);
