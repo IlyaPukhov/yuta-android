@@ -53,13 +53,15 @@ public class UserSearchAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<
             userLayout.setOnClickListener(v -> {
                 hideKeyboard();
 
+                MainActivity activity = (MainActivity) getContext();
                 if (getUserId(getContext()) == user.getId()) {
-                    ((MainActivity) getContext()).selectNavTab(R.id.profileFragment);
+                    activity.selectNavTab(R.id.profileFragment);
                 } else {
-                    NavController navController = ((MainActivity) getContext()).getNavController();
+                    NavController navController = activity.getNavController();
                     Bundle bundle = new Bundle();
                     bundle.putInt("userId", user.getId());
                     navController.navigate(R.id.action_searchFragment_to_readonlyProfileFragment, bundle);
+                    activity.setReadonlyProfile(true);
                 }
             });
         }

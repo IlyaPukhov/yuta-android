@@ -60,22 +60,24 @@ public class RequestUtils {
     public void addFormDataFields(DataOutputStream os, Map<String, Object> map) {
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             os.writeBytes(TWO_HYPHENS + BOUNDARY + CRLF);
-            os.writeBytes("Content-Disposition: form-data; " +
-                    "name=\"" + entry.getKey() + "\"" + CRLF);
-            os.writeBytes("Content-Type: text/plain" + CRLF);
+
+            String contentDisposition = "Content-Disposition: form-data; name=\"" + entry.getKey() + "\"" + CRLF;
+            os.write(contentDisposition.getBytes());
+            os.writeBytes("Content-Type: application/json" + CRLF);
             os.writeBytes(CRLF);
 
-            os.writeBytes(entry.getValue() + CRLF);
+            os.write(entry.getValue().toString().getBytes());
+            os.writeBytes(CRLF);
         }
     }
 
     @SneakyThrows
     public void addFilePart(DataOutputStream os, String fieldName, String filename, InputStream is) {
         os.writeBytes(TWO_HYPHENS + BOUNDARY + CRLF);
-        os.writeBytes("Content-Disposition: form-data; " +
-                "name=\"" + fieldName + "\"; " +
-                "filename=\"" + filename + "\""
-                + CRLF);
+
+        String contentDisposition = "Content-Disposition: form-data; name=\"" + fieldName + "\"; filename=\"" + filename + "\""
+                + CRLF;
+        os.write(contentDisposition.getBytes());
         os.writeBytes("Content-Type: application/octet-stream" + CRLF);
         os.writeBytes(CRLF);
 

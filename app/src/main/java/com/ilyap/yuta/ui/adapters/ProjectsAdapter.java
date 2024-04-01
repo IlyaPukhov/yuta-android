@@ -26,15 +26,22 @@ import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.project.ProjectDialog;
 import lombok.SneakyThrows;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.DownloadManager.ACTION_DOWNLOAD_COMPLETE;
 import static android.app.DownloadManager.EXTRA_DOWNLOAD_ID;
 import static android.app.DownloadManager.Request;
+import static android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED;
+import static android.content.Context.DOWNLOAD_SERVICE;
+import static android.content.Intent.ACTION_VIEW;
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED;
+import static androidx.core.content.ContextCompat.RECEIVER_EXPORTED;
+import static com.ilyap.yuta.utils.UserUtils.getPath;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
 import static com.ilyap.yuta.utils.UserUtils.loadImageToImageView;
 
@@ -54,7 +61,6 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
     }
 
     public class ProjectViewHolder extends ViewHolder<ProjectDto> {
-        private final String TECH_TASK_NAME = getContext().getString(R.string.tech_task_filename);
         private final TextView name;
         private final ImageView photo;
         private final Button buttonTechTask;
@@ -123,35 +129,38 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
 
         @SneakyThrows
         public void openTechTask(String path) {
-            Request request = new Request(
-                    Uri.parse(path))
-                    .setTitle(getContext().getString(R.string.tech_task))
-                    .setDescription(getContext().getString(R.string.downloading))
-                    .setNotificationVisibility(Request.VISIBILITY_VISIBLE)
-                    .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, TECH_TASK_NAME);
+            String filename = path.substring(path.lastIndexOf('/') + 1);
 
-            DownloadManager manager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+            File file = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS) + "/" + filename);
+            file.delete();
+
+            Request request = new Request(
+                    Uri.parse(getPath(path)))
+                    .setTitle(filename)
+                    .setDescription(getContext().getString(R.string.downloading))
+                    .setNotificationVisibility(VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                    .setDestinationInExternalPublicDir(DIRECTORY_DOWNLOADS, filename);
+
+            DownloadManager manager = (DownloadManager) getContext().getSystemService(DOWNLOAD_SERVICE);
             downloadId = manager.enqueue(request);
 
             BroadcastReceiver onComplete = new BroadcastReceiver() {
                 public void onReceive(Context context, Intent intent) {
                     long id = intent.getLongExtra(EXTRA_DOWNLOAD_ID, -1);
                     if (id == downloadId) {
-                        openPdf();
+                        openPdf(Uri.fromFile(file));
+                        getContext().unregisterReceiver(this);
                     }
                 }
             };
             ContextCompat.registerReceiver(getContext(), onComplete,
-                    new IntentFilter(ACTION_DOWNLOAD_COMPLETE), RECEIVER_NOT_EXPORTED);
+                    new IntentFilter(ACTION_DOWNLOAD_COMPLETE), RECEIVER_EXPORTED);
         }
 
-        private void openPdf() {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            Uri uri = Uri.parse(
-                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + TECH_TASK_NAME
-            );
+        private void openPdf(Uri uri) {
+            Intent intent = new Intent(ACTION_VIEW);
             intent.setDataAndType(uri, "application/pdf");
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP);
             getContext().startActivity(intent);
         }
 

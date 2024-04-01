@@ -9,6 +9,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import lombok.Getter;
+import lombok.Setter;
 
 public class MainActivity extends AppCompatActivity {
     @Getter
@@ -16,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private int lastItemId = -1;
     private long lastPress = -1;
+    @Setter
+    private boolean isReadonlyProfile;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,16 +32,19 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
     }
 
-    private void onBackPressedDispatcherInitialize(){
+    private void onBackPressedDispatcherInitialize() {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 if (lastItemId >= 0) {
                     selectPreviousNavTab();
+                } else if (isReadonlyProfile) {
+                    navController.popBackStack();
+                    isReadonlyProfile = false;
                 } else {
                     long currentTime = System.currentTimeMillis();
                     if (currentTime - lastPress > 5000L) {
-                        Toast.makeText(getBaseContext(),  getString(R.string.back_press), Toast.LENGTH_LONG)
+                        Toast.makeText(getBaseContext(), getString(R.string.back_press), Toast.LENGTH_LONG)
                                 .show();
                         lastPress = currentTime;
                     } else {

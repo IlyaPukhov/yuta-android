@@ -175,6 +175,7 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
         intent.setType("application/pdf");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         ((ProjectsFragment) fragment).pdfPickerLauncher.launch(Intent.createChooser(intent, activity.getString(R.string.pick_tech_task_file)));
+        updateSubmitButtonState();
     }
 
     private void datePickerInitialize() {

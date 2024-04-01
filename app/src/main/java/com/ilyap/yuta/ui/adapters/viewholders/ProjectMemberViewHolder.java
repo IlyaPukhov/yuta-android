@@ -50,13 +50,15 @@ public class ProjectMemberViewHolder extends BaseAdapter.ViewHolder<User> {
         name.setText(userName);
 
         member.setOnClickListener(v -> {
+            MainActivity activity = (MainActivity) getContext();
             if (getUserId(getContext()) == user.getId()) {
-                ((MainActivity) getContext()).selectNavTab(R.id.profileFragment);
+                activity.selectNavTab(R.id.profileFragment);
             } else {
-                NavController navController = ((MainActivity) getContext()).getNavController();
+                NavController navController = activity.getNavController();
                 Bundle bundle = new Bundle();
                 bundle.putInt("userId", user.getId());
                 navController.navigate(R.id.action_projectsFragment_to_readonlyProfileFragment, bundle);
+                activity.setReadonlyProfile(true);
             }
         });
     }
