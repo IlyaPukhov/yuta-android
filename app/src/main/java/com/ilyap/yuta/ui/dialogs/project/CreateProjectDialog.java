@@ -163,7 +163,7 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
                         pickTeamContainer.setVisibility(VISIBLE);
                     } else {
                         pickTeamContainer.setVisibility(GONE);
-                        addedTeamSearchAdapter.getItems().clear();
+                        addedTeams.clear();
                     }
                     updateSubmitButtonState();
                 }

@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.ProjectDto;
 import com.ilyap.yuta.models.User;
-import com.ilyap.yuta.ui.adapters.layout_managers.SpanningLinearLayoutManager;
+import com.ilyap.yuta.ui.adapters.layoutmanagers.SpanningLinearLayoutManager;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.project.ProjectDialog;
 import lombok.SneakyThrows;
@@ -114,6 +114,8 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
 
             if (project.getTechnicalTaskUrl() != null) {
                 buttonTechTask.setOnClickListener(v -> openTechTask(project.getTechnicalTaskUrl()));
+                buttonTechTask.setText(R.string.tech_task_button);
+                buttonTechTask.setEnabled(true);
             } else {
                 buttonTechTask.setText(R.string.tech_task_not_exists);
                 buttonTechTask.setEnabled(false);

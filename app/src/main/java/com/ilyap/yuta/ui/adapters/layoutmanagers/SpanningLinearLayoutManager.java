@@ -1,4 +1,4 @@
-package com.ilyap.yuta.ui.adapters.layout_managers;
+package com.ilyap.yuta.ui.adapters.layoutmanagers;
 
 import android.content.Context;
 import android.util.AttributeSet;

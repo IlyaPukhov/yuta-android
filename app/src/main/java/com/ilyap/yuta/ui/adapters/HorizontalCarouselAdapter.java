@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.TeamMember;
-import com.ilyap.yuta.ui.adapters.layout_managers.SpanningLinearLayoutManager;
+import com.ilyap.yuta.ui.adapters.layoutmanagers.SpanningLinearLayoutManager;
 
 import java.util.List;
 

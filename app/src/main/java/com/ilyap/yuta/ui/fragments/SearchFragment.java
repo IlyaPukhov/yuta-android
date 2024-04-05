@@ -74,10 +74,10 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() != 0) {
+                if (count != 0) {
                     updateSearchResult(s.toString());
                 } else {
-                    searchAdapter.getItems().clear();
+                    users.clear();
                     updateList(users);
                 }
             }

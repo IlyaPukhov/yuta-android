@@ -55,7 +55,9 @@ public class ProjectTeamSearchAdapter extends BaseAdapter<Team, BaseAdapter.View
 
                 buttonAdd.setOnClickListener(v -> {
                     removeItem(team);
-                    addedTeamSearchAdapter.getItems().clear();
+                    if (!addedTeamSearchAdapter.getItems().isEmpty()) {
+                        addedTeamSearchAdapter.removeItem(getItems().get(0));
+                    }
                     addedTeamSearchAdapter.insertItem(team);
                     ((CreateProjectDialog) dialog).updateSubmitButtonState();
                     ((CreateProjectDialog) dialog).updateAddedTextVisibility();
