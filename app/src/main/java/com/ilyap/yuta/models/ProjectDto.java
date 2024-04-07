@@ -5,9 +5,9 @@ import lombok.Value;
 @Value
 public class ProjectDto {
     int id;
-    String photoUrl;
+    String photo;
     String name;
-    String technicalTaskUrl;
+    String technicalTask;
     String status;
     String stringDeadline;
     String description;

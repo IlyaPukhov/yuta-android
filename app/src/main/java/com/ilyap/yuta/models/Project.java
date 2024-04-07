@@ -6,7 +6,7 @@ import lombok.Value;
 public class Project {
     int id;
     String name;
-    String technicalTaskUrl;
+    String technicalTask;
     String technicalTaskName;
     String deadline;
     String status;

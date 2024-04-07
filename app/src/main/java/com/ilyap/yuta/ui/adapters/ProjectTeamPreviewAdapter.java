@@ -19,9 +19,9 @@ import java.util.List;
 import static android.view.View.VISIBLE;
 
 public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User>> {
-    private static final int MAX_MEMBERS_COUNT = 5;
-    private static final int MORE_USERS = 1;
+    private static final int MAX_MEMBERS_COUNT = 4;
     private static final int ENOUGH_USERS = 0;
+    private static final int MORE_USERS = 1;
     private final View projectView;
 
     public ProjectTeamPreviewAdapter(Context context, List<User> items, View projectView) {

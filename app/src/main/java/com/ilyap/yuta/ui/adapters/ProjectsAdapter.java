@@ -105,15 +105,15 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
         }
 
         private void setupProjectFields(ProjectDto project) {
-            loadImageToImageView(photo, project.getPhotoUrl());
+            loadImageToImageView(photo, project.getPhoto());
 
             name.setText(project.getName());
             status.setText(String.format(" %s", project.getStatus()));
             deadline.setText(String.format(" %s", project.getStringDeadline()));
             description.setText(String.format(" %s", project.getDescription()));
 
-            if (project.getTechnicalTaskUrl() != null) {
-                buttonTechTask.setOnClickListener(v -> openTechTask(project.getTechnicalTaskUrl()));
+            if (project.getTechnicalTask() != null) {
+                buttonTechTask.setOnClickListener(v -> openTechTask(project.getTechnicalTask()));
                 buttonTechTask.setText(R.string.tech_task_button);
                 buttonTechTask.setEnabled(true);
             } else {
