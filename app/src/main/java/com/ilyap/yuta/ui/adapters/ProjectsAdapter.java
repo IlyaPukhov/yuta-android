@@ -72,6 +72,7 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
         private final TextView deadline;
         private final TextView description;
         private final RecyclerView teamPreview;
+        private final TextView teamText;
         long downloadId;
 
         public ProjectViewHolder(@NonNull View itemView) {
@@ -83,6 +84,7 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
             this.status = itemView.findViewById(R.id.project_status);
             this.deadline = itemView.findViewById(R.id.project_deadline);
             this.description = itemView.findViewById(R.id.project_description);
+            this.teamText = itemView.findViewById(R.id.team_text);
 
             this.teamPreview = itemView.findViewById(R.id.team_preview);
         }
@@ -106,6 +108,9 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
 
         private void setupProjectFields(ProjectDto project) {
             loadImageToImageView(photo, project.getPhoto());
+
+            String teamName = getContext().getString(R.string.team) + "\"" + project.getTeam().getName() + "\"";
+            teamText.setText(teamName);
 
             name.setText(project.getName());
             status.setText(String.format(" %s", project.getStatus()));

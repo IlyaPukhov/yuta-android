@@ -76,7 +76,7 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
         String filename = FileUtils.getFileName(getContext(), selectedImageUri);
 
         viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.updateUserPhoto(userId, inputStream, filename);
+        viewModel.updateUserPhoto(userId, FileUtils.rotateImage(inputStream, filename), filename);
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
             reloadUserData(userId);
