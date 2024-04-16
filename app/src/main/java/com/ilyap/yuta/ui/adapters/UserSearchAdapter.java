@@ -16,7 +16,7 @@ import com.ilyap.yuta.models.User;
 import java.util.List;
 
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
-import static com.ilyap.yuta.utils.UserUtils.loadImageToImageView;
+import static com.ilyap.yuta.utils.UserUtils.loadImageToImageViewWithCaching;
 
 public class UserSearchAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User>> {
 
@@ -45,7 +45,7 @@ public class UserSearchAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<
 
         @Override
         public void bind(User user) {
-            loadImageToImageView(avatar, user.getCroppedPhoto());
+            loadImageToImageViewWithCaching(avatar, user.getCroppedPhoto());
 
             String fullName = user.getLastName() + " " + user.getFirstName() + (user.getPatronymic() == null ? "" : " " + user.getPatronymic());
             name.setText(fullName);

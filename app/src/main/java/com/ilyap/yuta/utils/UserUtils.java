@@ -22,7 +22,11 @@ public class UserUtils {
     private static User currentUser;
     private static SharedPreferences sharedPreferences;
 
-    public static void loadImageToImageView(ImageView imageView, String path) {
+    public static void loadImageToImageViewWithCaching(ImageView imageView, String path) {
+        Glide.with(imageView).load(getPath(path)).into(imageView);
+    }
+
+    public static void loadImageToImageViewWithoutCaching(ImageView imageView, String path) {
         getConfiguredGlideBuilder(Glide.with(imageView).load(getPath(path))).into(imageView);
     }
 

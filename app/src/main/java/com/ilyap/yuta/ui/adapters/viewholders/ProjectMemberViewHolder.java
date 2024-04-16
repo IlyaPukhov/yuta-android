@@ -15,7 +15,7 @@ import lombok.Getter;
 
 import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
-import static com.ilyap.yuta.utils.UserUtils.loadImageToImageView;
+import static com.ilyap.yuta.utils.UserUtils.loadImageToImageViewWithoutCaching;
 
 public class ProjectMemberViewHolder extends BaseAdapter.ViewHolder<User> {
     @Getter
@@ -40,7 +40,7 @@ public class ProjectMemberViewHolder extends BaseAdapter.ViewHolder<User> {
     @Override
     public void bind(User user) {
         imageView.setVisibility(VISIBLE);
-        loadImageToImageView(imageView, user.getCroppedPhoto());
+        loadImageToImageViewWithoutCaching(imageView, user.getCroppedPhoto());
 
         if (managerId == user.getId()) {
             teamLeaderIcon.setVisibility(VISIBLE);

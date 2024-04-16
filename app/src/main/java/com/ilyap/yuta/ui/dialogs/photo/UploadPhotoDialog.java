@@ -23,7 +23,7 @@ import java.io.InputStream;
 
 import static com.ilyap.yuta.ui.dialogs.photo.PhotoDialog.DEFAULT_USER_PHOTO;
 import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
-import static com.ilyap.yuta.utils.UserUtils.loadImageToImageView;
+import static com.ilyap.yuta.utils.UserUtils.loadImageToImageViewWithoutCaching;
 
 @SuppressWarnings("ConstantConditions")
 public class UploadPhotoDialog extends CustomInteractiveDialog {
@@ -45,10 +45,10 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
         User user = getCurrentUser();
 
         imageView = dialog.findViewById(R.id.photo);
-        loadImageToImageView(imageView, user.getCroppedPhoto());
+        loadImageToImageViewWithoutCaching(imageView, user.getCroppedPhoto());
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
-        dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> loadImageToImageView(imageView, user.getCroppedPhoto()));
+        dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> loadImageToImageViewWithoutCaching(imageView, user.getCroppedPhoto()));
         dialog.findViewById(R.id.pick_miniature).setOnClickListener(v -> {
             if (user.getPhoto().equals(DEFAULT_USER_PHOTO) && selectedImageUri == null) return;
             if (selectedImageUri != null) {

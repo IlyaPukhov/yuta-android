@@ -46,7 +46,7 @@ import static android.view.View.VISIBLE;
 import static androidx.core.content.ContextCompat.RECEIVER_EXPORTED;
 import static com.ilyap.yuta.utils.UserUtils.getPath;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
-import static com.ilyap.yuta.utils.UserUtils.loadImageToImageView;
+import static com.ilyap.yuta.utils.UserUtils.loadImageToImageViewWithoutCaching;
 
 public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHolder<ProjectDto>> {
     private final Fragment fragment;
@@ -107,7 +107,7 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
         }
 
         private void setupProjectFields(ProjectDto project) {
-            loadImageToImageView(photo, project.getPhoto());
+            loadImageToImageViewWithoutCaching(photo, project.getPhoto());
 
             String teamName = getContext().getString(R.string.team) + "\"" + project.getTeam().getName() + "\"";
             teamText.setText(teamName);
