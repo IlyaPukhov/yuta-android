@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User>> {
@@ -48,7 +49,7 @@ public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.Vie
 
     @Override
     public int getItemViewType(int position) {
-        if (position >= MAX_MEMBERS_COUNT) {
+        if (getItems().size() > MAX_MEMBERS_COUNT && position == MAX_MEMBERS_COUNT - 1) {
             return MORE_USERS;
         } else {
             return ENOUGH_USERS;
@@ -66,7 +67,8 @@ public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.Vie
         private final View teamContainer;
         private final View closeButton;
         private final RecyclerView teamRecyclerView;
-        private boolean isOpen;
+        private static final int MINIMIZE_Y = 10;
+
 
         public ProjectMoreMembersViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -76,13 +78,12 @@ public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.Vie
             this.teamContainer = projectView.findViewById(R.id.team_container);
             this.closeButton = projectView.findViewById(R.id.close);
             this.teamRecyclerView = projectView.findViewById(R.id.team_list);
-            this.isOpen = false;
         }
 
         @Override
         public void bind(User user) {
             remainingMembersCount.setVisibility(VISIBLE);
-            String text = "+" + (getItems().size() - MAX_MEMBERS_COUNT - 1);
+            String text = "+" + (getItems().size() - MAX_MEMBERS_COUNT + 1);
             remainingMembersCount.setText(text);
 
             member.setOnClickListener(v -> {
@@ -96,22 +97,25 @@ public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.Vie
         private void setupFullTeamView(List<User> team) {
             teamRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), MAX_MEMBERS_COUNT));
             teamRecyclerView.setAdapter(new ProjectFullTeamAdapter(getContext(), team));
+
+            TranslateAnimation animate = new TranslateAnimation(0, 0, MINIMIZE_Y, teamContainer.getHeight());
+            animate.setDuration(0);
+            teamContainer.startAnimation(animate);
         }
 
         public void slideUp(View view) {
             view.setVisibility(VISIBLE);
-            TranslateAnimation animate = new TranslateAnimation(0, 0, view.getHeight(), 0);
+            TranslateAnimation animate = new TranslateAnimation(0, 0, view.getHeight(), MINIMIZE_Y);
             animate.setDuration(500);
             animate.setFillAfter(true);
             view.startAnimation(animate);
-            isOpen = !isOpen;
         }
 
         public void slideDown(View view) {
-            TranslateAnimation animate = new TranslateAnimation(0, 0, 0, view.getHeight());
+            TranslateAnimation animate = new TranslateAnimation(0, 0, MINIMIZE_Y, view.getHeight());
             animate.setDuration(500);
-            animate.setFillAfter(true);
             view.startAnimation(animate);
+            view.setVisibility(GONE);
         }
     }
 }

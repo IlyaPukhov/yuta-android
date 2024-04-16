@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.Arrays;
 
 @UtilityClass
 public class FileUtils {
@@ -62,8 +63,14 @@ public class FileUtils {
 
         File rotatedTempFile = File.createTempFile("rotatedTemp", "." + extension);
         @Cleanup FileOutputStream rotatedOutputStream = new FileOutputStream(rotatedTempFile);
-        rotatedBitmap.compress(Bitmap.CompressFormat.valueOf(extension.toUpperCase()), 100, rotatedOutputStream);
 
+        String validExtension = Arrays.stream(Bitmap.CompressFormat.values())
+                .map(Bitmap.CompressFormat::name)
+                .filter(ext -> ext.equals(extension.toUpperCase()))
+                .findFirst()
+                .orElse("JPEG");
+
+        rotatedBitmap.compress(Bitmap.CompressFormat.valueOf(validExtension), 100, rotatedOutputStream);
         return Files.newInputStream(rotatedTempFile.toPath());
     }
 

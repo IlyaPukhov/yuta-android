@@ -109,7 +109,7 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
         private void setupProjectFields(ProjectDto project) {
             loadImageToImageViewWithoutCaching(photo, project.getPhoto());
 
-            String teamName = getContext().getString(R.string.team) + "\"" + project.getTeam().getName() + "\"";
+            String teamName = getContext().getString(R.string.team) + " \"" + project.getTeam().getName() + "\"";
             teamText.setText(teamName);
 
             name.setText(project.getName());

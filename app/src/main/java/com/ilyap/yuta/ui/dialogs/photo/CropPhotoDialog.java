@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -27,12 +26,6 @@ import static com.ilyap.yuta.utils.UserUtils.getPath;
 public class CropPhotoDialog extends CustomInteractiveDialog {
     private CropImageView cropImageView;
     private RequestViewModel viewModel;
-    private Uri uri;
-
-    public CropPhotoDialog(Context context, Fragment fragment, Uri selectedUri) {
-        this(context, fragment);
-        this.uri = selectedUri;
-    }
 
     public CropPhotoDialog(Context context, Fragment fragment) {
         super(context, fragment);
@@ -47,11 +40,7 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
 
         cropImageView = dialog.findViewById(R.id.cropImageView);
 
-        if (uri == null) {
-            loadImage(user.getPhoto(), cropImageView);
-        } else {
-            cropImageView.setImageUriAsync(uri);
-        }
+        loadImage(user.getPhoto(), cropImageView);
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
         dialog.findViewById(R.id.save_miniature).setOnClickListener(v -> cropPhoto(user.getId()));

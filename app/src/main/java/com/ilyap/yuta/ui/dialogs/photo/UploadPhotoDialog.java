@@ -54,7 +54,7 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
             if (selectedImageUri != null) {
                 updatePhoto(user.getId());
             } else {
-                openCropDialog(selectedImageUri);
+                openCropDialog();
             }
 
         });
@@ -80,7 +80,7 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
             reloadUserData(userId);
-            openCropDialog(selectedImageUri);
+            openCropDialog();
         });
     }
 
@@ -104,8 +104,8 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
         }
     }
 
-    private void openCropDialog(Uri selectedImageUri) {
-        CustomDialog cropPhotoDialog = new CropPhotoDialog(activity, fragment, selectedImageUri);
+    private void openCropDialog() {
+        CustomDialog cropPhotoDialog = new CropPhotoDialog(activity, fragment);
         cropPhotoDialog.start();
         dismiss();
     }
