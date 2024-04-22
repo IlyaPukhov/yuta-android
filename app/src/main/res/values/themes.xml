@@ -1,5 +1,5 @@
 <resources>
-    <style name="Theme.YUTA.Login" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.YUTA.Common" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/orange</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorSecondary">@color/blue</item>
@@ -11,8 +11,12 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="Theme.YUTA" parent="Theme.YUTA.Login">
+    <style name="Theme.YUTA.Main" parent="Theme.YUTA.Common">
         <item name="android:windowTranslucentNavigation">false</item>
         <item name="android:navigationBarColor">?colorSecondary</item>
+    </style>
+
+    <style name="Theme.YUTA.Splash" parent="Theme.YUTA.Common">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 </resources>

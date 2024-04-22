@@ -244,6 +244,7 @@
                 android:id="@+id/team_container"
                 android:scrollbars="vertical"
                 android:nestedScrollingEnabled="true"
+                android:overScrollMode="ifContentScrolls"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_constrainedHeight="true"
@@ -254,7 +255,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:visibility="gone">
+                android:visibility="invisible">
 
             <Button
                     android:id="@+id/close"

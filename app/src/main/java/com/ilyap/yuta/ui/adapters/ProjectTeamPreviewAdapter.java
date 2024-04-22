@@ -11,12 +11,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.models.User;
+import com.ilyap.yuta.ui.adapters.itemdecoration.GridSpacingItemDecoration;
 import com.ilyap.yuta.ui.adapters.viewholders.ProjectMemberViewHolder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static android.view.View.GONE;
+import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
 public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User>> {
@@ -95,12 +96,11 @@ public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.Vie
         }
 
         private void setupFullTeamView(List<User> team) {
+            teamRecyclerView.addItemDecoration(new GridSpacingItemDecoration(MAX_MEMBERS_COUNT, 15, true));
             teamRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), MAX_MEMBERS_COUNT));
             teamRecyclerView.setAdapter(new ProjectFullTeamAdapter(getContext(), team));
 
-            TranslateAnimation animate = new TranslateAnimation(0, 0, MINIMIZE_Y, teamContainer.getHeight());
-            animate.setDuration(0);
-            teamContainer.startAnimation(animate);
+            teamContainer.setTranslationY(MINIMIZE_Y);
         }
 
         public void slideUp(View view) {
@@ -115,7 +115,7 @@ public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.Vie
             TranslateAnimation animate = new TranslateAnimation(0, 0, MINIMIZE_Y, view.getHeight());
             animate.setDuration(500);
             view.startAnimation(animate);
-            view.setVisibility(GONE);
+            view.setVisibility(INVISIBLE);
         }
     }
 }
