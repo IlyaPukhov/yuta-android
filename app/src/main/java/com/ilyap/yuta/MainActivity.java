@@ -1,6 +1,8 @@
 package com.ilyap.yuta;
 
+import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
@@ -63,5 +65,12 @@ public class MainActivity extends AppCompatActivity {
     private void selectPreviousNavTab() {
         bottomNavigationView.setSelectedItemId(lastItemId);
         lastItemId = -1;
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        Window window = getWindow();
+        window.setFormat(PixelFormat.RGBA_8888);
     }
 }

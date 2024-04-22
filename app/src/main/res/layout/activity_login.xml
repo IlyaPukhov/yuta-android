@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.LoginActivity"
-        android:background="@drawable/main_background"
+        android:background="@drawable/background_fragment"
         android:paddingTop="30dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
