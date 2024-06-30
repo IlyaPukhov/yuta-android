@@ -1,1 +1,1 @@
-Мобильное приложение для YUTA (tasks app for YSTU)
+# YUTA (YSTU Unified Tasks APP) Android
