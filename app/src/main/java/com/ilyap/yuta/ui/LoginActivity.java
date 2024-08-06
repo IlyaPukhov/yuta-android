@@ -18,7 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-import com.ilyap.yuta.MainActivity;
+import com.ilyap.yutarefactor.MainActivity;
 import com.ilyap.yuta.R;
 import com.ilyap.yutarefactor.domain.response.AuthorizationResponse;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;

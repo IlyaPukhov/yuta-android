@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
-import com.ilyap.yuta.MainActivity;
+import com.ilyap.yutarefactor.MainActivity;
 import com.ilyap.yuta.R;
 import com.ilyap.yutarefactor.domain.entity.UserUpdateDto;
 import com.ilyap.yuta.ui.adapters.BaseAdapter;
