@@ -12,8 +12,8 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.canhub.cropper.CropImageView;
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.UpdateResponse;
-import com.ilyap.yuta.models.User;
+import com.ilyap.yutarefactor.domain.response.UpdateResponse;
+import com.ilyap.yutarefactor.domain.entity.UserUpdateDto;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestViewModel;
@@ -36,14 +36,14 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
     public void start() {
         super.start();
         viewModel = new ViewModelProvider(fragment).get(RequestViewModel.class);
-        User user = UserUtils.getCurrentUser();
+        UserUpdateDto userDto = UserUtils.getCurrentUserDto();
 
         cropImageView = dialog.findViewById(R.id.cropImageView);
 
-        loadImage(user.getPhoto(), cropImageView);
+        loadImage(userDto.getPhoto(), cropImageView);
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
-        dialog.findViewById(R.id.save_miniature).setOnClickListener(v -> cropPhoto(user.getId()));
+        dialog.findViewById(R.id.save_miniature).setOnClickListener(v -> cropPhoto(userDto.getId()));
     }
 
     private void cropPhoto(int userId) {

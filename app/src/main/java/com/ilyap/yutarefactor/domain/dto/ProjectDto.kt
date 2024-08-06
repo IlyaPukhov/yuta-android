@@ -1,16 +1,16 @@
-package com.ilyap.yuta.models;
+package com.ilyap.yutarefactor.domain.dto
 
-import lombok.Value;
+import com.ilyap.yutarefactor.domain.entity.Team
+import com.ilyap.yutarefactor.domain.entity.UserUpdateDto
 
-@Value
-public class ProjectDto {
-    int id;
-    String photo;
-    String name;
-    String technicalTask;
-    String status;
-    String stringDeadline;
-    String description;
-    User manager;
-    Team team;
-}
+data class ProjectDto(
+    val id: Int,
+    val photo: String?,
+    val name: String,
+    val technicalTask: String?,
+    val status: String,
+    val stringDeadline: String,
+    val description: String,
+    val manager: UserUpdateDto,
+    val team: Team?
+)

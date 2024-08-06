@@ -1,26 +1,23 @@
-package com.ilyap.yuta.models;
+package com.ilyap.yutarefactor.domain.entity
 
-import lombok.Data;
-
-@Data
-public class User {
-    private int id;
-    private String photo;
-    private String croppedPhoto;
-    private String lastName;
-    private String firstName;
-    private String patronymic;
-    private String age;
-    private String biography;
-    private String phoneNumber;
-    private String eMail;
-    private String vk;
-    private String faculty;
-    private String direction;
-    private String group;
-    private int allProjectsCount;
-    private int doneProjectsCount;
-    private int allTasksCount;
-    private int doneTasksCount;
-    private int teamsCount;
-}
+data class UserUpdateDto(
+    var id: Int,
+    var photo: String,
+    var croppedPhoto: String,
+    var lastName: String,
+    var firstName: String,
+    var patronymic: String?,
+    var age: String,
+    var biography: String?,
+    var phoneNumber: String?,
+    var eMail: String?,
+    var vk: String?,
+    var faculty: String,
+    var direction: String,
+    var group: String,
+    var allProjectsCount: Int,
+    var doneProjectsCount: Int,
+    var allTasksCount: Int,
+    var doneTasksCount: Int,
+    var teamsCount: Int
+)

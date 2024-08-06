@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.User;
+import com.ilyap.yutarefactor.domain.entity.UserUpdateDto;
 import com.ilyap.yuta.ui.adapters.itemdecoration.GridSpacingItemDecoration;
 import com.ilyap.yuta.ui.adapters.viewholders.ProjectMemberViewHolder;
 import org.jetbrains.annotations.NotNull;
@@ -20,22 +20,22 @@ import java.util.List;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
-public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User>> {
+public class ProjectTeamPreviewAdapter extends BaseAdapter<UserUpdateDto, BaseAdapter.ViewHolder<UserUpdateDto>> {
     private static final int MAX_MEMBERS_COUNT = 4;
     private static final int ENOUGH_USERS = 0;
     private static final int MORE_USERS = 1;
     private final View projectView;
 
-    public ProjectTeamPreviewAdapter(Context context, List<User> items, View projectView) {
+    public ProjectTeamPreviewAdapter(Context context, List<UserUpdateDto> items, View projectView) {
         super(context, items);
         this.projectView = projectView;
     }
 
     @Override
-    public @NotNull ViewHolder<User> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public @NotNull ViewHolder<UserUpdateDto> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_project_member, parent, false);
 
-        ViewHolder<User> viewHolder;
+        ViewHolder<UserUpdateDto> viewHolder;
         switch (viewType) {
             case ENOUGH_USERS:
                 viewHolder = new ProjectMemberViewHolder(view, getContext(), getItems().get(0).getId());
@@ -62,7 +62,7 @@ public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.Vie
         return Math.min(getItems().size(), MAX_MEMBERS_COUNT);
     }
 
-    public class ProjectMoreMembersViewHolder extends ViewHolder<User> {
+    public class ProjectMoreMembersViewHolder extends ViewHolder<UserUpdateDto> {
         private final TextView remainingMembersCount;
         private final View member;
         private final View teamContainer;
@@ -82,7 +82,7 @@ public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.Vie
         }
 
         @Override
-        public void bind(User user) {
+        public void bind(UserUpdateDto userDto) {
             remainingMembersCount.setVisibility(VISIBLE);
             String text = "+" + (getItems().size() - MAX_MEMBERS_COUNT + 1);
             remainingMembersCount.setText(text);
@@ -95,7 +95,7 @@ public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.Vie
             closeButton.setOnClickListener(v -> slideDown(teamContainer));
         }
 
-        private void setupFullTeamView(List<User> team) {
+        private void setupFullTeamView(List<UserUpdateDto> team) {
             teamRecyclerView.addItemDecoration(new GridSpacingItemDecoration(MAX_MEMBERS_COUNT, 15, true));
             teamRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), MAX_MEMBERS_COUNT));
             teamRecyclerView.setAdapter(new ProjectFullTeamAdapter(getContext(), team));

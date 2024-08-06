@@ -31,7 +31,7 @@ public class PhotoDialog extends CustomInteractiveDialog {
 
         View editMiniature = dialog.findViewById(R.id.edit_miniature);
         View deletePhoto = dialog.findViewById(R.id.delete_photo);
-        if (UserUtils.getCurrentUser().getPhoto().contains(DEFAULT_USER_PHOTO)) {
+        if (UserUtils.getCurrentUserDto().getPhoto().contains(DEFAULT_USER_PHOTO)) {
             editMiniature.setVisibility(GONE);
             deletePhoto.setVisibility(GONE);
         } else {

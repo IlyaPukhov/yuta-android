@@ -13,14 +13,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.Team;
-import com.ilyap.yuta.models.TeamMember;
-import com.ilyap.yuta.models.TeamsResponse;
 import com.ilyap.yuta.ui.adapters.TeamsAdapter;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.team.CreateTeamDialog;
 import com.ilyap.yuta.ui.dialogs.user.LogoutDialog;
 import com.ilyap.yuta.utils.RequestViewModel;
+import com.ilyap.yutarefactor.domain.entity.Team;
+import com.ilyap.yutarefactor.domain.entity.TeamMember;
+import com.ilyap.yutarefactor.domain.response.TeamsResponse;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
@@ -124,7 +124,7 @@ public class TeamsFragment extends Fragment {
         lastPickedButtonId = button.getId();
     }
 
-    private List<List<TeamMember>> getTeamMembers(@NonNull List<Team> teams) {
+    private List<List<TeamMember>> getTeamMembers(List<Team> teams) {
         return teams.stream()
                 .map(team -> {
                     List<TeamMember> membersList = new ArrayList<>();

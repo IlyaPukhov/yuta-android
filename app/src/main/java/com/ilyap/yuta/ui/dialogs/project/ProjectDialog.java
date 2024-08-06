@@ -3,7 +3,7 @@ package com.ilyap.yuta.ui.dialogs.project;
 import android.content.Context;
 import androidx.fragment.app.Fragment;
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.ProjectDto;
+import com.ilyap.yutarefactor.domain.dto.ProjectDto;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 

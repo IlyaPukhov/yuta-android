@@ -4,7 +4,7 @@ import android.content.Context;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.UpdateResponse;
+import com.ilyap.yutarefactor.domain.response.UpdateResponse;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestViewModel;
@@ -33,7 +33,7 @@ public class DeletePhotoDialog extends CustomInteractiveDialog {
 
     protected void deletePhoto(Fragment fragment) {
         viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.deleteUserPhoto(UserUtils.getCurrentUser().getId());
+        viewModel.deleteUserPhoto(UserUtils.getCurrentUserDto().getId());
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
             ((ProfileFragment) fragment).updateProfile();

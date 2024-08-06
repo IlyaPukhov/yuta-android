@@ -13,10 +13,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.CheckTeamNameResponse;
-import com.ilyap.yuta.models.SearchUsersResponse;
-import com.ilyap.yuta.models.UpdateResponse;
-import com.ilyap.yuta.models.User;
+import com.ilyap.yutarefactor.domain.response.TeamCheckNameResponse;
+import com.ilyap.yutarefactor.domain.response.SearchUsersResponse;
+import com.ilyap.yutarefactor.domain.response.UpdateResponse;
+import com.ilyap.yutarefactor.domain.entity.UserUpdateDto;
 import com.ilyap.yuta.ui.adapters.TeamUserSearchAdapter;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.TeamsFragment;
@@ -31,8 +31,8 @@ import static com.ilyap.yuta.utils.UserUtils.getUserId;
 
 @SuppressWarnings("ConstantConditions")
 public class CreateTeamDialog extends CustomInteractiveDialog {
-    protected final List<User> addedMembers = new ArrayList<>();
-    private final List<User> searchUsers = new ArrayList<>();
+    protected final List<UserUpdateDto> addedMembers = new ArrayList<>();
+    private final List<UserUpdateDto> searchUserDtos = new ArrayList<>();
     protected RequestViewModel viewModel;
     protected EditText teamName;
     protected Button submitButton;
@@ -93,13 +93,13 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
         viewModel.searchUsers(getData(searchField), getUserId(activity), addedMembers);
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof SearchUsersResponse)) return;
-            updateList(searchAdapter, ((SearchUsersResponse) result).getUsers());
+            updateList(searchAdapter, ((SearchUsersResponse) result).getUsersDtos());
         });
     }
 
-    private void updateList(@NonNull TeamUserSearchAdapter adapter, @NonNull List<User> users) {
-        messageVisibility(emptySearch, !users.isEmpty());
-        adapter.updateList(users);
+    private void updateList(@NonNull TeamUserSearchAdapter adapter, @NonNull List<UserUpdateDto> userDto) {
+        messageVisibility(emptySearch, !userDto.isEmpty());
+        adapter.updateList(userDto);
     }
 
     protected RequestViewModel isNameUnique(String name) {
@@ -127,7 +127,7 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
 
         RecyclerView searchUsersView = dialog.findViewById(R.id.searchUsers);
         searchUsersView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        searchAdapter = new TeamUserSearchAdapter(this, searchUsers, membersAdapter);
+        searchAdapter = new TeamUserSearchAdapter(this, searchUserDtos, membersAdapter);
         searchUsersView.setAdapter(searchAdapter);
     }
 
@@ -153,8 +153,8 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (editText == teamName) {
                     isNameUnique(s.toString()).getResultLiveData().observe(fragment, result -> {
-                        if (!(result instanceof CheckTeamNameResponse)) return;
-                        isTeamNameUnique = ((CheckTeamNameResponse) result).isUnique();
+                        if (!(result instanceof TeamCheckNameResponse)) return;
+                        isTeamNameUnique = ((TeamCheckNameResponse) result).getUnique();
                         submitButton.setEnabled(isTeamNameUnique);
                         messageVisibility(error, isTeamNameUnique);
                     });

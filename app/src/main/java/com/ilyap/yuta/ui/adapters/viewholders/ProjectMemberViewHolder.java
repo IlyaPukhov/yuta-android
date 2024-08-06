@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import com.ilyap.yuta.MainActivity;
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.User;
+import com.ilyap.yutarefactor.domain.entity.UserUpdateDto;
 import com.ilyap.yuta.ui.adapters.BaseAdapter;
 import lombok.Getter;
 
@@ -17,7 +17,7 @@ import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
 import static com.ilyap.yuta.utils.UserUtils.loadImageToImageViewWithoutCaching;
 
-public class ProjectMemberViewHolder extends BaseAdapter.ViewHolder<User> {
+public class ProjectMemberViewHolder extends BaseAdapter.ViewHolder<UserUpdateDto> {
     @Getter
     private final Context context;
     private final ImageView imageView;
@@ -38,25 +38,25 @@ public class ProjectMemberViewHolder extends BaseAdapter.ViewHolder<User> {
     }
 
     @Override
-    public void bind(User user) {
+    public void bind(UserUpdateDto userDto) {
         imageView.setVisibility(VISIBLE);
-        loadImageToImageViewWithoutCaching(imageView, user.getCroppedPhoto());
+        loadImageToImageViewWithoutCaching(imageView, userDto.getCroppedPhoto());
 
-        if (managerId == user.getId()) {
+        if (managerId == userDto.getId()) {
             teamLeaderIcon.setVisibility(VISIBLE);
         }
 
-        String userName = user.getLastName() + " " + user.getFirstName();
+        String userName = userDto.getLastName() + " " + userDto.getFirstName();
         name.setText(userName);
 
         member.setOnClickListener(v -> {
             MainActivity activity = (MainActivity) getContext();
-            if (getUserId(getContext()) == user.getId()) {
+            if (getUserId(getContext()) == userDto.getId()) {
                 activity.selectNavTab(R.id.profileFragment);
             } else {
                 NavController navController = activity.getNavController();
                 Bundle bundle = new Bundle();
-                bundle.putInt("userId", user.getId());
+                bundle.putInt("userId", userDto.getId());
                 navController.navigate(R.id.action_projectsFragment_to_readonlyProfileFragment, bundle);
                 activity.setReadonlyProfile(true);
             }

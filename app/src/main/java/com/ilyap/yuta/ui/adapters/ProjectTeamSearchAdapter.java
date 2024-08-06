@@ -7,7 +7,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.Team;
+import com.ilyap.yutarefactor.domain.entity.Team;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.project.CreateProjectDialog;
 

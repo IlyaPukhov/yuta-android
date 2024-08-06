@@ -11,8 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import com.ilyap.yuta.MainActivity;
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.TeamMember;
-import com.ilyap.yuta.models.User;
+import com.ilyap.yutarefactor.domain.entity.TeamMember;
+import com.ilyap.yutarefactor.domain.entity.UserUpdateDto;
 
 import java.util.List;
 
@@ -49,25 +49,25 @@ public class TeamMembersAdapter extends BaseAdapter<TeamMember, BaseAdapter.View
 
         @Override
         public void bind(@NonNull TeamMember member) {
-            User user = member.getMember();
-            User leader = member.getTeam().getLeader();
-            loadImageToImageViewWithoutCaching(imageView, user.getCroppedPhoto());
+            UserUpdateDto userDto = member.getMember();
+            UserUpdateDto leader = member.getTeam().getLeader();
+            loadImageToImageViewWithoutCaching(imageView, userDto.getCroppedPhoto());
 
-            if (leader.equals(user)) {
+            if (leader.equals(userDto)) {
                 teamLeaderIcon.setVisibility(VISIBLE);
             }
 
-            String userName = user.getLastName() + " " + user.getFirstName();
+            String userName = userDto.getLastName() + " " + userDto.getFirstName();
             name.setText(userName);
 
             card.setOnClickListener(v -> {
                 MainActivity activity = (MainActivity) getContext();
-                if (getUserId(getContext()) == user.getId()) {
+                if (getUserId(getContext()) == userDto.getId()) {
                     activity.selectNavTab(R.id.profileFragment);
                 } else {
                     NavController navController = activity.getNavController();
                     Bundle bundle = new Bundle();
-                    bundle.putInt("userId", user.getId());
+                    bundle.putInt("userId", userDto.getId());
                     navController.navigate(R.id.action_teamsFragment_to_readonlyProfileFragment, bundle);
                     activity.setReadonlyProfile(true);
                 }

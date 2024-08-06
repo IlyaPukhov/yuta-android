@@ -20,11 +20,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.ProjectDto;
-import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.adapters.layoutmanagers.SpanningLinearLayoutManager;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.project.ProjectDialog;
+import com.ilyap.yutarefactor.domain.dto.ProjectDto;
+import com.ilyap.yutarefactor.domain.entity.UserUpdateDto;
 import lombok.SneakyThrows;
 
 import java.io.File;
@@ -97,8 +97,8 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
             setupMenu(project);
         }
 
-        private void setupTeamPreview(ProjectDto project, User manager) {
-            List<User> teamMembers = new ArrayList<>();
+        private void setupTeamPreview(ProjectDto project, UserUpdateDto manager) {
+            List<UserUpdateDto> teamMembers = new ArrayList<>();
             teamMembers.add(manager);
             if (project.getTeam() != null) {
                 teamMembers.addAll(project.getTeam().getMembers());
@@ -110,8 +110,10 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
         private void setupProjectFields(ProjectDto project) {
             loadImageToImageViewWithoutCaching(photo, project.getPhoto());
 
-            String teamName = getContext().getString(R.string.team) + " \"" + project.getTeam().getName() + "\"";
-            teamText.setText(teamName);
+            if (project.getTeam() != null) {
+                String teamName = getContext().getString(R.string.team) + " \"" + project.getTeam().getName() + "\"";
+                teamText.setText(teamName);
+            }
 
             name.setText(project.getName());
             status.setText(String.format(" %s", project.getStatus()));

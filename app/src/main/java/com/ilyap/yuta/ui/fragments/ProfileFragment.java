@@ -14,8 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.User;
-import com.ilyap.yuta.models.UserResponse;
+import com.ilyap.yutarefactor.domain.entity.UserUpdateDto;
+import com.ilyap.yutarefactor.domain.response.UserResponse;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.photo.PhotoDialog;
 import com.ilyap.yuta.ui.dialogs.photo.UploadPhotoDialog;
@@ -30,7 +30,7 @@ import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.ui.dialogs.photo.UploadPhotoDialog.PICK_IMAGE_REQUEST;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
 import static com.ilyap.yuta.utils.UserUtils.loadImageToImageViewWithoutCaching;
-import static com.ilyap.yuta.utils.UserUtils.setCurrentUser;
+import static com.ilyap.yuta.utils.UserUtils.setCurrentUserDto;
 
 @NoArgsConstructor
 public class ProfileFragment extends Fragment {
@@ -44,7 +44,7 @@ public class ProfileFragment extends Fragment {
     );
     protected View view;
     protected View progressLayout;
-    protected User user;
+    protected UserUpdateDto userDto;
     protected ImageView imageView;
     protected RequestViewModel viewModel;
 
@@ -81,43 +81,43 @@ public class ProfileFragment extends Fragment {
             viewModel.getUser(userId);
             viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
                 if (!(result instanceof UserResponse)) return;
-                user = ((UserResponse) result).getUser();
-                user.setId(userId);
+                userDto = ((UserResponse) result).getUserDto();
+                userDto.setId(userId);
                 updateImage();
                 fillViews();
                 progressLayout.setVisibility(GONE);
                 imageView.setEnabled(true);
-                setCurrentUser(user);
+                setCurrentUserDto(userDto);
             });
         }
     }
 
     private void fillViews() {
-        String fullName = user.getLastName() + " " + user.getFirstName() + (user.getPatronymic() == null ? "" : " " + user.getPatronymic());
-        String faculty = getString(R.string.faculty) + ": " + user.getFaculty();
-        String direction = getString(R.string.direction) + ": " + user.getDirection();
-        String group = getString(R.string.group) + ": " + user.getGroup();
-        String projectsCount = user.getDoneProjectsCount() + "/" + user.getAllProjectsCount();
-        String tasksCount = user.getDoneTasksCount() + "/" + user.getAllTasksCount();
+        String fullName = userDto.getLastName() + " " + userDto.getFirstName() + (userDto.getPatronymic() == null ? "" : " " + userDto.getPatronymic());
+        String faculty = getString(R.string.faculty) + ": " + userDto.getFaculty();
+        String direction = getString(R.string.direction) + ": " + userDto.getDirection();
+        String group = getString(R.string.group) + ": " + userDto.getGroup();
+        String projectsCount = userDto.getDoneProjectsCount() + "/" + userDto.getAllProjectsCount();
+        String tasksCount = userDto.getDoneTasksCount() + "/" + userDto.getAllTasksCount();
 
         setDataInTextView(R.id.name, fullName);
-        setDataInTextView(R.id.age, user.getAge());
-        setDataInTextView(R.id.biography, user.getBiography());
+        setDataInTextView(R.id.age, userDto.getAge());
+        setDataInTextView(R.id.biography, userDto.getBiography());
         setDataInTextView(R.id.faculty, faculty);
         setDataInTextView(R.id.direction, direction);
         setDataInTextView(R.id.group, group);
         setDataInTextView(R.id.projects_count, projectsCount);
         setDataInTextView(R.id.tasks_count, tasksCount);
-        setDataInTextView(R.id.teams_count, String.valueOf(user.getTeamsCount()));
-        setDataInTextView(R.id.phone_number, user.getPhoneNumber());
-        setDataInTextView(R.id.email, user.getEMail());
-        setDataInTextView(R.id.vk, user.getVk());
+        setDataInTextView(R.id.teams_count, String.valueOf(userDto.getTeamsCount()));
+        setDataInTextView(R.id.phone_number, userDto.getPhoneNumber());
+        setDataInTextView(R.id.email, userDto.getEMail());
+        setDataInTextView(R.id.vk, userDto.getVk());
 
         contactsContainerVisibility(R.id.phone_number, R.id.email, R.id.vk);
     }
 
     public void updateImage() {
-        loadImageToImageViewWithoutCaching(imageView, user.getCroppedPhoto());
+        loadImageToImageViewWithoutCaching(imageView, userDto.getCroppedPhoto());
     }
 
     private void contactsContainerVisibility(@NonNull int... fields) {

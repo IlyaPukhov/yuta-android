@@ -11,16 +11,16 @@ import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import com.ilyap.yuta.MainActivity;
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.User;
+import com.ilyap.yutarefactor.domain.entity.UserUpdateDto;
 
 import java.util.List;
 
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
 import static com.ilyap.yuta.utils.UserUtils.loadImageToImageViewWithCaching;
 
-public class UserSearchAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User>> {
+public class UserSearchAdapter extends BaseAdapter<UserUpdateDto, BaseAdapter.ViewHolder<UserUpdateDto>> {
 
-    public UserSearchAdapter(Context context, List<User> items) {
+    public UserSearchAdapter(Context context, List<UserUpdateDto> items) {
         super(context, items);
     }
 
@@ -31,7 +31,7 @@ public class UserSearchAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<
         return new UserSearchViewHolder(view);
     }
 
-    public class UserSearchViewHolder extends ViewHolder<User> {
+    public class UserSearchViewHolder extends ViewHolder<UserUpdateDto> {
         private final TextView name;
         private final ImageView avatar;
         private final View userLayout;
@@ -44,22 +44,22 @@ public class UserSearchAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<
         }
 
         @Override
-        public void bind(User user) {
-            loadImageToImageViewWithCaching(avatar, user.getCroppedPhoto());
+        public void bind(UserUpdateDto userDto) {
+            loadImageToImageViewWithCaching(avatar, userDto.getCroppedPhoto());
 
-            String fullName = user.getLastName() + " " + user.getFirstName() + (user.getPatronymic() == null ? "" : " " + user.getPatronymic());
+            String fullName = userDto.getLastName() + " " + userDto.getFirstName() + (userDto.getPatronymic() == null ? "" : " " + userDto.getPatronymic());
             name.setText(fullName);
 
             userLayout.setOnClickListener(v -> {
                 hideKeyboard();
 
                 MainActivity activity = (MainActivity) getContext();
-                if (getUserId(getContext()) == user.getId()) {
+                if (getUserId(getContext()) == userDto.getId()) {
                     activity.selectNavTab(R.id.profileFragment);
                 } else {
                     NavController navController = activity.getNavController();
                     Bundle bundle = new Bundle();
-                    bundle.putInt("userId", user.getId());
+                    bundle.putInt("userId", userDto.getId());
                     navController.navigate(R.id.action_searchFragment_to_readonlyProfileFragment, bundle);
                     activity.setReadonlyProfile(true);
                 }

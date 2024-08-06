@@ -15,7 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.ilyap.yuta.models.User;
+import com.ilyap.yutarefactor.domain.entity.UserUpdateDto;
 import com.ilyap.yuta.ui.LoginActivity;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
@@ -27,7 +27,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 @UtilityClass
 public class UserUtils {
     @Getter
-    private static User currentUser;
+    private static UserUpdateDto currentUserDto;
     private static SharedPreferences sharedPreferences;
 
     public static void loadImageToImageViewWithCaching(ImageView imageView, String path) {
@@ -88,7 +88,7 @@ public class UserUtils {
         return context.getSharedPreferences("session", Context.MODE_PRIVATE);
     }
 
-    public static void setCurrentUser(User currentUser) {
-        UserUtils.currentUser = currentUser;
+    public static void setCurrentUserDto(UserUpdateDto currentUserDto) {
+        UserUtils.currentUserDto = currentUserDto;
     }
 }

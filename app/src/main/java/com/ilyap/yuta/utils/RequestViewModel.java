@@ -5,18 +5,17 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.ilyap.yuta.models.AuthResponse;
-import com.ilyap.yuta.models.CheckTeamNameResponse;
-import com.ilyap.yuta.models.EditUserResponse;
-import com.ilyap.yuta.models.ProjectResponse;
-import com.ilyap.yuta.models.ProjectsResponse;
-import com.ilyap.yuta.models.SearchTeamsResponse;
-import com.ilyap.yuta.models.SearchUsersResponse;
-import com.ilyap.yuta.models.TeamResponse;
-import com.ilyap.yuta.models.TeamsResponse;
-import com.ilyap.yuta.models.UpdateResponse;
-import com.ilyap.yuta.models.User;
-import com.ilyap.yuta.models.UserResponse;
+import com.ilyap.yutarefactor.domain.entity.UserUpdateDto;
+import com.ilyap.yutarefactor.domain.response.AuthorizationResponse;
+import com.ilyap.yutarefactor.domain.response.ProjectResponse;
+import com.ilyap.yutarefactor.domain.response.ProjectsResponse;
+import com.ilyap.yutarefactor.domain.response.SearchTeamsResponse;
+import com.ilyap.yutarefactor.domain.response.SearchUsersResponse;
+import com.ilyap.yutarefactor.domain.response.TeamCheckNameResponse;
+import com.ilyap.yutarefactor.domain.response.TeamResponse;
+import com.ilyap.yutarefactor.domain.response.TeamsResponse;
+import com.ilyap.yutarefactor.domain.response.UpdateResponse;
+import com.ilyap.yutarefactor.domain.response.UserResponse;
 import org.json.JSONArray;
 
 import java.io.InputStream;
@@ -141,7 +140,7 @@ public final class RequestViewModel extends ViewModel {
         });
     }
 
-    public void searchUsers(String userName, int leaderId, List<User> members) {
+    public void searchUsers(String userName, int leaderId, List<UserUpdateDto> members) {
         clearResultLiveData();
         executor.execute(() -> {
             Map<String, Object> params = new HashMap<>();
@@ -162,7 +161,7 @@ public final class RequestViewModel extends ViewModel {
                 params.put("team_id", teamId);
             }
             String json = getRequest(getFullUrl("teams", params));
-            resultLiveData.postValue(JsonUtils.parse(json, CheckTeamNameResponse.class));
+            resultLiveData.postValue(JsonUtils.parse(json, TeamCheckNameResponse.class));
         });
     }
 
@@ -170,7 +169,7 @@ public final class RequestViewModel extends ViewModel {
         checkUniqueTeamName(name, -1);
     }
 
-    public void editTeam(int teamId, String teamName, List<User> members) {
+    public void editTeam(int teamId, String teamName, List<UserUpdateDto> members) {
         clearResultLiveData();
         executor.execute(() -> {
             HashMap<String, Object> params = new HashMap<>();
@@ -182,7 +181,7 @@ public final class RequestViewModel extends ViewModel {
         });
     }
 
-    public void createTeam(int leaderId, String teamName, List<User> members) {
+    public void createTeam(int leaderId, String teamName, List<UserUpdateDto> members) {
         clearResultLiveData();
         executor.execute(() -> {
             HashMap<String, Object> params = new HashMap<>();
@@ -277,18 +276,18 @@ public final class RequestViewModel extends ViewModel {
         });
     }
 
-    public void editUserData(int userId, User user) {
+    public void editUserData(int userId, UserUpdateDto userDto) {
         clearResultLiveData();
         executor.execute(() -> {
             Map<String, Object> params = new HashMap<>();
             params.put("user_id", userId);
-            params.put("biography", user.getBiography() != null ? user.getBiography() : "");
-            params.put("phone_number", user.getPhoneNumber() != null ? user.getPhoneNumber() : "");
-            params.put("e_mail", user.getEMail() != null ? user.getEMail() : "");
-            params.put("vk", user.getVk() != null ? user.getVk() : "");
+            params.put("biography", userDto.getBiography() != null ? userDto.getBiography() : "");
+            params.put("phone_number", userDto.getPhoneNumber() != null ? userDto.getPhoneNumber() : "");
+            params.put("e_mail", userDto.getEMail() != null ? userDto.getEMail() : "");
+            params.put("vk", userDto.getVk() != null ? userDto.getVk() : "");
 
             String json = postRequest(getFullUrl("profile"), params);
-            resultLiveData.postValue(JsonUtils.parse(json, EditUserResponse.class));
+            resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
         });
     }
 
@@ -311,7 +310,7 @@ public final class RequestViewModel extends ViewModel {
             params.put("login", login);
             params.put("password", password);
             String json = postRequest(getFullUrl("authorization"), params);
-            resultLiveData.postValue(JsonUtils.parse(json, AuthResponse.class));
+            resultLiveData.postValue(JsonUtils.parse(json, AuthorizationResponse.class));
         });
     }
 
@@ -320,9 +319,9 @@ public final class RequestViewModel extends ViewModel {
         return resultLiveData;
     }
 
-    private static JSONArray getMembersIdArray(@NonNull List<User> members) {
+    private static JSONArray getMembersIdArray(@NonNull List<UserUpdateDto> members) {
         return members.stream()
-                .map(User::getId)
+                .map(UserUpdateDto::getId)
                 .collect(Collector.of(JSONArray::new, JSONArray::put, JSONArray::put));
     }
 

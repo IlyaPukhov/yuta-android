@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.SearchUsersResponse;
-import com.ilyap.yuta.models.User;
+import com.ilyap.yutarefactor.domain.response.SearchUsersResponse;
+import com.ilyap.yutarefactor.domain.entity.UserUpdateDto;
 import com.ilyap.yuta.ui.adapters.UserSearchAdapter;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.user.LogoutDialog;
@@ -33,7 +33,7 @@ import static android.view.View.VISIBLE;
 @NoArgsConstructor
 public class SearchFragment extends Fragment {
     private View emptyText;
-    private List<User> users;
+    private List<UserUpdateDto> userDto;
     private View view;
     private RequestViewModel viewModel;
     private UserSearchAdapter searchAdapter;
@@ -59,7 +59,7 @@ public class SearchFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        updateList(users);
+        updateList(userDto);
     }
 
     private void setupEditView(@NonNull EditText editText) {
@@ -77,8 +77,8 @@ public class SearchFragment extends Fragment {
                 if (count != 0) {
                     updateSearchResult(s.toString());
                 } else {
-                    users.clear();
-                    updateList(users);
+                    userDto.clear();
+                    updateList(userDto);
                 }
             }
         });
@@ -92,20 +92,20 @@ public class SearchFragment extends Fragment {
             if (!(result instanceof SearchUsersResponse)) return;
             progressLayout.setVisibility(GONE);
 
-            users = ((SearchUsersResponse) result).getUsers();
-            emptyText.setVisibility(users.isEmpty() ? VISIBLE : GONE);
-            updateList(users);
+            userDto = ((SearchUsersResponse) result).getUsersDtos();
+            emptyText.setVisibility(userDto.isEmpty() ? VISIBLE : GONE);
+            updateList(userDto);
         });
     }
 
-    private void updateList(List<User> users) {
-        searchAdapter.updateList(users);
+    private void updateList(List<UserUpdateDto> userDto) {
+        searchAdapter.updateList(userDto);
     }
 
     private void recyclerViewInitialize() {
         RecyclerView recyclerView = view.findViewById(R.id.search_list);
-        users = new ArrayList<>();
-        searchAdapter = new UserSearchAdapter(requireActivity(), users);
+        userDto = new ArrayList<>();
+        searchAdapter = new UserSearchAdapter(requireActivity(), userDto);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
 

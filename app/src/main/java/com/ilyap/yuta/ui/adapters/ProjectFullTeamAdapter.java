@@ -6,20 +6,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.User;
+import com.ilyap.yutarefactor.domain.entity.UserUpdateDto;
 import com.ilyap.yuta.ui.adapters.viewholders.ProjectMemberViewHolder;
 
 import java.util.List;
 
-public class ProjectFullTeamAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User>> {
+public class ProjectFullTeamAdapter extends BaseAdapter<UserUpdateDto, BaseAdapter.ViewHolder<UserUpdateDto>> {
 
-    public ProjectFullTeamAdapter(Context context, List<User> items) {
+    public ProjectFullTeamAdapter(Context context, List<UserUpdateDto> items) {
         super(context, items);
     }
 
     @NonNull
     @Override
-    public ViewHolder<User> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder<UserUpdateDto> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_project_member, parent, false);
         return new ProjectMemberViewHolder(view, getContext(), getItems().get(0).getId());
     }

@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.User;
+import com.ilyap.yutarefactor.domain.entity.UserUpdateDto;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.team.CreateTeamDialog;
 
@@ -18,11 +18,11 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.utils.UserUtils.loadImageToImageViewWithoutCaching;
 
-public class TeamUserSearchAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User>> {
+public class TeamUserSearchAdapter extends BaseAdapter<UserUpdateDto, BaseAdapter.ViewHolder<UserUpdateDto>> {
     private final CustomDialog dialog;
     private final TeamUserSearchAdapter membersAdapter;
 
-    public TeamUserSearchAdapter(CustomDialog dialog, List<User> items, TeamUserSearchAdapter membersAdapter) {
+    public TeamUserSearchAdapter(CustomDialog dialog, List<UserUpdateDto> items, TeamUserSearchAdapter membersAdapter) {
         super(dialog.getContext(), items);
         this.membersAdapter = membersAdapter;
         this.dialog = dialog;
@@ -35,7 +35,7 @@ public class TeamUserSearchAdapter extends BaseAdapter<User, BaseAdapter.ViewHol
         return new UserViewHolder(view);
     }
 
-    public class UserViewHolder extends BaseAdapter.ViewHolder<User> {
+    public class UserViewHolder extends BaseAdapter.ViewHolder<UserUpdateDto> {
         private final TextView name;
         private final ImageView avatar;
         private final Button buttonAdd;
@@ -50,10 +50,10 @@ public class TeamUserSearchAdapter extends BaseAdapter<User, BaseAdapter.ViewHol
         }
 
         @Override
-        public void bind(User user) {
-            loadImageToImageViewWithoutCaching(avatar, user.getCroppedPhoto());
+        public void bind(UserUpdateDto userDto) {
+            loadImageToImageViewWithoutCaching(avatar, userDto.getCroppedPhoto());
 
-            String userName = user.getLastName() + " " + user.getFirstName() + (user.getPatronymic() == null ? "" : " " + user.getPatronymic());
+            String userName = userDto.getLastName() + " " + userDto.getFirstName() + (userDto.getPatronymic() == null ? "" : " " + userDto.getPatronymic());
             name.setText(userName);
 
             if (membersAdapter != null) {
@@ -61,8 +61,8 @@ public class TeamUserSearchAdapter extends BaseAdapter<User, BaseAdapter.ViewHol
                 buttonAdd.setVisibility(VISIBLE);
 
                 buttonAdd.setOnClickListener(v -> {
-                    removeItem(user);
-                    membersAdapter.insertItem(user);
+                    removeItem(userDto);
+                    membersAdapter.insertItem(userDto);
                     ((CreateTeamDialog) dialog).updateAddedTextVisibility();
                 });
             } else {
@@ -70,7 +70,7 @@ public class TeamUserSearchAdapter extends BaseAdapter<User, BaseAdapter.ViewHol
                 buttonRemove.setVisibility(VISIBLE);
 
                 buttonRemove.setOnClickListener(v -> {
-                    removeItem(user);
+                    removeItem(userDto);
                     ((CreateTeamDialog) dialog).updateAddedTextVisibility();
                 });
             }

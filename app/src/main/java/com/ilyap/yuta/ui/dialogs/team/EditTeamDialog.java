@@ -4,9 +4,9 @@ import android.content.Context;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.Team;
-import com.ilyap.yuta.models.TeamResponse;
-import com.ilyap.yuta.models.UpdateResponse;
+import com.ilyap.yutarefactor.domain.entity.Team;
+import com.ilyap.yutarefactor.domain.response.TeamResponse;
+import com.ilyap.yutarefactor.domain.response.UpdateResponse;
 import com.ilyap.yuta.ui.fragments.TeamsFragment;
 import com.ilyap.yuta.utils.RequestViewModel;
 

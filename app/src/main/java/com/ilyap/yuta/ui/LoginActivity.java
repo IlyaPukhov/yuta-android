@@ -20,7 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.ilyap.yuta.MainActivity;
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.AuthResponse;
+import com.ilyap.yutarefactor.domain.response.AuthorizationResponse;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.LoadingDialog;
 import com.ilyap.yuta.ui.dialogs.NetworkDialog;
@@ -90,8 +90,8 @@ public class LoginActivity extends AppCompatActivity {
         viewModel.getResultLiveData().removeObservers(this);
         viewModel.auth(login, password);
         viewModel.getResultLiveData().observe(this, result -> {
-            if (!(result instanceof AuthResponse)) return;
-            AuthResponse response = (AuthResponse) result;
+            if (!(result instanceof AuthorizationResponse)) return;
+            AuthorizationResponse response = (AuthorizationResponse) result;
             if (response.getStatus().equalsIgnoreCase("ok")) {
                 setUserId(this, response.getUserId());
                 openApp();

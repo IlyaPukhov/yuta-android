@@ -11,12 +11,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.EditUserResponse;
-import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestViewModel;
 import com.ilyap.yuta.utils.UserUtils;
+import com.ilyap.yutarefactor.domain.entity.UserUpdateDto;
+import com.ilyap.yutarefactor.domain.response.UpdateResponse;
 import com.santalu.maskara.widget.MaskEditText;
 
 import java.util.regex.Pattern;
@@ -59,12 +59,12 @@ public class EditUserDialog extends CustomInteractiveDialog {
         errorEmail = dialog.findViewById(R.id.error_email);
         errorVk = dialog.findViewById(R.id.error_vk);
 
-        User user = UserUtils.getCurrentUser();
-        fillFields(user);
+        UserUpdateDto userDto = UserUtils.getCurrentUserDto();
+        fillFields(userDto);
 
         isPhoneValid = isEmailValid = isVkValid = true;
         setupInputFields();
-        setupButtons(user);
+        setupButtons(userDto);
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
     }
@@ -75,42 +75,42 @@ public class EditUserDialog extends CustomInteractiveDialog {
         setupField(vkView, errorVk);
     }
 
-    private void editUserData(User user) {
-        setEditUser(user);
+    private void editUserData(UserUpdateDto userDto) {
+        setEditUser(userDto);
 
         viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.editUserData(getUserId(activity), user);
+        viewModel.editUserData(getUserId(activity), userDto);
         viewModel.getResultLiveData().observe(fragment, result -> {
-            if (!(result instanceof EditUserResponse)) return;
+            if (!(result instanceof UpdateResponse)) return;
             ((ProfileFragment) fragment).updateProfile();
             dismiss();
         });
     }
 
-    private void setEditUser(@NonNull User user) {
-        user.setBiography(getData(biographyView));
-        user.setPhoneNumber(getData(phoneNumberView));
-        user.setEMail(getData(emailView));
-        user.setVk(getData(vkView));
+    private void setEditUser(@NonNull UserUpdateDto userDto) {
+        userDto.setBiography(getData(biographyView));
+        userDto.setPhoneNumber(getData(phoneNumberView));
+        userDto.setEMail(getData(emailView));
+        userDto.setVk(getData(vkView));
     }
 
-    private void fillFields(@NonNull User user) {
-        String biographyUser = user.getBiography();
+    private void fillFields(@NonNull UserUpdateDto userDto) {
+        String biographyUser = userDto.getBiography();
         if (biographyUser != null) {
             biographyView.setText(biographyUser);
         }
 
-        String phoneUser = user.getPhoneNumber();
+        String phoneUser = userDto.getPhoneNumber();
         if (phoneUser != null) {
             phoneNumberView.setText(phoneUser);
         }
 
-        String vkUser = user.getVk();
+        String vkUser = userDto.getVk();
         if (vkUser != null) {
             vkView.setText(vkUser);
         }
 
-        String emailUser = user.getEMail();
+        String emailUser = userDto.getEMail();
         if (emailUser != null) {
             emailView.setText(emailUser);
         }
@@ -147,10 +147,10 @@ public class EditUserDialog extends CustomInteractiveDialog {
         }
     }
 
-    private void setupButtons(User user) {
+    private void setupButtons(UserUpdateDto userDto) {
         submitButton.setOnClickListener(v -> {
             hideKeyboard(vkView);
-            editUserData(user);
+            editUserData(userDto);
         });
     }
 

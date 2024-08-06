@@ -9,9 +9,9 @@ import android.widget.ImageView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.ilyap.yuta.R;
-import com.ilyap.yuta.models.UpdateResponse;
-import com.ilyap.yuta.models.User;
-import com.ilyap.yuta.models.UserResponse;
+import com.ilyap.yutarefactor.domain.response.UpdateResponse;
+import com.ilyap.yutarefactor.domain.entity.UserUpdateDto;
+import com.ilyap.yutarefactor.domain.response.UserResponse;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
@@ -42,17 +42,17 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
     public void start() {
         super.start();
         viewModel = new ViewModelProvider(fragment).get(RequestViewModel.class);
-        User user = UserUtils.getCurrentUser();
+        UserUpdateDto userDto = UserUtils.getCurrentUserDto();
 
         imageView = dialog.findViewById(R.id.photo);
-        loadImageToImageViewWithoutCaching(imageView, user.getCroppedPhoto());
+        loadImageToImageViewWithoutCaching(imageView, userDto.getCroppedPhoto());
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
-        dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> loadImageToImageViewWithoutCaching(imageView, user.getCroppedPhoto()));
+        dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> loadImageToImageViewWithoutCaching(imageView, userDto.getCroppedPhoto()));
         dialog.findViewById(R.id.pick_miniature).setOnClickListener(v -> {
-            if (user.getPhoto().equals(DEFAULT_USER_PHOTO) && selectedImageUri == null) return;
+            if (userDto.getPhoto().equals(DEFAULT_USER_PHOTO) && selectedImageUri == null) return;
             if (selectedImageUri != null) {
-                updatePhoto(user.getId());
+                updatePhoto(userDto.getId());
             } else {
                 openCropDialog();
             }
