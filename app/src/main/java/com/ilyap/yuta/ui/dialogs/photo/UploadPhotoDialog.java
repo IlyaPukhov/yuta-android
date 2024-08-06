@@ -17,12 +17,12 @@ import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.FileUtils;
 import com.ilyap.yuta.utils.RequestViewModel;
+import com.ilyap.yuta.utils.UserUtils;
 import lombok.SneakyThrows;
 
 import java.io.InputStream;
 
 import static com.ilyap.yuta.ui.dialogs.photo.PhotoDialog.DEFAULT_USER_PHOTO;
-import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
 import static com.ilyap.yuta.utils.UserUtils.loadImageToImageViewWithoutCaching;
 
 @SuppressWarnings("ConstantConditions")
@@ -42,7 +42,7 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
     public void start() {
         super.start();
         viewModel = new ViewModelProvider(fragment).get(RequestViewModel.class);
-        User user = getCurrentUser();
+        User user = UserUtils.getCurrentUser();
 
         imageView = dialog.findViewById(R.id.photo);
         loadImageToImageViewWithoutCaching(imageView, user.getCroppedPhoto());

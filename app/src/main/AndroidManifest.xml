@@ -24,7 +24,7 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.YUTA.Main"
             android:enableOnBackInvokedCallback="true"
-            tools:targetApi="34">
+            tools:targetApi="35">
 
         <provider
                 android:name="androidx.core.content.FileProvider"

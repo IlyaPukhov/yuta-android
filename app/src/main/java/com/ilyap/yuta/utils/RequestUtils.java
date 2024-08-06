@@ -1,6 +1,7 @@
 package com.ilyap.yuta.utils;
 
 import androidx.annotation.NonNull;
+import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import org.json.JSONObject;
@@ -24,6 +25,8 @@ public class RequestUtils {
     private static final String CRLF = "\r\n";
     private static final String TWO_HYPHENS = "--";
     private static final String BOUNDARY = "*****";
+
+    @Getter
     private static String rootUrl;
 
     @SneakyThrows
@@ -72,7 +75,7 @@ public class RequestUtils {
     }
 
     @SneakyThrows
-    public void addFilePart(DataOutputStream os, String fieldName, String filename, InputStream is) {
+    public void addFilePart(DataOutputStream os, String fieldName, String filename, @NonNull InputStream is) {
         os.writeBytes(TWO_HYPHENS + BOUNDARY + CRLF);
 
         String contentDisposition = "Content-Disposition: form-data; name=\"" + fieldName + "\"; filename=\"" + filename + "\""
@@ -132,10 +135,6 @@ public class RequestUtils {
         } finally {
             urlConnection.disconnect();
         }
-    }
-
-    public static String getRootUrl() {
-        return rootUrl;
     }
 
     //TODO убрать в релизе

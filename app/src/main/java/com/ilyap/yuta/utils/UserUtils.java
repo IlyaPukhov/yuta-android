@@ -17,6 +17,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.LoginActivity;
+import lombok.Getter;
 import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,6 +26,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 @UtilityClass
 public class UserUtils {
+    @Getter
     private static User currentUser;
     private static SharedPreferences sharedPreferences;
 
@@ -84,10 +86,6 @@ public class UserUtils {
 
     public static SharedPreferences getSharedPreferences(@NonNull Context context) {
         return context.getSharedPreferences("session", Context.MODE_PRIVATE);
-    }
-
-    public static User getCurrentUser() {
-        return currentUser;
     }
 
     public static void setCurrentUser(User currentUser) {

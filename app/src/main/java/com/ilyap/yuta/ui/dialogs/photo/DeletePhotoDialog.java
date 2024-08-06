@@ -8,8 +8,7 @@ import com.ilyap.yuta.models.UpdateResponse;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestViewModel;
-
-import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
+import com.ilyap.yuta.utils.UserUtils;
 
 @SuppressWarnings("ConstantConditions")
 public class DeletePhotoDialog extends CustomInteractiveDialog {
@@ -34,7 +33,7 @@ public class DeletePhotoDialog extends CustomInteractiveDialog {
 
     protected void deletePhoto(Fragment fragment) {
         viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.deleteUserPhoto(getCurrentUser().getId());
+        viewModel.deleteUserPhoto(UserUtils.getCurrentUser().getId());
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
             ((ProfileFragment) fragment).updateProfile();

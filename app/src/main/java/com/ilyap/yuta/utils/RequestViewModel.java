@@ -30,7 +30,6 @@ import java.util.stream.Collector;
 import static com.ilyap.yuta.utils.RequestUtils.FILENAME;
 import static com.ilyap.yuta.utils.RequestUtils.FILE_KEY_NAME;
 import static com.ilyap.yuta.utils.RequestUtils.getRequest;
-import static com.ilyap.yuta.utils.RequestUtils.getRootUrl;
 import static com.ilyap.yuta.utils.RequestUtils.postFormDataRequest;
 import static com.ilyap.yuta.utils.RequestUtils.postRequest;
 import static java.util.stream.Collectors.joining;
@@ -332,7 +331,7 @@ public final class RequestViewModel extends ViewModel {
     }
 
     private String getFullUrl(String path) {
-        return String.format("%s/api/%s/", getRootUrl(), path);
+        return String.format("%s/api/%s/", RequestUtils.getRootUrl(), path);
     }
 
     private String getFullUrl(String path, Map<String, Object> params) {

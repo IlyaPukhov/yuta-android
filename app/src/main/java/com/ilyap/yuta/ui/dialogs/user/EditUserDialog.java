@@ -16,13 +16,13 @@ import com.ilyap.yuta.models.User;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yuta.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.RequestViewModel;
+import com.ilyap.yuta.utils.UserUtils;
 import com.santalu.maskara.widget.MaskEditText;
 
 import java.util.regex.Pattern;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
 
 @SuppressWarnings("ConstantConditions")
@@ -59,7 +59,7 @@ public class EditUserDialog extends CustomInteractiveDialog {
         errorEmail = dialog.findViewById(R.id.error_email);
         errorVk = dialog.findViewById(R.id.error_vk);
 
-        User user = getCurrentUser();
+        User user = UserUtils.getCurrentUser();
         fillFields(user);
 
         isPhoneValid = isEmailValid = isVkValid = true;

@@ -6,9 +6,9 @@ import androidx.fragment.app.Fragment;
 import com.ilyap.yuta.R;
 import com.ilyap.yuta.ui.dialogs.CustomDialog;
 import com.ilyap.yuta.ui.dialogs.CustomInteractiveDialog;
+import com.ilyap.yuta.utils.UserUtils;
 
 import static android.view.View.GONE;
-import static com.ilyap.yuta.utils.UserUtils.getCurrentUser;
 
 @SuppressWarnings("ConstantConditions")
 public class PhotoDialog extends CustomInteractiveDialog {
@@ -31,7 +31,7 @@ public class PhotoDialog extends CustomInteractiveDialog {
 
         View editMiniature = dialog.findViewById(R.id.edit_miniature);
         View deletePhoto = dialog.findViewById(R.id.delete_photo);
-        if (getCurrentUser().getPhoto().contains(DEFAULT_USER_PHOTO)) {
+        if (UserUtils.getCurrentUser().getPhoto().contains(DEFAULT_USER_PHOTO)) {
             editMiniature.setVisibility(GONE);
             deletePhoto.setVisibility(GONE);
         } else {

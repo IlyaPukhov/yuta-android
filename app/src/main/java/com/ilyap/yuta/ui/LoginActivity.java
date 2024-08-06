@@ -38,6 +38,7 @@ import static com.ilyap.yuta.utils.UserUtils.getUserId;
 import static com.ilyap.yuta.utils.UserUtils.setUserId;
 
 public class LoginActivity extends AppCompatActivity {
+
     private TextView errorText;
     private RequestViewModel viewModel;
     private Button loginButton;

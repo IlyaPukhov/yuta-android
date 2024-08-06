@@ -49,6 +49,7 @@ import static com.ilyap.yuta.utils.UserUtils.getUserId;
 import static com.ilyap.yuta.utils.UserUtils.loadImageToImageViewWithoutCaching;
 
 public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHolder<ProjectDto>> {
+
     private final Fragment fragment;
 
     public ProjectsAdapter(Context context, List<ProjectDto> items, Fragment fragment) {
@@ -142,7 +143,6 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
             String filename = path.substring(path.lastIndexOf('/') + 1);
 
             File file = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS) + "/" + filename);
-            file.deleteOnExit();
             file.delete();
 
             Request request = new Request(
