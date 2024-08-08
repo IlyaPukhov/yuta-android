@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background_fragment"
-        tools:context="com.ilyap.yuta.MainActivity"
+        tools:context="com.yuta.app.MainActivity"
         android:paddingTop="30dp">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

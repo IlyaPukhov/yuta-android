@@ -3,13 +3,14 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.kapt'
 }
+apply from: "$rootDir/version.gradle"
 
 android {
-    namespace 'com.ilyap.yuta'
+    namespace 'com.yuta.app'
     compileSdk 35
 
     defaultConfig {
-        applicationId 'com.ilyap.yuta'
+        applicationId 'com.yuta.app'
         minSdk 26
         targetSdk 35
         versionCode 1
@@ -41,28 +42,28 @@ ext {
 }
 
 dependencies {
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
+    implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
+    implementation "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
+    implementation "com.squareup.okhttp3:okhttp:${versions.okHttp}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${versions.okHttp}"
 
-    compileOnly "com.google.dagger:dagger:$daggerVersion"
-    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    compileOnly "com.google.dagger:dagger:${versions.dagger}"
+    kapt "com.google.dagger:dagger-compiler:${versions.dagger}"
 
     implementation 'androidx.core:core-ktx:1.13.1'
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${versions.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}"
 
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
-    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
+    implementation "androidx.navigation:navigation-fragment-ktx:${versions.navigation}"
+    implementation "androidx.navigation:navigation-ui-ktx:${versions.navigation}"
 
     //noinspection AnnotationProcessorOnCompilePath
-    compileOnly "org.projectlombok:lombok:$lombokVersion"
-    kapt "org.projectlombok:lombok:$lombokVersion"
+    compileOnly "org.projectlombok:lombok:${versions.lombok}"
+    kapt "org.projectlombok:lombok:${versions.lombok}"
     implementation 'com.google.code.gson:gson:2.11.0'
     implementation 'com.github.bumptech.glide:glide:4.16.0'
     implementation 'com.github.santalu:maskara:1.0.0'
