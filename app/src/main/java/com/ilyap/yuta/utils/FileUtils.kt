@@ -1,113 +1,83 @@
-package com.ilyap.yuta.utils;
+package com.ilyap.yuta.utils
 
-import android.content.Context;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.net.Uri;
-import android.provider.OpenableColumns;
-import androidx.exifinterface.media.ExifInterface;
-import lombok.Cleanup;
-import lombok.SneakyThrows;
-import lombok.experimental.UtilityClass;
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.net.Uri
+import android.provider.OpenableColumns
+import androidx.exifinterface.media.ExifInterface
+import java.io.File
+import java.io.InputStream
+import java.nio.file.Files
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.util.Arrays;
+object FileUtils {
 
-@UtilityClass
-public class FileUtils {
-    private static final int MAX_BUFFER_SIZE = 1024 * 1024;
+    fun getFileName(context: Context, uri: Uri?): String? {
+        if (uri == null) return null
 
-
-    public static String getFileName(Context context, Uri uri) {
-        if (uri == null) return null;
-
-        String result = null;
-        if (uri.getScheme().equals("content")) {
-            try (Cursor cursor = context.getContentResolver().query(uri, new String[]{
-                    OpenableColumns.DISPLAY_NAME
-            }, null, null, null)) {
-                if (cursor != null && cursor.moveToFirst()) {
-                    int columnIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-                    if (columnIndex != -1) {
-                        result = cursor.getString(columnIndex);
-                    }
-                }
+        return if (uri.scheme == "content") {
+            context.contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val columnIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                    if (columnIndex != -1) cursor.getString(columnIndex) else null
+                } else null
             }
-        }
-        return result;
+        } else null
     }
 
-    @SneakyThrows
-    public static InputStream rotateImage(InputStream inputStream, String fileName) {
-        File tempFile = File.createTempFile("temp", null);
-        @Cleanup FileOutputStream outputStream = new FileOutputStream(tempFile);
-
-        byte[] buffer = new byte[MAX_BUFFER_SIZE];
-        int bytesRead;
-        while ((bytesRead = inputStream.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, bytesRead);
+    fun rotateImage(inputStream: InputStream, fileName: String): InputStream {
+        val tempFile = File.createTempFile("temp", null)
+        tempFile.outputStream().use { outputStream ->
+            inputStream.copyTo(outputStream)
         }
-        inputStream.close();
 
-        ExifInterface exif = new ExifInterface(tempFile.getAbsolutePath());
-        int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
-        Bitmap bitmap = BitmapFactory.decodeFile(tempFile.getAbsolutePath());
-        Bitmap rotatedBitmap = rotateBitmap(bitmap, orientation);
+        val exif = ExifInterface(tempFile.absolutePath)
+        val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED)
+        val bitmap = BitmapFactory.decodeFile(tempFile.absolutePath)
+        val rotatedBitmap = rotateBitmap(bitmap, orientation)
 
-        String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+        val extension = fileName.substring(fileName.lastIndexOf(".") + 1)
 
-        File rotatedTempFile = File.createTempFile("rotatedTemp", "." + extension);
-        @Cleanup FileOutputStream rotatedOutputStream = new FileOutputStream(rotatedTempFile);
+        val rotatedTempFile = File.createTempFile("rotatedTemp", ".$extension")
+        rotatedTempFile.outputStream().use { rotatedOutputStream ->
+            val validExtension = Bitmap.CompressFormat.entries
+                .map { it.name }
+                .firstOrNull { it.equals(extension.uppercase(), ignoreCase = true) }
+                ?: "JPEG"
 
-        String validExtension = Arrays.stream(Bitmap.CompressFormat.values())
-                .map(Bitmap.CompressFormat::name)
-                .filter(ext -> ext.equals(extension.toUpperCase()))
-                .findFirst()
-                .orElse("JPEG");
-
-        rotatedBitmap.compress(Bitmap.CompressFormat.valueOf(validExtension), 100, rotatedOutputStream);
-        return Files.newInputStream(rotatedTempFile.toPath());
+            rotatedBitmap.compress(Bitmap.CompressFormat.valueOf(validExtension), 100, rotatedOutputStream)
+        }
+        return Files.newInputStream(rotatedTempFile.toPath())
     }
 
-    @SneakyThrows
-    private static Bitmap rotateBitmap(Bitmap bitmap, int orientation) {
-        Matrix matrix = new Matrix();
-        switch (orientation) {
-            case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
-                matrix.setScale(-1, 1);
-                break;
-            case ExifInterface.ORIENTATION_ROTATE_180:
-                matrix.setRotate(180);
-                break;
-            case ExifInterface.ORIENTATION_FLIP_VERTICAL:
-                matrix.setRotate(180);
-                matrix.postScale(-1, 1);
-                break;
-            case ExifInterface.ORIENTATION_TRANSPOSE:
-                matrix.setRotate(90);
-                matrix.postScale(-1, 1);
-                break;
-            case ExifInterface.ORIENTATION_ROTATE_90:
-                matrix.setRotate(90);
-                break;
-            case ExifInterface.ORIENTATION_TRANSVERSE:
-                matrix.setRotate(-90);
-                matrix.postScale(-1, 1);
-                break;
-            case ExifInterface.ORIENTATION_ROTATE_270:
-                matrix.setRotate(-90);
-                break;
-            default:
-                return bitmap;
+    private fun rotateBitmap(bitmap: Bitmap, orientation: Int): Bitmap {
+        val matrix = Matrix()
+        when (orientation) {
+            ExifInterface.ORIENTATION_FLIP_HORIZONTAL -> matrix.setScale(-1f, 1f)
+            ExifInterface.ORIENTATION_ROTATE_180 -> matrix.setRotate(180f)
+            ExifInterface.ORIENTATION_FLIP_VERTICAL -> {
+                matrix.setRotate(180f)
+                matrix.postScale(-1f, 1f)
+            }
+
+            ExifInterface.ORIENTATION_TRANSPOSE -> {
+                matrix.setRotate(90f)
+                matrix.postScale(-1f, 1f)
+            }
+
+            ExifInterface.ORIENTATION_ROTATE_90 -> matrix.setRotate(90f)
+            ExifInterface.ORIENTATION_TRANSVERSE -> {
+                matrix.setRotate(-90f)
+                matrix.postScale(-1f, 1f)
+            }
+
+            ExifInterface.ORIENTATION_ROTATE_270 -> matrix.setRotate(-90f)
+            else -> return bitmap
         }
 
-        Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-        bitmap.recycle();
-        return rotatedBitmap;
+        val rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+        bitmap.recycle()
+        return rotatedBitmap
     }
 }

@@ -1,18 +1,16 @@
-package com.ilyap.yuta.utils;
+package com.ilyap.yuta.utils
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import lombok.experimental.UtilityClass;
+import com.google.gson.FieldNamingPolicy
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 
-@UtilityClass
-public class JsonUtils {
+object JsonUtils {
 
-    private static final Gson gson = new GsonBuilder()
-            .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-            .create();
+    private val gson: Gson = GsonBuilder()
+        .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+        .create()
 
-    public static <T> T parse(String jsonString, Class<T> pojoClass) {
-        return gson.fromJson(jsonString, pojoClass);
+    fun <T> parse(jsonString: String, clazz: Class<T>): T {
+        return gson.fromJson(jsonString, clazz)
     }
 }

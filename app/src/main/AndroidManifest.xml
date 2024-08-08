@@ -46,7 +46,7 @@
             </intent-filter>
         </activity>
         <activity
-                android:name="com.ilyap.yutarefactor.MainActivity"
+                android:name="com.ilyap.yuta.MainActivity"
                 android:exported="true" />
     </application>
 
