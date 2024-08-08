@@ -22,9 +22,9 @@
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:supportsRtl="true"
-            android:theme="@style/Theme.YUTA"
+            android:theme="@style/Theme.YUTA.Main"
             android:enableOnBackInvokedCallback="true"
-            tools:targetApi="34">
+            tools:targetApi="35">
 
         <provider
                 android:name="androidx.core.content.FileProvider"
@@ -38,14 +38,15 @@
 
         <activity
                 android:name=".ui.LoginActivity"
-                android:exported="true">
+                android:exported="true"
+                android:theme="@style/Theme.YUTA.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-                android:name=".MainActivity"
+                android:name="com.yuta.app.MainActivity"
                 android:exported="true" />
     </application>
 

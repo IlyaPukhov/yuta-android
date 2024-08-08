@@ -8,7 +8,7 @@
         android:layout_marginTop="15dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_project"
             android:id="@+id/project_card"
@@ -218,6 +218,9 @@
                 android:textAppearance="@style/team_text"
                 android:textAlignment="center"
                 android:autoSizeTextType="uniform"
+                app:layout_constrainedWidth="true"
+                android:ellipsize="end"
+                android:maxLines="1"
                 app:layout_constraintStart_toStartOf="@id/project_info_container"
                 app:layout_constraintEnd_toEndOf="@id/project_info_container"
                 app:layout_constraintTop_toBottomOf="@id/project_info_container"
@@ -239,14 +242,20 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/team_container"
-                android:layout_width="0dp"
+                android:scrollbars="vertical"
+                android:nestedScrollingEnabled="true"
+                android:overScrollMode="ifContentScrolls"
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
+                app:layout_constrainedHeight="true"
+                app:layout_constrainedWidth="true"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/background_project"
                 app:layout_constraintTop_toBottomOf="@+id/view"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:visibility="gone">
+                android:visibility="invisible">
 
             <Button
                     android:id="@+id/close"
@@ -263,9 +272,9 @@
 
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/team_list"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    app:layout_constrainedHeight="true"
+                    android:nestedScrollingEnabled="true"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
