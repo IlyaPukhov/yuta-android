@@ -1,7 +1,6 @@
-package com.ilyap.yuta.network;
+package com.ilyap.yuta.data.network;
 
 import androidx.annotation.NonNull;
-import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import org.json.JSONObject;
@@ -17,7 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @UtilityClass
-public class RequestUtils {
+public class _RequestUtils {
     public static final String FILENAME = "filename";
     public static final String FILE_KEY_NAME = "file_key_name";
 
@@ -25,9 +24,6 @@ public class RequestUtils {
     private static final String CRLF = "\r\n";
     private static final String TWO_HYPHENS = "--";
     private static final String BOUNDARY = "*****";
-
-    @Getter
-    private static String rootUrl;
 
     @SneakyThrows
     public static String postFormDataRequest(String urlString, Map<String, Object> params, @NonNull InputStream is) {
@@ -135,10 +131,5 @@ public class RequestUtils {
         } finally {
             urlConnection.disconnect();
         }
-    }
-
-    //TODO убрать в релизе
-    public static void setRootUrl(String ipv4) {
-        rootUrl = String.format("http://%s:8000", ipv4);
     }
 }

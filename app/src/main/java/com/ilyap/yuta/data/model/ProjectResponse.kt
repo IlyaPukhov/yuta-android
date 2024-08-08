@@ -1,6 +1,6 @@
-package com.ilyap.yuta.domain.response
+package com.ilyap.yuta.data.model
 
-import com.ilyap.yuta.domain.entity.Project
+import com.ilyap.yuta.domain.model.entity.Project
 
 data class ProjectResponse(
     val status: String,

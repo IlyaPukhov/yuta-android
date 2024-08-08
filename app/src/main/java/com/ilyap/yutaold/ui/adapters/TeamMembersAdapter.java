@@ -11,8 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import com.ilyap.yuta.MainActivity;
 import com.ilyap.yutaold.R;
-import com.ilyap.yuta.domain.entity.TeamMember;
-import com.ilyap.yuta.domain.entity.UserUpdateDto;
+import com.ilyap.yuta.domain.model.entity.TeamMember;
+import com.ilyap.yuta.domain.model.entity.User;
 
 import java.util.List;
 
@@ -49,8 +49,8 @@ public class TeamMembersAdapter extends BaseAdapter<TeamMember, BaseAdapter.View
 
         @Override
         public void bind(@NonNull TeamMember member) {
-            UserUpdateDto userDto = member.getMember();
-            UserUpdateDto leader = member.getTeam().getLeader();
+            User userDto = member.getMember();
+            User leader = member.getTeam().getLeader();
             loadImageToImageViewWithoutCaching(imageView, userDto.getCroppedPhoto());
 
             if (leader.equals(userDto)) {

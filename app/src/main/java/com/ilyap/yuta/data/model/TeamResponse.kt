@@ -1,6 +1,6 @@
-package com.ilyap.yuta.domain.response
+package com.ilyap.yuta.data.model
 
-import com.ilyap.yuta.domain.entity.Team
+import com.ilyap.yuta.domain.model.Team
 
 data class TeamResponse(
     val status: String,

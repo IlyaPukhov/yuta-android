@@ -6,18 +6,18 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.Context.MODE_PRIVATE
 import com.ilyap.yutaold.ui.LoginActivity
-import com.ilyap.yuta.network.RequestUtils
-import com.ilyap.yuta.domain.entity.UserUpdateDto
+import com.ilyap.yuta.domain.model.entity.User
+import com.ilyap.yuta.network._RequestUtils
 
 object UserUtils {
 
-    private var currentUser: UserUpdateDto? = null
+    private var currentUser: User? = null
     private fun getSharedPreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences("session", MODE_PRIVATE)
     }
 
     fun getPath(path: String): String {
-        return RequestUtils.getRootUrl() + path
+        return _RequestUtils.getRootUrl() + path
     }
 
     fun setUserId(context: Context, id: Int) {
@@ -48,7 +48,7 @@ object UserUtils {
         activity.finish()
     }
 
-    fun setCurrentUser(currentUser: UserUpdateDto) {
+    fun setCurrentUser(currentUser: User) {
         UserUtils.currentUser = currentUser
     }
 }

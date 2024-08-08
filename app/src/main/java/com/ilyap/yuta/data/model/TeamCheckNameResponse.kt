@@ -1,4 +1,4 @@
-package com.ilyap.yuta.domain.response
+package com.ilyap.yuta.data.model
 
 data class TeamCheckNameResponse(
     val status: String,

@@ -1,6 +1,6 @@
-package com.ilyap.yuta.domain.entity
+package com.ilyap.yuta.domain.model
 
-data class UserUpdateDto(
+data class User(
     var id: Int,
     var photo: String,
     var croppedPhoto: String,

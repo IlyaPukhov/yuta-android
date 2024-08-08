@@ -20,11 +20,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.ilyap.yuta.MainActivity;
 import com.ilyap.yutaold.R;
-import com.ilyap.yuta.domain.response.AuthorizationResponse;
+import com.ilyap.yuta.domain.model.response.AuthorizationResponse;
 import com.ilyap.yutaold.ui.dialogs.CustomDialog;
 import com.ilyap.yutaold.ui.dialogs.LoadingDialog;
 import com.ilyap.yutaold.ui.dialogs.NetworkDialog;
-import com.ilyap.yuta.network.RequestUtils;
+import com.ilyap.yuta.network._RequestUtils;
 import com.ilyap.yuta.network.RequestViewModel;
 import com.ilyap.yuta.utils.UserUtils;
 
@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
 
         if (hasInternetConnection() && getUserId(this) >= 0) {
-            RequestUtils.setRootUrl(UserUtils.getSharedPreferences(this).getString("ipv4", ""));
+            _RequestUtils.setRootUrl(UserUtils.getSharedPreferences(this).getString("ipv4", ""));
             openApp();
         }
 
@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
         // TODO
         SharedPreferences.Editor editor = UserUtils.getSharedPreferences(this).edit();
         editor.putString("ipv4", ((EditText) findViewById(R.id.ipv4)).getText().toString()).apply();
-        RequestUtils.setRootUrl(UserUtils.getSharedPreferences(this).getString("ipv4", ""));
+        _RequestUtils.setRootUrl(UserUtils.getSharedPreferences(this).getString("ipv4", ""));
 
         CustomDialog loadingDialog = new LoadingDialog(this);
         loadingDialog.start();

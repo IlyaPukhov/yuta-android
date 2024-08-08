@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.ilyap.yutaold.R;
-import com.ilyap.yuta.domain.response.SearchUsersResponse;
-import com.ilyap.yuta.domain.entity.UserUpdateDto;
+import com.ilyap.yuta.domain.model.response.SearchUsersResponse;
+import com.ilyap.yuta.domain.model.entity.User;
 import com.ilyap.yutaold.ui.adapters.UserSearchAdapter;
 import com.ilyap.yutaold.ui.dialogs.CustomDialog;
 import com.ilyap.yutaold.ui.dialogs.user.LogoutDialog;
@@ -33,7 +33,7 @@ import static android.view.View.VISIBLE;
 @NoArgsConstructor
 public class SearchFragment extends Fragment {
     private View emptyText;
-    private List<UserUpdateDto> userDto;
+    private List<User> userDto;
     private View view;
     private RequestViewModel viewModel;
     private UserSearchAdapter searchAdapter;
@@ -98,7 +98,7 @@ public class SearchFragment extends Fragment {
         });
     }
 
-    private void updateList(List<UserUpdateDto> userDto) {
+    private void updateList(List<User> userDto) {
         searchAdapter.updateList(userDto);
     }
 

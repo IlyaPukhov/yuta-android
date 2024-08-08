@@ -21,8 +21,8 @@ import com.ilyap.yutaold.ui.dialogs.user.EditUserDialog;
 import com.ilyap.yutaold.ui.dialogs.user.LogoutDialog;
 import com.ilyap.yutaold.ui.dialogs.user.UpdateUserDialog;
 import com.ilyap.yuta.network.RequestViewModel;
-import com.ilyap.yuta.domain.entity.UserUpdateDto;
-import com.ilyap.yuta.domain.response.UserResponse;
+import com.ilyap.yuta.domain.model.entity.User;
+import com.ilyap.yuta.domain.model.response.UserResponse;
 import lombok.NoArgsConstructor;
 
 import static android.view.View.GONE;
@@ -44,7 +44,7 @@ public class ProfileFragment extends Fragment {
     );
     protected View view;
     protected View progressLayout;
-    protected UserUpdateDto userDto;
+    protected User userDto;
     protected ImageView imageView;
     protected RequestViewModel viewModel;
 

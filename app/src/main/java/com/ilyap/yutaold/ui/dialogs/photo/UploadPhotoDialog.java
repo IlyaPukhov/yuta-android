@@ -15,9 +15,9 @@ import com.ilyap.yutaold.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.utils.FileUtils;
 import com.ilyap.yuta.network.RequestViewModel;
 import com.ilyap.yuta.utils.UserUtils;
-import com.ilyap.yuta.domain.entity.UserUpdateDto;
-import com.ilyap.yuta.domain.response.UpdateResponse;
-import com.ilyap.yuta.domain.response.UserResponse;
+import com.ilyap.yuta.domain.model.entity.User;
+import com.ilyap.yuta.domain.model.response.UpdateResponse;
+import com.ilyap.yuta.domain.model.response.UserResponse;
 import lombok.SneakyThrows;
 
 import java.io.InputStream;
@@ -42,7 +42,7 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
     public void start() {
         super.start();
         viewModel = new ViewModelProvider(fragment).get(RequestViewModel.class);
-        UserUpdateDto userDto = UserUtils.getCurrentUser();
+        User userDto = UserUtils.getCurrentUser();
 
         imageView = dialog.findViewById(R.id.photo);
         loadImageToImageViewWithoutCaching(imageView, userDto.getCroppedPhoto());

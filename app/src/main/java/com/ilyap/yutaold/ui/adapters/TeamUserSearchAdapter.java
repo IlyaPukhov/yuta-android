@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import com.ilyap.yutaold.R;
-import com.ilyap.yuta.domain.entity.UserUpdateDto;
+import com.ilyap.yuta.domain.model.entity.User;
 import com.ilyap.yutaold.ui.dialogs.CustomDialog;
 import com.ilyap.yutaold.ui.dialogs.team.CreateTeamDialog;
 
@@ -18,11 +18,11 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.utils.ImageUtils.loadImageToImageViewWithoutCaching;
 
-public class TeamUserSearchAdapter extends BaseAdapter<UserUpdateDto, BaseAdapter.ViewHolder<UserUpdateDto>> {
+public class TeamUserSearchAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User>> {
     private final CustomDialog dialog;
     private final TeamUserSearchAdapter membersAdapter;
 
-    public TeamUserSearchAdapter(CustomDialog dialog, List<UserUpdateDto> items, TeamUserSearchAdapter membersAdapter) {
+    public TeamUserSearchAdapter(CustomDialog dialog, List<User> items, TeamUserSearchAdapter membersAdapter) {
         super(dialog.getContext(), items);
         this.membersAdapter = membersAdapter;
         this.dialog = dialog;
@@ -35,7 +35,7 @@ public class TeamUserSearchAdapter extends BaseAdapter<UserUpdateDto, BaseAdapte
         return new UserViewHolder(view);
     }
 
-    public class UserViewHolder extends BaseAdapter.ViewHolder<UserUpdateDto> {
+    public class UserViewHolder extends BaseAdapter.ViewHolder<User> {
         private final TextView name;
         private final ImageView avatar;
         private final Button buttonAdd;
@@ -50,7 +50,7 @@ public class TeamUserSearchAdapter extends BaseAdapter<UserUpdateDto, BaseAdapte
         }
 
         @Override
-        public void bind(UserUpdateDto userDto) {
+        public void bind(User userDto) {
             loadImageToImageViewWithoutCaching(avatar, userDto.getCroppedPhoto());
 
             String userName = userDto.getLastName() + " " + userDto.getFirstName() + (userDto.getPatronymic() == null ? "" : " " + userDto.getPatronymic());

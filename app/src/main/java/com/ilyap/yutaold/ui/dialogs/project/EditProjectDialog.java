@@ -8,13 +8,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import com.ilyap.yutaold.R;
-import com.ilyap.yuta.domain.entity.Project;
-import com.ilyap.yuta.domain.response.ProjectResponse;
-import com.ilyap.yuta.domain.entity.Team;
-import com.ilyap.yuta.domain.response.UpdateResponse;
+import com.ilyap.yuta.domain.model.entity.Project;
+import com.ilyap.yuta.domain.model.response.ProjectResponse;
+import com.ilyap.yuta.domain.model.entity.Team;
+import com.ilyap.yuta.domain.model.response.UpdateResponse;
 import com.ilyap.yutaold.ui.fragments.ProjectsFragment;
 import com.ilyap.yuta.utils.FileUtils;
-import com.ilyap.yuta.domain.entity.ProjectStatus;
+import com.ilyap.yuta.domain.model.entity.ProjectStatus;
 import lombok.SneakyThrows;
 
 import java.io.InputStream;

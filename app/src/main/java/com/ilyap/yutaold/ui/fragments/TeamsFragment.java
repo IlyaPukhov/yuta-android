@@ -18,9 +18,9 @@ import com.ilyap.yutaold.ui.dialogs.CustomDialog;
 import com.ilyap.yutaold.ui.dialogs.team.CreateTeamDialog;
 import com.ilyap.yutaold.ui.dialogs.user.LogoutDialog;
 import com.ilyap.yuta.network.RequestViewModel;
-import com.ilyap.yuta.domain.entity.Team;
-import com.ilyap.yuta.domain.entity.TeamMember;
-import com.ilyap.yuta.domain.response.TeamsResponse;
+import com.ilyap.yuta.domain.model.entity.Team;
+import com.ilyap.yuta.domain.model.entity.TeamMember;
+import com.ilyap.yuta.domain.model.response.TeamsResponse;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;

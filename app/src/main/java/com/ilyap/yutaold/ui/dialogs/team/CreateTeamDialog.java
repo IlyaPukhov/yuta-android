@@ -13,10 +13,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.ilyap.yutaold.R;
-import com.ilyap.yuta.domain.response.TeamCheckNameResponse;
-import com.ilyap.yuta.domain.response.SearchUsersResponse;
-import com.ilyap.yuta.domain.response.UpdateResponse;
-import com.ilyap.yuta.domain.entity.UserUpdateDto;
+import com.ilyap.yuta.domain.model.response.TeamCheckNameResponse;
+import com.ilyap.yuta.domain.model.response.SearchUsersResponse;
+import com.ilyap.yuta.domain.model.response.UpdateResponse;
+import com.ilyap.yuta.domain.model.entity.User;
 import com.ilyap.yutaold.ui.adapters.TeamUserSearchAdapter;
 import com.ilyap.yutaold.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yutaold.ui.fragments.TeamsFragment;
@@ -31,8 +31,8 @@ import static com.ilyap.yuta.utils.UserUtils.getUserId;
 
 @SuppressWarnings("ConstantConditions")
 public class CreateTeamDialog extends CustomInteractiveDialog {
-    protected final List<UserUpdateDto> addedMembers = new ArrayList<>();
-    private final List<UserUpdateDto> searchUserDtos = new ArrayList<>();
+    protected final List<User> addedMembers = new ArrayList<>();
+    private final List<User> searchUserDtos = new ArrayList<>();
     protected RequestViewModel viewModel;
     protected EditText teamName;
     protected Button submitButton;
@@ -97,7 +97,7 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
         });
     }
 
-    private void updateList(@NonNull TeamUserSearchAdapter adapter, @NonNull List<UserUpdateDto> userDto) {
+    private void updateList(@NonNull TeamUserSearchAdapter adapter, @NonNull List<User> userDto) {
         messageVisibility(emptySearch, !userDto.isEmpty());
         adapter.updateList(userDto);
     }

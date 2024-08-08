@@ -9,7 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.ilyap.yutaold.R;
-import com.ilyap.yuta.domain.entity.TeamMember;
+import com.ilyap.yuta.domain.model.entity.TeamMember;
 import com.ilyap.yutaold.ui.adapters.layoutmanagers.SpanningLinearLayoutManager;
 
 import java.util.List;

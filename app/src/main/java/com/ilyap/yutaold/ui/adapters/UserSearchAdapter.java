@@ -13,16 +13,16 @@ import androidx.navigation.NavController;
 import com.ilyap.yuta.utils.ImageUtils;
 import com.ilyap.yuta.MainActivity;
 import com.ilyap.yutaold.R;
-import com.ilyap.yuta.domain.entity.UserUpdateDto;
+import com.ilyap.yuta.domain.model.entity.User;
 import com.ilyap.yuta.viewmodel.MainViewModel;
 
 import java.util.List;
 
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
 
-public class UserSearchAdapter extends BaseAdapter<UserUpdateDto, BaseAdapter.ViewHolder<UserUpdateDto>> {
+public class UserSearchAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User>> {
 
-    public UserSearchAdapter(Context context, List<UserUpdateDto> items) {
+    public UserSearchAdapter(Context context, List<User> items) {
         super(context, items);
     }
 
@@ -33,7 +33,7 @@ public class UserSearchAdapter extends BaseAdapter<UserUpdateDto, BaseAdapter.Vi
         return new UserSearchViewHolder(view);
     }
 
-    public class UserSearchViewHolder extends ViewHolder<UserUpdateDto> {
+    public class UserSearchViewHolder extends ViewHolder<User> {
         private final TextView name;
         private final ImageView avatar;
         private final View userLayout;
@@ -46,7 +46,7 @@ public class UserSearchAdapter extends BaseAdapter<UserUpdateDto, BaseAdapter.Vi
         }
 
         @Override
-        public void bind(UserUpdateDto userDto) {
+        public void bind(User userDto) {
             ImageUtils.loadImageToImageViewWithCaching(avatar, userDto.getCroppedPhoto());
 
             String fullName = userDto.getLastName() + " " + userDto.getFirstName() + (userDto.getPatronymic() == null ? "" : " " + userDto.getPatronymic());

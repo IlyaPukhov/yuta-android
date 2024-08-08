@@ -15,8 +15,8 @@ import com.ilyap.yutaold.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yutaold.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.network.RequestViewModel;
 import com.ilyap.yuta.utils.UserUtils;
-import com.ilyap.yuta.domain.entity.UserUpdateDto;
-import com.ilyap.yuta.domain.response.UpdateResponse;
+import com.ilyap.yuta.domain.model.entity.User;
+import com.ilyap.yuta.domain.model.response.UpdateResponse;
 import com.santalu.maskara.widget.MaskEditText;
 
 import java.util.regex.Pattern;
@@ -59,7 +59,7 @@ public class EditUserDialog extends CustomInteractiveDialog {
         errorEmail = dialog.findViewById(R.id.error_email);
         errorVk = dialog.findViewById(R.id.error_vk);
 
-        UserUpdateDto userDto = UserUtils.getCurrentUser();
+        User userDto = UserUtils.getCurrentUser();
         fillFields(userDto);
 
         isPhoneValid = isEmailValid = isVkValid = true;
@@ -75,7 +75,7 @@ public class EditUserDialog extends CustomInteractiveDialog {
         setupField(vkView, errorVk);
     }
 
-    private void editUserData(UserUpdateDto userDto) {
+    private void editUserData(User userDto) {
         setEditUser(userDto);
 
         viewModel.getResultLiveData().removeObservers(fragment);
@@ -87,14 +87,14 @@ public class EditUserDialog extends CustomInteractiveDialog {
         });
     }
 
-    private void setEditUser(@NonNull UserUpdateDto userDto) {
+    private void setEditUser(@NonNull User userDto) {
         userDto.setBiography(getData(biographyView));
         userDto.setPhoneNumber(getData(phoneNumberView));
         userDto.setEMail(getData(emailView));
         userDto.setVk(getData(vkView));
     }
 
-    private void fillFields(@NonNull UserUpdateDto userDto) {
+    private void fillFields(@NonNull User userDto) {
         String biographyUser = userDto.getBiography();
         if (biographyUser != null) {
             biographyView.setText(biographyUser);
@@ -147,7 +147,7 @@ public class EditUserDialog extends CustomInteractiveDialog {
         }
     }
 
-    private void setupButtons(UserUpdateDto userDto) {
+    private void setupButtons(User userDto) {
         submitButton.setOnClickListener(v -> {
             hideKeyboard(vkView);
             editUserData(userDto);

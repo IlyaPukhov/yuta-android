@@ -4,7 +4,7 @@ import android.content.Context;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.ilyap.yutaold.R;
-import com.ilyap.yuta.domain.response.UpdateResponse;
+import com.ilyap.yuta.domain.model.response.UpdateResponse;
 import com.ilyap.yutaold.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yutaold.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.network.RequestViewModel;

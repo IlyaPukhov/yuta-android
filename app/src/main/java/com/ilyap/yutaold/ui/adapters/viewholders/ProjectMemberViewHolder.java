@@ -10,14 +10,14 @@ import androidx.navigation.NavController;
 import com.ilyap.yutaold.R;
 import com.ilyap.yutaold.ui.adapters.BaseAdapter;
 import com.ilyap.yuta.MainActivity;
-import com.ilyap.yuta.domain.entity.UserUpdateDto;
+import com.ilyap.yuta.domain.model.entity.User;
 import lombok.Getter;
 
 import static android.view.View.VISIBLE;
 import static com.ilyap.yuta.utils.ImageUtils.loadImageToImageViewWithoutCaching;
 import static com.ilyap.yuta.utils.UserUtils.getUserId;
 
-public class ProjectMemberViewHolder extends BaseAdapter.ViewHolder<UserUpdateDto> {
+public class ProjectMemberViewHolder extends BaseAdapter.ViewHolder<User> {
     @Getter
     private final Context context;
     private final ImageView imageView;
@@ -38,7 +38,7 @@ public class ProjectMemberViewHolder extends BaseAdapter.ViewHolder<UserUpdateDt
     }
 
     @Override
-    public void bind(UserUpdateDto userDto) {
+    public void bind(User userDto) {
         imageView.setVisibility(VISIBLE);
         loadImageToImageViewWithoutCaching(imageView, userDto.getCroppedPhoto());
 

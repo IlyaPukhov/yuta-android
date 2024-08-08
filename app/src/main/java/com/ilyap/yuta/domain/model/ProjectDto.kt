@@ -1,7 +1,4 @@
-package com.ilyap.yuta.domain.dto
-
-import com.ilyap.yuta.domain.entity.Team
-import com.ilyap.yuta.domain.entity.UserUpdateDto
+package com.ilyap.yuta.domain.model
 
 data class ProjectDto(
     val id: Int,
@@ -11,6 +8,6 @@ data class ProjectDto(
     val status: String,
     val stringDeadline: String,
     val description: String,
-    val manager: UserUpdateDto,
+    val manager: User,
     val team: Team?
 )

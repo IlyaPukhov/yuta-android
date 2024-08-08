@@ -16,8 +16,8 @@ import com.ilyap.yutaold.ui.dialogs.CustomInteractiveDialog;
 import com.ilyap.yutaold.ui.fragments.ProfileFragment;
 import com.ilyap.yuta.network.RequestViewModel;
 import com.ilyap.yuta.utils.UserUtils;
-import com.ilyap.yuta.domain.entity.UserUpdateDto;
-import com.ilyap.yuta.domain.response.UpdateResponse;
+import com.ilyap.yuta.domain.model.entity.User;
+import com.ilyap.yuta.domain.model.response.UpdateResponse;
 
 import static com.ilyap.yuta.utils.ImageUtils.getConfiguredGlideBuilder;
 import static com.ilyap.yuta.utils.UserUtils.getPath;
@@ -36,7 +36,7 @@ public class CropPhotoDialog extends CustomInteractiveDialog {
     public void start() {
         super.start();
         viewModel = new ViewModelProvider(fragment).get(RequestViewModel.class);
-        UserUpdateDto userDto = UserUtils.getCurrentUser();
+        User userDto = UserUtils.getCurrentUser();
 
         cropImageView = dialog.findViewById(R.id.cropImageView);
 

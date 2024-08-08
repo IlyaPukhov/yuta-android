@@ -1,4 +1,4 @@
-package com.ilyap.yuta.domain.entity
+package com.ilyap.yuta.domain.model
 
 data class Project(
     val id: Int,

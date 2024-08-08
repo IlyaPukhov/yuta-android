@@ -24,8 +24,8 @@ import com.ilyap.yutaold.ui.adapters.layoutmanagers.SpanningLinearLayoutManager;
 import com.ilyap.yutaold.ui.dialogs.CustomDialog;
 import com.ilyap.yutaold.ui.dialogs.project.ProjectDialog;
 import com.ilyap.yuta.utils.ImageUtils;
-import com.ilyap.yuta.domain.dto.ProjectDto;
-import com.ilyap.yuta.domain.entity.UserUpdateDto;
+import com.ilyap.yuta.domain.model.entity.ProjectDto;
+import com.ilyap.yuta.domain.model.entity.User;
 import lombok.SneakyThrows;
 
 import java.io.File;
@@ -97,8 +97,8 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
             setupMenu(project);
         }
 
-        private void setupTeamPreview(ProjectDto project, UserUpdateDto manager) {
-            List<UserUpdateDto> teamMembers = new ArrayList<>();
+        private void setupTeamPreview(ProjectDto project, User manager) {
+            List<User> teamMembers = new ArrayList<>();
             teamMembers.add(manager);
             if (project.getTeam() != null) {
                 teamMembers.addAll(project.getTeam().getMembers());

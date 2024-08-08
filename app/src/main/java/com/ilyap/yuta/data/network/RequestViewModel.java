@@ -1,21 +1,22 @@
-package com.ilyap.yuta.network;
+package com.ilyap.yuta.data.network;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.ilyap.yuta.domain.entity.UserUpdateDto;
-import com.ilyap.yuta.domain.response.AuthorizationResponse;
-import com.ilyap.yuta.domain.response.ProjectResponse;
-import com.ilyap.yuta.domain.response.ProjectsResponse;
-import com.ilyap.yuta.domain.response.SearchTeamsResponse;
-import com.ilyap.yuta.domain.response.SearchUsersResponse;
-import com.ilyap.yuta.domain.response.TeamCheckNameResponse;
-import com.ilyap.yuta.domain.response.TeamResponse;
-import com.ilyap.yuta.domain.response.TeamsResponse;
-import com.ilyap.yuta.domain.response.UpdateResponse;
-import com.ilyap.yuta.domain.response.UserResponse;
+import com.ilyap.yuta.domain.model.entity.User;
+import com.ilyap.yuta.domain.model.response.AuthorizationResponse;
+import com.ilyap.yuta.domain.model.response.ProjectResponse;
+import com.ilyap.yuta.domain.model.response.ProjectsResponse;
+import com.ilyap.yuta.domain.model.response.SearchTeamsResponse;
+import com.ilyap.yuta.domain.model.response.SearchUsersResponse;
+import com.ilyap.yuta.domain.model.response.TeamCheckNameResponse;
+import com.ilyap.yuta.domain.model.response.TeamResponse;
+import com.ilyap.yuta.domain.model.response.TeamsResponse;
+import com.ilyap.yuta.domain.model.response.UpdateResponse;
+import com.ilyap.yuta.domain.model.response.UserResponse;
+import com.ilyap.yuta.network._RequestUtils;
 import com.ilyap.yuta.utils.JsonUtils;
 import org.json.JSONArray;
 
@@ -27,11 +28,11 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.stream.Collector;
 
-import static com.ilyap.yuta.network.RequestUtils.FILENAME;
-import static com.ilyap.yuta.network.RequestUtils.FILE_KEY_NAME;
-import static com.ilyap.yuta.network.RequestUtils.getRequest;
-import static com.ilyap.yuta.network.RequestUtils.postFormDataRequest;
-import static com.ilyap.yuta.network.RequestUtils.postRequest;
+import static com.ilyap.yuta.network._RequestUtils.FILENAME;
+import static com.ilyap.yuta.network._RequestUtils.FILE_KEY_NAME;
+import static com.ilyap.yuta.network._RequestUtils.getRequest;
+import static com.ilyap.yuta.network._RequestUtils.postFormDataRequest;
+import static com.ilyap.yuta.network._RequestUtils.postRequest;
 import static java.util.stream.Collectors.joining;
 
 public final class RequestViewModel extends ViewModel {
@@ -141,7 +142,7 @@ public final class RequestViewModel extends ViewModel {
         });
     }
 
-    public void searchUsers(String userName, int leaderId, List<UserUpdateDto> members) {
+    public void searchUsers(String userName, int leaderId, List<User> members) {
         clearResultLiveData();
         executor.execute(() -> {
             Map<String, Object> params = new HashMap<>();
@@ -170,7 +171,7 @@ public final class RequestViewModel extends ViewModel {
         checkUniqueTeamName(name, -1);
     }
 
-    public void editTeam(int teamId, String teamName, List<UserUpdateDto> members) {
+    public void editTeam(int teamId, String teamName, List<User> members) {
         clearResultLiveData();
         executor.execute(() -> {
             HashMap<String, Object> params = new HashMap<>();
@@ -182,7 +183,7 @@ public final class RequestViewModel extends ViewModel {
         });
     }
 
-    public void createTeam(int leaderId, String teamName, List<UserUpdateDto> members) {
+    public void createTeam(int leaderId, String teamName, List<User> members) {
         clearResultLiveData();
         executor.execute(() -> {
             HashMap<String, Object> params = new HashMap<>();
@@ -277,7 +278,7 @@ public final class RequestViewModel extends ViewModel {
         });
     }
 
-    public void editUserData(int userId, UserUpdateDto userDto) {
+    public void editUserData(int userId, User userDto) {
         clearResultLiveData();
         executor.execute(() -> {
             Map<String, Object> params = new HashMap<>();
@@ -320,9 +321,9 @@ public final class RequestViewModel extends ViewModel {
         return resultLiveData;
     }
 
-    private static JSONArray getMembersIdArray(@NonNull List<UserUpdateDto> members) {
+    private static JSONArray getMembersIdArray(@NonNull List<User> members) {
         return members.stream()
-                .map(UserUpdateDto::getId)
+                .map(User::getId)
                 .collect(Collector.of(JSONArray::new, JSONArray::put, JSONArray::put));
     }
 
@@ -331,7 +332,7 @@ public final class RequestViewModel extends ViewModel {
     }
 
     private String getFullUrl(String path) {
-        return String.format("%s/api/%s/", RequestUtils.getRootUrl(), path);
+        return String.format("%s/api/%s/", _RequestUtils.getRootUrl(), path);
     }
 
     private String getFullUrl(String path, Map<String, Object> params) {
