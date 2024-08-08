@@ -3,7 +3,7 @@ package com.ilyap.yutarefactor
 import android.graphics.PixelFormat
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -34,18 +34,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onBackPressedDispatcherInitialize() {
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                val currentTime = System.currentTimeMillis()
-                viewModel.handleBackPress(
-                    currentTime = currentTime,
-                    onSelectPreviousNavTab = { selectPreviousNavTab() },
-                    onPopBackStack = { navController.popBackStack() },
-                    onExit = { finish() },
-                    showToast = { message -> Toast.makeText(baseContext, message, Toast.LENGTH_LONG).show() }
-                )
-            }
-        })
+        onBackPressedDispatcher.addCallback(this) {
+            val currentTime = System.currentTimeMillis()
+            viewModel.handleBackPress(
+                currentTime = currentTime,
+                onSelectPreviousNavTab = { selectPreviousNavTab() },
+                onPopBackStack = { navController.popBackStack() },
+                onExit = { finish() },
+                showToast = { message -> Toast.makeText(baseContext, message, Toast.LENGTH_LONG).show() }
+            )
+        }
     }
 
     private fun selectPreviousNavTab() {
