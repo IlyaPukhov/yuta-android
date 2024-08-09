@@ -3,10 +3,6 @@ package com.yuta.data.network
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.yuta.domain.repository.AuthorizationApiService
-import com.yuta.domain.repository.ProfileApiService
-import com.yuta.domain.repository.ProjectsApiService
-import com.yuta.domain.repository.TeamsApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

@@ -46,7 +46,7 @@ class ProjectsRepositoryImpl @Inject constructor(
         emit(
             apiService.createProject(
                 managerId = createDto.managerId,
-                name = createDto.name,
+                projectName = createDto.name,
                 description = createDto.description,
                 deadline = createDto.deadline,
                 teamId = createDto.teamId,
@@ -60,7 +60,7 @@ class ProjectsRepositoryImpl @Inject constructor(
         emit(
             apiService.editProject(
                 projectId = editDto.id,
-                name = editDto.name,
+                projectName = editDto.name,
                 description = editDto.description,
                 deadline = editDto.deadline,
                 teamId = editDto.teamId,

@@ -27,7 +27,7 @@ interface ProjectsApiService {
 
     @GET("/api/projects")
     suspend fun searchTeamsForProject(
-        @Query("team_name") name: String,
+        @Query("team_name") teamName: String,
         @Query("leader_id") leaderId: Int,
         @Query("project_team_id") teamId: Int?
     ): SearchTeamsResponse
@@ -36,7 +36,7 @@ interface ProjectsApiService {
     @Multipart
     suspend fun createProject(
         @Field("manager_id") managerId: Int,
-        @Field("project_name") name: String,
+        @Field("project_name") projectName: String,
         @Field("project_description") description: String,
         @Field("project_deadline") deadline: String,
         @Field("project_team_id") teamId: Int?,
@@ -47,7 +47,7 @@ interface ProjectsApiService {
     @Multipart
     suspend fun editProject(
         @Field("project_id") projectId: Int,
-        @Field("project_name") name: String,
+        @Field("project_name") projectName: String,
         @Field("project_description") description: String,
         @Field("project_deadline") deadline: String,
         @Field("project_team_id") teamId: Int?,

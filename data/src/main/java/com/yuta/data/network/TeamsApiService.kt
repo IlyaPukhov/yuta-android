@@ -33,7 +33,7 @@ interface TeamsApiService {
 
     @GET("/api/teams")
     suspend fun checkUniqueTeamName(
-        @Query("team_name") name: String,
+        @Query("team_name") teamName: String,
         @Query("team_id") teamId: Int?
     ): TeamCheckNameResponse
 
@@ -41,7 +41,7 @@ interface TeamsApiService {
     @FormUrlEncoded
     suspend fun createTeam(
         @Field("leader_id") leaderId: Int,
-        @Field("team_name") name: String,
+        @Field("team_name") teamName: String,
         @Field("members_id") membersIds: JSONArray
     ): UpdateResponse
 
@@ -49,7 +49,7 @@ interface TeamsApiService {
     @FormUrlEncoded
     suspend fun editTeam(
         @Field("team_id") teamId: Int,
-        @Field("team_name") name: String,
+        @Field("team_name") teamName: String,
         @Field("members_id") membersIds: JSONArray
     ): UpdateResponse
 
