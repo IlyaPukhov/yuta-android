@@ -10,13 +10,13 @@ interface ProfileUseCase {
 
     fun getUserById(userId: Int): Flow<User>
 
-    fun syncUserData(userId: Int, password: String): Flow<Void>
+    fun syncUserData(userId: Int, password: String): Flow<Boolean>
 
-    fun editUser(userEditDto: UserEditDto): Flow<Void>
+    fun editUser(userEditDto: UserEditDto): Flow<Boolean>
 
-    fun updateUserPhoto(userId: Int, filename: String, photoInputStream: InputStream): Flow<Void>
+    fun updateUserPhoto(userId: Int, filename: String, photoInputStream: InputStream): Flow<Boolean>
 
-    fun updateMiniatureUserPhoto(updateMiniatureDto: UserMiniatureUpdateDto): Flow<Void>
+    fun updateMiniatureUserPhoto(updateMiniatureDto: UserMiniatureUpdateDto): Flow<Boolean>
 
-    fun deleteUserPhoto(userId: Int): Flow<Void>
+    fun deleteUserPhoto(userId: Int): Flow<Boolean>
 }
