@@ -1,12 +1,12 @@
 package com.yuta.data.repository
 
 import com.yuta.data.network.ProjectsApiService
-import com.yuta.domain.model.Project
-import com.yuta.domain.model.Team
-import com.yuta.domain.model.dto.ProjectCreateDto
-import com.yuta.domain.model.dto.ProjectEditDto
-import com.yuta.domain.model.dto.ProjectsDto
-import com.yuta.domain.repository.ProjectsRepository
+import com.yuta.domain.common.model.Team
+import com.yuta.domain.projects.model.Project
+import com.yuta.domain.projects.model.ProjectCreateDto
+import com.yuta.domain.projects.model.ProjectEditDto
+import com.yuta.domain.projects.model.ProjectsDto
+import com.yuta.domain.projects.repository.ProjectsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okhttp3.MediaType.Companion.toMediaType
@@ -64,7 +64,7 @@ class ProjectsRepositoryImpl @Inject constructor(
                 description = editDto.description,
                 deadline = editDto.deadline,
                 teamId = editDto.teamId,
-                status = editDto.status,
+                status = editDto.status.name,
                 technicalTask = technicalTaskPart
             ).status
         )

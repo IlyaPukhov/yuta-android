@@ -1,6 +1,4 @@
-package com.yuta.domain.model.dto
-
-import com.yuta.domain.model.ProjectDto
+package com.yuta.domain.projects.model
 
 data class ProjectsDto(
     val managedProjects: List<ProjectDto>?,

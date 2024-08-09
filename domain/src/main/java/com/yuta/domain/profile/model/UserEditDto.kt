@@ -1,4 +1,4 @@
-package com.yuta.domain.model.dto
+package com.yuta.domain.profile.model
 
 data class UserEditDto(
     val userId: Int,

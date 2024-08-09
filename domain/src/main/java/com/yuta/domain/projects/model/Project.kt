@@ -1,9 +1,11 @@
-package com.yuta.domain.model
+package com.yuta.domain.projects.model
+
+import com.yuta.domain.common.model.Team
 
 data class Project(
     val id: Int,
     val name: String,
-    val technicalTask: String?,
+    val technicalTaskUrl: String?,
     val technicalTaskName: String?,
     val deadline: String,
     val status: String,

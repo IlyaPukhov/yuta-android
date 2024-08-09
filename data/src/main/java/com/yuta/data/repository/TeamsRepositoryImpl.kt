@@ -1,12 +1,12 @@
 package com.yuta.data.repository
 
 import com.yuta.data.network.TeamsApiService
-import com.yuta.domain.model.Team
-import com.yuta.domain.model.User
-import com.yuta.domain.model.dto.TeamCreateDto
-import com.yuta.domain.model.dto.TeamEditDto
-import com.yuta.domain.model.dto.TeamsDto
-import com.yuta.domain.repository.TeamsRepository
+import com.yuta.domain.common.model.Team
+import com.yuta.domain.common.model.UserDto
+import com.yuta.domain.teams.model.TeamCreateDto
+import com.yuta.domain.teams.model.TeamEditDto
+import com.yuta.domain.teams.model.TeamsDto
+import com.yuta.domain.teams.repository.TeamsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import org.json.JSONArray
@@ -33,8 +33,8 @@ class TeamsRepositoryImpl @Inject constructor(
     override fun searchUsersForTeam(
         username: String,
         leaderId: Int,
-        members: List<User>
-    ): Flow<List<User>?> = flow {
+        members: List<UserDto>
+    ): Flow<List<UserDto>?> = flow {
         emit(apiService.searchUsersForTeam(username, leaderId, getMembersIdArray(members)).users)
     }
 
@@ -62,7 +62,7 @@ class TeamsRepositoryImpl @Inject constructor(
         )
     }
 
-    private fun getMembersIdArray(members: List<User>): JSONArray {
+    private fun getMembersIdArray(members: List<UserDto>): JSONArray {
         return members.fold(JSONArray()) { jsonArray, user ->
             jsonArray.put(user.id)
             jsonArray

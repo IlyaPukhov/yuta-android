@@ -1,10 +1,10 @@
-package com.yuta.domain.repository
+package com.yuta.domain.projects.repository
 
-import com.yuta.domain.model.Project
-import com.yuta.domain.model.Team
-import com.yuta.domain.model.dto.ProjectCreateDto
-import com.yuta.domain.model.dto.ProjectEditDto
-import com.yuta.domain.model.dto.ProjectsDto
+import com.yuta.domain.projects.model.Project
+import com.yuta.domain.common.model.Team
+import com.yuta.domain.projects.model.ProjectCreateDto
+import com.yuta.domain.projects.model.ProjectEditDto
+import com.yuta.domain.projects.model.ProjectsDto
 import kotlinx.coroutines.flow.Flow
 
 interface ProjectsRepository {

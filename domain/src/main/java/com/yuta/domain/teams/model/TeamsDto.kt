@@ -1,6 +1,6 @@
-package com.yuta.domain.model.dto
+package com.yuta.domain.teams.model
 
-import com.yuta.domain.model.Team
+import com.yuta.domain.common.model.Team
 
 data class TeamsDto(
     val managedTeams: List<Team>?,

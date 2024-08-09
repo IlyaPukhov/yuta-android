@@ -1,6 +1,6 @@
 package com.yuta.data.model
 
-import com.yuta.domain.model.Team
+import com.yuta.domain.common.model.Team
 
 data class SearchTeamsResponse(
     val status: String,

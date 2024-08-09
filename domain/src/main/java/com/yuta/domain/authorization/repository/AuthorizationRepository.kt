@@ -1,4 +1,4 @@
-package com.yuta.domain.repository
+package com.yuta.domain.authorization.repository
 
 import kotlinx.coroutines.flow.Flow
 

@@ -1,8 +1,8 @@
-package com.yuta.domain.repository
+package com.yuta.domain.profile.repository
 
-import com.yuta.domain.model.User
-import com.yuta.domain.model.dto.UserEditDto
-import com.yuta.domain.model.dto.UserMiniatureUpdateDto
+import com.yuta.domain.profile.model.User
+import com.yuta.domain.profile.model.UserEditDto
+import com.yuta.domain.profile.model.UserMiniatureUpdateDto
 import kotlinx.coroutines.flow.Flow
 import java.io.InputStream
 

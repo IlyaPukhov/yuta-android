@@ -1,4 +1,4 @@
-package com.yuta.domain.model
+package com.yuta.domain.projects.model
 
 enum class ProjectStatus(private val text: String) {
 
