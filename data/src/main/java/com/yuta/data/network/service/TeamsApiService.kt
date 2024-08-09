@@ -47,7 +47,7 @@ interface TeamsApiService {
 
     @POST("/api/teams")
     @FormUrlEncoded
-    suspend fun editTeamProject(
+    suspend fun editTeam(
         @Field("team_id") teamId: Int,
         @Field("team_name") name: String,
         @Field("members_id") membersIds: JSONArray
