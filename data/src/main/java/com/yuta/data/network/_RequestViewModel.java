@@ -35,7 +35,7 @@ import static com.yuta.app.network._RequestUtils.postFormDataRequest;
 import static com.yuta.app.network._RequestUtils.postRequest;
 import static java.util.stream.Collectors.joining;
 
-public final class RequestViewModel extends ViewModel {
+public final class _RequestViewModel extends ViewModel {
     private final Executor executor = Executors.newSingleThreadExecutor();
     private final MutableLiveData<Object> resultLiveData = new MutableLiveData<>();
 
