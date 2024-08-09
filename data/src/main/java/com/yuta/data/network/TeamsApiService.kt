@@ -34,7 +34,7 @@ interface TeamsApiService {
     @GET("/api/teams")
     suspend fun checkUniqueTeamName(
         @Query("team_name") name: String,
-        @Query("team_id") teamId: Int? = null
+        @Query("team_id") teamId: Int?
     ): TeamCheckNameResponse
 
     @POST("/api/teams")

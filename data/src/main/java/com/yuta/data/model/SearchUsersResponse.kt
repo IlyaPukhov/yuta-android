@@ -5,5 +5,5 @@ import com.yuta.domain.model.User
 data class SearchUsersResponse(
     val status: String,
     val error: String?,
-    val users: List<User>
+    val users: List<User>?
 )

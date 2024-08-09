@@ -8,7 +8,7 @@ import java.io.InputStream
 
 interface ProfileRepository {
 
-    fun getUserById(userId: Int): Flow<User>
+    fun getUserById(userId: Int): Flow<User?>
 
     fun syncUserData(userId: Int, password: String): Flow<String>
 

@@ -10,7 +10,7 @@ class AuthorizationRepositoryImpl @Inject constructor(
     private val apiService: AuthorizationApiService
 ) : AuthorizationRepository {
 
-    override fun authorize(login: String, password: String): Flow<Int> = flow {
-        emit(apiService.authorize(login, password).userId ?: -1)
+    override fun authorize(login: String, password: String): Flow<Int?> = flow {
+        emit(apiService.authorize(login, password).userId)
     }
 }

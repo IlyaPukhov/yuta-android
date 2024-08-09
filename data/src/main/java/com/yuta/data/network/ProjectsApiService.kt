@@ -29,7 +29,7 @@ interface ProjectsApiService {
     suspend fun searchTeamsForProject(
         @Query("team_name") name: String,
         @Query("leader_id") leaderId: Int,
-        @Query("project_team_id") teamId: Int? = null
+        @Query("project_team_id") teamId: Int?
     ): SearchTeamsResponse
 
     @POST("/api/projects")
@@ -39,8 +39,8 @@ interface ProjectsApiService {
         @Field("project_name") name: String,
         @Field("project_description") description: String,
         @Field("project_deadline") deadline: String,
-        @Field("project_team_id") teamId: Int? = null,
-        @Part("project_technical_task") technicalTask: MultipartBody.Part? = null
+        @Field("project_team_id") teamId: Int?,
+        @Part("project_technical_task") technicalTask: MultipartBody.Part?
     ): UpdateResponse
 
     @POST("/api/projects")
@@ -50,9 +50,9 @@ interface ProjectsApiService {
         @Field("project_name") name: String,
         @Field("project_description") description: String,
         @Field("project_deadline") deadline: String,
-        @Field("project_team_id") teamId: Int? = null,
+        @Field("project_team_id") teamId: Int?,
         @Field("project_status") status: String,
-        @Part("project_technical_task") technicalTask: MultipartBody.Part? = null
+        @Part("project_technical_task") technicalTask: MultipartBody.Part?
     ): UpdateResponse
 
     @POST("/api/projects")

@@ -17,7 +17,7 @@ class ProfileRepositoryImpl @Inject constructor(
     private val apiService: ProfileApiService
 ) : ProfileRepository {
 
-    override fun getUserById(userId: Int): Flow<User> = flow {
+    override fun getUserById(userId: Int): Flow<User?> = flow {
         emit(apiService.getUserById(userId).user)
     }
 
@@ -42,10 +42,12 @@ class ProfileRepositoryImpl @Inject constructor(
         filename: String,
         photoInputStream: InputStream
     ): Flow<String> = flow {
-        val requestBody = photoInputStream.readBytes().toRequestBody("image/*".toMediaType())
-        val photo = MultipartBody.Part.createFormData("photo", filename, requestBody)
+        val photoPart = photoInputStream.let {
+            val requestBody = it.readBytes().toRequestBody("image/*".toMediaType())
+            MultipartBody.Part.createFormData("photo", filename, requestBody)
+        }
 
-        emit(apiService.updateUserPhoto(userId, photo).status)
+        emit(apiService.updateUserPhoto(userId, photoPart).status)
     }
 
     override fun updateMiniatureUserPhoto(updateDto: UserMiniatureUpdateDto): Flow<String> = flow {
