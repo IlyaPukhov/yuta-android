@@ -1,4 +1,8 @@
 package com.yuta.domain.repository
 
-interface AuthorizationApiService {
+import kotlinx.coroutines.flow.Flow
+
+interface AuthorizationRepository {
+
+    fun authorize(login: String, password: String): Flow<Int>
 }

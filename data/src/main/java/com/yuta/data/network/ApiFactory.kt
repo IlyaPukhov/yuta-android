@@ -3,7 +3,6 @@ package com.yuta.data.network
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.yuta.data.network.service.SearchApiService
 import com.yuta.domain.repository.AuthorizationApiService
 import com.yuta.domain.repository.ProfileApiService
 import com.yuta.domain.repository.ProjectsApiService

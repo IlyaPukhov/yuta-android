@@ -1,4 +1,4 @@
-package com.yuta.app.data.network;
+package com.yuta.domain.usecase;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

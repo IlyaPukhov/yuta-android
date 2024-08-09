@@ -1,4 +1,4 @@
-package com.yuta.data.network.service
+package com.yuta.data.network
 
 import com.yuta.data.model.ProjectResponse
 import com.yuta.data.model.ProjectsResponse

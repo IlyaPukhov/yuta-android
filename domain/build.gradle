@@ -36,6 +36,8 @@ android {
 }
 
 dependencies {
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1'
+
     compileOnly "com.google.dagger:dagger:${versions.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versions.dagger}"
 }
