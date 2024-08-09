@@ -1,5 +1,9 @@
 package com.yuta.data.network
 
+import com.google.gson.FieldNamingPolicy
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.yuta.data.network.service.SearchApiService
 import com.yuta.domain.repository.AuthorizationApiService
 import com.yuta.domain.repository.ProfileApiService
 import com.yuta.domain.repository.ProjectsApiService
@@ -12,6 +16,10 @@ import retrofit2.create
 import java.util.concurrent.TimeUnit
 
 object ApiFactory {
+
+    private val gson: Gson = GsonBuilder()
+        .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+        .create()
 
     private lateinit var BASE_URL: String
 
@@ -35,10 +43,11 @@ object ApiFactory {
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .client(okHttpClient)
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
 
     val authorizationApiService: AuthorizationApiService = retrofit.create()
+    val searchApiService: SearchApiService = retrofit.create()
     val profileApiService: ProfileApiService = retrofit.create()
     val teamsApiService: TeamsApiService = retrofit.create()
     val projectApiService: ProjectsApiService = retrofit.create()
