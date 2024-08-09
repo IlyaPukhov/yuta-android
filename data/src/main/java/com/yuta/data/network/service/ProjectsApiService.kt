@@ -26,7 +26,7 @@ interface ProjectsApiService {
     ): ProjectResponse
 
     @GET("/api/projects")
-    suspend fun getTeamsForProject(
+    suspend fun searchTeamsForProject(
         @Query("team_name") name: String,
         @Query("leader_id") leaderId: Int,
         @Query("project_team_id") teamId: Int? = null

@@ -5,6 +5,7 @@ import com.yuta.data.model.TeamCheckNameResponse
 import com.yuta.data.model.TeamResponse
 import com.yuta.data.model.TeamsResponse
 import com.yuta.data.model.UpdateResponse
+import org.json.JSONArray
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -27,7 +28,7 @@ interface TeamsApiService {
     suspend fun searchUsersForTeam(
         @Query("user_name") username: String,
         @Query("leader_id") leaderId: Int,
-        @Query("members_id") members: List<Int> = emptyList()
+        @Query("members_id") membersIds: JSONArray
     ): SearchUsersResponse
 
     @GET("/api/teams")
@@ -41,7 +42,7 @@ interface TeamsApiService {
     suspend fun createTeam(
         @Field("leader_id") leaderId: Int,
         @Field("team_name") name: String,
-        @Field("members_id") members: List<Int> = emptyList()
+        @Field("members_id") membersIds: JSONArray
     ): UpdateResponse
 
     @POST("/api/teams")
@@ -49,7 +50,7 @@ interface TeamsApiService {
     suspend fun editTeamProject(
         @Field("team_id") teamId: Int,
         @Field("team_name") name: String,
-        @Field("members_id") members: List<Int> = emptyList()
+        @Field("members_id") membersIds: JSONArray
     ): UpdateResponse
 
     @POST("/api/teams")
