@@ -2,7 +2,9 @@ package com.yuta.data.network
 
 import com.yuta.data.model.UpdateResponse
 import com.yuta.data.model.UserResponse
+import com.yuta.domain.model.dto.UserEditDto
 import okhttp3.MultipartBody
+import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET

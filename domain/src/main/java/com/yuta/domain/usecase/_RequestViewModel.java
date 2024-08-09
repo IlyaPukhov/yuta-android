@@ -226,73 +226,6 @@ public final class _RequestViewModel extends ViewModel {
         });
     }
 
-    // PROFILE
-    public void updateMiniatureUserPhoto(int userId, int imageViewWidth, int imageViewHeight, int croppedWidth, int croppedHeight, int offsetX, int offsetY) {
-        clearResultLiveData();
-        executor.execute(() -> {
-            HashMap<String, Object> params = new HashMap<>();
-            params.put("user_id", userId);
-            params.put("container_width", imageViewWidth);
-            params.put("container_height", imageViewHeight);
-            params.put("width", croppedWidth);
-            params.put("height", croppedHeight);
-            params.put("delta_x", offsetX);
-            params.put("delta_y", offsetY);
-            String json = postRequest(getFullUrl("profile"), params);
-            resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
-        });
-    }
-
-    public void updateUserPhoto(int userId, InputStream is, String filename) {
-        clearResultLiveData();
-        executor.execute(() -> {
-            HashMap<String, Object> params = new HashMap<>();
-            params.put("user_id", userId);
-            params.put(FILENAME, filename);
-            params.put(FILE_KEY_NAME, "photo");
-
-            String json = postFormDataRequest(getFullUrl("profile"), params, is);
-            resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
-        });
-    }
-
-    public void deleteUserPhoto(int userId) {
-        clearResultLiveData();
-        executor.execute(() -> {
-            HashMap<String, Object> params = new HashMap<>();
-            params.put("user_id", userId);
-            String json = postRequest(getFullUrl("profile"), params);
-            resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
-        });
-    }
-
-
-    public void updateUserData(int userId, String password) {
-        clearResultLiveData();
-        executor.execute(() -> {
-            HashMap<String, Object> params = new HashMap<>();
-            params.put("user_id", userId);
-            params.put("password", password);
-            String json = postRequest(getFullUrl("profile"), params);
-            resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
-        });
-    }
-
-    public void editUserData(int userId, User userDto) {
-        clearResultLiveData();
-        executor.execute(() -> {
-            Map<String, Object> params = new HashMap<>();
-            params.put("user_id", userId);
-            params.put("biography", userDto.getBiography() != null ? userDto.getBiography() : "");
-            params.put("phone_number", userDto.getPhoneNumber() != null ? userDto.getPhoneNumber() : "");
-            params.put("e_mail", userDto.getEMail() != null ? userDto.getEMail() : "");
-            params.put("vk", userDto.getVk() != null ? userDto.getVk() : "");
-
-            String json = postRequest(getFullUrl("profile"), params);
-            resultLiveData.postValue(JsonUtils.parse(json, UpdateResponse.class));
-        });
-    }
-
     public void getUser(int userId) {
         clearResultLiveData();
         executor.execute(() -> {
@@ -302,20 +235,6 @@ public final class _RequestViewModel extends ViewModel {
             resultLiveData.postValue(JsonUtils.parse(json, UserResponse.class));
         });
     }
-
-
-    // AUTHORIZATION
-    public void auth(String login, String password) {
-        clearResultLiveData();
-        executor.execute(() -> {
-            HashMap<String, Object> params = new HashMap<>();
-            params.put("login", login);
-            params.put("password", password);
-            String json = postRequest(getFullUrl("authorization"), params);
-            resultLiveData.postValue(JsonUtils.parse(json, AuthorizationResponse.class));
-        });
-    }
-
 
     public LiveData<Object> getResultLiveData() {
         return resultLiveData;

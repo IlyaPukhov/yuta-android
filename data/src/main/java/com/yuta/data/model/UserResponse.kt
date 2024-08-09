@@ -5,5 +5,5 @@ import com.yuta.domain.model.User
 data class UserResponse(
     val status: String,
     val error: String?,
-    val userDto: User?
+    val user: User
 )

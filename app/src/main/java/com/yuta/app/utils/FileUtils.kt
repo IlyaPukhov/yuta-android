@@ -13,6 +13,19 @@ import java.nio.file.Files
 
 object FileUtils {
 
+    fun getFileName(context: Context, uri: Uri?): String? {
+        if (uri == null) return null
+
+        return if (uri.scheme == "content") {
+            context.contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val columnIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                    if (columnIndex != -1) cursor.getString(columnIndex) else null
+                } else null
+            }
+        } else null
+    }
+
     fun rotateImage(inputStream: InputStream, fileName: String): InputStream {
         val tempFile = File.createTempFile("temp", null)
         tempFile.outputStream().use { outputStream ->
