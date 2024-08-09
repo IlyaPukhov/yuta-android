@@ -1,10 +1,10 @@
 package com.yuta.data.repository
 
 import com.yuta.data.network.ProfileApiService
-import com.yuta.domain.profile.model.User
-import com.yuta.domain.profile.model.UserEditDto
-import com.yuta.domain.profile.model.UserMiniatureUpdateDto
-import com.yuta.domain.profile.repository.ProfileRepository
+import com.yuta.domain.model.User
+import com.yuta.domain.model.UserEditDto
+import com.yuta.domain.model.UserMiniatureUpdateDto
+import com.yuta.domain.repository.ProfileRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okhttp3.MediaType.Companion.toMediaType

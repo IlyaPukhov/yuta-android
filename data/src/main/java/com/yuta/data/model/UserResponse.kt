@@ -1,6 +1,6 @@
 package com.yuta.data.model
 
-import com.yuta.domain.profile.model.User
+import com.yuta.domain.model.User
 
 data class UserResponse(
     val status: String,

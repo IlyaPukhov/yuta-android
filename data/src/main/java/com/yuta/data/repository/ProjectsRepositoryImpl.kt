@@ -1,12 +1,12 @@
 package com.yuta.data.repository
 
 import com.yuta.data.network.ProjectsApiService
-import com.yuta.domain.common.model.Team
-import com.yuta.domain.projects.model.Project
-import com.yuta.domain.projects.model.ProjectCreateDto
-import com.yuta.domain.projects.model.ProjectEditDto
-import com.yuta.domain.projects.model.ProjectsDto
-import com.yuta.domain.projects.repository.ProjectsRepository
+import com.yuta.domain.model.Team
+import com.yuta.domain.model.Project
+import com.yuta.domain.model.ProjectCreateDto
+import com.yuta.domain.model.ProjectEditDto
+import com.yuta.domain.model.ProjectsDto
+import com.yuta.domain.repository.ProjectsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okhttp3.MediaType.Companion.toMediaType

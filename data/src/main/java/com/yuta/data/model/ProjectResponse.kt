@@ -1,6 +1,6 @@
 package com.yuta.data.model
 
-import com.yuta.domain.projects.model.Project
+import com.yuta.domain.model.Project
 
 data class ProjectResponse(
     val status: String,

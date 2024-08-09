@@ -1,8 +1,8 @@
 package com.yuta.data.repository
 
 import com.yuta.data.network.SearchApiService
-import com.yuta.domain.common.model.UserDto
-import com.yuta.domain.search.repository.SearchRepository
+import com.yuta.domain.model.UserDto
+import com.yuta.domain.repository.SearchRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

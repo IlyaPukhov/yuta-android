@@ -1,12 +1,12 @@
 package com.yuta.data.repository
 
 import com.yuta.data.network.TeamsApiService
-import com.yuta.domain.common.model.Team
-import com.yuta.domain.common.model.UserDto
-import com.yuta.domain.teams.model.TeamCreateDto
-import com.yuta.domain.teams.model.TeamEditDto
-import com.yuta.domain.teams.model.TeamsDto
-import com.yuta.domain.teams.repository.TeamsRepository
+import com.yuta.domain.model.Team
+import com.yuta.domain.model.UserDto
+import com.yuta.domain.model.TeamCreateDto
+import com.yuta.domain.model.TeamEditDto
+import com.yuta.domain.model.TeamsDto
+import com.yuta.domain.repository.TeamsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import org.json.JSONArray
