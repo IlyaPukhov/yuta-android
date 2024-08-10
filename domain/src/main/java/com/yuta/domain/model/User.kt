@@ -1,7 +1,6 @@
 package com.yuta.domain.model
 
 data class User(
-    var id: Int,
     var photo: String,
     var croppedPhoto: String,
     var lastName: String,

@@ -8,6 +8,6 @@ data class ProjectDto(
     val status: String,
     val stringDeadline: String,
     val description: String,
-    val manager: User,
+    val manager: UserDto,
     val team: Team?
 )
