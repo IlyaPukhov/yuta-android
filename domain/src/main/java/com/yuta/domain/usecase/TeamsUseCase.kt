@@ -17,9 +17,9 @@ interface TeamsUseCase {
 
     fun checkUniqueTeamName(teamName: String, teamId: Int? = null): Flow<Boolean>
 
-    fun createTeam(teamCreateDto: TeamCreateDto): Flow<Void>
+    fun createTeam(teamCreateDto: TeamCreateDto): Flow<Boolean>
 
-    fun editTeam(teamEditDto: TeamEditDto): Flow<Void>
+    fun editTeam(teamEditDto: TeamEditDto): Flow<Boolean>
 
-    fun deleteTeam(teamId: Int): Flow<Void>
+    fun deleteTeam(teamId: Int): Flow<Boolean>
 }

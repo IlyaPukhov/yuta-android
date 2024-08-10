@@ -1,11 +1,12 @@
 package com.yuta.domain.usecase.impl
 
-import com.yuta.domain.exception.UserNotFoundException
+import com.yuta.domain.exception.NotFoundException
 import com.yuta.domain.model.User
 import com.yuta.domain.model.UserEditDto
 import com.yuta.domain.model.UserMiniatureUpdateDto
 import com.yuta.domain.repository.ProfileRepository
 import com.yuta.domain.usecase.ProfileUseCase
+import com.yuta.domain.util.ResponseUtil.statusToBoolean
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.io.InputStream
@@ -17,17 +18,17 @@ class ProfileUseCaseImpl @Inject constructor(
 
     override fun getUserById(userId: Int): Flow<User> {
         return repository.getUserById(userId)
-            .map { user -> user ?: throw UserNotFoundException("User with id $userId not found!") }
+            .map { it ?: throw NotFoundException("User with id $userId not found!") }
     }
 
     override fun syncUserData(userId: Int, password: String): Flow<Boolean> {
         return repository.syncUserData(userId, password)
-            .map { result -> resultToBoolean(result) }
+            .map { statusToBoolean(it) }
     }
 
     override fun editUser(userEditDto: UserEditDto): Flow<Boolean> {
         return repository.editUser(userEditDto)
-            .map { result -> resultToBoolean(result) }
+            .map { statusToBoolean(it) }
     }
 
     override fun updateUserPhoto(
@@ -36,20 +37,16 @@ class ProfileUseCaseImpl @Inject constructor(
         photoInputStream: InputStream
     ): Flow<Boolean> {
         return repository.updateUserPhoto(userId, filename, photoInputStream)
-            .map { result -> resultToBoolean(result) }
+            .map { statusToBoolean(it) }
     }
 
     override fun updateMiniatureUserPhoto(updateMiniatureDto: UserMiniatureUpdateDto): Flow<Boolean> {
         return repository.updateMiniatureUserPhoto(updateMiniatureDto)
-            .map { result -> resultToBoolean(result) }
+            .map { statusToBoolean(it) }
     }
 
     override fun deleteUserPhoto(userId: Int): Flow<Boolean> {
         return repository.deleteUserPhoto(userId)
-            .map { result -> resultToBoolean(result) }
-    }
-
-    private fun resultToBoolean(result: String): Boolean {
-        return result.equals("ok", ignoreCase = true)
+            .map { statusToBoolean(it) }
     }
 }

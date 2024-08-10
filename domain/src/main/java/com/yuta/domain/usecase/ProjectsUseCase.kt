@@ -15,9 +15,9 @@ interface ProjectsUseCase {
 
     fun searchTeamsForProject(teamName: String, leaderId: Int, teamId: Int? = null): Flow<List<Team>>
 
-    fun createProject(projectCreateDto: ProjectCreateDto): Flow<Void>
+    fun createProject(projectCreateDto: ProjectCreateDto): Flow<Boolean>
 
-    fun editProject(projectEditDto: ProjectEditDto): Flow<Void>
+    fun editProject(projectEditDto: ProjectEditDto): Flow<Boolean>
 
-    fun deleteProject(projectId: Int): Flow<Void>
+    fun deleteProject(projectId: Int): Flow<Boolean>
 }
