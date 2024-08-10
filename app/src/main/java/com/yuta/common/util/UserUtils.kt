@@ -5,14 +5,15 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
-import com.yuta.__old.ui.LoginActivity
+import com.yuta.authorization.ui.AuthorizationActivity
 import com.yuta.domain.model.User
 import com.yuta.domain.util.NetworkUtils
 
 object UserUtils {
 
     private var currentUser: User? = null
-    private fun getSharedPreferences(context: Context): SharedPreferences {
+
+    fun getSharedPreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences("session", MODE_PRIVATE)
     }
 
@@ -41,7 +42,7 @@ object UserUtils {
             apply()
         }
 
-        val intent = Intent(activity, LoginActivity::class.java).apply {
+        val intent = Intent(activity, AuthorizationActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         }
         activity.startActivity(intent)
