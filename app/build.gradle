@@ -35,6 +35,8 @@ android {
 }
 
 dependencies {
+    implementation project(":domain")
+
     compileOnly "com.google.dagger:dagger:${versions.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versions.dagger}"
 

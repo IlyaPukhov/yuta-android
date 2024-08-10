@@ -6,7 +6,7 @@ import com.yuta.domain.model.UserEditDto
 import com.yuta.domain.model.UserMiniatureUpdateDto
 import com.yuta.domain.repository.ProfileRepository
 import com.yuta.domain.usecase.ProfileUseCase
-import com.yuta.domain.util.ResponseUtil.statusToBoolean
+import com.yuta.domain.util.NetworkUtils.statusToBoolean
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.io.InputStream

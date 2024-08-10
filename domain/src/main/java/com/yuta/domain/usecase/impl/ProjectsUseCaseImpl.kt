@@ -8,7 +8,7 @@ import com.yuta.domain.model.ProjectsDto
 import com.yuta.domain.model.Team
 import com.yuta.domain.repository.ProjectsRepository
 import com.yuta.domain.usecase.ProjectsUseCase
-import com.yuta.domain.util.ResponseUtil.statusToBoolean
+import com.yuta.domain.util.NetworkUtils.statusToBoolean
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
