@@ -27,7 +27,7 @@ import java.util.List;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.yuta.app.util.UserUtils.getUserId;
+import static com.yuta.common.util.UserUtils.getUserId;
 
 @SuppressWarnings("ConstantConditions")
 public class CreateTeamDialog extends CustomInteractiveDialog {

@@ -15,12 +15,12 @@ import com.yuta.__old.R;
 import com.yuta.__old.ui.dialogs.CustomInteractiveDialog;
 import com.yuta.__old.ui.fragments.ProfileFragment;
 import com.yuta.app.network.RequestViewModel;
-import com.yuta.app.util.UserUtils;
+import com.yuta.common.util.UserUtils;
 import com.yuta.app.domain.model.entity.User;
 import com.yuta.app.domain.model.response.UpdateResponse;
 
-import static com.yuta.app.util.GlideUtils.getConfiguredGlideBuilder;
-import static com.yuta.app.util.UserUtils.getPath;
+import static com.yuta.common.util.GlideUtils.getConfiguredGlideBuilder;
+import static com.yuta.common.util.UserUtils.getPath;
 
 @SuppressWarnings("ConstantConditions")
 public class CropPhotoDialog extends CustomInteractiveDialog {

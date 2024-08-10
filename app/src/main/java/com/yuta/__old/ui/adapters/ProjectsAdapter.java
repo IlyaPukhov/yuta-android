@@ -23,7 +23,7 @@ import com.yuta.__old.R;
 import com.yuta.__old.ui.adapters.layoutmanagers.SpanningLinearLayoutManager;
 import com.yuta.__old.ui.dialogs.CustomDialog;
 import com.yuta.__old.ui.dialogs.project.ProjectDialog;
-import com.yuta.app.util.GlideUtils;
+import com.yuta.common.util.GlideUtils;
 import com.yuta.app.domain.model.entity.ProjectDto;
 import com.yuta.app.domain.model.entity.User;
 import lombok.SneakyThrows;
@@ -45,8 +45,8 @@ import static android.os.Environment.DIRECTORY_DOWNLOADS;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static androidx.core.content.ContextCompat.RECEIVER_EXPORTED;
-import static com.yuta.app.util.UserUtils.getPath;
-import static com.yuta.app.util.UserUtils.getUserId;
+import static com.yuta.common.util.UserUtils.getPath;
+import static com.yuta.common.util.UserUtils.getUserId;
 
 public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHolder<ProjectDto>> {
 

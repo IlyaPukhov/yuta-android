@@ -17,8 +17,8 @@ import com.yuta.app.domain.model.entity.User;
 import java.util.List;
 
 import static android.view.View.VISIBLE;
-import static com.yuta.app.util.GlideUtils.loadImageToImageViewWithoutCaching;
-import static com.yuta.app.util.UserUtils.getUserId;
+import static com.yuta.common.util.GlideUtils.loadImageToImageViewWithoutCaching;
+import static com.yuta.common.util.UserUtils.getUserId;
 
 public class TeamMembersAdapter extends BaseAdapter<TeamMember, BaseAdapter.ViewHolder<TeamMember>> {
 

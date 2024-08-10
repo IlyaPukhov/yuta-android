@@ -1,4 +1,4 @@
-package com.yuta.app.util
+package com.yuta.common.util
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

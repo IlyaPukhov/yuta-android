@@ -32,7 +32,7 @@ import java.util.List;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.yuta.__old.ui.dialogs.project.CreateProjectDialog.PICK_PDF_REQUEST;
-import static com.yuta.app.util.UserUtils.getUserId;
+import static com.yuta.common.util.UserUtils.getUserId;
 
 @NoArgsConstructor
 public class ProjectsFragment extends Fragment {

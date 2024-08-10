@@ -8,7 +8,7 @@ import com.yuta.app.domain.model.response.UpdateResponse;
 import com.yuta.__old.ui.dialogs.CustomInteractiveDialog;
 import com.yuta.__old.ui.fragments.ProfileFragment;
 import com.yuta.app.network.RequestViewModel;
-import com.yuta.app.util.UserUtils;
+import com.yuta.common.util.UserUtils;
 
 @SuppressWarnings("ConstantConditions")
 public class DeletePhotoDialog extends CustomInteractiveDialog {

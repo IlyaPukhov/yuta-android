@@ -26,7 +26,7 @@ import com.yuta.__old.ui.dialogs.LoadingDialog;
 import com.yuta.__old.ui.dialogs.NetworkDialog;
 import com.yuta.app.network._RequestUtils;
 import com.yuta.app.network.RequestViewModel;
-import com.yuta.app.util.UserUtils;
+import com.yuta.common.util.UserUtils;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -34,8 +34,8 @@ import static android.net.ConnectivityManager.TYPE_MOBILE;
 import static android.net.ConnectivityManager.TYPE_WIFI;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.yuta.app.util.UserUtils.getUserId;
-import static com.yuta.app.util.UserUtils.setUserId;
+import static com.yuta.common.util.UserUtils.getUserId;
+import static com.yuta.common.util.UserUtils.setUserId;
 
 public class LoginActivity extends AppCompatActivity {
 

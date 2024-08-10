@@ -12,9 +12,9 @@ import com.yuta.__old.R;
 import com.yuta.__old.ui.dialogs.CustomDialog;
 import com.yuta.__old.ui.dialogs.CustomInteractiveDialog;
 import com.yuta.__old.ui.fragments.ProfileFragment;
-import com.yuta.app.util.FileUtils;
+import com.yuta.common.util.FileUtils;
 import com.yuta.app.network.RequestViewModel;
-import com.yuta.app.util.UserUtils;
+import com.yuta.common.util.UserUtils;
 import com.yuta.app.domain.model.entity.User;
 import com.yuta.app.domain.model.response.UpdateResponse;
 import com.yuta.app.domain.model.response.UserResponse;
@@ -23,7 +23,7 @@ import lombok.SneakyThrows;
 import java.io.InputStream;
 
 import static com.yuta.__old.ui.dialogs.photo.PhotoDialog.DEFAULT_USER_PHOTO;
-import static com.yuta.app.util.GlideUtils.loadImageToImageViewWithoutCaching;
+import static com.yuta.common.util.GlideUtils.loadImageToImageViewWithoutCaching;
 
 @SuppressWarnings("ConstantConditions")
 public class UploadPhotoDialog extends CustomInteractiveDialog {

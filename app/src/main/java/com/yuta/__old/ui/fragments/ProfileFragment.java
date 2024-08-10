@@ -28,9 +28,9 @@ import lombok.NoArgsConstructor;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.yuta.__old.ui.dialogs.photo.UploadPhotoDialog.PICK_IMAGE_REQUEST;
-import static com.yuta.app.util.GlideUtils.loadImageToImageViewWithoutCaching;
-import static com.yuta.app.util.UserUtils.getUserId;
-import static com.yuta.app.util.UserUtils.setCurrentUser;
+import static com.yuta.common.util.GlideUtils.loadImageToImageViewWithoutCaching;
+import static com.yuta.common.util.UserUtils.getUserId;
+import static com.yuta.common.util.UserUtils.setCurrentUser;
 
 @NoArgsConstructor
 public class ProfileFragment extends Fragment {

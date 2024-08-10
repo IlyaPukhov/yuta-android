@@ -16,7 +16,7 @@ import com.yuta.app.network.RequestViewModel;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.yuta.app.util.UserUtils.getUserId;
+import static com.yuta.common.util.UserUtils.getUserId;
 
 @SuppressWarnings("ConstantConditions")
 public class UpdateUserDialog extends CustomInteractiveDialog {

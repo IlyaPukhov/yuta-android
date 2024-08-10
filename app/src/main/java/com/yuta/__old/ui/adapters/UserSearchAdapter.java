@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
-import com.yuta.app.util.GlideUtils;
+import com.yuta.common.util.GlideUtils;
 import com.yuta.app.MainActivity;
 import com.yuta.__old.R;
 import com.yuta.app.domain.model.entity.User;
@@ -18,7 +18,7 @@ import com.yuta.app.viewmodel.MainViewModel;
 
 import java.util.List;
 
-import static com.yuta.app.util.UserUtils.getUserId;
+import static com.yuta.common.util.UserUtils.getUserId;
 
 public class UserSearchAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User>> {
 

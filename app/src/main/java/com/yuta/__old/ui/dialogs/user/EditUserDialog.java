@@ -14,7 +14,7 @@ import com.yuta.__old.R;
 import com.yuta.__old.ui.dialogs.CustomInteractiveDialog;
 import com.yuta.__old.ui.fragments.ProfileFragment;
 import com.yuta.app.network.RequestViewModel;
-import com.yuta.app.util.UserUtils;
+import com.yuta.common.util.UserUtils;
 import com.yuta.app.domain.model.entity.User;
 import com.yuta.app.domain.model.response.UpdateResponse;
 import com.santalu.maskara.widget.MaskEditText;
@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.yuta.app.util.UserUtils.getUserId;
+import static com.yuta.common.util.UserUtils.getUserId;
 
 @SuppressWarnings("ConstantConditions")
 public class EditUserDialog extends CustomInteractiveDialog {

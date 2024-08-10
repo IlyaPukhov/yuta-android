@@ -16,7 +16,7 @@ import java.util.List;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.yuta.app.util.GlideUtils.loadImageToImageViewWithoutCaching;
+import static com.yuta.common.util.GlideUtils.loadImageToImageViewWithoutCaching;
 
 public class TeamUserSearchAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User>> {
     private final CustomDialog dialog;

@@ -25,7 +25,7 @@ import com.yuta.app.domain.model.response.UpdateResponse;
 import com.yuta.__old.ui.adapters.ProjectTeamSearchAdapter;
 import com.yuta.__old.ui.dialogs.CustomInteractiveDialog;
 import com.yuta.__old.ui.fragments.ProjectsFragment;
-import com.yuta.app.util.FileUtils;
+import com.yuta.common.util.FileUtils;
 import com.yuta.app.network.RequestViewModel;
 import lombok.SneakyThrows;
 
@@ -39,7 +39,7 @@ import java.util.Locale;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.yuta.app.util.UserUtils.getUserId;
+import static com.yuta.common.util.UserUtils.getUserId;
 import static java.util.Calendar.DAY_OF_MONTH;
 import static java.util.Calendar.MONTH;
 import static java.util.Calendar.YEAR;

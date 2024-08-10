@@ -13,7 +13,7 @@ import com.yuta.app.domain.model.response.ProjectResponse;
 import com.yuta.app.domain.model.entity.Team;
 import com.yuta.app.domain.model.response.UpdateResponse;
 import com.yuta.__old.ui.fragments.ProjectsFragment;
-import com.yuta.app.util.FileUtils;
+import com.yuta.common.util.FileUtils;
 import com.yuta.app.domain.model.entity.ProjectStatus;
 import lombok.SneakyThrows;
 

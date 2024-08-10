@@ -14,8 +14,8 @@ import com.yuta.app.domain.model.entity.User;
 import lombok.Getter;
 
 import static android.view.View.VISIBLE;
-import static com.yuta.app.util.GlideUtils.loadImageToImageViewWithoutCaching;
-import static com.yuta.app.util.UserUtils.getUserId;
+import static com.yuta.common.util.GlideUtils.loadImageToImageViewWithoutCaching;
+import static com.yuta.common.util.UserUtils.getUserId;
 
 public class ProjectMemberViewHolder extends BaseAdapter.ViewHolder<User> {
     @Getter
