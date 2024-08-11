@@ -3,7 +3,7 @@ package com.yuta.__old.ui.dialogs.user;
 import android.content.Context;
 import androidx.fragment.app.Fragment;
 import com.yuta.__old.R;
-import com.yuta.__old.ui.dialogs.CustomInteractiveDialog;
+import com.yuta.common.ui.CustomInteractiveDialog;
 import com.yuta.common.util.UserUtils;
 
 @SuppressWarnings("ConstantConditions")

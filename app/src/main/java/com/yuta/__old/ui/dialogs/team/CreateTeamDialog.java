@@ -18,7 +18,7 @@ import com.yuta.app.domain.model.response.SearchUsersResponse;
 import com.yuta.app.domain.model.response.UpdateResponse;
 import com.yuta.app.domain.model.entity.User;
 import com.yuta.__old.ui.adapters.TeamUserSearchAdapter;
-import com.yuta.__old.ui.dialogs.CustomInteractiveDialog;
+import com.yuta.common.ui.CustomInteractiveDialog;
 import com.yuta.__old.ui.fragments.TeamsFragment;
 import com.yuta.app.network.RequestViewModel;
 

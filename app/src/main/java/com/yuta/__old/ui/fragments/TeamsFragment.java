@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.yuta.__old.R;
 import com.yuta.__old.ui.adapters.TeamsAdapter;
-import com.yuta.__old.ui.dialogs.CustomDialog;
+import com.yuta.common.ui.CustomDialog;
 import com.yuta.__old.ui.dialogs.team.CreateTeamDialog;
 import com.yuta.__old.ui.dialogs.user.LogoutDialog;
 import com.yuta.app.network.RequestViewModel;

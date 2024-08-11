@@ -11,18 +11,15 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.View.VISIBLE
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.viewModelScope
-import com.yuta.__old.R
-import com.yuta.__old.ui.dialogs.LoadingDialog
-import com.yuta.__old.ui.dialogs.NetworkDialog
 import com.yuta.app.MainActivity
 import com.yuta.authorization.viewmodel.AuthorizationViewModel
+import com.yuta.common.util.KeyboardUtils
 import com.yuta.common.util.UserUtils
 import com.yuta.domain.util.NetworkUtils
 import kotlinx.coroutines.launch
@@ -57,7 +54,7 @@ class AuthorizationActivity : AppCompatActivity() {
         if (hasInternetConnection() && UserUtils.getUserId(this) >= 0) {
             // TODO убрать в релизе
             val ipv4 = UserUtils.getSharedPreferences(this).getString("ipv4", "")
-            NetworkUtils.setBaseUrl(ipv4.toString())
+            NetworkUtils.BASE_URL = ipv4.toString()
             openApp()
         } else if (!hasInternetConnection()) {
             openNetworkDialog()
@@ -80,7 +77,7 @@ class AuthorizationActivity : AppCompatActivity() {
 
     private fun setupLoginButton() {
         loginButton.setOnClickListener {
-            hideKeyboard()
+            KeyboardUtils.hideKeyboard(this)
             verifyLogin()
         }
     }
@@ -92,7 +89,7 @@ class AuthorizationActivity : AppCompatActivity() {
         // TODO убрать в релизе
         val editor = UserUtils.getSharedPreferences(this).edit()
         editor.putString("ipv4", findViewById<EditText>(R.id.ipv4).text.toString()).apply()
-        NetworkUtils.setBaseUrl(UserUtils.getSharedPreferences(this).getString("ipv4", "").toString())
+        NetworkUtils.BASE_URL = UserUtils.getSharedPreferences(this).getString("ipv4", "").toString()
 
         val loadingDialog = LoadingDialog(this)
         loadingDialog.start()
@@ -137,13 +134,6 @@ class AuthorizationActivity : AppCompatActivity() {
         val loginText = loginView.text.toString().trim()
         val passwordText = passwordView.text.toString().trim()
         loginButton.isEnabled = loginText.isNotEmpty() && passwordText.isNotEmpty()
-    }
-
-    private fun hideKeyboard() {
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        val view = currentFocus ?: View(this)
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
-        view.clearFocus()
     }
 
     override fun onAttachedToWindow() {

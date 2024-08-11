@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import com.yuta.__old.R;
 import com.yuta.app.domain.model.entity.User;
-import com.yuta.__old.ui.dialogs.CustomDialog;
+import com.yuta.common.ui.CustomDialog;
 import com.yuta.__old.ui.dialogs.team.CreateTeamDialog;
 
 import java.util.List;

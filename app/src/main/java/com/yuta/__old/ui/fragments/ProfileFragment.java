@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.yuta.__old.R;
-import com.yuta.__old.ui.dialogs.CustomDialog;
+import com.yuta.common.ui.CustomDialog;
 import com.yuta.__old.ui.dialogs.photo.PhotoDialog;
 import com.yuta.__old.ui.dialogs.photo.UploadPhotoDialog;
 import com.yuta.__old.ui.dialogs.user.EditUserDialog;

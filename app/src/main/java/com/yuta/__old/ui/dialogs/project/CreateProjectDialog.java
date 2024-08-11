@@ -23,7 +23,7 @@ import com.yuta.app.domain.model.response.SearchTeamsResponse;
 import com.yuta.app.domain.model.entity.Team;
 import com.yuta.app.domain.model.response.UpdateResponse;
 import com.yuta.__old.ui.adapters.ProjectTeamSearchAdapter;
-import com.yuta.__old.ui.dialogs.CustomInteractiveDialog;
+import com.yuta.common.ui.CustomInteractiveDialog;
 import com.yuta.__old.ui.fragments.ProjectsFragment;
 import com.yuta.common.util.FileUtils;
 import com.yuta.app.network.RequestViewModel;

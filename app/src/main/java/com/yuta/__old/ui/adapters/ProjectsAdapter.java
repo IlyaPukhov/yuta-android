@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.yuta.__old.R;
 import com.yuta.__old.ui.adapters.layoutmanagers.SpanningLinearLayoutManager;
-import com.yuta.__old.ui.dialogs.CustomDialog;
+import com.yuta.common.ui.CustomDialog;
 import com.yuta.__old.ui.dialogs.project.ProjectDialog;
 import com.yuta.common.util.GlideUtils;
 import com.yuta.app.domain.model.entity.ProjectDto;

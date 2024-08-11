@@ -4,8 +4,8 @@ import android.content.Context;
 import android.view.View;
 import androidx.fragment.app.Fragment;
 import com.yuta.__old.R;
-import com.yuta.__old.ui.dialogs.CustomDialog;
-import com.yuta.__old.ui.dialogs.CustomInteractiveDialog;
+import com.yuta.common.ui.CustomDialog;
+import com.yuta.common.ui.CustomInteractiveDialog;
 import com.yuta.common.util.UserUtils;
 
 import static android.view.View.GONE;
