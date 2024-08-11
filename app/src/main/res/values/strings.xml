@@ -74,7 +74,7 @@
     <string name="empty_teams_text">Ой, команды не найдены…</string>
     <string name="empty_projects_text">Ой, проекты не найдены…</string>
     <string name="empty_users_text">Ой, пользователи не найдены…</string>
-    <string name="error_update_message">Неправильный пароль :(</string>
+    <string name="error_update_message">Неправильный пароль😔</string>
     <string name="add_team_member">добавить участника</string>
     <string name="remove_team_member">удалить участника</string>
     <string name="create_team_text">Создание команды</string>
