@@ -4,7 +4,9 @@ import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 
-abstract class CustomInteractiveDialog(fragment: Fragment) : CustomDialog(fragment.requireActivity()) {
+abstract class CustomInteractiveDialog(
+    private val dialogLayout: Int, fragment: Fragment
+) : CustomDialog(dialogLayout, fragment.requireActivity()) {
 
     private val activity = fragment.requireActivity()
 

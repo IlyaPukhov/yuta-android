@@ -6,10 +6,12 @@ import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 
-abstract class CustomDialog(private val activity: Activity) : AlertDialog(activity) {
+abstract class CustomDialog(
+    private val dialogLayout: Int,
+    private val activity: Activity
+) : AlertDialog(activity) {
 
     lateinit var dialog: AlertDialog
-    var dialogLayout: Int = 0
 
     open fun start() {
         val builder = Builder(activity)
