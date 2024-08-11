@@ -12,7 +12,7 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.canhub.cropper.CropImageView;
 import com.yuta.__old.R;
-import com.yuta.__old.ui.dialogs.CustomInteractiveDialog;
+import com.yuta.common.ui.CustomInteractiveDialog;
 import com.yuta.__old.ui.fragments.ProfileFragment;
 import com.yuta.app.network.RequestViewModel;
 import com.yuta.common.util.UserUtils;

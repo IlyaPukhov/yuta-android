@@ -4,8 +4,8 @@ import android.content.Context;
 import androidx.fragment.app.Fragment;
 import com.yuta.__old.R;
 import com.yuta.app.domain.model.entity.ProjectDto;
-import com.yuta.__old.ui.dialogs.CustomDialog;
-import com.yuta.__old.ui.dialogs.CustomInteractiveDialog;
+import com.yuta.common.ui.CustomDialog;
+import com.yuta.common.ui.CustomInteractiveDialog;
 
 @SuppressWarnings("ConstantConditions")
 public class ProjectDialog extends CustomInteractiveDialog {

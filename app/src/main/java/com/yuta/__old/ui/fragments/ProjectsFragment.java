@@ -20,7 +20,7 @@ import com.yuta.__old.R;
 import com.yuta.app.domain.model.entity.ProjectDto;
 import com.yuta.app.domain.model.response.ProjectsResponse;
 import com.yuta.__old.ui.adapters.ProjectsAdapter;
-import com.yuta.__old.ui.dialogs.CustomDialog;
+import com.yuta.common.ui.CustomDialog;
 import com.yuta.__old.ui.dialogs.project.CreateProjectDialog;
 import com.yuta.__old.ui.dialogs.user.LogoutDialog;
 import com.yuta.app.network.RequestViewModel;

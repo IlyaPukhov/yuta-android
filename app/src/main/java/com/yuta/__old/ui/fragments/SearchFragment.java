@@ -18,7 +18,7 @@ import com.yuta.__old.R;
 import com.yuta.app.domain.model.response.SearchUsersResponse;
 import com.yuta.app.domain.model.entity.User;
 import com.yuta.__old.ui.adapters.UserSearchAdapter;
-import com.yuta.__old.ui.dialogs.CustomDialog;
+import com.yuta.common.ui.CustomDialog;
 import com.yuta.__old.ui.dialogs.user.LogoutDialog;
 import com.yuta.app.network.RequestViewModel;
 import lombok.NoArgsConstructor;

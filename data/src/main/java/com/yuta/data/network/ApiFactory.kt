@@ -27,7 +27,7 @@ object ApiFactory {
         .build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl(NetworkUtils.getBaseUrl())
+        .baseUrl(NetworkUtils.BASE_URL)
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create(gson))
         .build()

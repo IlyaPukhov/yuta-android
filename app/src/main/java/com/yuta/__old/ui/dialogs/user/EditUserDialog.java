@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import com.yuta.__old.R;
-import com.yuta.__old.ui.dialogs.CustomInteractiveDialog;
+import com.yuta.common.ui.CustomInteractiveDialog;
 import com.yuta.__old.ui.fragments.ProfileFragment;
 import com.yuta.app.network.RequestViewModel;
 import com.yuta.common.util.UserUtils;

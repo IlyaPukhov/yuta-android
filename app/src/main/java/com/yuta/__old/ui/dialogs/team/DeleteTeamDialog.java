@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.yuta.__old.R;
 import com.yuta.app.domain.model.entity.Team;
 import com.yuta.app.domain.model.response.UpdateResponse;
-import com.yuta.__old.ui.dialogs.CustomInteractiveDialog;
+import com.yuta.common.ui.CustomInteractiveDialog;
 import com.yuta.__old.ui.fragments.TeamsFragment;
 import com.yuta.app.network.RequestViewModel;
 
