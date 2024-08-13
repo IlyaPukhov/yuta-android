@@ -1,123 +1,104 @@
-package com.yuta.search.ui;
+package com.yuta.search.ui
 
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import androidx.annotation.NonNull;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.yuta.__old.R;
-import com.yuta.app.domain.model.response.SearchUsersResponse;
-import com.yuta.app.domain.model.entity.User;
-import com.yuta.common.ui.CustomDialog;
-import com.yuta.__old.ui.dialog.user.LogoutDialog;
-import com.yuta.app.network.RequestViewModel;
-import lombok.NoArgsConstructor;
+import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.EditText
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.yuta.__old.R
+import com.yuta.app.domain.model.entity.User
+import com.yuta.app.domain.model.response.SearchUsersResponse
+import com.yuta.app.network.RequestViewModel
+import com.yuta.common.ui.CustomDialog
+import com.yuta.__old.ui.dialog.user.LogoutDialog
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+class SearchFragment : Fragment() {
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
+    private lateinit var emptyText: View
+    private lateinit var progressLayout: View
+    private lateinit var searchAdapter: UserSearchAdapter
+    private var userDto: MutableList<User> = mutableListOf()
+    private val viewModel: RequestViewModel by viewModels()
 
-@NoArgsConstructor
-public class SearchFragment extends Fragment {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val view = inflater.inflate(R.layout.fragment_search, container, false)
 
-    private View emptyText;
-    private List<User> userDto;
-    private View view;
-    private RequestViewModel viewModel;
-    private UserSearchAdapter searchAdapter;
-    private View progressLayout;
+        emptyText = view.findViewById(R.id.empty_text)
+        progressLayout = view.findViewById(R.id.progressLayout)
+        val searchField = view.findViewById<EditText>(R.id.search_user)
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_search, container, false);
-        viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
+        recyclerViewInitialize(view)
+        setupEditView(searchField)
 
-        emptyText = view.findViewById(R.id.empty_text);
-        progressLayout = view.findViewById(R.id.progressLayout);
-        EditText searchField = view.findViewById(R.id.search_user);
+        view.findViewById<View>(R.id.log_out).setOnClickListener { openLogoutDialog() }
 
-        recyclerViewInitialize();
-        setupEditView(searchField);
-
-        view.findViewById(R.id.log_out).setOnClickListener(v -> openLogoutDialog());
-        return view;
+        return view
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        updateList(userDto);
+    override fun onResume() {
+        super.onResume()
+        updateList(userDto)
     }
 
-    private void setupEditView(@NonNull EditText editText) {
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+    private fun setupEditView(editText: EditText) {
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (count != 0) {
-                    updateSearchResult(s.toString());
+                    updateSearchResult(s.toString())
                 } else {
-                    userDto.clear();
-                    updateList(userDto);
+                    userDto.clear()
+                    updateList(userDto)
                 }
             }
-        });
+        })
     }
 
-    private void updateSearchResult(String searchText) {
-        progressLayout.setVisibility(VISIBLE);
-        viewModel.getResultLiveData().removeObservers(getViewLifecycleOwner());
-        viewModel.searchUsers(searchText);
-        viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
-            if (!(result instanceof SearchUsersResponse)) return;
-            progressLayout.setVisibility(GONE);
-
-            userDto = ((SearchUsersResponse) result).getUsersDtos();
-            emptyText.setVisibility(userDto.isEmpty() ? VISIBLE : GONE);
-            updateList(userDto);
-        });
+    private fun updateSearchResult(searchText: String) {
+        progressLayout.visibility = View.VISIBLE
+        viewModel.resultLiveData.removeObservers(viewLifecycleOwner)
+        viewModel.searchUsers(searchText)
+        viewModel.resultLiveData.observe(viewLifecycleOwner) { result ->
+            if (result is SearchUsersResponse) {
+                progressLayout.visibility = View.GONE
+                userDto = result.usersDtos.toMutableList()
+                emptyText.visibility = if (userDto.isEmpty()) View.VISIBLE else View.GONE
+                updateList(userDto)
+            }
+        }
     }
 
-    private void updateList(List<User> userDto) {
-        searchAdapter.refillList(userDto);
+    private fun updateList(userDto: List<User>) {
+        searchAdapter.refillList(userDto)
     }
 
-    private void recyclerViewInitialize() {
-        RecyclerView recyclerView = view.findViewById(R.id.search_list);
-        userDto = new ArrayList<>();
-        searchAdapter = new UserSearchAdapter(requireActivity(), userDto);
+    private fun recyclerViewInitialize(view: View) {
+        val recyclerView = view.findViewById<RecyclerView>(R.id.search_list)
+        searchAdapter = UserSearchAdapter(requireActivity(), userDto)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
+        val dividerItemDecoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL).apply {
+            setDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.divider)!!)
+        }
+        recyclerView.addItemDecoration(dividerItemDecoration)
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL);
-        dividerItemDecoration.setDrawable(Objects.requireNonNull(AppCompatResources.getDrawable(requireContext(), R.drawable.divider)));
-        recyclerView.addItemDecoration(dividerItemDecoration);
-
-        recyclerView.setAdapter(searchAdapter);
+        recyclerView.adapter = searchAdapter
     }
 
-    private void openLogoutDialog() {
-        CustomDialog logoutDialog = new LogoutDialog(view.getContext(), this);
-        logoutDialog.start();
+    private fun openLogoutDialog() {
+        val logoutDialog = LogoutDialog(requireContext(), this)
+        logoutDialog.start()
     }
 }

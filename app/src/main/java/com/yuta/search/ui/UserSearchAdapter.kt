@@ -44,9 +44,7 @@ class UserSearchAdapter(context: Context, items: MutableList<UserDto>) :
                 if (getUserId(activity) == userDto.id) {
                     activity.selectNavTab(R.id.profileFragment)
                 } else {
-                    val bundle = Bundle().apply {
-                        putInt("userId", userDto.id)
-                    }
+                    val bundle = Bundle().apply { putInt("userId", userDto.id) }
                     activity.navigate(R.id.action_searchFragment_to_readonlyProfileFragment, bundle)
 
                     val mainViewModel = ViewModelProvider(activity)[MainViewModel::class.java]
