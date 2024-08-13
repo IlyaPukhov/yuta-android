@@ -26,7 +26,7 @@ interface TeamsApiService {
 
     @GET("/api/teams")
     suspend fun searchUsersForTeam(
-        @Query("user_name") username: String,
+        @Query("user_name") name: String,
         @Query("leader_id") leaderId: Int,
         @Query("members_id") membersIds: JSONArray
     ): SearchUsersResponse

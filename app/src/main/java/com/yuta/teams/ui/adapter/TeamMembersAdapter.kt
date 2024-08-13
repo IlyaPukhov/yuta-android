@@ -1,78 +1,47 @@
-package com.yuta.teams.ui.adapter;
+package com.yuta.teams.ui.adapter
 
-import android.content.Context;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.navigation.NavController;
-import com.yuta.app.MainActivity;
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.View.*
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import com.yuta.app.MainActivity
 import com.yuta.app.R
-import com.yuta.app.domain.model.entity.TeamMember;
-import com.yuta.app.domain.model.entity.User;
-import com.yuta.common.ui.BaseAdapter;
+import com.yuta.common.ui.BaseAdapter
+import com.yuta.common.util.GlideUtils
+import com.yuta.common.util.UserUtils
+import com.yuta.domain.model.TeamMember
 
-import java.util.List;
+class TeamMembersAdapter(
+    context: Context,
+    items: MutableList<TeamMember>
+) : BaseAdapter<TeamMember, BaseAdapter.ViewHolder<TeamMember>>(context, items) {
 
-import static android.view.View.VISIBLE;
-import static com.yuta.common.util.GlideUtils.loadImageToImageViewWithoutCaching;
-import static com.yuta.common.util.UserUtils.getUserId;
-
-public class TeamMembersAdapter extends BaseAdapter<TeamMember, BaseAdapter.ViewHolder<TeamMember>> {
-
-    public TeamMembersAdapter(Context context, List<TeamMember> items) {
-        super(context, items);
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamMemberViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_team_member_card, parent, false)
+        return TeamMemberViewHolder(view)
     }
 
-    @NonNull
-    @Override
-    public TeamMemberViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_team_member_card, parent, false);
-        return new TeamMemberViewHolder(view);
-    }
+    inner class TeamMemberViewHolder(itemView: View) : ViewHolder<TeamMember>(itemView) {
+        private val card: View = itemView.findViewById(R.id.card)
+        private val avatar: ImageView = itemView.findViewById(R.id.avatar)
+        private val name: TextView = itemView.findViewById(R.id.name)
+        private val teamLeaderIcon: ImageView = itemView.findViewById(R.id.teamLeaderIcon)
 
-    public class TeamMemberViewHolder extends BaseAdapter.ViewHolder<TeamMember> {
-        private final View card;
-        private final ImageView imageView;
-        private final TextView name;
-        private final ImageView teamLeaderIcon;
+        override fun bind(teamMember: TeamMember) {
+            val userDto = teamMember.member
+            val leader = teamMember.team.leader
+            GlideUtils.loadImageToImageViewWithCaching(avatar, userDto.croppedPhoto)
 
-        public TeamMemberViewHolder(@NonNull View itemView) {
-            super(itemView);
-            this.card = itemView.findViewById(R.id.card);
-            this.imageView = itemView.findViewById(R.id.avatar);
-            this.name = itemView.findViewById(R.id.name);
-            this.teamLeaderIcon = itemView.findViewById(R.id.teamLeaderIcon);
-        }
-
-        @Override
-        public void bind(@NonNull TeamMember member) {
-            User userDto = member.getMember();
-            User leader = member.getTeam().getLeader();
-            loadImageToImageViewWithoutCaching(imageView, userDto.getCroppedPhoto());
-
-            if (leader.equals(userDto)) {
-                teamLeaderIcon.setVisibility(VISIBLE);
+            if (userDto == leader) {
+                teamLeaderIcon.visibility = VISIBLE
             }
 
-            String userName = userDto.getLastName() + " " + userDto.getFirstName();
-            name.setText(userName);
+            name.text = UserUtils.getFullName(userDto)
 
-            card.setOnClickListener(v -> {
-                MainActivity activity = (MainActivity) getContext();
-                if (getUserId(getContext()) == userDto.getId()) {
-                    activity.selectNavTab(R.id.profileFragment);
-                } else {
-                    NavController navController = activity.getNavController();
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("userId", userDto.getId());
-                    navController.navigate(R.id.action_teamsFragment_to_readonlyProfileFragment, bundle);
-                    activity.setReadonlyProfile(true);
-                }
-            });
+            card.setOnClickListener { (context.applicationContext as MainActivity).navigate(userDto.id) }
         }
     }
 }

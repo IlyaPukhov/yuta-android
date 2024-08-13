@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import com.yuta.authorization.ui.AuthorizationActivity
 import com.yuta.domain.model.User
+import com.yuta.domain.model.UserDto
 import com.yuta.domain.util.NetworkUtils
 
 object UserUtils {
@@ -18,8 +19,11 @@ object UserUtils {
     }
 
     fun getPath(path: String): String {
-        return NetworkUtils.getBaseUrl() + path
+        return NetworkUtils.BASE_URL + path
     }
+
+    fun getFullName(user: UserDto): String =
+        "${user.lastName} ${user.firstName}" + (user.patronymic?.let { " $it" } ?: "")
 
     fun setUserId(context: Context, id: Int) {
         if (id >= 0) {

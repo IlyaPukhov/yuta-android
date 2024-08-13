@@ -13,7 +13,7 @@ interface TeamsRepository {
 
     fun getTeamById(teamId: Int): Flow<Team?>
 
-    fun searchUsersForTeam(username: String, leaderId: Int, members: List<UserDto>): Flow<List<UserDto>?>
+    fun searchUsersForTeam(name: String, leaderId: Int, members: List<UserDto>): Flow<List<UserDto>?>
 
     fun checkUniqueTeamName(teamName: String, teamId: Int? = null): Flow<Boolean?>
 

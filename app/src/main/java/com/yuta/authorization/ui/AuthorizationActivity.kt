@@ -9,7 +9,8 @@ import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View.*
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -30,7 +31,7 @@ class AuthorizationActivity : AppCompatActivity() {
     private lateinit var loginButton: Button
     private lateinit var loginView: EditText
     private lateinit var passwordView: EditText
-    private val viewModel: AuthorizationViewModel by viewModels()
+    private val authViewModel: AuthorizationViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_YUTA_Common)
@@ -94,8 +95,8 @@ class AuthorizationActivity : AppCompatActivity() {
         val loadingDialog = LoadingDialog(this)
         loadingDialog.start()
 
-        viewModel.viewModelScope.launch {
-            viewModel.auth(login, password).collect { userId ->
+        authViewModel.viewModelScope.launch {
+            authViewModel.auth(login, password).collect { userId ->
                 if (userId >= 0) {
                     UserUtils.setUserId(this@AuthorizationActivity, userId)
                     openApp()
