@@ -1,216 +1,184 @@
-package com.yuta.teams.ui.adapter;
+package com.yuta.teams.ui.adapter
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.View.*
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
 import com.yuta.app.R
-import com.yuta.app.domain.model.entity.Team;
-import com.yuta.app.domain.model.entity.TeamMember;
-import com.yuta.common.ui.BaseAdapter;
-import com.yuta.common.ui.AppDialog;
-import com.yuta.teams.ui.dialog.DeleteTeamDialog;
-import com.yuta.teams.ui.dialog.EditTeamDialog;
+import com.yuta.common.ui.BaseAdapter
+import com.yuta.common.util.UserUtils.getUserId
+import com.yuta.domain.model.Team
+import com.yuta.domain.model.TeamMember
+import com.yuta.teams.ui.dialog.DeleteTeamDialog
+import com.yuta.teams.ui.dialog.EditTeamDialog
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+class TeamsAdapter(
+    context: Context,
+    items: MutableList<List<TeamMember>>,
+    private val fragment: Fragment
+) : BaseAdapter<List<TeamMember>, BaseAdapter.ViewHolder<List<TeamMember>>>(context, items) {
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static com.yuta.common.util.UserUtils.getUserId;
-
-@SuppressWarnings("ConstantConditions")
-public class TeamsAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.ViewHolder<List<TeamMember>>> {
-    private static final int PAGE_SIZE = 2;
-    private final Fragment fragment;
-
-    public TeamsAdapter(Context context, List<List<TeamMember>> items, Fragment fragment) {
-        super(context, items);
-        this.fragment = fragment;
+    companion object {
+        private const val PAGE_SIZE = 2
     }
 
-    @NonNull
-    @Override
-    public CarouselViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_carousel, parent, false);
-        return new CarouselViewHolder(view);
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarouselViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_carousel, parent, false)
+        return CarouselViewHolder(view)
     }
 
-    public class CarouselViewHolder extends BaseAdapter.ViewHolder<List<TeamMember>> {
-        private final TextView carouselNumberTextView;
-        private final ViewPager2 imagePager;
-        private final LinearLayout dotsLayout;
-        private final ImageButton btnPrev, btnNext;
-        private final Button editTeam, deleteTeam;
-        private Team team;
-        private ViewPager2.OnPageChangeCallback viewPagerCallback;
+    inner class CarouselViewHolder(itemView: View) : ViewHolder<List<TeamMember>>(itemView) {
+        private val carouselNumberTextView: TextView = itemView.findViewById(R.id.teamName)
+        private val imagePager: ViewPager2 = itemView.findViewById(R.id.imagePager)
+        private val dotsLayout: LinearLayout = itemView.findViewById(R.id.dotsLayout)
+        private val btnPrev: ImageButton = itemView.findViewById(R.id.btnPrev)
+        private val btnNext: ImageButton = itemView.findViewById(R.id.btnNext)
+        private val editTeam: Button = itemView.findViewById(R.id.editTeam)
+        private val deleteTeam: Button = itemView.findViewById(R.id.deleteTeam)
+        private lateinit var team: Team
+        private var viewPagerCallback: ViewPager2.OnPageChangeCallback? = null
 
-        public CarouselViewHolder(@NonNull View itemView) {
-            super(itemView);
-            this.carouselNumberTextView = itemView.findViewById(R.id.teamName);
-            this.imagePager = itemView.findViewById(R.id.imagePager);
-            this.dotsLayout = itemView.findViewById(R.id.dotsLayout);
-            this.btnPrev = itemView.findViewById(R.id.btnPrev);
-            this.btnNext = itemView.findViewById(R.id.btnNext);
-            this.editTeam = itemView.findViewById(R.id.editTeam);
-            this.deleteTeam = itemView.findViewById(R.id.deleteTeam);
+        override fun bind(carousel: List<TeamMember>) {
+            val teamMember = carousel.firstOrNull() ?: return
+            team = teamMember.team
+            carouselNumberTextView.text = team.name
+
+            val pages = getPagesList(carousel).toMutableList()
+            val horizontalCarouselAdapter = HorizontalCarouselAdapter(context, pages)
+            imagePager.adapter = horizontalCarouselAdapter
+
+            dotsLayout.removeAllViews()
+            setupDots(pages.size)
+            setupNavButtons(pages)
+            setupTeamButtons(team.leader.id)
+            setupViewPagerCyclic(pages)
         }
 
-        @Override
-        public void bind(@NonNull List<TeamMember> carousel) {
-            Optional<TeamMember> optionalTeamMember = carousel.stream().findFirst();
-            if (!optionalTeamMember.isPresent()) {
-                return;
-            }
+        private fun <T> setupViewPagerCyclic(pages: List<List<T>>) {
+            viewPagerCallback?.let { imagePager.unregisterOnPageChangeCallback(it) }
+            viewPagerCallback = object : ViewPager2.OnPageChangeCallback() {
+                private var myState = 0
+                private var currentPosition = 0
 
-            team = optionalTeamMember.get().getTeam();
-            carouselNumberTextView.setText(team.getName());
-            List<List<TeamMember>> pages = getPagesList(carousel);
-
-            HorizontalCarouselAdapter horizontalCarouselAdapter = new HorizontalCarouselAdapter(getContext(), pages);
-            imagePager.setAdapter(horizontalCarouselAdapter);
-
-            dotsLayout.removeAllViews();
-            setupDots(pages.size());
-            setupNavButtons(pages);
-            setupTeamButtons(team.getLeader().getId());
-            setupViewPagerCyclic(pages);
-        }
-
-        private <T> void setupViewPagerCyclic(@NonNull List<List<T>> pages) {
-            if (viewPagerCallback != null) {
-                imagePager.unregisterOnPageChangeCallback(viewPagerCallback);
-            }
-            viewPagerCallback = new ViewPager2.OnPageChangeCallback() {
-                private int myState;
-                private int currentPosition;
-
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
                     if (myState == ViewPager2.SCROLL_STATE_DRAGGING && currentPosition == position) {
-                        if (position == 0) {
-                            imagePager.setCurrentItem(pages.size() - 1);
-                        } else if (position == pages.size() - 1) {
-                            imagePager.setCurrentItem(0);
+                        when (position) {
+                            0 -> imagePager.setCurrentItem(pages.size - 1, true)
+                            pages.size - 1 -> imagePager.setCurrentItem(0, true)
                         }
                     }
-                    super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+                    super.onPageScrolled(position, positionOffset, positionOffsetPixels)
                 }
 
-                @Override
-                public void onPageSelected(int position) {
-                    currentPosition = position;
-                    super.onPageSelected(position);
-                    updateDots(position);
+                override fun onPageSelected(position: Int) {
+                    currentPosition = position
+                    super.onPageSelected(position)
+                    updateDots(position)
                 }
 
-                @Override
-                public void onPageScrollStateChanged(int state) {
-                    myState = state;
-                    super.onPageScrollStateChanged(state);
+                override fun onPageScrollStateChanged(state: Int) {
+                    myState = state
+                    super.onPageScrollStateChanged(state)
                 }
-            };
-
-            imagePager.registerOnPageChangeCallback(viewPagerCallback);
+            }
+            imagePager.registerOnPageChangeCallback(viewPagerCallback!!)
         }
 
-        private void setupTeamButtons(int leaderId) {
-            if (leaderId == getUserId(getContext())) {
-                editTeam.setVisibility(VISIBLE);
-                deleteTeam.setVisibility(VISIBLE);
-                editTeam.setOnClickListener(v -> openEditTeamDialog());
-                deleteTeam.setOnClickListener(v -> openDeleteTeamDialog());
+        private fun setupTeamButtons(leaderId: Int) {
+            if (leaderId == getUserId(context)) {
+                editTeam.visibility = VISIBLE
+                deleteTeam.visibility = VISIBLE
+                editTeam.setOnClickListener { openEditTeamDialog() }
+                deleteTeam.setOnClickListener { openDeleteTeamDialog() }
             } else {
-                editTeam.setVisibility(GONE);
-                deleteTeam.setVisibility(GONE);
-                editTeam.setOnClickListener(null);
-                deleteTeam.setOnClickListener(null);
+                editTeam.visibility = GONE
+                deleteTeam.visibility = GONE
+                editTeam.setOnClickListener(null)
+                deleteTeam.setOnClickListener(null)
             }
         }
 
-        private void openDeleteTeamDialog() {
-            AppDialog deleteTeamDialog = new DeleteTeamDialog(getContext(), fragment, team);
-            deleteTeamDialog.start();
+        private fun openDeleteTeamDialog() {
+            val deleteTeamDialog = DeleteTeamDialog(context, fragment, team)
+            deleteTeamDialog.start()
         }
 
-        private void openEditTeamDialog() {
-            AppDialog editTeamDialog = new EditTeamDialog(getContext(), fragment, team.getId());
-            editTeamDialog.start();
+        private fun openEditTeamDialog() {
+            val editTeamDialog = EditTeamDialog(context, fragment, team.id)
+            editTeamDialog.start()
         }
 
-        private void setupDots(int size) {
-            for (int i = 0; i < size; i++) {
-                ImageView dot = new ImageView(getContext());
-                dot.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.dot_not_selected));
+        private fun setupDots(size: Int) {
+            (0 until size).forEach { i ->
+                val dot = ImageView(context)
+                dot.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.dot_not_selected))
 
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                );
-                params.setMargins(8, 0, 8, 0);
+                val params = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                params.setMargins(8, 0, 8, 0)
 
-                dotsLayout.addView(dot, params);
+                dotsLayout.addView(dot, params)
+            }
+            updateDots(0)
+        }
+
+        private fun updateDots(position: Int) {
+            for (i in 0 until dotsLayout.childCount) {
+                val dot = dotsLayout.getChildAt(i) as ImageView
+                dot.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        context,
+                        if (i == position) R.drawable.dot_selected else R.drawable.dot_not_selected
+                    )
+                )
+            }
+        }
+
+        private fun <T> setupNavButtons(pages: List<List<T>>) {
+            if (pages.size < 2) {
+                btnPrev.imageTintList = ContextCompat.getColorStateList(context, R.color.light_gray)
+                btnNext.imageTintList = ContextCompat.getColorStateList(context, R.color.light_gray)
             }
 
-            updateDots(0);
-        }
-
-        private void updateDots(int position) {
-            for (int i = 0; i < dotsLayout.getChildCount(); i++) {
-                ImageView dot = (ImageView) dotsLayout.getChildAt(i);
-                if (i == position) {
-                    dot.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.dot_selected));
-                } else {
-                    dot.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.dot_not_selected));
-                }
-            }
-        }
-
-        private <T> void setupNavButtons(@NonNull List<List<T>> pages) {
-            if (pages.size() < 2) {
-                btnPrev.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.light_gray));
-                btnNext.setImageTintList(ContextCompat.getColorStateList(getContext(), R.color.light_gray));
-            }
-
-            btnPrev.setOnClickListener(v -> {
-                int currentPos = imagePager.getCurrentItem();
+            btnPrev.setOnClickListener {
+                val currentPos = imagePager.currentItem
                 if (currentPos > 0) {
-                    imagePager.setCurrentItem(currentPos - 1);
+                    imagePager.currentItem = currentPos - 1
                 } else if (currentPos == 0) {
-                    imagePager.setCurrentItem(pages.size() - 1);
+                    imagePager.currentItem = pages.size - 1
                 }
-            });
+            }
 
-            btnNext.setOnClickListener(v -> {
-                int currentPos = imagePager.getCurrentItem();
-                int lastPos = imagePager.getAdapter().getItemCount() - 1;
+            btnNext.setOnClickListener {
+                val currentPos = imagePager.currentItem
+                val lastPos = imagePager.adapter?.itemCount?.minus(1) ?: 0
 
                 if (currentPos < lastPos) {
-                    imagePager.setCurrentItem(currentPos + 1);
+                    imagePager.currentItem = currentPos + 1
                 } else if (currentPos == lastPos) {
-                    imagePager.setCurrentItem(0);
+                    imagePager.currentItem = 0
                 }
-            });
+            }
         }
 
-        @NonNull
-        private <T> List<List<T>> getPagesList(@NonNull List<T> list) {
-            List<List<T>> pages = new ArrayList<>();
-            for (int i = 0; i < list.size(); i += PAGE_SIZE) {
-                int end = Math.min(list.size(), i + PAGE_SIZE);
-                pages.add(new ArrayList<>(list.subList(i, end)));
+        private fun <T> getPagesList(list: List<T>): List<List<T>> {
+            val pages = mutableListOf<List<T>>()
+            for (i in list.indices step PAGE_SIZE) {
+                val end = (i + PAGE_SIZE).coerceAtMost(list.size)
+                pages.add(list.subList(i, end))
             }
-            return pages;
+            return pages
         }
     }
 }

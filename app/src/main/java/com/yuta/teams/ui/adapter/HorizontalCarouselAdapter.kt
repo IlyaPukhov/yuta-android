@@ -32,7 +32,7 @@ class HorizontalCarouselAdapter(
         override fun bind(members: List<TeamMember>) {
             horizontalRecyclerView.layoutManager =
                 SpanningLinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            horizontalRecyclerView.adapter = TeamMembersAdapter(context, members)
+            horizontalRecyclerView.adapter = TeamMembersAdapter(context, members.toMutableList())
         }
     }
 }
