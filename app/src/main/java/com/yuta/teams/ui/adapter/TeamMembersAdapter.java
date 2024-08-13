@@ -1,4 +1,4 @@
-package com.yuta.__old.ui.adapter;
+package com.yuta.teams.ui.adapter;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import com.yuta.app.MainActivity;
-import com.yuta.__old.R;
+import com.yuta.app.R
 import com.yuta.app.domain.model.entity.TeamMember;
 import com.yuta.app.domain.model.entity.User;
 import com.yuta.common.ui.BaseAdapter;

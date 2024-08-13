@@ -1,4 +1,4 @@
-package com.yuta.__old.ui.adapter;
+package com.yuta.teams.ui.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,11 +7,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import com.yuta.__old.R;
+import com.yuta.app.R
 import com.yuta.app.domain.model.entity.User;
 import com.yuta.common.ui.BaseAdapter;
 import com.yuta.common.ui.AppDialog;
-import com.yuta.__old.ui.dialog.team.CreateTeamDialog;
+import com.yuta.teams.ui.dialog.CreateTeamDialog;
 
 import java.util.List;
 

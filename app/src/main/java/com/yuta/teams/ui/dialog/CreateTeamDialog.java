@@ -1,4 +1,4 @@
-package com.yuta.__old.ui.dialog.team;
+package com.yuta.teams.ui.dialog;
 
 import android.content.Context;
 import android.text.Editable;
@@ -12,15 +12,15 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.yuta.__old.R;
+import com.yuta.app.R
 import com.yuta.app.domain.model.response.TeamCheckNameResponse;
 import com.yuta.app.domain.model.response.SearchUsersResponse;
 import com.yuta.app.domain.model.response.UpdateResponse;
 import com.yuta.app.domain.model.entity.User;
-import com.yuta.__old.ui.adapter.TeamUserSearchAdapter;
 import com.yuta.common.ui.InteractiveDialog;
-import com.yuta.__old.ui.fragment.TeamsFragment;
 import com.yuta.app.network.RequestViewModel;
+import com.yuta.teams.ui.TeamsFragment;
+import com.yuta.teams.ui.adapter.TeamUserSearchAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

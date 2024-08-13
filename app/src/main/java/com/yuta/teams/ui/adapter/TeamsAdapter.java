@@ -1,4 +1,4 @@
-package com.yuta.__old.ui.adapter;
+package com.yuta.teams.ui.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,13 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
-import com.yuta.__old.R;
+import com.yuta.app.R
 import com.yuta.app.domain.model.entity.Team;
 import com.yuta.app.domain.model.entity.TeamMember;
 import com.yuta.common.ui.BaseAdapter;
 import com.yuta.common.ui.AppDialog;
-import com.yuta.__old.ui.dialog.team.DeleteTeamDialog;
-import com.yuta.__old.ui.dialog.team.EditTeamDialog;
+import com.yuta.teams.ui.dialog.DeleteTeamDialog;
+import com.yuta.teams.ui.dialog.EditTeamDialog;
 
 import java.util.ArrayList;
 import java.util.List;

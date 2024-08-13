@@ -1,4 +1,4 @@
-package com.yuta.__old.ui.adapter;
+package com.yuta.teams.ui.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,9 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.yuta.__old.R;
+import com.yuta.app.R
 import com.yuta.app.domain.model.entity.TeamMember;
-import com.yuta.__old.ui.adapter.layoutmanagers.SpanningLinearLayoutManager;
+import com.yuta.common.ui.SpanningLinearLayoutManager;
 import com.yuta.common.ui.BaseAdapter;
 
 import java.util.List;

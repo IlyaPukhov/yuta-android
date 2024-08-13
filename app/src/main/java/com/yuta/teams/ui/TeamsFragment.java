@@ -1,4 +1,4 @@
-package com.yuta.__old.ui.fragment;
+package com.yuta.teams.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,15 +12,15 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.yuta.__old.R;
-import com.yuta.__old.ui.adapter.TeamsAdapter;
+import com.yuta.app.R
 import com.yuta.common.ui.AppDialog;
-import com.yuta.__old.ui.dialog.team.CreateTeamDialog;
 import com.yuta.authorization.ui.LogoutDialog;
 import com.yuta.app.network.RequestViewModel;
 import com.yuta.app.domain.model.entity.Team;
 import com.yuta.app.domain.model.entity.TeamMember;
 import com.yuta.app.domain.model.response.TeamsResponse;
+import com.yuta.teams.ui.adapter.TeamsAdapter;
+import com.yuta.teams.ui.dialog.CreateTeamDialog;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;

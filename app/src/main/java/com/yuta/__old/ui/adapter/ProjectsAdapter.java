@@ -20,7 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.yuta.__old.R;
-import com.yuta.__old.ui.adapter.layoutmanagers.SpanningLinearLayoutManager;
+import com.yuta.common.ui.SpanningLinearLayoutManager;
 import com.yuta.common.ui.BaseAdapter;
 import com.yuta.common.ui.AppDialog;
 import com.yuta.__old.ui.dialog.project.ProjectDialog;
