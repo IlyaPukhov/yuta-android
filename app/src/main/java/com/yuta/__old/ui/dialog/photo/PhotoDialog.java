@@ -4,14 +4,14 @@ import android.content.Context;
 import android.view.View;
 import androidx.fragment.app.Fragment;
 import com.yuta.__old.R;
-import com.yuta.common.ui.CustomDialog;
-import com.yuta.common.ui.CustomInteractiveDialog;
+import com.yuta.common.ui.AppDialog;
+import com.yuta.common.ui.InteractiveDialog;
 import com.yuta.common.util.UserUtils;
 
 import static android.view.View.GONE;
 
 @SuppressWarnings("ConstantConditions")
-public class PhotoDialog extends CustomInteractiveDialog {
+public class PhotoDialog extends InteractiveDialog {
 
     public static final String DEFAULT_USER_PHOTO = "default-user-photo";
 
@@ -48,17 +48,17 @@ public class PhotoDialog extends CustomInteractiveDialog {
     }
 
     private void openUpdatePhotoDialog() {
-        CustomDialog updatePhotoDialog = new UploadPhotoDialog(activity, fragment);
+        AppDialog updatePhotoDialog = new UploadPhotoDialog(activity, fragment);
         updatePhotoDialog.start();
     }
 
     private void openEditPhotoDialog() {
-        CustomDialog editPhotoDialog = new CropPhotoDialog(activity, fragment);
+        AppDialog editPhotoDialog = new CropPhotoDialog(activity, fragment);
         editPhotoDialog.start();
     }
 
     private void openDeletePhotoDialog() {
-        CustomDialog deletePhotoDialog = new DeletePhotoDialog(activity, fragment);
+        AppDialog deletePhotoDialog = new DeletePhotoDialog(activity, fragment);
         deletePhotoDialog.start();
     }
 }

@@ -14,11 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.yuta.__old.R;
-import com.yuta.common.ui.CustomDialog;
+import com.yuta.common.ui.AppDialog;
 import com.yuta.__old.ui.dialog.photo.PhotoDialog;
 import com.yuta.__old.ui.dialog.photo.UploadPhotoDialog;
 import com.yuta.__old.ui.dialog.user.EditUserDialog;
-import com.yuta.__old.ui.dialog.user.LogoutDialog;
+import com.yuta.authorization.ui.LogoutDialog;
 import com.yuta.__old.ui.dialog.user.UpdateUserDialog;
 import com.yuta.app.network.RequestViewModel;
 import com.yuta.app.domain.model.entity.User;
@@ -132,22 +132,22 @@ public class ProfileFragment extends Fragment {
     }
 
     private void openReloadDialog() {
-        CustomDialog updateUserDialog = new UpdateUserDialog(view.getContext(), this);
+        AppDialog updateUserDialog = new UpdateUserDialog(view.getContext(), this);
         updateUserDialog.start();
     }
 
     private void openEditUserDialog() {
-        CustomDialog editDialog = new EditUserDialog(view.getContext(), this);
+        AppDialog editDialog = new EditUserDialog(view.getContext(), this);
         editDialog.start();
     }
 
     private void openPhotoDialog() {
-        CustomDialog photoDialog = new PhotoDialog(view.getContext(), this);
+        AppDialog photoDialog = new PhotoDialog(view.getContext(), this);
         photoDialog.start();
     }
 
     private void openLogoutDialog() {
-        CustomDialog logoutDialog = new LogoutDialog(view.getContext(), this);
+        AppDialog logoutDialog = new LogoutDialog(view.getContext(), this);
         logoutDialog.start();
     }
 

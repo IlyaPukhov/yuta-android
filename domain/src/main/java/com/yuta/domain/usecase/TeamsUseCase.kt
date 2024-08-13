@@ -32,17 +32,17 @@ class TeamsUseCase @Inject constructor(
     }
 
     fun searchUsersForTeam(
-        username: String,
+        name: String,
         leaderId: Int,
         members: List<UserDto>
     ): Flow<List<UserDto>> {
-        return repository.searchUsersForTeam(username, leaderId, members)
+        return repository.searchUsersForTeam(name, leaderId, members)
             .map { it ?: emptyList() }
     }
 
     fun checkUniqueTeamName(
         teamName: String,
-        teamId: Int? = null
+        teamId: Int?
     ): Flow<Boolean> {
         return repository.checkUniqueTeamName(teamName, teamId)
             .map { it ?: throw NotFoundException("Teams with id $teamId not found!") }

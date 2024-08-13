@@ -31,11 +31,11 @@ class TeamsRepositoryImpl @Inject constructor(
     }
 
     override fun searchUsersForTeam(
-        username: String,
+        name: String,
         leaderId: Int,
         members: List<UserDto>
     ): Flow<List<UserDto>?> = flow {
-        emit(apiService.searchUsersForTeam(username, leaderId, getMembersIdArray(members)).users)
+        emit(apiService.searchUsersForTeam(name, leaderId, getMembersIdArray(members)).users)
     }
 
     override fun checkUniqueTeamName(teamName: String, teamId: Int?): Flow<Boolean?> = flow {

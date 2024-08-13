@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import com.yuta.__old.R;
-import com.yuta.common.ui.CustomInteractiveDialog;
+import com.yuta.common.ui.InteractiveDialog;
 import com.yuta.__old.ui.fragment.ProfileFragment;
 import com.yuta.app.network.RequestViewModel;
 import com.yuta.common.util.UserUtils;
@@ -26,7 +26,7 @@ import static android.view.View.VISIBLE;
 import static com.yuta.common.util.UserUtils.getUserId;
 
 @SuppressWarnings("ConstantConditions")
-public class EditUserDialog extends CustomInteractiveDialog {
+public class EditUserDialog extends InteractiveDialog {
     private static final int PHONE_NUMBER_LENGTH = 10;
     private static final String VK_REGEX = "(https?://)?(www\\.)?vk\\.com/(\\w|\\d|[._])+?/?";
     private boolean isPhoneValid, isEmailValid, isVkValid;

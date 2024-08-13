@@ -11,8 +11,10 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.yuta.app.viewmodel.MainViewModel
+import com.yuta.common.callback.NavigationToProfileCallback
+import com.yuta.common.util.UserUtils
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NavigationToProfileCallback {
 
     private val viewModel: MainViewModel by viewModels()
     private lateinit var navController: NavController
@@ -43,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun navigate(action: Int, bundle: Bundle? = null) {
+    private fun navigate(action: Int, bundle: Bundle? = null) {
         navController.navigate(action, bundle)
     }
 
@@ -54,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.resetLastItemId()
     }
 
-    fun selectNavTab(id: Int) {
+    private fun selectNavTab(id: Int) {
         val currentItemId = bottomNavigationView?.selectedItemId ?: return
         viewModel.setLastItemId(currentItemId)
         bottomNavigationView?.selectedItemId = id
@@ -63,5 +65,15 @@ class MainActivity : AppCompatActivity() {
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         window.setFormat(PixelFormat.RGBA_8888)
+    }
+
+    override fun navigate(userId: Int) {
+        if (UserUtils.getUserId(this) == userId) {
+            this.selectNavTab(R.id.profileFragment)
+        } else {
+            val bundle = Bundle().apply { putInt("userId", userId) }
+            this.navigate(R.id.action_searchFragment_to_readonlyProfileFragment, bundle)
+            viewModel.setReadonly(true)
+        }
     }
 }

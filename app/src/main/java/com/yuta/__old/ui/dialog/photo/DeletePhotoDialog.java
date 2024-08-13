@@ -5,13 +5,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.yuta.__old.R;
 import com.yuta.app.domain.model.response.UpdateResponse;
-import com.yuta.common.ui.CustomInteractiveDialog;
+import com.yuta.common.ui.InteractiveDialog;
 import com.yuta.__old.ui.fragment.ProfileFragment;
 import com.yuta.app.network.RequestViewModel;
 import com.yuta.common.util.UserUtils;
 
 @SuppressWarnings("ConstantConditions")
-public class DeletePhotoDialog extends CustomInteractiveDialog {
+public class DeletePhotoDialog extends InteractiveDialog {
     private RequestViewModel viewModel;
 
     public DeletePhotoDialog(Context context, Fragment fragment) {

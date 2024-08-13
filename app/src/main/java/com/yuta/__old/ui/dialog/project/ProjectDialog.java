@@ -4,11 +4,11 @@ import android.content.Context;
 import androidx.fragment.app.Fragment;
 import com.yuta.__old.R;
 import com.yuta.app.domain.model.entity.ProjectDto;
-import com.yuta.common.ui.CustomDialog;
-import com.yuta.common.ui.CustomInteractiveDialog;
+import com.yuta.common.ui.AppDialog;
+import com.yuta.common.ui.InteractiveDialog;
 
 @SuppressWarnings("ConstantConditions")
-public class ProjectDialog extends CustomInteractiveDialog {
+public class ProjectDialog extends InteractiveDialog {
     private final ProjectDto project;
 
     public ProjectDialog(Context context, Fragment fragment, ProjectDto project) {
@@ -32,12 +32,12 @@ public class ProjectDialog extends CustomInteractiveDialog {
     }
 
     private void openEditProjectDialog() {
-        CustomDialog editProjectDialog = new EditProjectDialog(activity, fragment, project.getId());
+        AppDialog editProjectDialog = new EditProjectDialog(activity, fragment, project.getId());
         editProjectDialog.start();
     }
 
     private void openDeleteProjectDialog() {
-        CustomDialog deleteProjectDialog = new DeleteProjectDialog(activity, fragment, project);
+        AppDialog deleteProjectDialog = new DeleteProjectDialog(activity, fragment, project);
         deleteProjectDialog.start();
     }
 }

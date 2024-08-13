@@ -5,7 +5,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.*
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.content.res.AppCompatResources
@@ -15,8 +16,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.yuta.__old.ui.dialog.user.LogoutDialog
 import com.yuta.app.R
+import com.yuta.authorization.ui.LogoutDialog
 import com.yuta.domain.model.UserDto
 import com.yuta.search.viewmodel.SearchViewModel
 import kotlinx.coroutines.launch
@@ -27,7 +28,7 @@ class SearchFragment : Fragment() {
     private lateinit var progressLayout: View
     private lateinit var searchAdapter: UserSearchAdapter
     private var usersList: MutableList<UserDto> = mutableListOf()
-    private val viewModel: SearchViewModel by viewModels()
+    private val searchViewModel: SearchViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -67,8 +68,8 @@ class SearchFragment : Fragment() {
     private fun updateSearchResult(searchName: String) {
         progressLayout.visibility = VISIBLE
 
-        viewModel.viewModelScope.launch {
-            viewModel.search(searchName).collect { list ->
+        searchViewModel.viewModelScope.launch {
+            searchViewModel.search(searchName).collect { list ->
                 progressLayout.visibility = GONE
                 usersList = list.toMutableList()
 
@@ -96,7 +97,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun openLogoutDialog() {
-        val logoutDialog = LogoutDialog(requireContext(), this)
+        val logoutDialog = LogoutDialog(this)
         logoutDialog.start()
     }
 }
