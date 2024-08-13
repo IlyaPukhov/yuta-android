@@ -5,33 +5,31 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.*
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.yuta.__old.R
-import com.yuta.app.domain.model.entity.User
-import com.yuta.app.domain.model.response.SearchUsersResponse
-import com.yuta.app.network.RequestViewModel
-import com.yuta.common.ui.CustomDialog
 import com.yuta.__old.ui.dialog.user.LogoutDialog
+import com.yuta.app.R
+import com.yuta.domain.model.UserDto
+import com.yuta.search.viewmodel.SearchViewModel
+import kotlinx.coroutines.launch
 
 class SearchFragment : Fragment() {
 
     private lateinit var emptyText: View
     private lateinit var progressLayout: View
     private lateinit var searchAdapter: UserSearchAdapter
-    private var userDto: MutableList<User> = mutableListOf()
-    private val viewModel: RequestViewModel by viewModels()
+    private var usersList: MutableList<UserDto> = mutableListOf()
+    private val viewModel: SearchViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
 
         emptyText = view.findViewById(R.id.empty_text)
@@ -48,7 +46,7 @@ class SearchFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        updateList(userDto)
+        updateList(usersList)
     }
 
     private fun setupEditView(editText: EditText) {
@@ -59,34 +57,34 @@ class SearchFragment : Fragment() {
                 if (count != 0) {
                     updateSearchResult(s.toString())
                 } else {
-                    userDto.clear()
-                    updateList(userDto)
+                    usersList.clear()
+                    updateList(usersList)
                 }
             }
         })
     }
 
-    private fun updateSearchResult(searchText: String) {
-        progressLayout.visibility = View.VISIBLE
-        viewModel.resultLiveData.removeObservers(viewLifecycleOwner)
-        viewModel.searchUsers(searchText)
-        viewModel.resultLiveData.observe(viewLifecycleOwner) { result ->
-            if (result is SearchUsersResponse) {
-                progressLayout.visibility = View.GONE
-                userDto = result.usersDtos.toMutableList()
-                emptyText.visibility = if (userDto.isEmpty()) View.VISIBLE else View.GONE
-                updateList(userDto)
+    private fun updateSearchResult(searchName: String) {
+        progressLayout.visibility = VISIBLE
+
+        viewModel.viewModelScope.launch {
+            viewModel.search(searchName).collect { list ->
+                progressLayout.visibility = GONE
+                usersList = list.toMutableList()
+
+                emptyText.visibility = if (usersList.isEmpty()) VISIBLE else GONE
+                updateList(usersList)
             }
         }
     }
 
-    private fun updateList(userDto: List<User>) {
-        searchAdapter.refillList(userDto)
+    private fun updateList(users: List<UserDto>) {
+        searchAdapter.refillList(users)
     }
 
     private fun recyclerViewInitialize(view: View) {
         val recyclerView = view.findViewById<RecyclerView>(R.id.search_list)
-        searchAdapter = UserSearchAdapter(requireActivity(), userDto)
+        searchAdapter = UserSearchAdapter(requireActivity(), usersList)
         recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         val dividerItemDecoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL).apply {

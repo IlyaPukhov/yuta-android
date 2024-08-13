@@ -10,8 +10,8 @@ class SearchUseCase @Inject constructor(
     private val repository: SearchRepository
 ) {
 
-    fun searchUsers(username: String): Flow<List<UserDto>> {
-        return repository.searchUsersByUsername(username)
+    fun searchUsers(text: String): Flow<List<UserDto>> {
+        return repository.searchUsersByUsername(text)
             .map { it ?: emptyList() }
     }
 }
