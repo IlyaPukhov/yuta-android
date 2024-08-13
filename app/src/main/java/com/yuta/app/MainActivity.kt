@@ -14,9 +14,9 @@ import com.yuta.app.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private var navController: NavController? = null
-    private var bottomNavigationView: BottomNavigationView? = null
     private val viewModel: MainViewModel by viewModels()
+    private lateinit var navController: NavController
+    private var bottomNavigationView: BottomNavigationView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,29 +29,35 @@ class MainActivity : AppCompatActivity() {
     private fun setupNavigation() {
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
         navController = findNavController(R.id.nav_host_fragment)
-        setupWithNavController(bottomNavigationView!!, navController!!)
+        setupWithNavController(bottomNavigationView!!, navController)
     }
 
     private fun onBackPressedDispatcherInitialize() {
         onBackPressedDispatcher.addCallback(this) {
             viewModel.handleBackPress(
-                currentTime = System.currentTimeMillis(),
                 onSelectPreviousNavTab = { selectPreviousNavTab() },
-                onPopBackStack = { navController!!.popBackStack() },
+                onPopBackStack = { navController.popBackStack() },
                 onExit = { finish() },
-                showToast = { message -> Toast.makeText(baseContext, message, Toast.LENGTH_LONG).show() }
+                showToast = { Toast.makeText(baseContext, getString(R.string.back_press), Toast.LENGTH_LONG).show() }
             )
         }
     }
 
+    fun navigate(action: Int, bundle: Bundle? = null) {
+        navController.navigate(action, bundle)
+    }
+
     private fun selectPreviousNavTab() {
-        bottomNavigationView!!.selectedItemId = viewModel.lastItemId
-        viewModel.lastItemId = -1
+        val currentItemId = bottomNavigationView?.selectedItemId ?: return
+        viewModel.setLastItemId(currentItemId)
+        bottomNavigationView?.selectedItemId = viewModel.getLastItemId()
+        viewModel.resetLastItemId()
     }
 
     fun selectNavTab(id: Int) {
-        viewModel.lastItemId = bottomNavigationView!!.selectedItemId
-        bottomNavigationView!!.selectedItemId = id
+        val currentItemId = bottomNavigationView?.selectedItemId ?: return
+        viewModel.setLastItemId(currentItemId)
+        bottomNavigationView?.selectedItemId = id
     }
 
     override fun onAttachedToWindow() {

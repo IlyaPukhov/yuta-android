@@ -1,11 +1,8 @@
 package com.yuta.data
 
 import com.yuta.data.network.ApiFactory
-import com.yuta.data.network.ProfileApiService
 import com.yuta.data.network.ProjectsApiService
-import com.yuta.data.repository.ProfileRepositoryImpl
 import com.yuta.data.repository.ProjectsRepositoryImpl
-import com.yuta.domain.repository.ProfileRepository
 import com.yuta.domain.repository.ProjectsRepository
 import dagger.Binds
 import dagger.Module

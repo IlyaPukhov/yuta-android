@@ -11,7 +11,7 @@ class SearchRepositoryImpl @Inject constructor(
     private val apiService: SearchApiService
 ) : SearchRepository {
 
-    override fun searchUsersByUsername(username: String): Flow<List<UserDto>?> = flow {
-        emit(apiService.searchUsersByUsername(username).users)
+    override fun searchUsersByUsername(text: String): Flow<List<UserDto>?> = flow {
+        emit(apiService.searchUsersByUsername(text).users)
     }
 }

@@ -4,32 +4,48 @@ import androidx.lifecycle.ViewModel
 
 class MainViewModel : ViewModel() {
 
-    var lastItemId: Int = -1
+    private var isReadonly = false
+    private var lastItemId: Int = -1
     private var lastPress: Long = -1
-    private var isReadonlyProfile = false
 
     fun handleBackPress(
-        currentTime: Long,
+        currentTime: Long = System.currentTimeMillis(),
         onSelectPreviousNavTab: () -> Unit,
         onPopBackStack: () -> Unit,
         onExit: () -> Unit,
-        showToast: (String) -> Unit
+        showToast: () -> Unit
     ) {
         when {
             lastItemId >= 0 -> onSelectPreviousNavTab()
-            isReadonlyProfile -> {
+            isReadonly -> {
                 onPopBackStack()
-                isReadonlyProfile = false
+                isReadonly = false
             }
 
             else -> {
                 if (currentTime - lastPress > 5000L) {
-                    showToast("Press back again to exit")
+                    showToast()
                     lastPress = currentTime
                 } else {
                     onExit()
                 }
             }
         }
+    }
+
+    fun setLastItemId(itemId: Int) {
+        lastItemId = itemId
+    }
+
+    fun getLastItemId(): Int {
+        return lastItemId
+    }
+
+    fun resetLastItemId() {
+        lastItemId = -1
+    }
+
+    fun setReadonly(readonly: Boolean) {
+        isReadonly = readonly
     }
 }

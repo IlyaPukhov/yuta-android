@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface SearchRepository {
 
-    fun searchUsersByUsername(username: String): Flow<List<UserDto>?>
+    fun searchUsersByUsername(text: String): Flow<List<UserDto>?>
 }
