@@ -38,7 +38,7 @@ class UserSearchAdapter(context: Context, items: MutableList<UserDto>) :
             name.text = fullName
 
             userLayout.setOnClickListener {
-                val activity = context as MainActivity
+                val activity = context.applicationContext as MainActivity
                 KeyboardUtils.hideKeyboard(activity, itemView)
 
                 if (getUserId(activity) == userDto.id) {

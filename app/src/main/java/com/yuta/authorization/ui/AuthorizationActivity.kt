@@ -9,8 +9,7 @@ import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -63,15 +62,15 @@ class AuthorizationActivity : AppCompatActivity() {
     }
 
     private fun setupTextWatchers() {
-        loginView.addTextChangedListener(createTextWatcher())
-        passwordView.addTextChangedListener(createTextWatcher())
+        loginView.addTextChangedListener(authorizationTextWatcher())
+        passwordView.addTextChangedListener(authorizationTextWatcher())
     }
 
-    private fun createTextWatcher() = object : TextWatcher {
+    private fun authorizationTextWatcher() = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {}
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            errorText.visibility = View.GONE
+            errorText.visibility = GONE
             updateLoginButtonState()
         }
     }

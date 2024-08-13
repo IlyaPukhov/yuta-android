@@ -30,7 +30,7 @@ class SearchFragment : Fragment() {
     private val viewModel: SearchViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater,container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
 
@@ -39,7 +39,7 @@ class SearchFragment : Fragment() {
         val searchField = view.findViewById<EditText>(R.id.search_user)
 
         recyclerViewInitialize(view)
-        setupEditView(searchField)
+        searchField.addTextChangedListener(searchTextWatcher())
 
         view.findViewById<View>(R.id.log_out).setOnClickListener { openLogoutDialog() }
 
@@ -51,19 +51,17 @@ class SearchFragment : Fragment() {
         updateList(usersList)
     }
 
-    private fun setupEditView(editText: EditText) {
-        editText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (count != 0) {
-                    updateSearchResult(s.toString())
-                } else {
-                    usersList.clear()
-                    updateList(usersList)
-                }
+    private fun searchTextWatcher() = object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {}
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            if (count != 0) {
+                updateSearchResult(s.toString())
+            } else {
+                usersList.clear()
+                updateList(usersList)
             }
-        })
+        }
     }
 
     private fun updateSearchResult(searchName: String) {
