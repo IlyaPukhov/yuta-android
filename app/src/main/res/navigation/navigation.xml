@@ -35,7 +35,7 @@
     </fragment>
     <fragment
             android:id="@+id/tasksFragment"
-            android:name="com.yuta.__old.ui.fragment.TasksFragment"
+            android:name="com.yuta.tasks.ui.TasksFragment"
             android:label="fragment_tasks"
             tools:layout="@layout/fragment_tasks" />
     <fragment

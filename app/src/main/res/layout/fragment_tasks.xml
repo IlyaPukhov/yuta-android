@@ -4,7 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.yuta.__old.ui.fragment.TasksFragment">
+        tools:context="com.yuta.tasks.ui.TasksFragment">
 
     <TextView
             android:layout_width="match_parent"

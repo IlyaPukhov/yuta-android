@@ -29,7 +29,9 @@ class SearchFragment : Fragment() {
     private var usersList: MutableList<UserDto> = mutableListOf()
     private val viewModel: SearchViewModel by viewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
 
         emptyText = view.findViewById(R.id.empty_text)
