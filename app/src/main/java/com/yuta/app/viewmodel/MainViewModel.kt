@@ -6,7 +6,7 @@ class MainViewModel : ViewModel() {
 
     var lastItemId: Int = -1
     private var lastPress: Long = -1
-    private var isReadonlyProfile = false
+    var isReadonlyProfile = false
 
     fun handleBackPress(
         currentTime: Long,

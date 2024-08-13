@@ -50,7 +50,7 @@ public class EditTeamDialog extends CreateTeamDialog {
 
     private void setupTeam() {
         teamName.setText(team.getName());
-        membersAdapter.updateList(team.getMembers());
+        membersAdapter.refillList(team.getMembers());
         updateAddedTextVisibility();
     }
 

@@ -16,6 +16,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.yuta.__old.R;
 import com.yuta.app.domain.model.entity.Team;
 import com.yuta.app.domain.model.entity.TeamMember;
+import com.yuta.common.ui.BaseAdapter;
 import com.yuta.common.ui.CustomDialog;
 import com.yuta.__old.ui.dialog.team.DeleteTeamDialog;
 import com.yuta.__old.ui.dialog.team.EditTeamDialog;

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yuta.__old.R;
 import com.yuta.app.domain.model.entity.TeamMember;
 import com.yuta.__old.ui.adapter.layoutmanagers.SpanningLinearLayoutManager;
+import com.yuta.common.ui.BaseAdapter;
 
 import java.util.List;
 

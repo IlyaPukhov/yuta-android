@@ -1,4 +1,4 @@
-package com.yuta.__old.ui.fragment;
+package com.yuta.search.ui;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yuta.__old.R;
 import com.yuta.app.domain.model.response.SearchUsersResponse;
 import com.yuta.app.domain.model.entity.User;
-import com.yuta.__old.ui.adapter.UserSearchAdapter;
 import com.yuta.common.ui.CustomDialog;
 import com.yuta.__old.ui.dialog.user.LogoutDialog;
 import com.yuta.app.network.RequestViewModel;
@@ -32,6 +31,7 @@ import static android.view.View.VISIBLE;
 
 @NoArgsConstructor
 public class SearchFragment extends Fragment {
+
     private View emptyText;
     private List<User> userDto;
     private View view;
@@ -99,7 +99,7 @@ public class SearchFragment extends Fragment {
     }
 
     private void updateList(List<User> userDto) {
-        searchAdapter.updateList(userDto);
+        searchAdapter.refillList(userDto);
     }
 
     private void recyclerViewInitialize() {

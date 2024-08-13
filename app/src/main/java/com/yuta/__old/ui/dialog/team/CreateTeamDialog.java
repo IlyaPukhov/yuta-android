@@ -99,7 +99,7 @@ public class CreateTeamDialog extends CustomInteractiveDialog {
 
     private void updateList(@NonNull TeamUserSearchAdapter adapter, @NonNull List<User> userDto) {
         messageVisibility(emptySearch, !userDto.isEmpty());
-        adapter.updateList(userDto);
+        adapter.refillList(userDto);
     }
 
     protected RequestViewModel isNameUnique(String name) {

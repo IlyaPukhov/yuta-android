@@ -74,7 +74,7 @@ public class TeamsFragment extends Fragment {
 
     private void fillTeams(@NonNull List<List<TeamMember>> teamMembers) {
         emptyText.setVisibility(teamMembers.isEmpty() ? VISIBLE : GONE);
-        teamsAdapter.updateList(teamMembers);
+        teamsAdapter.refillList(teamMembers);
     }
 
     private void getTeams() {

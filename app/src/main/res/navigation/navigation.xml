@@ -53,7 +53,7 @@
     </fragment>
     <fragment
             android:id="@+id/searchFragment"
-            android:name="com.yuta.__old.ui.fragment.SearchFragment"
+            android:name="com.yuta.search.ui.SearchFragment"
             android:label="fragment_search"
             tools:layout="@layout/fragment_search">
         <action

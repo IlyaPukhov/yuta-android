@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import com.yuta.__old.R;
 import com.yuta.app.domain.model.entity.User;
 import com.yuta.__old.ui.adapter.viewholders.ProjectMemberViewHolder;
+import com.yuta.common.ui.BaseAdapter;
 
 import java.util.List;
 

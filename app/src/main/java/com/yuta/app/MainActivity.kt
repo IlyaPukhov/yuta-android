@@ -14,7 +14,7 @@ import com.yuta.app.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private var navController: NavController? = null
+    lateinit var navController: NavController
     private var bottomNavigationView: BottomNavigationView? = null
     private val viewModel: MainViewModel by viewModels()
 
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupNavigation() {
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
         navController = findNavController(R.id.nav_host_fragment)
-        setupWithNavController(bottomNavigationView!!, navController!!)
+        setupWithNavController(bottomNavigationView!!, navController)
     }
 
     private fun onBackPressedDispatcherInitialize() {
@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
             viewModel.handleBackPress(
                 currentTime = System.currentTimeMillis(),
                 onSelectPreviousNavTab = { selectPreviousNavTab() },
-                onPopBackStack = { navController!!.popBackStack() },
+                onPopBackStack = { navController.popBackStack() },
                 onExit = { finish() },
                 showToast = { message -> Toast.makeText(baseContext, message, Toast.LENGTH_LONG).show() }
             )

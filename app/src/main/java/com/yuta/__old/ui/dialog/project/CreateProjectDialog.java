@@ -225,7 +225,7 @@ public class CreateProjectDialog extends CustomInteractiveDialog {
 
     private void updateList(@NonNull ProjectTeamSearchAdapter adapter, @NonNull List<Team> teams) {
         messageVisibility(emptySearch, !teams.isEmpty());
-        adapter.updateList(teams);
+        adapter.refillList(teams);
     }
 
     private void recyclerViewInitialize() {

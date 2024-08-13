@@ -71,7 +71,7 @@ public class EditProjectDialog extends CreateProjectDialog {
         if (project.getTeam() != null) {
             radioGroup.check(RADIO_CREATE_WITH_TEAM);
             teamList.add(project.getTeam());
-            addedTeamSearchAdapter.updateList(teamList);
+            addedTeamSearchAdapter.refillList(teamList);
         }
 
         projectName.setText(project.getName());

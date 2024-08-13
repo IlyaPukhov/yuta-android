@@ -18,6 +18,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.viewModelScope
 import com.yuta.app.MainActivity
+import com.yuta.app.R
 import com.yuta.authorization.viewmodel.AuthorizationViewModel
 import com.yuta.common.util.KeyboardUtils
 import com.yuta.common.util.UserUtils
@@ -35,7 +36,7 @@ class AuthorizationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_YUTA_Common)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_authorization)
 
         initializeViews()
         checkInitialConditions()

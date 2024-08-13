@@ -86,7 +86,7 @@ public class ProjectsFragment extends Fragment {
 
     private void fillProjects(@NonNull List<ProjectDto> projectMembers) {
         emptyText.setVisibility(projectMembers.isEmpty() ? VISIBLE : GONE);
-        projectsAdapter.updateList(projectMembers);
+        projectsAdapter.refillList(projectMembers);
     }
 
     private void getProjects() {

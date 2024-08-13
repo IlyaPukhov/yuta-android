@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import com.yuta.__old.R;
-import com.yuta.__old.ui.adapter.BaseAdapter;
+import com.yuta.common.ui.BaseAdapter;
 import com.yuta.app.MainActivity;
 import com.yuta.app.domain.model.entity.User;
 import lombok.Getter;

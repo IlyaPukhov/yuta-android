@@ -13,6 +13,7 @@ import com.yuta.app.MainActivity;
 import com.yuta.__old.R;
 import com.yuta.app.domain.model.entity.TeamMember;
 import com.yuta.app.domain.model.entity.User;
+import com.yuta.common.ui.BaseAdapter;
 
 import java.util.List;
 
