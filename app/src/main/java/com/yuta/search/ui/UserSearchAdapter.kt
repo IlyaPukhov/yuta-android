@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
 import com.yuta.app.MainActivity
 import com.yuta.app.R
 import com.yuta.app.viewmodel.MainViewModel
@@ -35,8 +34,7 @@ class UserSearchAdapter(context: Context, items: MutableList<UserDto>) :
         override fun bind(userDto: UserDto) {
             GlideUtils.loadImageToImageViewWithCaching(avatar, userDto.croppedPhoto)
 
-            val fullName = "${userDto.lastName} ${userDto.firstName}" +
-                    (userDto.patronymic?.let { " $it" } ?: "")
+            val fullName = "${userDto.lastName} ${userDto.firstName}" + (userDto.patronymic?.let { " $it" } ?: "")
             name.text = fullName
 
             userLayout.setOnClickListener {
@@ -46,14 +44,13 @@ class UserSearchAdapter(context: Context, items: MutableList<UserDto>) :
                 if (getUserId(activity) == userDto.id) {
                     activity.selectNavTab(R.id.profileFragment)
                 } else {
-                    val navController: NavController = activity.navController
                     val bundle = Bundle().apply {
                         putInt("userId", userDto.id)
                     }
-                    navController.navigate(R.id.action_searchFragment_to_readonlyProfileFragment, bundle)
+                    activity.navigate(R.id.action_searchFragment_to_readonlyProfileFragment, bundle)
 
                     val mainViewModel = ViewModelProvider(activity)[MainViewModel::class.java]
-                    mainViewModel.isReadonlyProfile = true
+                    mainViewModel.setReadonly(true)
                 }
             }
         }
