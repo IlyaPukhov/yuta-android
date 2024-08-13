@@ -35,7 +35,7 @@ object UserUtils {
         return getSharedPreferences(context).getInt("user_id", -1)
     }
 
-    fun logOut(activity: Activity) {
+    fun logout(activity: Activity) {
         val sharedPreferences = getSharedPreferences(activity)
         with(sharedPreferences.edit()) {
             remove("user_id")

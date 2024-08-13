@@ -20,9 +20,9 @@ import com.yuta.__old.R;
 import com.yuta.app.domain.model.entity.ProjectDto;
 import com.yuta.app.domain.model.response.ProjectsResponse;
 import com.yuta.__old.ui.adapter.ProjectsAdapter;
-import com.yuta.common.ui.CustomDialog;
+import com.yuta.common.ui.AppDialog;
 import com.yuta.__old.ui.dialog.project.CreateProjectDialog;
-import com.yuta.__old.ui.dialog.user.LogoutDialog;
+import com.yuta.authorization.ui.LogoutDialog;
 import com.yuta.app.network.RequestViewModel;
 import lombok.NoArgsConstructor;
 
@@ -154,12 +154,12 @@ public class ProjectsFragment extends Fragment {
     }
 
     private void openCreateProjectDialog() {
-        CustomDialog createProjectDialog = new CreateProjectDialog(view.getContext(), this);
+        AppDialog createProjectDialog = new CreateProjectDialog(view.getContext(), this);
         createProjectDialog.start();
     }
 
     private void openLogoutDialog() {
-        CustomDialog logoutDialog = new LogoutDialog(view.getContext(), this);
+        AppDialog logoutDialog = new LogoutDialog(view.getContext(), this);
         logoutDialog.start();
     }
 }

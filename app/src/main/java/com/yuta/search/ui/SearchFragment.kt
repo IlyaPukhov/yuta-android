@@ -15,7 +15,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.yuta.__old.ui.dialog.user.LogoutDialog
+import com.yuta.authorization.ui.LogoutDialog
 import com.yuta.app.R
 import com.yuta.domain.model.UserDto
 import com.yuta.search.viewmodel.SearchViewModel
@@ -96,7 +96,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun openLogoutDialog() {
-        val logoutDialog = LogoutDialog(requireContext(), this)
+        val logoutDialog = LogoutDialog(this)
         logoutDialog.start()
     }
 }

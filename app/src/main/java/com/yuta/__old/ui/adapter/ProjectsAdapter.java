@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yuta.__old.R;
 import com.yuta.__old.ui.adapter.layoutmanagers.SpanningLinearLayoutManager;
 import com.yuta.common.ui.BaseAdapter;
-import com.yuta.common.ui.CustomDialog;
+import com.yuta.common.ui.AppDialog;
 import com.yuta.__old.ui.dialog.project.ProjectDialog;
 import com.yuta.common.util.GlideUtils;
 import com.yuta.app.domain.model.entity.ProjectDto;
@@ -183,7 +183,7 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
         }
 
         private void openMenu(ProjectDto project) {
-            CustomDialog projectDialog = new ProjectDialog(getContext(), fragment, project);
+            AppDialog projectDialog = new ProjectDialog(getContext(), fragment, project);
             projectDialog.start();
         }
     }

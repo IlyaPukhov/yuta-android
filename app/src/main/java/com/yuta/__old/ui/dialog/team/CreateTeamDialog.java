@@ -18,7 +18,7 @@ import com.yuta.app.domain.model.response.SearchUsersResponse;
 import com.yuta.app.domain.model.response.UpdateResponse;
 import com.yuta.app.domain.model.entity.User;
 import com.yuta.__old.ui.adapter.TeamUserSearchAdapter;
-import com.yuta.common.ui.CustomInteractiveDialog;
+import com.yuta.common.ui.InteractiveDialog;
 import com.yuta.__old.ui.fragment.TeamsFragment;
 import com.yuta.app.network.RequestViewModel;
 
@@ -30,7 +30,7 @@ import static android.view.View.VISIBLE;
 import static com.yuta.common.util.UserUtils.getUserId;
 
 @SuppressWarnings("ConstantConditions")
-public class CreateTeamDialog extends CustomInteractiveDialog {
+public class CreateTeamDialog extends InteractiveDialog {
     protected final List<User> addedMembers = new ArrayList<>();
     private final List<User> searchUserDtos = new ArrayList<>();
     protected RequestViewModel viewModel;

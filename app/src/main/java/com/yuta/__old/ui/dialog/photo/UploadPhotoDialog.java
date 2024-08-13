@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.yuta.__old.R;
-import com.yuta.common.ui.CustomDialog;
-import com.yuta.common.ui.CustomInteractiveDialog;
+import com.yuta.common.ui.AppDialog;
+import com.yuta.common.ui.InteractiveDialog;
 import com.yuta.__old.ui.fragment.ProfileFragment;
 import com.yuta.common.util.FileUtils;
 import com.yuta.app.network.RequestViewModel;
@@ -26,7 +26,7 @@ import static com.yuta.__old.ui.dialog.photo.PhotoDialog.DEFAULT_USER_PHOTO;
 import static com.yuta.common.util.GlideUtils.loadImageToImageViewWithoutCaching;
 
 @SuppressWarnings("ConstantConditions")
-public class UploadPhotoDialog extends CustomInteractiveDialog {
+public class UploadPhotoDialog extends InteractiveDialog {
     public static final int PICK_IMAGE_REQUEST = 1;
     @SuppressLint("StaticFieldLeak")
     private static ImageView imageView;
@@ -105,7 +105,7 @@ public class UploadPhotoDialog extends CustomInteractiveDialog {
     }
 
     private void openCropDialog() {
-        CustomDialog cropPhotoDialog = new CropPhotoDialog(activity, fragment);
+        AppDialog cropPhotoDialog = new CropPhotoDialog(activity, fragment);
         cropPhotoDialog.start();
         dismiss();
     }

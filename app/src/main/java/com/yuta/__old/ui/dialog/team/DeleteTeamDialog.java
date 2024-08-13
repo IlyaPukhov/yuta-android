@@ -8,12 +8,12 @@ import androidx.lifecycle.ViewModelProvider;
 import com.yuta.__old.R;
 import com.yuta.app.domain.model.entity.Team;
 import com.yuta.app.domain.model.response.UpdateResponse;
-import com.yuta.common.ui.CustomInteractiveDialog;
+import com.yuta.common.ui.InteractiveDialog;
 import com.yuta.__old.ui.fragment.TeamsFragment;
 import com.yuta.app.network.RequestViewModel;
 
 @SuppressWarnings("ConstantConditions")
-public class DeleteTeamDialog extends CustomInteractiveDialog {
+public class DeleteTeamDialog extends InteractiveDialog {
     private final Team team;
     private RequestViewModel viewModel;
 

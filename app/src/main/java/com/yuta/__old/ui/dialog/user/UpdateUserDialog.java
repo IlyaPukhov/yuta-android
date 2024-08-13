@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import com.yuta.__old.R;
 import com.yuta.app.domain.model.response.UpdateResponse;
-import com.yuta.common.ui.CustomInteractiveDialog;
+import com.yuta.common.ui.InteractiveDialog;
 import com.yuta.__old.ui.fragment.ProfileFragment;
 import com.yuta.app.network.RequestViewModel;
 
@@ -19,7 +19,7 @@ import static android.view.View.VISIBLE;
 import static com.yuta.common.util.UserUtils.getUserId;
 
 @SuppressWarnings("ConstantConditions")
-public class UpdateUserDialog extends CustomInteractiveDialog {
+public class UpdateUserDialog extends InteractiveDialog {
     private RequestViewModel viewModel;
     private TextView errorText;
     private Button submitButton;

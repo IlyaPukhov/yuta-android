@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import com.yuta.__old.R;
 import com.yuta.app.domain.model.entity.User;
 import com.yuta.common.ui.BaseAdapter;
-import com.yuta.common.ui.CustomDialog;
+import com.yuta.common.ui.AppDialog;
 import com.yuta.__old.ui.dialog.team.CreateTeamDialog;
 
 import java.util.List;
@@ -20,10 +20,10 @@ import static android.view.View.VISIBLE;
 import static com.yuta.common.util.GlideUtils.loadImageToImageViewWithoutCaching;
 
 public class TeamUserSearchAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User>> {
-    private final CustomDialog dialog;
+    private final AppDialog dialog;
     private final TeamUserSearchAdapter membersAdapter;
 
-    public TeamUserSearchAdapter(CustomDialog dialog, List<User> items, TeamUserSearchAdapter membersAdapter) {
+    public TeamUserSearchAdapter(AppDialog dialog, List<User> items, TeamUserSearchAdapter membersAdapter) {
         super(dialog.getContext(), items);
         this.membersAdapter = membersAdapter;
         this.dialog = dialog;

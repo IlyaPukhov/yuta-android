@@ -12,7 +12,7 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.canhub.cropper.CropImageView;
 import com.yuta.__old.R;
-import com.yuta.common.ui.CustomInteractiveDialog;
+import com.yuta.common.ui.InteractiveDialog;
 import com.yuta.__old.ui.fragment.ProfileFragment;
 import com.yuta.app.network.RequestViewModel;
 import com.yuta.common.util.UserUtils;
@@ -23,7 +23,7 @@ import static com.yuta.common.util.GlideUtils.getConfiguredGlideBuilder;
 import static com.yuta.common.util.UserUtils.getPath;
 
 @SuppressWarnings("ConstantConditions")
-public class CropPhotoDialog extends CustomInteractiveDialog {
+public class CropPhotoDialog extends InteractiveDialog {
     private CropImageView cropImageView;
     private RequestViewModel viewModel;
 

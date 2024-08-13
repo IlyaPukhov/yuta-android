@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import com.yuta.__old.R;
 import com.yuta.app.domain.model.entity.Team;
 import com.yuta.common.ui.BaseAdapter;
-import com.yuta.common.ui.CustomDialog;
+import com.yuta.common.ui.AppDialog;
 import com.yuta.__old.ui.dialog.project.CreateProjectDialog;
 
 import java.util.List;
@@ -18,10 +18,10 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 public class ProjectTeamSearchAdapter extends BaseAdapter<Team, BaseAdapter.ViewHolder<Team>> {
-    private final CustomDialog dialog;
+    private final AppDialog dialog;
     private final ProjectTeamSearchAdapter addedTeamSearchAdapter;
 
-    public ProjectTeamSearchAdapter(CustomDialog dialog, List<Team> items, ProjectTeamSearchAdapter teamSearchAdapter) {
+    public ProjectTeamSearchAdapter(AppDialog dialog, List<Team> items, ProjectTeamSearchAdapter teamSearchAdapter) {
         super(dialog.getContext(), items);
         this.dialog = dialog;
         this.addedTeamSearchAdapter = teamSearchAdapter;

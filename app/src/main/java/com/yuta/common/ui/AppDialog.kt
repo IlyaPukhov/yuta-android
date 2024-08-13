@@ -1,12 +1,12 @@
 package com.yuta.common.ui
 
 import android.app.Activity
-import android.graphics.Color
+import android.graphics.Color.TRANSPARENT
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 
-abstract class CustomDialog(
+abstract class AppDialog(
     private val dialogLayout: Int,
     private val activity: Activity
 ) : AlertDialog(activity) {
@@ -21,7 +21,7 @@ abstract class CustomDialog(
         builder.setCancelable(false)
 
         dialog = builder.create()
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.setBackgroundDrawable(ColorDrawable(TRANSPARENT))
         dialog.show()
     }
 }

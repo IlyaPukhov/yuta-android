@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.yuta.__old.R;
 import com.yuta.__old.ui.adapter.TeamsAdapter;
-import com.yuta.common.ui.CustomDialog;
+import com.yuta.common.ui.AppDialog;
 import com.yuta.__old.ui.dialog.team.CreateTeamDialog;
-import com.yuta.__old.ui.dialog.user.LogoutDialog;
+import com.yuta.authorization.ui.LogoutDialog;
 import com.yuta.app.network.RequestViewModel;
 import com.yuta.app.domain.model.entity.Team;
 import com.yuta.app.domain.model.entity.TeamMember;
@@ -156,12 +156,12 @@ public class TeamsFragment extends Fragment {
     }
 
     private void openCreateTeamDialog() {
-        CustomDialog createTeamDialog = new CreateTeamDialog(view.getContext(), this);
+        AppDialog createTeamDialog = new CreateTeamDialog(view.getContext(), this);
         createTeamDialog.start();
     }
 
     private void openLogoutDialog() {
-        CustomDialog logoutDialog = new LogoutDialog(view.getContext(), this);
+        AppDialog logoutDialog = new LogoutDialog(view.getContext(), this);
         logoutDialog.start();
     }
 }

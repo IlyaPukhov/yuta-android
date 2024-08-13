@@ -17,7 +17,7 @@ import com.yuta.__old.R;
 import com.yuta.app.domain.model.entity.Team;
 import com.yuta.app.domain.model.entity.TeamMember;
 import com.yuta.common.ui.BaseAdapter;
-import com.yuta.common.ui.CustomDialog;
+import com.yuta.common.ui.AppDialog;
 import com.yuta.__old.ui.dialog.team.DeleteTeamDialog;
 import com.yuta.__old.ui.dialog.team.EditTeamDialog;
 
@@ -139,12 +139,12 @@ public class TeamsAdapter extends BaseAdapter<List<TeamMember>, BaseAdapter.View
         }
 
         private void openDeleteTeamDialog() {
-            CustomDialog deleteTeamDialog = new DeleteTeamDialog(getContext(), fragment, team);
+            AppDialog deleteTeamDialog = new DeleteTeamDialog(getContext(), fragment, team);
             deleteTeamDialog.start();
         }
 
         private void openEditTeamDialog() {
-            CustomDialog editTeamDialog = new EditTeamDialog(getContext(), fragment, team.getId());
+            AppDialog editTeamDialog = new EditTeamDialog(getContext(), fragment, team.getId());
             editTeamDialog.start();
         }
 
