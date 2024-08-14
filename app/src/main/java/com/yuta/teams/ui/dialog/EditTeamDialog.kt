@@ -22,7 +22,7 @@ class EditTeamDialog(
     override fun start() {
         super.start()
         setupViews()
-        getTeam(teamId)
+        getTeamDetails(teamId)
 
         submitButton.setOnClickListener {
             KeyboardUtils.hideKeyboard(fragment.requireActivity(), submitButton)
@@ -32,19 +32,19 @@ class EditTeamDialog(
 
     private fun setupViews() {
         submitButton.apply {
-            this.setText(R.string.save_button)
-            this.isEnabled = false
+            text = context.getString(R.string.save_button)
+            isEnabled = false
         }
         dialog.findViewById<TextView>(R.id.create_text).text = context.getString(R.string.edit_team_text)
     }
 
-    private fun getTeam(teamId: Int) {
+    private fun getTeamDetails(teamId: Int) {
         teamsViewModel.viewModelScope.launch {
-            teamsViewModel.getById(teamId).collect { setupTeam(it) }
+            teamsViewModel.getById(teamId).collect { populateTeamDetails(it) }
         }
     }
 
-    private fun setupTeam(team: Team) {
+    private fun populateTeamDetails(team: Team) {
         teamName.setText(team.name)
         membersAdapter.refillList(team.members)
         updateAddedTextVisibility()
