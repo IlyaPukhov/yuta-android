@@ -1,53 +1,46 @@
-package com.yuta.teams.ui.dialog;
+package com.yuta.teams.ui.dialog
 
-import android.content.Context;
-import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewModelScope
 import com.yuta.app.R
-import com.yuta.app.domain.model.entity.Team;
-import com.yuta.app.domain.model.response.UpdateResponse;
-import com.yuta.common.ui.InteractiveDialog;
-import com.yuta.app.network.RequestViewModel;
-import com.yuta.teams.ui.TeamsFragment;
+import com.yuta.common.ui.CancelableDialog
+import com.yuta.domain.model.Team
+import com.yuta.teams.viewmodel.TeamsViewModel
+import kotlinx.coroutines.launch
 
-@SuppressWarnings("ConstantConditions")
-public class DeleteTeamDialog extends InteractiveDialog {
-    private final Team team;
-    private RequestViewModel viewModel;
+class DeleteTeamDialog(
+    fragment: Fragment,
+    private val team: Team,
+    private val onDeleteSuccess: () -> Unit
+) : CancelableDialog(R.layout.dialog_delete, fragment.requireActivity()) {
 
-    public DeleteTeamDialog(Context context, Fragment fragment, Team team) {
-        super(context, fragment);
-        setDialogLayout(R.layout.dialog_delete);
-        this.team = team;
+    private val teamsViewModel: TeamsViewModel by fragment.viewModels()
+
+    override fun start() {
+        super.start()
+        setupTextView(team.name)
+
+        dialog.findViewById<TextView>(R.id.close)?.setOnClickListener { dismiss() }
+        dialog.findViewById<TextView>(R.id.submit)?.setOnClickListener {
+            deleteTeam(team.id)
+            dismiss()
+        }
     }
 
-    @Override
-    public void start() {
-        super.start();
-        viewModel = new ViewModelProvider(fragment).get(RequestViewModel.class);
-        setupTextView(team.getName());
-
-        dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
-        dialog.findViewById(R.id.submit).setOnClickListener(v -> {
-            deleteTeam(fragment, team);
-            dismiss();
-        });
+    private fun setupTextView(name: String) {
+        val text = "${context.getString(R.string.delete_team_desc)} \"$name\"?"
+        dialog.findViewById<TextView>(R.id.name_desc)?.text = text
     }
 
-    private void setupTextView(String name) {
-        String text = getContext().getString(R.string.delete_team_desc) + " \"" + name + "\"?";
-        ((TextView) dialog.findViewById(R.id.name_desc)).setText(text);
-    }
-
-    private void deleteTeam(Fragment fragment, @NonNull Team team) {
-        viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.deleteTeam(team.getId());
-        viewModel.getResultLiveData().observe(fragment, result -> {
-            if (!(result instanceof UpdateResponse)) return;
-            ((TeamsFragment) fragment).updateLists();
-            dismiss();
-        });
+    private fun deleteTeam(id: Int) {
+        teamsViewModel.viewModelScope.launch {
+            teamsViewModel.delete(id).collect { result ->
+                if (result) {
+                    onDeleteSuccess.invoke()
+                }
+            }
+        }
     }
 }

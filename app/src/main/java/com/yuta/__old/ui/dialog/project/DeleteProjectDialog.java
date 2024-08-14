@@ -7,12 +7,12 @@ import androidx.lifecycle.ViewModelProvider;
 import com.yuta.__old.R;
 import com.yuta.app.domain.model.entity.ProjectDto;
 import com.yuta.app.domain.model.response.UpdateResponse;
-import com.yuta.common.ui.InteractiveDialog;
+import com.yuta.common.ui.CancelableDialog;
 import com.yuta.__old.ui.fragment.ProjectsFragment;
 import com.yuta.app.network.RequestViewModel;
 
 @SuppressWarnings("ConstantConditions")
-public class DeleteProjectDialog extends InteractiveDialog {
+public class DeleteProjectDialog extends CancelableDialog {
     private final ProjectDto project;
     private RequestViewModel viewModel;
 

@@ -17,7 +17,7 @@ import com.yuta.app.domain.model.response.TeamCheckNameResponse;
 import com.yuta.app.domain.model.response.SearchUsersResponse;
 import com.yuta.app.domain.model.response.UpdateResponse;
 import com.yuta.app.domain.model.entity.User;
-import com.yuta.common.ui.InteractiveDialog;
+import com.yuta.common.ui.CancelableDialog;
 import com.yuta.app.network.RequestViewModel;
 import com.yuta.teams.ui.TeamsFragment;
 import com.yuta.teams.ui.adapter.TeamUserSearchAdapter;
@@ -30,7 +30,7 @@ import static android.view.View.VISIBLE;
 import static com.yuta.common.util.UserUtils.getUserId;
 
 @SuppressWarnings("ConstantConditions")
-public class CreateTeamDialog extends InteractiveDialog {
+public class CreateTeamDialog extends CancelableDialog {
     protected final List<User> addedMembers = new ArrayList<>();
     private final List<User> searchUserDtos = new ArrayList<>();
     protected RequestViewModel viewModel;
