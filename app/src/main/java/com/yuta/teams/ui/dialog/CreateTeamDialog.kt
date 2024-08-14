@@ -21,24 +21,24 @@ import com.yuta.teams.ui.adapter.TeamUserSearchAdapter
 import com.yuta.teams.viewmodel.TeamsViewModel
 import kotlinx.coroutines.launch
 
-class CreateTeamDialog(
+open class CreateTeamDialog(
     private val fragment: Fragment,
-    private val onCreateSuccess: () -> Unit
+    private val onCreateSuccess: () -> Unit? = {}
 ) : CancelableDialog(R.layout.dialog_create_team, fragment.requireActivity()) {
 
     private val teamsViewModel: TeamsViewModel by fragment.viewModels()
-    private val addedMembers = mutableListOf<UserDto>()
+    protected val addedMembers = mutableListOf<UserDto>()
     private val searchUserDtos = mutableListOf<UserDto>()
 
-    private lateinit var teamName: EditText
-    private lateinit var submitButton: Button
+    protected lateinit var teamName: EditText
+    protected lateinit var submitButton: Button
     private lateinit var searchButton: Button
     private lateinit var searchField: EditText
     private lateinit var error: TextView
     private lateinit var emptySearch: TextView
     private lateinit var addedText: TextView
     private lateinit var searchAdapter: TeamUserSearchAdapter
-    private lateinit var membersAdapter: TeamUserSearchAdapter
+    protected lateinit var membersAdapter: TeamUserSearchAdapter
 
     override fun start() {
         super.start()
@@ -103,10 +103,9 @@ class CreateTeamDialog(
         })
     }
 
-    private fun checkNameUnique(name: String, isUnique: (unique: Boolean) -> Unit) {
+    protected open fun checkNameUnique(name: String, onUniqueCallback: (Boolean) -> Unit) {
         teamsViewModel.viewModelScope.launch {
-            teamsViewModel.isUniqueName(name)
-                .collect { isUniqueResult -> isUnique.invoke(isUniqueResult) }
+            teamsViewModel.isUniqueName(name).collect { onUniqueCallback(it) }
         }
     }
 
@@ -115,11 +114,7 @@ class CreateTeamDialog(
 
         teamsViewModel.viewModelScope.launch {
             teamsViewModel.create(UserUtils.getUserId(fragment.requireContext()), name, members)
-                .collect { result ->
-                    if (result) {
-                        onCreateSuccess.invoke()
-                    }
-                }
+                .collect { result -> if (result) onCreateSuccess() }
         }
     }
 
@@ -128,7 +123,7 @@ class CreateTeamDialog(
 
         teamsViewModel.viewModelScope.launch {
             teamsViewModel.searchUsers(text, members, fragment.requireContext())
-                .collect { result -> updateList(searchAdapter, result) }
+                .collect { updateList(searchAdapter, it) }
         }
     }
 
@@ -143,5 +138,5 @@ class CreateTeamDialog(
         message.visibility = if (condition) VISIBLE else GONE
     }
 
-    private fun EditText.trimmedText(): String = this.text.toString().trim()
+    protected fun EditText.trimmedText(): String = this.text.toString().trim()
 }
