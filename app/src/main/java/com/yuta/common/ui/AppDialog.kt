@@ -15,8 +15,7 @@ abstract class AppDialog(
 
     open fun start() {
         val builder = Builder(activity)
-        val inflater: LayoutInflater = activity.layoutInflater
-
+        val inflater = LayoutInflater.from(activity)
         builder.setView(inflater.inflate(dialogLayout, null))
         builder.setCancelable(false)
 

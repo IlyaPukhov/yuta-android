@@ -1,167 +1,147 @@
-package com.yuta.teams.ui.dialog;
+package com.yuta.teams.ui.dialog
 
-import android.content.Context;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
+import android.view.View.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.*
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.yuta.app.R
-import com.yuta.app.domain.model.response.TeamCheckNameResponse;
-import com.yuta.app.domain.model.response.SearchUsersResponse;
-import com.yuta.app.domain.model.response.UpdateResponse;
-import com.yuta.app.domain.model.entity.User;
-import com.yuta.common.ui.CancelableDialog;
-import com.yuta.app.network.RequestViewModel;
-import com.yuta.teams.ui.TeamsFragment;
-import com.yuta.teams.ui.adapter.TeamUserSearchAdapter;
+import com.yuta.common.ui.CancelableDialog
+import com.yuta.common.util.KeyboardUtils
+import com.yuta.common.util.UserUtils
+import com.yuta.domain.model.UserDto
+import com.yuta.teams.ui.adapter.TeamUserSearchAdapter
+import com.yuta.teams.viewmodel.TeamsViewModel
+import kotlinx.coroutines.launch
 
-import java.util.ArrayList;
-import java.util.List;
+class CreateTeamDialog(
+    private val fragment: Fragment,
+    private val onCreateSuccess: () -> Unit
+) : CancelableDialog(R.layout.dialog_create_team, fragment.requireActivity()) {
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static com.yuta.common.util.UserUtils.getUserId;
+    private val teamsViewModel: TeamsViewModel by fragment.viewModels()
+    private val addedMembers = mutableListOf<UserDto>()
+    private val searchUserDtos = mutableListOf<UserDto>()
 
-@SuppressWarnings("ConstantConditions")
-public class CreateTeamDialog extends CancelableDialog {
-    protected final List<User> addedMembers = new ArrayList<>();
-    private final List<User> searchUserDtos = new ArrayList<>();
-    protected RequestViewModel viewModel;
-    protected EditText teamName;
-    protected Button submitButton;
-    protected TeamUserSearchAdapter searchAdapter;
-    protected TeamUserSearchAdapter membersAdapter;
-    private EditText searchField;
-    private Button searchButton;
-    private TextView error;
-    private TextView emptySearch;
-    private TextView addedText;
-    private boolean isTeamNameUnique;
+    private lateinit var teamName: EditText
+    private lateinit var submitButton: Button
+    private lateinit var searchButton: Button
+    private lateinit var searchField: EditText
+    private lateinit var error: TextView
+    private lateinit var emptySearch: TextView
+    private lateinit var addedText: TextView
+    private lateinit var searchAdapter: TeamUserSearchAdapter
+    private lateinit var membersAdapter: TeamUserSearchAdapter
 
-    public CreateTeamDialog(Context context, Fragment fragment) {
-        super(context, fragment);
-        setDialogLayout(R.layout.dialog_create_team);
+    override fun start() {
+        super.start()
+        setupViews()
+        setupRecyclerViews()
     }
 
-    @Override
-    public void start() {
-        super.start();
-        viewModel = new ViewModelProvider(fragment).get(RequestViewModel.class);
+    private fun setupViews() {
+        submitButton = dialog.findViewById(R.id.submit)
+        searchButton = dialog.findViewById(R.id.btnSearch)
+        teamName = dialog.findViewById(R.id.team_name)
+        searchField = dialog.findViewById(R.id.find_name)
+        error = dialog.findViewById(R.id.error_text)
+        emptySearch = dialog.findViewById(R.id.empty_search_text)
+        addedText = dialog.findViewById(R.id.added_members)
 
-        submitButton = dialog.findViewById(R.id.submit);
-        searchButton = dialog.findViewById(R.id.btnSearch);
-        teamName = dialog.findViewById(R.id.team_name);
-        searchField = dialog.findViewById(R.id.find_name);
-        error = dialog.findViewById(R.id.error_text);
-        emptySearch = dialog.findViewById(R.id.empty_search_text);
-        addedText = dialog.findViewById(R.id.added_members);
-
-        setupEditView(teamName);
-        setupEditView(searchField);
-        recyclerViewsInitialize();
-
-        dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
-        searchButton.setOnClickListener(v -> {
-            hideKeyboard(searchButton);
-            searchUsers();
-        });
-        submitButton.setOnClickListener(v -> {
-            hideKeyboard(teamName);
-            createTeam();
-        });
-    }
-
-    private void createTeam() {
-        viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.createTeam(getUserId(activity), getData(teamName), addedMembers);
-        viewModel.getResultLiveData().observe(fragment, result -> {
-            if (!(result instanceof UpdateResponse)) return;
-            ((TeamsFragment) fragment).updateLists();
-            dismiss();
-        });
-    }
-
-    protected void searchUsers() {
-        viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.searchUsers(getData(searchField), getUserId(activity), addedMembers);
-        viewModel.getResultLiveData().observe(fragment, result -> {
-            if (!(result instanceof SearchUsersResponse)) return;
-            updateList(searchAdapter, ((SearchUsersResponse) result).getUsersDtos());
-        });
-    }
-
-    private void updateList(@NonNull TeamUserSearchAdapter adapter, @NonNull List<User> userDto) {
-        messageVisibility(emptySearch, !userDto.isEmpty());
-        adapter.refillList(userDto);
-    }
-
-    protected RequestViewModel isNameUnique(String name) {
-        viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.checkUniqueTeamName(name);
-        return viewModel;
-    }
-
-    protected String getData(EditText editText) {
-        if (editText != null) {
-            String text = editText.getText().toString().trim();
-
-            if (!text.isEmpty()) {
-                return text;
-            }
+        dialog.findViewById<View>(R.id.close).setOnClickListener { dismiss() }
+        searchButton.setOnClickListener {
+            KeyboardUtils.hideKeyboard(fragment.requireActivity(), searchButton)
+            searchUsers(searchField.trimmedText(), addedMembers)
         }
-        return null;
+        submitButton.setOnClickListener {
+            KeyboardUtils.hideKeyboard(fragment.requireActivity(), teamName)
+            createTeam(teamName.trimmedText(), addedMembers)
+        }
+
+        setupTextWatchers()
     }
 
-    private void recyclerViewsInitialize() {
-        RecyclerView addedMembersView = dialog.findViewById(R.id.addedMembers);
-        addedMembersView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        membersAdapter = new TeamUserSearchAdapter(this, addedMembers, null);
-        addedMembersView.setAdapter(membersAdapter);
+    private fun setupRecyclerViews() {
+        dialog.findViewById<RecyclerView>(R.id.addedMembers).apply {
+            layoutManager = LinearLayoutManager(context)
+            membersAdapter = TeamUserSearchAdapter(this@CreateTeamDialog, addedMembers, null)
+            adapter = membersAdapter
+        }
 
-        RecyclerView searchUsersView = dialog.findViewById(R.id.searchUsers);
-        searchUsersView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        searchAdapter = new TeamUserSearchAdapter(this, searchUserDtos, membersAdapter);
-        searchUsersView.setAdapter(searchAdapter);
+        dialog.findViewById<RecyclerView>(R.id.searchUsers).apply {
+            layoutManager = LinearLayoutManager(context)
+            searchAdapter = TeamUserSearchAdapter(this@CreateTeamDialog, searchUserDtos, membersAdapter)
+            adapter = searchAdapter
+        }
     }
 
-    public void updateAddedTextVisibility() {
-        addedText.setVisibility((addedMembers != null && !addedMembers.isEmpty()) ? VISIBLE : GONE);
-    }
-
-    private void messageVisibility(@NonNull View message, boolean isValid) {
-        message.setVisibility(isValid ? GONE : VISIBLE);
-    }
-
-    private void setupEditView(@NonNull EditText editText) {
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (editText == teamName) {
-                    isNameUnique(s.toString()).getResultLiveData().observe(fragment, result -> {
-                        if (!(result instanceof TeamCheckNameResponse)) return;
-                        isTeamNameUnique = ((TeamCheckNameResponse) result).getUnique();
-                        submitButton.setEnabled(isTeamNameUnique);
-                        messageVisibility(error, isTeamNameUnique);
-                    });
-                } else if (editText == searchField) {
-                    searchButton.setEnabled(!s.equals(null) && !s.toString().trim().isEmpty());
+    private fun setupTextWatchers() {
+        teamName.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                checkNameUnique(s.toString()) { isUnique ->
+                    submitButton.isEnabled = isUnique
+                    messageVisibility(error, !isUnique)
                 }
             }
-        });
+        })
+
+        searchField.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                searchButton.isEnabled = !s.isNullOrBlank()
+            }
+        })
     }
+
+    private fun checkNameUnique(name: String, isUnique: (unique: Boolean) -> Unit) {
+        teamsViewModel.viewModelScope.launch {
+            teamsViewModel.isUniqueName(name)
+                .collect { isUniqueResult -> isUnique.invoke(isUniqueResult) }
+        }
+    }
+
+    private fun createTeam(name: String, members: List<UserDto>) {
+        if (name.isEmpty()) return
+
+        teamsViewModel.viewModelScope.launch {
+            teamsViewModel.create(UserUtils.getUserId(fragment.requireContext()), name, members)
+                .collect { result ->
+                    if (result) {
+                        onCreateSuccess.invoke()
+                    }
+                }
+        }
+    }
+
+    private fun searchUsers(text: String, members: List<UserDto>) {
+        if (text.isEmpty()) return
+
+        teamsViewModel.viewModelScope.launch {
+            teamsViewModel.searchUsers(text, members, fragment.requireContext())
+                .collect { result -> updateList(searchAdapter, result) }
+        }
+    }
+
+    private fun updateList(adapter: TeamUserSearchAdapter, users: List<UserDto>) {
+        messageVisibility(emptySearch, users.isEmpty())
+        adapter.refillList(users)
+    }
+
+    fun updateAddedTextVisibility() = messageVisibility(addedText, addedMembers.isNotEmpty())
+
+    private fun messageVisibility(message: View, condition: Boolean) {
+        message.visibility = if (condition) VISIBLE else GONE
+    }
+
+    private fun EditText.trimmedText(): String = this.text.toString().trim()
 }

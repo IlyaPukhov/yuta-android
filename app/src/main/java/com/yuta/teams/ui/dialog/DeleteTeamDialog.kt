@@ -22,8 +22,8 @@ class DeleteTeamDialog(
         super.start()
         setupTextView(team.name)
 
-        dialog.findViewById<TextView>(R.id.close)?.setOnClickListener { dismiss() }
-        dialog.findViewById<TextView>(R.id.submit)?.setOnClickListener {
+        dialog.findViewById<TextView>(R.id.close).setOnClickListener { dismiss() }
+        dialog.findViewById<TextView>(R.id.submit).setOnClickListener {
             deleteTeam(team.id)
             dismiss()
         }
@@ -31,7 +31,7 @@ class DeleteTeamDialog(
 
     private fun setupTextView(name: String) {
         val text = "${context.getString(R.string.delete_team_desc)} \"$name\"?"
-        dialog.findViewById<TextView>(R.id.name_desc)?.text = text
+        dialog.findViewById<TextView>(R.id.name_desc).text = text
     }
 
     private fun deleteTeam(id: Int) {
