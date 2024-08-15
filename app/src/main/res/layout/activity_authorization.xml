@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         tools:context="com.yuta.authorization.ui.AuthorizationActivity"
         android:background="@drawable/background_fragment"
-        android:paddingTop="30dp">
+        android:fitsSystemWindows="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/header"
