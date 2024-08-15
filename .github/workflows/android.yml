@@ -7,24 +7,45 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Repository
+    - name: Checkout repository
       uses: actions/checkout@v3
-    - name: Configure Git safe directory
-      run: git config --global --add safe.directory /github/workspace
+
     - name: Set up JDK
       uses: actions/setup-java@v3
       with:
         distribution: 'adopt'
         java-version: 21
+
     - name: Make Gradle executable
       run: chmod +x ./gradlew
+
     - name: Build with Gradle
       run: ./gradlew build
+
     - name: Build Debug APK
       run: ./gradlew assembleDebug
-    - name: Releasing using GitHub
-      uses: nightcrawler-/action-release-apk@1.0.2
+
+    - name: Extract version from build.gradle
+      id: extract_version
+      run: |
+        VERSION=$(grep 'version ' app/build.gradle | awk '{print $2}' | tr -d "'\"")
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.TOKEN }}
-        APP_FOLDER: app
-        RELEASE_TITLE: New Build
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ env.VERSION }}
+        release_name: Release ${{ env.VERSION }}
+        draft: false
+        prerelease: false
+
+    - name: Upload APK
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./app/build/outputs/apk/debug/app-debug.apk
+        asset_name: app-debug.apk
+        asset_content_type: application/vnd.android.package-archive
