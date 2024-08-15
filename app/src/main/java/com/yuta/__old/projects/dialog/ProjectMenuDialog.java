@@ -1,4 +1,4 @@
-package com.yuta.__old.ui.dialog.project;
+package com.yuta.__old.projects.dialog;
 
 import android.content.Context;
 import androidx.fragment.app.Fragment;
@@ -8,10 +8,10 @@ import com.yuta.common.ui.AppDialog;
 import com.yuta.common.ui.CancelableDialog;
 
 @SuppressWarnings("ConstantConditions")
-public class ProjectDialog extends CancelableDialog {
+public class ProjectMenuDialog extends CancelableDialog {
     private final ProjectDto project;
 
-    public ProjectDialog(Context context, Fragment fragment, ProjectDto project) {
+    public ProjectMenuDialog(Context context, Fragment fragment, ProjectDto project) {
         super(context, fragment);
         setDialogLayout(R.layout.dialog_project);
         this.project = project;

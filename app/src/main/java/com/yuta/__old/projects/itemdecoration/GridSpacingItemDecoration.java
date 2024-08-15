@@ -1,4 +1,4 @@
-package com.yuta.__old.ui.adapter.itemdecoration;
+package com.yuta.__old.projects.itemdecoration;
 
 import android.graphics.Rect;
 import android.view.View;

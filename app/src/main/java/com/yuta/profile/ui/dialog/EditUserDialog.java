@@ -1,4 +1,4 @@
-package com.yuta.__old.ui.dialog.user;
+package com.yuta.profile.ui.dialog;
 
 import android.content.Context;
 import android.text.Editable;
@@ -10,9 +10,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
-import com.yuta.__old.R;
+import com.yuta.app.R;
 import com.yuta.common.ui.CancelableDialog;
-import com.yuta.__old.ui.fragment.ProfileFragment;
+import com.yuta.profile.ui.ProfileFragment;
 import com.yuta.app.network.RequestViewModel;
 import com.yuta.common.util.UserUtils;
 import com.yuta.app.domain.model.entity.User;

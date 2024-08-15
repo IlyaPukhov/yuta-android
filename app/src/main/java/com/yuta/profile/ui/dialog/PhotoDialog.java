@@ -1,9 +1,9 @@
-package com.yuta.__old.ui.dialog.photo;
+package com.yuta.profile.ui.dialog;
 
 import android.content.Context;
 import android.view.View;
 import androidx.fragment.app.Fragment;
-import com.yuta.__old.R;
+import com.yuta.app.R;
 import com.yuta.common.ui.AppDialog;
 import com.yuta.common.ui.CancelableDialog;
 import com.yuta.common.util.UserUtils;

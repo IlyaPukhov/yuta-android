@@ -7,13 +7,13 @@
 
     <fragment
             android:id="@+id/profileFragment"
-            android:name="com.yuta.__old.ui.fragment.ProfileFragment"
+            android:name="com.yuta.profile.ui.ProfileFragment"
             android:label="fragment_profile"
             tools:layout="@layout/fragment_profile">
     </fragment>
     <fragment
             android:id="@+id/readonlyProfileFragment"
-            android:name="com.yuta.__old.ui.fragment.ReadonlyProfileFragment"
+            android:name="com.yuta.profile.ui.ReadonlyProfileFragment"
             android:label="ReadonlyProfileFragment">
         <argument
                 android:name="userId"
@@ -22,7 +22,7 @@
     </fragment>
     <fragment
             android:id="@+id/projectsFragment"
-            android:name="com.yuta.__old.ui.fragment.ProjectsFragment"
+            android:name="com.yuta.__old.projects.ProjectsFragment"
             android:label="fragment_projects"
             tools:layout="@layout/fragment_projects">
         <action

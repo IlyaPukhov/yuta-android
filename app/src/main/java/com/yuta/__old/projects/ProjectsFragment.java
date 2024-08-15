@@ -1,4 +1,4 @@
-package com.yuta.__old.ui.fragment;
+package com.yuta.__old.projects;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,11 +17,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.yuta.__old.R;
+import com.yuta.__old.projects.dialog.CreateProjectDialog;
 import com.yuta.app.domain.model.entity.ProjectDto;
 import com.yuta.app.domain.model.response.ProjectsResponse;
-import com.yuta.__old.ui.adapter.ProjectsAdapter;
+import com.yuta.__old.projects.adapter.ProjectsAdapter;
 import com.yuta.common.ui.AppDialog;
-import com.yuta.__old.ui.dialog.project.CreateProjectDialog;
 import com.yuta.authorization.ui.LogoutDialog;
 import com.yuta.app.network.RequestViewModel;
 import lombok.NoArgsConstructor;
@@ -31,7 +31,7 @@ import java.util.List;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.yuta.__old.ui.dialog.project.CreateProjectDialog.PICK_PDF_REQUEST;
+import static com.yuta.__old.projects.dialog.CreateProjectDialog.PICK_PDF_REQUEST;
 import static com.yuta.common.util.UserUtils.getUserId;
 
 @NoArgsConstructor

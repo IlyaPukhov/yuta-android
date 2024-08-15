@@ -1,4 +1,4 @@
-package com.yuta.__old.ui.dialog.photo;
+package com.yuta.profile.ui.dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -8,10 +8,10 @@ import android.net.Uri;
 import android.widget.ImageView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import com.yuta.__old.R;
+import com.yuta.app.R;
 import com.yuta.common.ui.AppDialog;
 import com.yuta.common.ui.CancelableDialog;
-import com.yuta.__old.ui.fragment.ProfileFragment;
+import com.yuta.profile.ui.ProfileFragment;
 import com.yuta.common.util.FileUtils;
 import com.yuta.app.network.RequestViewModel;
 import com.yuta.common.util.UserUtils;
@@ -22,7 +22,7 @@ import lombok.SneakyThrows;
 
 import java.io.InputStream;
 
-import static com.yuta.__old.ui.dialog.photo.PhotoDialog.DEFAULT_USER_PHOTO;
+import static com.yuta.profile.ui.dialog.PhotoDialog.DEFAULT_USER_PHOTO;
 import static com.yuta.common.util.GlideUtils.loadImageToImageViewWithoutCaching;
 
 @SuppressWarnings("ConstantConditions")

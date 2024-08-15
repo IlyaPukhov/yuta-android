@@ -1,4 +1,4 @@
-package com.yuta.__old.ui.adapter;
+package com.yuta.__old.projects.adapter;
 
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
@@ -23,7 +23,7 @@ import com.yuta.__old.R;
 import com.yuta.common.ui.SpanningLinearLayoutManager;
 import com.yuta.common.ui.BaseAdapter;
 import com.yuta.common.ui.AppDialog;
-import com.yuta.__old.ui.dialog.project.ProjectDialog;
+import com.yuta.__old.projects.dialog.ProjectMenuDialog;
 import com.yuta.common.util.GlideUtils;
 import com.yuta.app.domain.model.entity.ProjectDto;
 import com.yuta.app.domain.model.entity.User;
@@ -183,7 +183,7 @@ public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHol
         }
 
         private void openMenu(ProjectDto project) {
-            AppDialog projectDialog = new ProjectDialog(getContext(), fragment, project);
+            AppDialog projectDialog = new ProjectMenuDialog(getContext(), fragment, project);
             projectDialog.start();
         }
     }

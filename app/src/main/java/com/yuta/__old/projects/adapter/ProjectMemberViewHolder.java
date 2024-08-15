@@ -1,4 +1,4 @@
-package com.yuta.__old.ui.adapter.viewholders;
+package com.yuta.__old.projects.adapter;
 
 import android.content.Context;
 import android.os.Bundle;

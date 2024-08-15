@@ -1,42 +1,51 @@
-package com.yuta.__old.ui.dialog.photo;
+package com.yuta.__old.projects.dialog;
 
 import android.content.Context;
+import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.yuta.__old.R;
+import com.yuta.__old.projects.ProjectsFragment;
+import com.yuta.app.domain.model.entity.ProjectDto;
 import com.yuta.app.domain.model.response.UpdateResponse;
 import com.yuta.common.ui.CancelableDialog;
-import com.yuta.__old.ui.fragment.ProfileFragment;
 import com.yuta.app.network.RequestViewModel;
-import com.yuta.common.util.UserUtils;
 
 @SuppressWarnings("ConstantConditions")
-public class DeletePhotoDialog extends CancelableDialog {
+public class DeleteProjectDialog extends CancelableDialog {
+    private final ProjectDto project;
     private RequestViewModel viewModel;
 
-    public DeletePhotoDialog(Context context, Fragment fragment) {
+    public DeleteProjectDialog(Context context, Fragment fragment, ProjectDto project) {
         super(context, fragment);
         setDialogLayout(R.layout.dialog_delete);
+        this.project = project;
     }
 
     @Override
     public void start() {
         super.start();
         viewModel = new ViewModelProvider(fragment).get(RequestViewModel.class);
+        setupTextView(project.getName());
 
         dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
         dialog.findViewById(R.id.submit).setOnClickListener(v -> {
-            deletePhoto(fragment);
+            deleteProject(fragment, project);
             dismiss();
         });
     }
 
-    protected void deletePhoto(Fragment fragment) {
+    private void setupTextView(String name) {
+        String text = getContext().getString(R.string.delete_project_desc) + " \"" + name + "\"?";
+        ((TextView) dialog.findViewById(R.id.name_desc)).setText(text);
+    }
+
+    private void deleteProject(Fragment fragment, ProjectDto project) {
         viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.deleteUserPhoto(UserUtils.getCurrentUser().getId());
+        viewModel.deleteProject(project.getId());
         viewModel.getResultLiveData().observe(fragment, result -> {
             if (!(result instanceof UpdateResponse)) return;
-            ((ProfileFragment) fragment).updateProfile();
+            ((ProjectsFragment) fragment).updateLists();
             dismiss();
         });
     }

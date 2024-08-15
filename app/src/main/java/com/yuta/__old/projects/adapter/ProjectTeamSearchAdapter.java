@@ -1,4 +1,4 @@
-package com.yuta.__old.ui.adapter;
+package com.yuta.__old.projects.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +10,7 @@ import com.yuta.__old.R;
 import com.yuta.app.domain.model.entity.Team;
 import com.yuta.common.ui.BaseAdapter;
 import com.yuta.common.ui.AppDialog;
-import com.yuta.__old.ui.dialog.project.CreateProjectDialog;
+import com.yuta.__old.projects.dialog.CreateProjectDialog;
 
 import java.util.List;
 

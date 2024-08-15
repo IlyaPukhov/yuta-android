@@ -1,4 +1,4 @@
-package com.yuta.__old.ui.dialog.photo;
+package com.yuta.profile.ui.dialog;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,9 +11,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.canhub.cropper.CropImageView;
-import com.yuta.__old.R;
+import com.yuta.app.R;
 import com.yuta.common.ui.CancelableDialog;
-import com.yuta.__old.ui.fragment.ProfileFragment;
+import com.yuta.profile.ui.ProfileFragment;
 import com.yuta.app.network.RequestViewModel;
 import com.yuta.common.util.UserUtils;
 import com.yuta.app.domain.model.entity.User;

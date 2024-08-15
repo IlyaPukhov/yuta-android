@@ -1,4 +1,4 @@
-package com.yuta.__old.ui.fragment;
+package com.yuta.profile.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,13 +13,13 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import com.yuta.__old.R;
+import com.yuta.app.R;
 import com.yuta.common.ui.AppDialog;
-import com.yuta.__old.ui.dialog.photo.PhotoDialog;
-import com.yuta.__old.ui.dialog.photo.UploadPhotoDialog;
-import com.yuta.__old.ui.dialog.user.EditUserDialog;
+import com.yuta.profile.ui.dialog.PhotoDialog;
+import com.yuta.profile.ui.dialog.UploadPhotoDialog;
+import com.yuta.profile.ui.dialog.EditUserDialog;
 import com.yuta.authorization.ui.LogoutDialog;
-import com.yuta.__old.ui.dialog.user.UpdateUserDialog;
+import com.yuta.profile.ui.dialog.UpdateUserDialog;
 import com.yuta.app.network.RequestViewModel;
 import com.yuta.app.domain.model.entity.User;
 import com.yuta.app.domain.model.response.UserResponse;
@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.yuta.__old.ui.dialog.photo.UploadPhotoDialog.PICK_IMAGE_REQUEST;
+import static com.yuta.profile.ui.dialog.UploadPhotoDialog.PICK_IMAGE_REQUEST;
 import static com.yuta.common.util.GlideUtils.loadImageToImageViewWithoutCaching;
 import static com.yuta.common.util.UserUtils.getUserId;
 import static com.yuta.common.util.UserUtils.setCurrentUser;

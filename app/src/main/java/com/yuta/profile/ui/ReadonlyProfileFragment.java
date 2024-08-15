@@ -1,4 +1,4 @@
-package com.yuta.__old.ui.fragment;
+package com.yuta.profile.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
-import com.yuta.__old.R;
+import com.yuta.app.R;
 import com.yuta.app.network.RequestViewModel;
 import lombok.NoArgsConstructor;
 
