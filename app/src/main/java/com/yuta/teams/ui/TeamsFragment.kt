@@ -1,167 +1,125 @@
-package com.yuta.teams.ui;
+package com.yuta.teams.ui
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.ToggleButton;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import android.widget.ToggleButton
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewModelScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.yuta.app.R
-import com.yuta.common.ui.AppDialog;
-import com.yuta.authorization.ui.LogoutDialog;
-import com.yuta.app.network.RequestViewModel;
-import com.yuta.app.domain.model.entity.Team;
-import com.yuta.app.domain.model.entity.TeamMember;
-import com.yuta.app.domain.model.response.TeamsResponse;
-import com.yuta.teams.ui.adapter.TeamsAdapter;
-import com.yuta.teams.ui.dialog.CreateTeamDialog;
-import lombok.NoArgsConstructor;
+import com.yuta.authorization.ui.LogoutDialog
+import com.yuta.common.util.UserUtils
+import com.yuta.domain.model.TeamMember
+import com.yuta.teams.ui.adapter.TeamsAdapter
+import com.yuta.teams.ui.dialog.CreateTeamDialog
+import com.yuta.teams.viewmodel.TeamsViewModel
+import kotlinx.coroutines.launch
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+class TeamsFragment : Fragment() {
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static com.yuta.common.util.UserUtils.getUserId;
+    private val teamsViewModel: TeamsViewModel by viewModels()
 
-@NoArgsConstructor
-public class TeamsFragment extends Fragment {
-    private static int lastPickedButtonId;
-    private ToggleButton managedTeamsButton;
-    private ToggleButton memberTeamsButton;
-    private TextView emptyText;
-    private View progressLayout;
-    private View view;
-    private RequestViewModel viewModel;
-    private TeamsAdapter teamsAdapter;
-    private List<List<TeamMember>> managedTeamsMembers;
-    private List<List<TeamMember>> othersTeamsMembers;
+    private lateinit var managedTeamsButton: ToggleButton
+    private lateinit var memberTeamsButton: ToggleButton
+    private lateinit var emptyText: TextView
+    private lateinit var progressLayout: View
+    private lateinit var teamsAdapter: TeamsAdapter
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_teams, container, false);
-
-        emptyText = view.findViewById(R.id.empty_text);
-        progressLayout = view.findViewById(R.id.progressLayout);
-        progressLayout.setVisibility(VISIBLE);
-
-        viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
-        recyclerViewInitialize();
-        teamsSwitchInitialize();
-
-        if (lastPickedButtonId == 0) {
-            lastPickedButtonId = memberTeamsButton.getId();
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_teams, container, false).also {
+            setupRecyclerView(it)
+            teamsSwitchInitialize(it)
+            setupViews(it)
         }
-
-        view.findViewById(R.id.create_team).setOnClickListener(v -> openCreateTeamDialog());
-        view.findViewById(R.id.log_out).setOnClickListener(v -> openLogoutDialog());
-        return view;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        updateLists();
+    override fun onStart() {
+        super.onStart()
+        updateLists()
     }
 
-    private void fillTeams(@NonNull List<List<TeamMember>> teamMembers) {
-        emptyText.setVisibility(teamMembers.isEmpty() ? VISIBLE : GONE);
-        teamsAdapter.refillList(teamMembers);
+    fun updateLists() {
+        updateLists(view!!.findViewById<Button>(teamsViewModel.lastPickedButtonId!!))
     }
 
-    private void getTeams() {
-        viewModel.getResultLiveData().removeObservers(getViewLifecycleOwner());
-        viewModel.getTeams(getUserId(requireActivity()));
-        viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
-            if (!(result instanceof TeamsResponse)) return;
-            progressLayout.setVisibility(GONE);
-            TeamsResponse teamsResponse = (TeamsResponse) result;
-            managedTeamsMembers = getTeamMembers(teamsResponse.getManagedTeams());
-            othersTeamsMembers = getTeamMembers(teamsResponse.getOthersTeams());
-        });
+    private fun updateLists(button: Button) {
+        progressLayout.visibility = VISIBLE
+        updateTeams {
+            button.performClick()
+            progressLayout.visibility = GONE
+        }
     }
 
-    public void updateLists() {
-        updateLists(view.findViewById(lastPickedButtonId));
-    }
+    private fun onToggleButtonClick(view: View) {
+        val button = view as ToggleButton
+        val otherButton: ToggleButton
 
-    private void updateLists(Button button) {
-        getTeams();
-        viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
-            if (!(result instanceof TeamsResponse)) return;
-            openTab(button);
-        });
-    }
-
-    private void openTab(@NonNull Button button) {
-        button.performClick();
-    }
-
-    private void onToggleButtonClick(View view) {
-        final ToggleButton button = (ToggleButton) view;
-        final ToggleButton otherButton;
-
-        if (button.getId() == managedTeamsButton.getId()) {
-            otherButton = memberTeamsButton;
-            fillTeams(managedTeamsMembers);
+        if (button.id == managedTeamsButton.id) {
+            otherButton = memberTeamsButton
+            fillTeams(teamsViewModel.managedTeamsMembers)
         } else {
-            otherButton = managedTeamsButton;
-            fillTeams(othersTeamsMembers);
+            otherButton = managedTeamsButton
+            fillTeams(teamsViewModel.othersTeamsMembers)
         }
 
-        button.setTextAppearance(R.style.active_toggle);
-        button.setChecked(true);
-        otherButton.setTextAppearance(R.style.default_toggle);
-        otherButton.setChecked(false);
-        lastPickedButtonId = button.getId();
+        button.setTextAppearance(R.style.active_toggle)
+        button.isChecked = true
+        otherButton.setTextAppearance(R.style.default_toggle)
+        otherButton.isChecked = false
+        teamsViewModel.lastPickedButtonId = button.id
     }
 
-    private List<List<TeamMember>> getTeamMembers(List<Team> teams) {
-        return teams.stream()
-                .map(team -> {
-                    List<TeamMember> membersList = new ArrayList<>();
-                    membersList.add(new TeamMember(team, team.getLeader()));
-                    membersList.addAll(team.getMembers().stream()
-                            .map(member -> new TeamMember(team, member))
-                            .collect(Collectors.toList()));
-
-                    return membersList;
-                })
-                .collect(Collectors.toList());
+    private fun fillTeams(teamMembers: List<List<TeamMember>>) {
+        emptyText.visibility = if (teamMembers.isEmpty()) VISIBLE else GONE
+        teamsAdapter.refillList(teamMembers)
     }
 
-    private void recyclerViewInitialize() {
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
-
-        List<List<TeamMember>> teamList = new ArrayList<>();
-        teamsAdapter = new TeamsAdapter(requireActivity(), teamList, this);
-        recyclerView.setAdapter(teamsAdapter);
+    private fun updateTeams(onUpdateCallback: () -> Unit) {
+        teamsViewModel.viewModelScope.launch {
+            teamsViewModel.getAll(UserUtils.getUserId(requireContext())).collect {
+                teamsViewModel.initializeTeams(it)
+                onUpdateCallback()
+            }
+        }
     }
 
-    private void teamsSwitchInitialize() {
-        managedTeamsButton = view.findViewById(R.id.manager_button);
-        memberTeamsButton = view.findViewById(R.id.member_button);
-        managedTeamsButton.setOnClickListener(this::onToggleButtonClick);
-        memberTeamsButton.setOnClickListener(this::onToggleButtonClick);
+    private fun setupViews(view: View) {
+        emptyText = view.findViewById(R.id.empty_text)
+        progressLayout = view.findViewById(R.id.progressLayout)
+
+        view.findViewById<Button>(R.id.create_team).setOnClickListener { openCreateTeamDialog() }
+        view.findViewById<Button>(R.id.log_out).setOnClickListener { openLogoutDialog() }
     }
 
-    private void openCreateTeamDialog() {
-        AppDialog createTeamDialog = new CreateTeamDialog(view.getContext(), this);
-        createTeamDialog.start();
+    private fun setupRecyclerView(view: View) {
+        view.findViewById<RecyclerView>(R.id.recyclerView).apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            teamsAdapter = TeamsAdapter(requireActivity(), mutableListOf(), this@TeamsFragment)
+            adapter = teamsAdapter
+        }
     }
 
-    private void openLogoutDialog() {
-        AppDialog logoutDialog = new LogoutDialog(view.getContext(), this);
-        logoutDialog.start();
+    private fun teamsSwitchInitialize(view: View) {
+        managedTeamsButton = view.findViewById(R.id.manager_button)
+        memberTeamsButton = view.findViewById(R.id.member_button)
+        managedTeamsButton.setOnClickListener(this::onToggleButtonClick)
+        memberTeamsButton.setOnClickListener(this::onToggleButtonClick)
+
+        teamsViewModel.lastPickedButtonId = teamsViewModel.lastPickedButtonId ?: memberTeamsButton.id
     }
+
+    private fun openCreateTeamDialog() = CreateTeamDialog(fragment = this) { updateLists() }.start()
+
+    private fun openLogoutDialog() = LogoutDialog(fragment = this).start()
 }

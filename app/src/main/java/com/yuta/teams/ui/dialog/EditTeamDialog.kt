@@ -8,7 +8,7 @@ import com.yuta.app.R
 import com.yuta.common.util.KeyboardUtils
 import com.yuta.domain.model.Team
 import com.yuta.domain.model.UserDto
-import com.yuta.teams.viewmodel.TeamsViewModel
+import com.yuta.teams.viewmodel.TeamDialogsViewModel
 import kotlinx.coroutines.launch
 
 class EditTeamDialog(
@@ -17,7 +17,7 @@ class EditTeamDialog(
     private val onEditSuccess: () -> Unit
 ) : CreateTeamDialog(fragment) {
 
-    private val teamsViewModel: TeamsViewModel by fragment.viewModels()
+    private val teamViewModel: TeamDialogsViewModel by fragment.viewModels()
 
     override fun start() {
         super.start()
@@ -26,7 +26,7 @@ class EditTeamDialog(
 
         submitButton.setOnClickListener {
             KeyboardUtils.hideKeyboard(fragment.requireActivity(), submitButton)
-            editTeam(teamId, teamName.trimmedText(), addedMembers)
+            editTeam(teamId, teamName.trimmedText(), teamViewModel.addedMembers)
         }
     }
 
@@ -39,8 +39,8 @@ class EditTeamDialog(
     }
 
     private fun getTeamDetails(teamId: Int) {
-        teamsViewModel.viewModelScope.launch {
-            teamsViewModel.getById(teamId).collect { populateTeamDetails(it) }
+        teamViewModel.viewModelScope.launch {
+            teamViewModel.getById(teamId).collect { populateTeamDetails(it) }
         }
     }
 
@@ -53,8 +53,8 @@ class EditTeamDialog(
     private fun editTeam(teamId: Int, name: String, members: List<UserDto>) {
         if (name.isEmpty()) return
 
-        teamsViewModel.viewModelScope.launch {
-            teamsViewModel.edit(teamId, name, members).collect { result ->
+        teamViewModel.viewModelScope.launch {
+            teamViewModel.edit(teamId, name, members).collect { result ->
                 if (result) {
                     onEditSuccess()
                 }
@@ -63,8 +63,8 @@ class EditTeamDialog(
     }
 
     override fun checkNameUnique(name: String, onUniqueCallback: (Boolean) -> Unit) {
-        teamsViewModel.viewModelScope.launch {
-            teamsViewModel.isUniqueName(name, teamId).collect { onUniqueCallback(it) }
+        teamViewModel.viewModelScope.launch {
+            teamViewModel.isUniqueName(name, teamId).collect { onUniqueCallback(it) }
         }
     }
 }

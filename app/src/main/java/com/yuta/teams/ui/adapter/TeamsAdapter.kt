@@ -3,7 +3,8 @@ package com.yuta.teams.ui.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.*
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
@@ -18,6 +19,7 @@ import com.yuta.common.ui.BaseAdapter
 import com.yuta.common.util.UserUtils.getUserId
 import com.yuta.domain.model.Team
 import com.yuta.domain.model.TeamMember
+import com.yuta.teams.ui.TeamsFragment
 import com.yuta.teams.ui.dialog.DeleteTeamDialog
 import com.yuta.teams.ui.dialog.EditTeamDialog
 
@@ -108,13 +110,15 @@ class TeamsAdapter(
         }
 
         private fun openDeleteTeamDialog() {
-            val deleteTeamDialog = DeleteTeamDialog(context, fragment, team)
-            deleteTeamDialog.start()
+            DeleteTeamDialog(fragment, team) {
+                (fragment as TeamsFragment).updateLists()
+            }.start()
         }
 
         private fun openEditTeamDialog() {
-            val editTeamDialog = EditTeamDialog(context, fragment, team.id)
-            editTeamDialog.start()
+            EditTeamDialog(fragment, team.id) {
+                (fragment as TeamsFragment).updateLists()
+            }.start()
         }
 
         private fun setupDots(size: Int) {

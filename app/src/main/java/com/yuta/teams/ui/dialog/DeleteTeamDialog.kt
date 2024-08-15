@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.yuta.app.R
 import com.yuta.common.ui.CancelableDialog
 import com.yuta.domain.model.Team
-import com.yuta.teams.viewmodel.TeamsViewModel
+import com.yuta.teams.viewmodel.TeamDialogsViewModel
 import kotlinx.coroutines.launch
 
 class DeleteTeamDialog(
@@ -16,7 +16,7 @@ class DeleteTeamDialog(
     private val onDeleteSuccess: () -> Unit
 ) : CancelableDialog(R.layout.dialog_delete, fragment.requireActivity()) {
 
-    private val teamsViewModel: TeamsViewModel by fragment.viewModels()
+    private val teamViewModel: TeamDialogsViewModel by fragment.viewModels()
 
     override fun start() {
         super.start()
@@ -35,10 +35,10 @@ class DeleteTeamDialog(
     }
 
     private fun deleteTeam(id: Int) {
-        teamsViewModel.viewModelScope.launch {
-            teamsViewModel.delete(id).collect { result ->
+        teamViewModel.viewModelScope.launch {
+            teamViewModel.delete(id).collect { result ->
                 if (result) {
-                    onDeleteSuccess.invoke()
+                    onDeleteSuccess()
                 }
             }
         }

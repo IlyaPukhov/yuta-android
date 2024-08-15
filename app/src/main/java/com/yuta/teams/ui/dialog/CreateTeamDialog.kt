@@ -3,13 +3,14 @@ package com.yuta.teams.ui.dialog
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.View.*
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.*
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yuta.app.R
@@ -18,7 +19,7 @@ import com.yuta.common.util.KeyboardUtils
 import com.yuta.common.util.UserUtils
 import com.yuta.domain.model.UserDto
 import com.yuta.teams.ui.adapter.TeamUserSearchAdapter
-import com.yuta.teams.viewmodel.TeamsViewModel
+import com.yuta.teams.viewmodel.TeamDialogsViewModel
 import kotlinx.coroutines.launch
 
 open class CreateTeamDialog(
@@ -26,9 +27,7 @@ open class CreateTeamDialog(
     private val onCreateSuccess: () -> Unit? = {}
 ) : CancelableDialog(R.layout.dialog_create_team, fragment.requireActivity()) {
 
-    private val teamsViewModel: TeamsViewModel by fragment.viewModels()
-    protected val addedMembers = mutableListOf<UserDto>()
-    private val searchUserDtos = mutableListOf<UserDto>()
+    private val teamViewModel: TeamDialogsViewModel by fragment.viewModels()
 
     protected lateinit var teamName: EditText
     protected lateinit var submitButton: Button
@@ -58,11 +57,11 @@ open class CreateTeamDialog(
         dialog.findViewById<View>(R.id.close).setOnClickListener { dismiss() }
         searchButton.setOnClickListener {
             KeyboardUtils.hideKeyboard(fragment.requireActivity(), searchButton)
-            searchUsers(searchField.trimmedText(), addedMembers)
+            searchUsers(searchField.trimmedText(), teamViewModel.addedMembers)
         }
         submitButton.setOnClickListener {
             KeyboardUtils.hideKeyboard(fragment.requireActivity(), teamName)
-            createTeam(teamName.trimmedText(), addedMembers)
+            createTeam(teamName.trimmedText(), teamViewModel.addedMembers)
         }
 
         setupTextWatchers()
@@ -71,13 +70,13 @@ open class CreateTeamDialog(
     private fun setupRecyclerViews() {
         dialog.findViewById<RecyclerView>(R.id.addedMembers).apply {
             layoutManager = LinearLayoutManager(context)
-            membersAdapter = TeamUserSearchAdapter(this@CreateTeamDialog, addedMembers, null)
+            membersAdapter = TeamUserSearchAdapter(this@CreateTeamDialog, teamViewModel.addedMembers, null)
             adapter = membersAdapter
         }
 
         dialog.findViewById<RecyclerView>(R.id.searchUsers).apply {
             layoutManager = LinearLayoutManager(context)
-            searchAdapter = TeamUserSearchAdapter(this@CreateTeamDialog, searchUserDtos, membersAdapter)
+            searchAdapter = TeamUserSearchAdapter(this@CreateTeamDialog, mutableListOf(), membersAdapter)
             adapter = searchAdapter
         }
     }
@@ -104,16 +103,16 @@ open class CreateTeamDialog(
     }
 
     protected open fun checkNameUnique(name: String, onUniqueCallback: (Boolean) -> Unit) {
-        teamsViewModel.viewModelScope.launch {
-            teamsViewModel.isUniqueName(name).collect { onUniqueCallback(it) }
+        teamViewModel.viewModelScope.launch {
+            teamViewModel.isUniqueName(name).collect { onUniqueCallback(it) }
         }
     }
 
     private fun createTeam(name: String, members: List<UserDto>) {
         if (name.isEmpty()) return
 
-        teamsViewModel.viewModelScope.launch {
-            teamsViewModel.create(UserUtils.getUserId(fragment.requireContext()), name, members)
+        teamViewModel.viewModelScope.launch {
+            teamViewModel.create(UserUtils.getUserId(fragment.requireContext()), name, members)
                 .collect { result -> if (result) onCreateSuccess() }
         }
     }
@@ -121,8 +120,8 @@ open class CreateTeamDialog(
     private fun searchUsers(text: String, members: List<UserDto>) {
         if (text.isEmpty()) return
 
-        teamsViewModel.viewModelScope.launch {
-            teamsViewModel.searchUsers(text, members, fragment.requireContext())
+        teamViewModel.viewModelScope.launch {
+            teamViewModel.searchUsers(text, members, fragment.requireContext())
                 .collect { updateList(searchAdapter, it) }
         }
     }
@@ -132,7 +131,7 @@ open class CreateTeamDialog(
         adapter.refillList(users)
     }
 
-    fun updateAddedTextVisibility() = messageVisibility(addedText, addedMembers.isNotEmpty())
+    fun updateAddedTextVisibility() = messageVisibility(addedText, teamViewModel.addedMembers.isNotEmpty())
 
     private fun messageVisibility(message: View, condition: Boolean) {
         message.visibility = if (condition) VISIBLE else GONE
