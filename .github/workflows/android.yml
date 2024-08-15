@@ -1,51 +1,49 @@
 name: Build & Publish Debug APK
-
 on:
   push:
     branches:
       - master
-
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Set up JDK
-      uses: actions/setup-java@v3
-      with:
-        distribution: 'adopt'
-        java-version: 21
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: 21
 
-    - name: Make Gradle executable
-      run: chmod +x ./gradlew
+      - name: Make Gradle executable
+        run: chmod +x ./gradlew
 
-    - name: Build with Gradle
-      run: ./gradlew build
+      - name: Build with Gradle
+        run: ./gradlew build
 
-    - name: Build Debug APK
-      run: ./gradlew assembleDebug
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
 
-    - name: Extract version from build.gradle
-      id: extract_version
-      run: |
-        VERSION=$(grep 'versionName' app/build.gradle | awk -F"'" '{print $2}')
-        echo "VERSION=${VERSION}" >> $GITHUB_ENV
+      - name: Extract version from build.gradle
+        id: extract_version
+        run: |
+          VERSION=$(grep 'versionName' app/build.gradle | awk -F"'" '{print $2}')
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
-    - name: Install GitHub CLI
-      run: sudo apt-get install gh
+      - name: Install GitHub CLI
+        run: sudo apt-get install gh
 
-    - name: Authenticate GitHub CLI
-      run: gh auth login --with-token <<< ${{ secrets.GITHUB_TOKEN }}
+      - name: Authenticate GitHub CLI
+        run: gh auth login --with-token <<< ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Create release
-      id: create_release
-      run: |
-        gh release create v${{ env.VERSION }} ./app/build/outputs/apk/debug/app-debug.apk \
-        -t "Release v${{ env.VERSION }}" \
-        -n "Release notes for v${{ env.VERSION }}"
+      - name: Create release
+        id: create_release
+        run: |
+          gh release create v${{ env.VERSION }} ./app/build/outputs/apk/debug/app-debug.apk \
+          -t "Release v${{ env.VERSION }}" \
+          -n "Release notes for v${{ env.VERSION }}"
 
-    - name: Display release URL
-      run: |
-        echo "Release URL: https://github.com/${{ github.repository }}/releases/tag/v${{ env.VERSION }}"
+      - name: Display release URL
+        run: |
+          echo "Release URL: https://github.com/${{ github.repository }}/releases/tag/v${{ env.VERSION }}"
