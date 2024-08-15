@@ -7,8 +7,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+    - uses: actions/checkout@v3
 
     - name: Set up JDK
       uses: actions/setup-java@v3
@@ -31,7 +30,6 @@ jobs:
         VERSION=$(grep 'versionName' app/build.gradle | awk -F"'" '{print $2}')
         echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
-
     - name: Create release
       id: create_release
       uses: actions/create-release@v1
@@ -41,7 +39,7 @@ jobs:
         draft: false
         prerelease: false
       env:
-        GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Upload APK
       uses: actions/upload-release-asset@v1
