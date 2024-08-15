@@ -15,7 +15,7 @@ interface TeamsRepository {
 
     fun searchUsersForTeam(name: String, leaderId: Int, members: List<UserDto>): Flow<List<UserDto>?>
 
-    fun checkUniqueTeamName(teamName: String, teamId: Int? = null): Flow<Boolean?>
+    fun checkUniqueTeamName(teamName: String, teamId: Int?): Flow<Boolean?>
 
     fun createTeam(createDto: TeamCreateDto): Flow<String>
 

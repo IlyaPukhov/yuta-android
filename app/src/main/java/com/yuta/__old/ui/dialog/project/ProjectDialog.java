@@ -5,10 +5,10 @@ import androidx.fragment.app.Fragment;
 import com.yuta.__old.R;
 import com.yuta.app.domain.model.entity.ProjectDto;
 import com.yuta.common.ui.AppDialog;
-import com.yuta.common.ui.InteractiveDialog;
+import com.yuta.common.ui.CancelableDialog;
 
 @SuppressWarnings("ConstantConditions")
-public class ProjectDialog extends InteractiveDialog {
+public class ProjectDialog extends CancelableDialog {
     private final ProjectDto project;
 
     public ProjectDialog(Context context, Fragment fragment, ProjectDto project) {

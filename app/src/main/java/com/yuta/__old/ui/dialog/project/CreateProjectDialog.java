@@ -23,7 +23,7 @@ import com.yuta.app.domain.model.response.SearchTeamsResponse;
 import com.yuta.app.domain.model.entity.Team;
 import com.yuta.app.domain.model.response.UpdateResponse;
 import com.yuta.__old.ui.adapter.ProjectTeamSearchAdapter;
-import com.yuta.common.ui.InteractiveDialog;
+import com.yuta.common.ui.CancelableDialog;
 import com.yuta.__old.ui.fragment.ProjectsFragment;
 import com.yuta.common.util.FileUtils;
 import com.yuta.app.network.RequestViewModel;
@@ -46,7 +46,7 @@ import static java.util.Calendar.YEAR;
 import static java.util.Calendar.getInstance;
 
 @SuppressWarnings("ConstantConditions")
-public class CreateProjectDialog extends InteractiveDialog {
+public class CreateProjectDialog extends CancelableDialog {
     public static final int PICK_PDF_REQUEST = 1;
     protected static final int RADIO_CREATE_WITH_TEAM = R.id.create_with_team;
     @SuppressLint("StaticFieldLeak")

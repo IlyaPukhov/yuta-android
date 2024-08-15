@@ -1,5 +1,6 @@
 package com.yuta.teams.ui.adapter
 
+import android.app.Dialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,7 +8,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.yuta.app.R
-import com.yuta.common.ui.AppDialog
 import com.yuta.common.ui.BaseAdapter
 import com.yuta.common.util.GlideUtils.loadImageToImageViewWithoutCaching
 import com.yuta.common.util.UserUtils
@@ -15,7 +15,7 @@ import com.yuta.domain.model.UserDto
 import com.yuta.teams.ui.dialog.CreateTeamDialog
 
 class TeamUserSearchAdapter(
-    private val dialog: AppDialog,
+    private val dialog: Dialog,
     items: MutableList<UserDto>,
     private val membersAdapter: TeamUserSearchAdapter? = null
 ) : BaseAdapter<UserDto, BaseAdapter.ViewHolder<UserDto>>(dialog.context, items) {

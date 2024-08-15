@@ -57,7 +57,11 @@ class SearchFragment : Fragment() {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             if (count != 0) {
-                updateSearchResult(s.toString())
+                search(s.toString()) {
+                    progressLayout.visibility = GONE
+                    emptyText.visibility = if (usersList.isEmpty()) VISIBLE else GONE
+                    updateList(usersList)
+                }
             } else {
                 usersList.clear()
                 updateList(usersList)
@@ -65,16 +69,13 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun updateSearchResult(searchName: String) {
+    private fun search(searchName: String, updateQueryCallback: () -> Unit) {
         progressLayout.visibility = VISIBLE
 
         searchViewModel.viewModelScope.launch {
-            searchViewModel.search(searchName).collect { list ->
-                progressLayout.visibility = GONE
-                usersList = list.toMutableList()
-
-                emptyText.visibility = if (usersList.isEmpty()) VISIBLE else GONE
-                updateList(usersList)
+            searchViewModel.search(searchName).collect {
+                usersList = it.toMutableList()
+                updateQueryCallback()
             }
         }
     }
