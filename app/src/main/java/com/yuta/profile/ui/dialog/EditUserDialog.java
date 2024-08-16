@@ -25,7 +25,6 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.yuta.common.util.UserUtils.getUserId;
 
-@SuppressWarnings("ConstantConditions")
 public class EditUserDialog extends CancelableDialog {
     private static final int PHONE_NUMBER_LENGTH = 10;
     private static final String VK_REGEX = "(https?://)?(www\\.)?vk\\.com/(\\w|\\d|[._])+?/?";

@@ -25,7 +25,6 @@ import java.util.List;
 
 import static android.view.View.VISIBLE;
 
-@SuppressWarnings("ConstantConditions")
 public class EditProjectDialog extends CreateProjectDialog {
     private final int projectId;
     private Project project;

@@ -11,7 +11,6 @@ import com.yuta.app.domain.model.response.UpdateResponse;
 import com.yuta.common.ui.CancelableDialog;
 import com.yuta.app.network.RequestViewModel;
 
-@SuppressWarnings("ConstantConditions")
 public class DeleteProjectDialog extends CancelableDialog {
     private final ProjectDto project;
     private RequestViewModel viewModel;

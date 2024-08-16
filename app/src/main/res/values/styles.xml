@@ -9,7 +9,7 @@
     </style>
 
     <style name="footer_description">
-        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:fontFamily">@font/montserrat</item>
         <item name="android:textSize">14sp</item>
         <item name="android:letterSpacing">0.05</item>
         <item name="android:textColor">@color/white</item>
@@ -28,14 +28,14 @@
     </style>
 
     <style name="login">
-        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:fontFamily">@font/montserrat</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">#73000000</item>
         <item name="android:textColorHint">#73000000</item>
     </style>
 
     <style name="loading">
-        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:fontFamily">@font/montserrat</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/light_gray</item>
     </style>
@@ -47,7 +47,7 @@
     </style>
 
     <style name="network_down">
-        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:fontFamily">@font/montserrat</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/light_gray</item>
     </style>
@@ -56,7 +56,7 @@
         <item name="android:textSize">11sp</item>
         <item name="android:letterSpacing">0.12</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:fontFamily">@font/montserrat</item>
     </style>
 
     <style name="rounded_image_view">
@@ -103,7 +103,7 @@
 
     <style name="profile_desc">
         <item name="android:textSize">15sp</item>
-        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:fontFamily">@font/montserrat</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
@@ -198,7 +198,7 @@
     </style>
 
     <style name="search_user_name">
-        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:fontFamily">@font/montserrat</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/dark_gray</item>
     </style>

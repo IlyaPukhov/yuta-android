@@ -10,12 +10,11 @@ import com.yuta.common.util.UserUtils;
 
 import static android.view.View.GONE;
 
-@SuppressWarnings("ConstantConditions")
-public class PhotoDialog extends CancelableDialog {
+public class PhotoMenuDialog extends CancelableDialog {
 
     public static final String DEFAULT_USER_PHOTO = "default-user-photo";
 
-    public PhotoDialog(Context context, Fragment fragment) {
+    public PhotoMenuDialog(Context context, Fragment fragment) {
         super(context, fragment);
         setDialogLayout(R.layout.dialog_photo);
     }

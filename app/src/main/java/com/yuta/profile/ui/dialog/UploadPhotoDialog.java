@@ -22,10 +22,9 @@ import lombok.SneakyThrows;
 
 import java.io.InputStream;
 
-import static com.yuta.profile.ui.dialog.PhotoDialog.DEFAULT_USER_PHOTO;
+import static com.yuta.profile.ui.dialog.PhotoMenuDialog.DEFAULT_USER_PHOTO;
 import static com.yuta.common.util.GlideUtils.loadImageToImageViewWithoutCaching;
 
-@SuppressWarnings("ConstantConditions")
 public class UploadPhotoDialog extends CancelableDialog {
     public static final int PICK_IMAGE_REQUEST = 1;
     @SuppressLint("StaticFieldLeak")

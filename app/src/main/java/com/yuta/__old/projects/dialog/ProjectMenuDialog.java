@@ -7,7 +7,6 @@ import com.yuta.app.domain.model.entity.ProjectDto;
 import com.yuta.common.ui.AppDialog;
 import com.yuta.common.ui.CancelableDialog;
 
-@SuppressWarnings("ConstantConditions")
 public class ProjectMenuDialog extends CancelableDialog {
     private final ProjectDto project;
 

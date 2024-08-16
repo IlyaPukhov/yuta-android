@@ -18,7 +18,6 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.yuta.common.util.UserUtils.getUserId;
 
-@SuppressWarnings("ConstantConditions")
 public class UpdateUserDialog extends CancelableDialog {
     private RequestViewModel viewModel;
     private TextView errorText;

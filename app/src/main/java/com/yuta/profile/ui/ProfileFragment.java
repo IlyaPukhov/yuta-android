@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.yuta.app.R;
 import com.yuta.common.ui.AppDialog;
-import com.yuta.profile.ui.dialog.PhotoDialog;
+import com.yuta.profile.ui.dialog.PhotoMenuDialog;
 import com.yuta.profile.ui.dialog.UploadPhotoDialog;
 import com.yuta.profile.ui.dialog.EditUserDialog;
 import com.yuta.authorization.ui.LogoutDialog;
@@ -142,7 +142,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void openPhotoDialog() {
-        AppDialog photoDialog = new PhotoDialog(view.getContext(), this);
+        AppDialog photoDialog = new PhotoMenuDialog(view.getContext(), this);
         photoDialog.start();
     }
 
