@@ -16,7 +16,7 @@ import com.yuta.common.util.UserUtils
 
 class MainActivity : AppCompatActivity(), NavigationToProfileCallback {
 
-    private val viewModel: MainViewModel by viewModels()
+    private val mainViewModel: MainViewModel by viewModels()
     private val navController: NavController by lazy { findNavController(R.id.nav_host_fragment) }
     private val bottomNavigationView: BottomNavigationView by lazy { findViewById(R.id.bottomNavigationView) }
 
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(), NavigationToProfileCallback {
 
     private fun initializeBackPressedDispatcher() {
         onBackPressedDispatcher.addCallback(this) {
-            viewModel.handleBackPress(
+            mainViewModel.handleBackPress(
                 onSelectPreviousNavTab = { selectPreviousNavTab() },
                 onPopBackStack = { navController.popBackStack() },
                 onExit = { finish() },
@@ -44,13 +44,13 @@ class MainActivity : AppCompatActivity(), NavigationToProfileCallback {
     }
 
     private fun selectPreviousNavTab() {
-        viewModel.setLastItemId(bottomNavigationView.selectedItemId)
-        bottomNavigationView.selectedItemId = viewModel.getLastItemId()
-        viewModel.resetLastItemId()
+        mainViewModel.setLastItemId(bottomNavigationView.selectedItemId)
+        bottomNavigationView.selectedItemId = mainViewModel.getLastItemId()
+        mainViewModel.resetLastItemId()
     }
 
     private fun selectNavTab(id: Int) {
-        viewModel.setLastItemId(bottomNavigationView.selectedItemId)
+        mainViewModel.setLastItemId(bottomNavigationView.selectedItemId)
         bottomNavigationView.selectedItemId = id
     }
 
@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity(), NavigationToProfileCallback {
         } else {
             val bundle = Bundle().apply { putInt("userId", userId) }
             this.navigate(R.id.action_searchFragment_to_readonlyProfileFragment, bundle)
-            viewModel.setReadonly(true)
+            mainViewModel.setReadonly(true)
         }
     }
 
