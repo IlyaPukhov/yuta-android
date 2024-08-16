@@ -1,7 +1,5 @@
 package com.yuta.profile.ui.dialog
 
-import android.app.Activity
-import android.content.Intent
 import android.net.Uri
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -52,7 +50,7 @@ class UploadPhotoDialog(
                 onUploadSuccessCallback()
             }
         }
-        pickPhotoButton.setOnClickListener { pickPhoto() }
+        pickPhotoButton.setOnClickListener { imagePickerLauncher.launch("image/*") }
     }
 
     private fun updatePhoto(userId: Int) {
@@ -74,35 +72,13 @@ class UploadPhotoDialog(
         }
     }
 
-    private fun pickPhoto() {
-        val mimeTypes = arrayOf("image/jpeg", "image/png")
-        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
-            type = "image/*"
-            putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
-        }
-        imagePickerLauncher.launch(
-            Intent.createChooser(intent, fragment.getString(R.string.pick_image))
-        )
-    }
-
     private fun setImage(uri: Uri) {
         selectedImageUri = uri
         imageView.setImageURI(selectedImageUri)
     }
 
-    private val imagePickerLauncher = fragment.registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        result.let {
-            if (result.resultCode == Activity.RESULT_OK) {
-                handleActivityResult(PICK_IMAGE_REQUEST, Activity.RESULT_OK, result.data)
-            }
+    private val imagePickerLauncher =
+        fragment.registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let { setImage(it) }
         }
-    }
-
-    fun handleActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data?.data != null) {
-            setImage(data.data!!)
-        }
-    }
 }
