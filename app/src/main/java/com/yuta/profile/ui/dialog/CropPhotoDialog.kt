@@ -1,78 +1,78 @@
-package com.yuta.profile.ui.dialog;
+package com.yuta.profile.ui.dialog
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
-import com.canhub.cropper.CropImageView;
-import com.yuta.app.R;
-import com.yuta.common.ui.CancelableDialog;
-import com.yuta.profile.ui.ProfileFragment;
-import com.yuta.app.network.RequestViewModel;
-import com.yuta.common.util.UserUtils;
-import com.yuta.app.domain.model.entity.User;
-import com.yuta.app.domain.model.response.UpdateResponse;
+import android.graphics.Bitmap
+import android.graphics.Rect
+import android.graphics.drawable.Drawable
+import android.widget.Button
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewModelScope
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
+import com.canhub.cropper.CropImageView
+import com.yuta.app.R
+import com.yuta.common.ui.CancelableDialog
+import com.yuta.common.util.GlideUtils
+import com.yuta.common.util.UserUtils
+import com.yuta.profile.viewmodel.UserDetailsViewModel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
-import static com.yuta.common.util.GlideUtils.getConfiguredGlideBuilder;
-import static com.yuta.common.util.UserUtils.getPath;
+class CropPhotoDialog(
+    private val fragment: Fragment,
+    private val onCropSuccessCallback: () -> Unit
+) : CancelableDialog(R.layout.dialog_crop_photo, fragment.requireActivity()) {
 
-@SuppressWarnings("ConstantConditions")
-public class CropPhotoDialog extends CancelableDialog {
-    private CropImageView cropImageView;
-    private RequestViewModel viewModel;
+    private val cropImageView: CropImageView by lazy { dialog.findViewById(R.id.cropImageView) }
+    private val closeButton: Button by lazy { dialog.findViewById(R.id.close) }
+    private val saveButton: Button by lazy { dialog.findViewById(R.id.save_miniature) }
 
-    public CropPhotoDialog(Context context, Fragment fragment) {
-        super(context, fragment);
-        setDialogLayout(R.layout.dialog_crop_photo);
+    private val detailsViewModel: UserDetailsViewModel by fragment.viewModels()
+
+    override fun start() {
+        super.start()
+
+        loadImage(UserUtils.currentUser!!.photo, cropImageView)
+
+        closeButton.setOnClickListener { dismiss() }
+        saveButton.setOnClickListener { cropPhoto(UserUtils.getUserId(fragment.requireContext())) }
     }
 
-    @Override
-    public void start() {
-        super.start();
-        viewModel = new ViewModelProvider(fragment).get(RequestViewModel.class);
-        User userDto = UserUtils.getCurrentUser();
+    private fun cropPhoto(userId: Int) {
+        val factWidth = cropImageView.wholeImageRect!!.width()
+        val factHeight = cropImageView.wholeImageRect!!.height()
+        val cropRect: Rect = cropImageView.cropRect!!
 
-        cropImageView = dialog.findViewById(R.id.cropImageView);
-
-        loadImage(userDto.getPhoto(), cropImageView);
-
-        dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
-        dialog.findViewById(R.id.save_miniature).setOnClickListener(v -> cropPhoto(userDto.getId()));
+        detailsViewModel.viewModelScope.launch {
+            val isSuccess = detailsViewModel.updateMiniature(
+                userId = userId,
+                ivWidth = factWidth,
+                ivHeight = factHeight,
+                croppedWidth = cropRect.width(),
+                croppedHeight = cropRect.height(),
+                offsetX = cropRect.left,
+                offsetY = cropRect.top
+            ).first()
+            handleCropResult(isSuccess)
+        }
     }
 
-    private void cropPhoto(int userId) {
-        int factWidth = cropImageView.getWholeImageRect().width();
-        int factHeight = cropImageView.getWholeImageRect().height();
-        Rect cropRect = cropImageView.getCropRect();
-
-        viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.updateMiniatureUserPhoto(userId,
-                factWidth, factHeight, cropRect.width(), cropRect.height(), cropRect.left, cropRect.top
-        );
-        viewModel.getResultLiveData().observe(fragment, result -> {
-            if (!(result instanceof UpdateResponse)) return;
-            ((ProfileFragment) fragment).updateProfile();
-            dismiss();
-        });
+    private fun handleCropResult(isCropped: Boolean) {
+        if (isCropped) {
+            onCropSuccessCallback()
+            dismiss()
+        }
     }
 
-    private void loadImage(String path, CropImageView cropImageView) {
-        getConfiguredGlideBuilder(Glide.with(cropImageView).asBitmap().load(getPath(path)))
-                .into(new CustomTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource, Transition<? super Bitmap> transition) {
-                        cropImageView.setImageBitmap(resource);
-                    }
+    private fun loadImage(path: String, cropImageView: CropImageView) {
+        GlideUtils.getConfiguredGlideBuilder(Glide.with(cropImageView).asBitmap().load(UserUtils.getPath(path)))
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                    cropImageView.setImageBitmap(resource)
+                }
 
-                    @Override
-                    public void onLoadCleared(Drawable placeholder) {
-                    }
-                });
+                override fun onLoadCleared(placeholder: Drawable?) {}
+            })
     }
 }

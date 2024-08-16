@@ -34,14 +34,6 @@ import static com.yuta.common.util.UserUtils.setCurrentUser;
 
 @NoArgsConstructor
 public class ProfileFragment extends Fragment {
-    public final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    UploadPhotoDialog.handleActivityResult(PICK_IMAGE_REQUEST, Activity.RESULT_OK, result.getData());
-                }
-            }
-    );
     protected View view;
     protected View progressLayout;
     protected User userDto;

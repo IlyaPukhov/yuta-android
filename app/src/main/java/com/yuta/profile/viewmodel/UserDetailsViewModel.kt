@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import java.io.InputStream
 import javax.inject.Inject
 
-class ProfileDialogViewModel @Inject constructor(
+class UserDetailsViewModel @Inject constructor(
     private val useCase: ProfileUseCase
 ) : ViewModel() {
 
@@ -20,7 +20,7 @@ class ProfileDialogViewModel @Inject constructor(
         return useCase.editUser(UserEditDto(userId, biography, phone, email, vk))
     }
 
-    fun updatePhoto(userId: Int, filename: String, photo: InputStream): Flow<Boolean> {
+    fun uploadPhoto(userId: Int, filename: String, photo: InputStream): Flow<Boolean> {
         return useCase.updateUserPhoto(userId, filename, photo)
     }
 

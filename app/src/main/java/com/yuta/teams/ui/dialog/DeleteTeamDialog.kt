@@ -9,6 +9,7 @@ import com.yuta.app.R
 import com.yuta.common.ui.CancelableDialog
 import com.yuta.domain.model.Team
 import com.yuta.teams.viewmodel.TeamDialogsViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class DeleteTeamDialog(
@@ -28,10 +29,7 @@ class DeleteTeamDialog(
         setupTextView(team.name)
 
         closeButton.setOnClickListener { dismiss() }
-        submitButton.setOnClickListener {
-            deleteTeam(team.id)
-            dismiss()
-        }
+        submitButton.setOnClickListener { deleteTeam(team.id) }
     }
 
     private fun setupTextView(name: String) {
@@ -41,11 +39,15 @@ class DeleteTeamDialog(
 
     private fun deleteTeam(id: Int) {
         teamViewModel.viewModelScope.launch {
-            teamViewModel.delete(id).collect { result ->
-                if (result) {
-                    onDeleteSuccessCallback()
-                }
-            }
+            val isDeleted = teamViewModel.delete(id).first()
+            handleDeleteResult(isDeleted)
+        }
+    }
+
+    private fun handleDeleteResult(isDeleted: Boolean) {
+        if (isDeleted) {
+            onDeleteSuccessCallback()
+            dismiss()
         }
     }
 }

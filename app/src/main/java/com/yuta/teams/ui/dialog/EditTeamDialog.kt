@@ -10,6 +10,7 @@ import com.yuta.common.util.KeyboardUtils
 import com.yuta.domain.model.Team
 import com.yuta.domain.model.UserDto
 import com.yuta.teams.viewmodel.TeamDialogsViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class EditTeamDialog(
@@ -57,11 +58,15 @@ class EditTeamDialog(
         if (name.isEmpty()) return
 
         teamViewModel.viewModelScope.launch {
-            teamViewModel.edit(teamId, name, members).collect { result ->
-                if (result) {
-                    onEditSuccessCallback()
-                }
-            }
+            val isEdited = teamViewModel.edit(teamId, name, members).first()
+            handleEditResult(isEdited)
+        }
+    }
+
+    private fun handleEditResult(isEdited: Boolean) {
+        if (isEdited) {
+            onEditSuccessCallback()
+            dismiss()
         }
     }
 

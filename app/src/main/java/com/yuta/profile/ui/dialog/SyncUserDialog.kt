@@ -13,7 +13,8 @@ import com.yuta.common.ui.CancelableDialog
 import com.yuta.common.util.KeyboardUtils
 import com.yuta.common.util.UserUtils
 import com.yuta.profile.ui.ProfileFragment
-import com.yuta.profile.viewmodel.ProfileDialogViewModel
+import com.yuta.profile.viewmodel.UserDetailsViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class SyncUserDialog(
@@ -26,7 +27,7 @@ class SyncUserDialog(
     private val closeButton: EditText by lazy { dialog.findViewById(R.id.close) }
     private val password: EditText by lazy { dialog.findViewById(R.id.submit_password) }
 
-    private val profileViewModel: ProfileDialogViewModel by fragment.viewModels()
+    private val detailsViewModel: UserDetailsViewModel by fragment.viewModels()
 
     override fun start() {
         super.start()
@@ -36,23 +37,26 @@ class SyncUserDialog(
         closeButton.setOnClickListener { dismiss() }
         submitButton.setOnClickListener {
             KeyboardUtils.hideKeyboard(fragment.requireActivity(), password)
-            updateUserData(password.text.toString())
+            syncUserData(password.text.toString())
         }
     }
 
-    private fun updateUserData(password: String) {
+    private fun syncUserData(password: String) {
         errorText.visibility = GONE
 
-        profileViewModel.viewModelScope.launch {
-            profileViewModel.syncProfile(UserUtils.getUserId(fragment.requireActivity()), password).collect {
-                if (it) {
-                    onProfileUpdateCallback()
-                    dismiss()
-                } else {
-                    errorText.visibility = VISIBLE
-                }
-            }
+        detailsViewModel.viewModelScope.launch {
+            val isSynchronized =
+                detailsViewModel.syncProfile(UserUtils.getUserId(fragment.requireActivity()), password).first()
+            handleSyncResult(isSynchronized)
         }
+    }
+
+    private fun handleSyncResult(isSynchronized: Boolean) {
+        if (isSynchronized) {
+            onProfileUpdateCallback()
+            dismiss()
+        }
+        errorText.visibility = VISIBLE
     }
 
     private fun setupEditText(editText: EditText) {

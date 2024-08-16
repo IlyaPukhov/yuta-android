@@ -20,6 +20,7 @@ import com.yuta.common.util.UserUtils
 import com.yuta.domain.model.UserDto
 import com.yuta.teams.ui.adapter.TeamUserSearchAdapter
 import com.yuta.teams.viewmodel.TeamDialogsViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 open class CreateTeamDialog(
@@ -98,8 +99,15 @@ open class CreateTeamDialog(
         if (name.isEmpty()) return
 
         teamViewModel.viewModelScope.launch {
-            teamViewModel.create(UserUtils.getUserId(fragment.requireContext()), name, members)
-                .collect { result -> if (result) onCreateSuccessCallback() }
+            val isCreated = teamViewModel.create(UserUtils.getUserId(fragment.requireContext()), name, members).first()
+            handleCreateResult(isCreated)
+        }
+    }
+
+    private fun handleCreateResult(isCreated: Boolean) {
+        if (isCreated) {
+            onCreateSuccessCallback()
+            dismiss()
         }
     }
 

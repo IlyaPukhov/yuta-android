@@ -1,42 +1,44 @@
-package com.yuta.profile.ui.dialog;
+package com.yuta.profile.ui.dialog
 
-import android.content.Context;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import com.yuta.app.R;
-import com.yuta.app.domain.model.response.UpdateResponse;
-import com.yuta.common.ui.CancelableDialog;
-import com.yuta.profile.ui.ProfileFragment;
-import com.yuta.app.network.RequestViewModel;
-import com.yuta.common.util.UserUtils;
+import android.widget.Button
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewModelScope
+import com.yuta.app.R
+import com.yuta.common.ui.CancelableDialog
+import com.yuta.common.util.UserUtils
+import com.yuta.profile.viewmodel.UserDetailsViewModel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
-public class DeletePhotoDialog extends CancelableDialog {
-    private RequestViewModel viewModel;
+class DeletePhotoDialog(
+    private val fragment: Fragment,
+    private val onDeleteSuccessCallback: () -> Unit
+) : CancelableDialog(R.layout.dialog_delete, fragment.requireActivity()) {
 
-    public DeletePhotoDialog(Context context, Fragment fragment) {
-        super(context, fragment);
-        setDialogLayout(R.layout.dialog_delete);
+    private val closeButton: Button by lazy { dialog.findViewById(R.id.close) }
+    private val submitButton: Button by lazy { dialog.findViewById(R.id.submit) }
+
+    private val detailsViewModel: UserDetailsViewModel by fragment.viewModels()
+
+    override fun start() {
+        super.start()
+
+        closeButton.setOnClickListener { dismiss() }
+        submitButton.setOnClickListener { deletePhoto() }
     }
 
-    @Override
-    public void start() {
-        super.start();
-        viewModel = new ViewModelProvider(fragment).get(RequestViewModel.class);
-
-        dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
-        dialog.findViewById(R.id.submit).setOnClickListener(v -> {
-            deletePhoto(fragment);
-            dismiss();
-        });
+    private fun deletePhoto() {
+        detailsViewModel.viewModelScope.launch {
+            val isDeleted = detailsViewModel.deletePhoto(UserUtils.getUserId(fragment.requireContext())).first()
+            handleDeleteResult(isDeleted)
+        }
     }
 
-    protected void deletePhoto(Fragment fragment) {
-        viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.deleteUserPhoto(UserUtils.getCurrentUser().getId());
-        viewModel.getResultLiveData().observe(fragment, result -> {
-            if (!(result instanceof UpdateResponse)) return;
-            ((ProfileFragment) fragment).updateProfile();
-            dismiss();
-        });
+    private fun handleDeleteResult(isDeleted: Boolean) {
+        if (isDeleted) {
+            onDeleteSuccessCallback()
+            dismiss()
+        }
     }
 }

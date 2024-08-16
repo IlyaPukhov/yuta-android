@@ -1,63 +1,52 @@
-package com.yuta.profile.ui.dialog;
+package com.yuta.profile.ui.dialog
 
-import android.content.Context;
-import android.view.View;
-import androidx.fragment.app.Fragment;
-import com.yuta.app.R;
-import com.yuta.common.ui.AppDialog;
-import com.yuta.common.ui.CancelableDialog;
-import com.yuta.common.util.UserUtils;
+import android.view.View.GONE
+import android.widget.Button
+import androidx.fragment.app.Fragment
+import com.yuta.app.R
+import com.yuta.common.ui.CancelableDialog
+import com.yuta.common.util.UserUtils
 
-import static android.view.View.GONE;
+class PhotoMenuDialog(
+    private val fragment: Fragment,
+    private val onUpdateCallback: () -> Unit
+) : CancelableDialog(R.layout.dialog_photo, fragment.requireActivity()) {
 
-public class PhotoMenuDialog extends CancelableDialog {
-
-    public static final String DEFAULT_USER_PHOTO = "default-user-photo";
-
-    public PhotoMenuDialog(Context context, Fragment fragment) {
-        super(context, fragment);
-        setDialogLayout(R.layout.dialog_photo);
+    companion object {
+        const val DEFAULT_USER_PHOTO = "default-user-photo"
     }
 
-    @Override
-    public void start() {
-        super.start();
+    private val updatePhotoButton: Button by lazy { dialog.findViewById(R.id.update_photo) }
+    private val editMiniatureButton: Button by lazy { dialog.findViewById(R.id.edit_miniature) }
+    private val deletePhotoButton: Button by lazy { dialog.findViewById(R.id.delete_photo) }
 
-        dialog.findViewById(R.id.update_photo).setOnClickListener(v -> {
-            openUpdatePhotoDialog();
-            dismiss();
-        });
+    override fun start() {
+        super.start()
 
-        View editMiniature = dialog.findViewById(R.id.edit_miniature);
-        View deletePhoto = dialog.findViewById(R.id.delete_photo);
-        if (UserUtils.getCurrentUser().getPhoto().contains(DEFAULT_USER_PHOTO)) {
-            editMiniature.setVisibility(GONE);
-            deletePhoto.setVisibility(GONE);
+        updatePhotoButton.setOnClickListener {
+            openUpdatePhotoDialog()
+            dismiss()
+        }
+
+        val userPhoto = UserUtils.currentUser!!.photo
+        if (userPhoto.contains(DEFAULT_USER_PHOTO)) {
+            editMiniatureButton.visibility = GONE
+            deletePhotoButton.visibility = GONE
         } else {
-            editMiniature.setOnClickListener(v -> {
-                openEditPhotoDialog();
-                dismiss();
-            });
-
-            deletePhoto.setOnClickListener(v -> {
-                openDeletePhotoDialog();
-                dismiss();
-            });
+            editMiniatureButton.setOnClickListener {
+                openCropPhotoDialog()
+                dismiss()
+            }
+            deletePhotoButton.setOnClickListener {
+                openDeletePhotoDialog()
+                dismiss()
+            }
         }
     }
 
-    private void openUpdatePhotoDialog() {
-        AppDialog updatePhotoDialog = new UploadPhotoDialog(activity, fragment);
-        updatePhotoDialog.start();
-    }
+    private fun openUpdatePhotoDialog() = UploadPhotoDialog(fragment) { openCropPhotoDialog() }.start()
 
-    private void openEditPhotoDialog() {
-        AppDialog editPhotoDialog = new CropPhotoDialog(activity, fragment);
-        editPhotoDialog.start();
-    }
+    private fun openCropPhotoDialog() = CropPhotoDialog(fragment) { onUpdateCallback() }.start()
 
-    private void openDeletePhotoDialog() {
-        AppDialog deletePhotoDialog = new DeletePhotoDialog(activity, fragment);
-        deletePhotoDialog.start();
-    }
+    private fun openDeletePhotoDialog() = DeletePhotoDialog(fragment) { onUpdateCallback() }.start()
 }

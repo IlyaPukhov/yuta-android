@@ -1,111 +1,108 @@
-package com.yuta.profile.ui.dialog;
+package com.yuta.profile.ui.dialog
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.widget.ImageView;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import com.yuta.app.R;
-import com.yuta.common.ui.AppDialog;
-import com.yuta.common.ui.CancelableDialog;
-import com.yuta.profile.ui.ProfileFragment;
-import com.yuta.common.util.FileUtils;
-import com.yuta.app.network.RequestViewModel;
-import com.yuta.common.util.UserUtils;
-import com.yuta.app.domain.model.entity.User;
-import com.yuta.app.domain.model.response.UpdateResponse;
-import com.yuta.app.domain.model.response.UserResponse;
-import lombok.SneakyThrows;
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
+import android.widget.ImageView
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewModelScope
+import com.yuta.app.R
+import com.yuta.common.ui.CancelableDialog
+import com.yuta.common.util.FileUtils
+import com.yuta.common.util.GlideUtils.loadImageToImageViewWithoutCaching
+import com.yuta.common.util.UserUtils
+import com.yuta.profile.viewmodel.UserDetailsViewModel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
-import java.io.InputStream;
+class UploadPhotoDialog(
+    private val fragment: Fragment,
+    private val onUploadSuccessCallback: () -> Unit
+) : CancelableDialog(R.layout.dialog_upload_photo, fragment.requireActivity()) {
 
-import static com.yuta.profile.ui.dialog.PhotoMenuDialog.DEFAULT_USER_PHOTO;
-import static com.yuta.common.util.GlideUtils.loadImageToImageViewWithoutCaching;
-
-public class UploadPhotoDialog extends CancelableDialog {
-    public static final int PICK_IMAGE_REQUEST = 1;
-    @SuppressLint("StaticFieldLeak")
-    private static ImageView imageView;
-    private static Uri selectedImageUri;
-    private RequestViewModel viewModel;
-
-    public UploadPhotoDialog(Context context, Fragment fragment) {
-        super(context, fragment);
-        setDialogLayout(R.layout.dialog_upload_photo);
+    companion object {
+        const val PICK_IMAGE_REQUEST = 1
     }
 
-    @Override
-    public void start() {
-        super.start();
-        viewModel = new ViewModelProvider(fragment).get(RequestViewModel.class);
-        User userDto = UserUtils.getCurrentUser();
+    private val imageView: ImageView by lazy { dialog.findViewById(R.id.photo) }
+    private val closeButton: ImageView by lazy { dialog.findViewById(R.id.close) }
+    private val deleteButton: ImageView by lazy { dialog.findViewById(R.id.delete_photo) }
+    private val cropButton: ImageView by lazy { dialog.findViewById(R.id.pick_miniature) }
+    private val pickPhotoButton: ImageView by lazy { dialog.findViewById(R.id.pick_photo) }
 
-        imageView = dialog.findViewById(R.id.photo);
-        loadImageToImageViewWithoutCaching(imageView, userDto.getCroppedPhoto());
+    private var selectedImageUri: Uri? = null
 
-        dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
-        dialog.findViewById(R.id.delete_photo).setOnClickListener(v -> loadImageToImageViewWithoutCaching(imageView, userDto.getCroppedPhoto()));
-        dialog.findViewById(R.id.pick_miniature).setOnClickListener(v -> {
-            if (userDto.getPhoto().equals(DEFAULT_USER_PHOTO) && selectedImageUri == null) return;
+    private val detailsViewModel: UserDetailsViewModel by fragment.viewModels()
+
+    override fun start() {
+        super.start()
+
+        val userDto = UserUtils.currentUser ?: return
+        loadImageToImageViewWithoutCaching(imageView, userDto.croppedPhoto)
+
+        closeButton.setOnClickListener { dismiss() }
+        deleteButton.setOnClickListener { loadImageToImageViewWithoutCaching(imageView, userDto.croppedPhoto) }
+        cropButton.setOnClickListener {
+            if (userDto.photo == PhotoMenuDialog.DEFAULT_USER_PHOTO && selectedImageUri == null) return@setOnClickListener
             if (selectedImageUri != null) {
-                updatePhoto(userDto.getId());
+                updatePhoto(UserUtils.getUserId(fragment.requireContext()))
             } else {
-                openCropDialog();
+                onUploadSuccessCallback()
             }
-
-        });
-        dialog.findViewById(R.id.pick_photo).setOnClickListener(v -> pickPhoto());
+        }
+        pickPhotoButton.setOnClickListener { pickPhoto() }
     }
 
-    private void pickPhoto() {
-        String[] mimeTypes = {"image/jpeg", "image/png"};
-        Intent intent = new Intent();
-        intent.setType("image/*")
-                .putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        ((ProfileFragment) fragment).imagePickerLauncher.launch(Intent.createChooser(intent, activity.getString(R.string.pick_image)));
-    }
+    private fun updatePhoto(userId: Int) {
+        val inputStream = fragment.requireContext().contentResolver.openInputStream(selectedImageUri ?: return)
+        val filename = FileUtils.getFilename(context, selectedImageUri)
 
-    @SneakyThrows
-    private void updatePhoto(int userId) {
-        InputStream inputStream = fragment.requireContext().getContentResolver().openInputStream(selectedImageUri);
-        String filename = FileUtils.getFilename(getContext(), selectedImageUri);
+        if (inputStream == null || filename.isNullOrBlank()) return
 
-        viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.updateUserPhoto(userId, FileUtils.rotateImage(inputStream, filename), filename);
-        viewModel.getResultLiveData().observe(fragment, result -> {
-            if (!(result instanceof UpdateResponse)) return;
-            reloadUserData(userId);
-            openCropDialog();
-        });
-    }
-
-    private static void setImage(Uri uri) {
-        selectedImageUri = uri;
-        imageView.setImageURI(selectedImageUri);
-    }
-
-    private void reloadUserData(int userId) {
-        viewModel.getResultLiveData().removeObservers(fragment.getViewLifecycleOwner());
-        viewModel.getUser(userId);
-        viewModel.getResultLiveData().observe(fragment.getViewLifecycleOwner(), result -> {
-            if (!(result instanceof UserResponse)) return;
-            ((ProfileFragment) fragment).updateProfile();
-        });
-    }
-
-    public static void handleActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
-            setImage(data.getData());
+        detailsViewModel.viewModelScope.launch {
+            val isUploadSuccess = detailsViewModel.uploadPhoto(userId, filename.toString(), inputStream).first()
+            handleUpdateSuccess(isUploadSuccess)
         }
     }
 
-    private void openCropDialog() {
-        AppDialog cropPhotoDialog = new CropPhotoDialog(activity, fragment);
-        cropPhotoDialog.start();
-        dismiss();
+    private fun handleUpdateSuccess(isUploadSuccess: Boolean) {
+        if (isUploadSuccess) {
+            onUploadSuccessCallback()
+            dismiss()
+        }
+    }
+
+    private fun pickPhoto() {
+        val mimeTypes = arrayOf("image/jpeg", "image/png")
+        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+            type = "image/*"
+            putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
+        }
+        imagePickerLauncher.launch(
+            Intent.createChooser(intent, fragment.getString(R.string.pick_image))
+        )
+    }
+
+    private fun setImage(uri: Uri) {
+        selectedImageUri = uri
+        imageView.setImageURI(selectedImageUri)
+    }
+
+    private val imagePickerLauncher = fragment.registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        result.let {
+            if (result.resultCode == Activity.RESULT_OK) {
+                handleActivityResult(PICK_IMAGE_REQUEST, Activity.RESULT_OK, result.data)
+            }
+        }
+    }
+
+    fun handleActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data?.data != null) {
+            setImage(data.data!!)
+        }
     }
 }
