@@ -10,6 +10,8 @@ class SearchViewModel @Inject constructor(
     private val useCase: SearchUseCase
 ) : ViewModel() {
 
+    var usersList: MutableList<UserDto> = mutableListOf()
+
     fun search(text: String): Flow<List<UserDto>> {
         return useCase.searchUsers(text)
     }

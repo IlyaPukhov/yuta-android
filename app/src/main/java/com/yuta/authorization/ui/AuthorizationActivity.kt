@@ -7,19 +7,18 @@ import android.graphics.PixelFormat
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.viewModelScope
 import com.yuta.app.MainActivity
 import com.yuta.app.R
 import com.yuta.authorization.viewmodel.AuthorizationViewModel
+import com.yuta.common.util.FieldUtils.trimmedText
 import com.yuta.common.util.KeyboardUtils
 import com.yuta.common.util.UserUtils
 import com.yuta.domain.util.NetworkUtils
@@ -27,53 +26,43 @@ import kotlinx.coroutines.launch
 
 class AuthorizationActivity : AppCompatActivity() {
 
-    private lateinit var errorText: TextView
-    private lateinit var loginButton: Button
-    private lateinit var loginView: EditText
-    private lateinit var passwordView: EditText
     private val authViewModel: AuthorizationViewModel by viewModels()
+
+    private val errorText: TextView by lazy { findViewById(R.id.error_text) }
+    private val loginButton: Button by lazy { findViewById(R.id.login_button) }
+    private val loginView: EditText by lazy { findViewById(R.id.login) }
+    private val passwordView: EditText by lazy { findViewById(R.id.password) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_YUTA_Common)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_authorization)
 
-        initializeViews()
         checkInitialConditions()
-        setupTextWatchers()
+        setupEditViews()
         setupLoginButton()
     }
 
-    private fun initializeViews() {
-        loginView = findViewById(R.id.login)
-        passwordView = findViewById(R.id.password)
-        errorText = findViewById(R.id.error_text)
-        loginButton = findViewById(R.id.login_button)
-    }
-
     private fun checkInitialConditions() {
-        if (hasInternetConnection() && UserUtils.getUserId(this) >= 0) {
-            // TODO убрать в релизе
-            val ipv4 = UserUtils.getSharedPreferences(this).getString("ipv4", "")
-            NetworkUtils.BASE_URL = ipv4.toString()
-            openApp()
-        } else if (!hasInternetConnection()) {
+        if (hasInternetConnection()) {
+            if (UserUtils.getUserId(this) >= 0) {
+                setupNetworkBaseUrl()
+                openApp()
+            }
+        } else {
             openNetworkDialog()
         }
     }
 
-    private fun setupTextWatchers() {
-        loginView.addTextChangedListener(authorizationTextWatcher())
-        passwordView.addTextChangedListener(authorizationTextWatcher())
+    // TODO убрать в релизе
+    private fun setupNetworkBaseUrl() {
+        val ipv4 = UserUtils.getSharedPreferences(this).getString("ipv4", "")
+        NetworkUtils.BASE_URL = ipv4.orEmpty()
     }
 
-    private fun authorizationTextWatcher() = object : TextWatcher {
-        override fun afterTextChanged(s: Editable?) {}
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            errorText.visibility = GONE
-            updateLoginButtonState()
-        }
+    private fun setupEditViews() {
+        loginView.doOnTextChanged { _, _, _, _ -> updateLoginButtonState() }
+        passwordView.doOnTextChanged { _, _, _, _ -> updateLoginButtonState() }
     }
 
     private fun setupLoginButton() {
@@ -84,13 +73,10 @@ class AuthorizationActivity : AppCompatActivity() {
     }
 
     private fun verifyLogin() {
-        val login = loginView.text.toString()
-        val password = passwordView.text.toString()
+        val login = loginView.trimmedText()
+        val password = passwordView.trimmedText()
 
-        // TODO убрать в релизе
-        val editor = UserUtils.getSharedPreferences(this).edit()
-        editor.putString("ipv4", findViewById<EditText>(R.id.ipv4).text.toString()).apply()
-        NetworkUtils.BASE_URL = UserUtils.getSharedPreferences(this).getString("ipv4", "").toString()
+        setupNetworkBaseUrl()
 
         val loadingDialog = LoadingDialog(this)
         loadingDialog.start()
@@ -117,8 +103,7 @@ class AuthorizationActivity : AppCompatActivity() {
     }
 
     private fun openNetworkDialog() {
-        val networkDialog = NetworkDialog(this)
-        networkDialog.start()
+        NetworkDialog(this).start()
     }
 
     private fun hasInternetConnection(): Boolean {
@@ -132,8 +117,8 @@ class AuthorizationActivity : AppCompatActivity() {
     }
 
     private fun updateLoginButtonState() {
-        val loginText = loginView.text.toString().trim()
-        val passwordText = passwordView.text.toString().trim()
+        val loginText = loginView.trimmedText()
+        val passwordText = passwordView.trimmedText()
         loginButton.isEnabled = loginText.isNotEmpty() && passwordText.isNotEmpty()
     }
 

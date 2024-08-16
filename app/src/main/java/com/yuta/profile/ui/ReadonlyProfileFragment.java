@@ -30,7 +30,7 @@ public class ReadonlyProfileFragment extends ProfileFragment {
         viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
         updateProfile(userId);
 
-        view.findViewById(R.id.log_out).setVisibility(GONE);
+        view.findViewById(R.id.logout).setVisibility(GONE);
         view.findViewById(R.id.reload).setVisibility(GONE);
         view.findViewById(R.id.edit).setVisibility(GONE);
 

@@ -1,15 +1,15 @@
 package com.yuta.search.ui
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
@@ -24,10 +24,14 @@ import kotlinx.coroutines.launch
 
 class SearchFragment : Fragment() {
 
-    private lateinit var emptyText: View
-    private lateinit var progressLayout: View
+    private val emptyText: View by lazy { requireView().findViewById(R.id.empty_text) }
+    private val progressLayout: View by lazy { requireView().findViewById(R.id.progressLayout) }
+    private val searchField: EditText by lazy { requireView().findViewById(R.id.search_user) }
+    private val recyclerView: RecyclerView by lazy { requireView().findViewById(R.id.search_list) }
+    private val logoutButton: Button by lazy { requireView().findViewById(R.id.logout) }
+
     private lateinit var searchAdapter: UserSearchAdapter
-    private var usersList: MutableList<UserDto> = mutableListOf()
+
     private val searchViewModel: SearchViewModel by viewModels()
 
     override fun onCreateView(
@@ -35,46 +39,23 @@ class SearchFragment : Fragment() {
     ): View {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
 
-        emptyText = view.findViewById(R.id.empty_text)
-        progressLayout = view.findViewById(R.id.progressLayout)
-        val searchField = view.findViewById<EditText>(R.id.search_user)
+        initializeRecyclerView()
+        setupEditView()
 
-        recyclerViewInitialize(view)
-        searchField.addTextChangedListener(searchTextWatcher())
-
-        view.findViewById<View>(R.id.log_out).setOnClickListener { openLogoutDialog() }
-
+        logoutButton.setOnClickListener { openLogoutDialog() }
         return view
     }
 
     override fun onResume() {
         super.onResume()
-        updateList(usersList)
-    }
-
-    private fun searchTextWatcher() = object : TextWatcher {
-        override fun afterTextChanged(s: Editable?) {}
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            if (count != 0) {
-                search(s.toString()) {
-                    progressLayout.visibility = GONE
-                    emptyText.visibility = if (usersList.isEmpty()) VISIBLE else GONE
-                    updateList(usersList)
-                }
-            } else {
-                usersList.clear()
-                updateList(usersList)
-            }
-        }
+        updateList(searchViewModel.usersList)
     }
 
     private fun search(searchName: String, updateQueryCallback: () -> Unit) {
-        progressLayout.visibility = VISIBLE
-
+        showProgress(true)
         searchViewModel.viewModelScope.launch {
             searchViewModel.search(searchName).collect {
-                usersList = it.toMutableList()
+                searchViewModel.usersList = it.toMutableList()
                 updateQueryCallback()
             }
         }
@@ -84,9 +65,8 @@ class SearchFragment : Fragment() {
         searchAdapter.refillList(users)
     }
 
-    private fun recyclerViewInitialize(view: View) {
-        val recyclerView = view.findViewById<RecyclerView>(R.id.search_list)
-        searchAdapter = UserSearchAdapter(requireActivity(), usersList)
+    private fun initializeRecyclerView() {
+        searchAdapter = UserSearchAdapter(requireActivity(), searchViewModel.usersList)
         recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         val dividerItemDecoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL).apply {
@@ -97,8 +77,26 @@ class SearchFragment : Fragment() {
         recyclerView.adapter = searchAdapter
     }
 
+    private fun setupEditView() {
+        searchField.doOnTextChanged { text, _, _, _ ->
+            if (!text.isNullOrEmpty()) {
+                search(text.toString()) {
+                    showProgress(false)
+                    emptyText.visibility = if (searchViewModel.usersList.isEmpty()) VISIBLE else GONE
+                    updateList(searchViewModel.usersList)
+                }
+            } else {
+                searchViewModel.usersList.clear()
+                updateList(searchViewModel.usersList)
+            }
+        }
+    }
+
     private fun openLogoutDialog() {
-        val logoutDialog = LogoutDialog(this)
-        logoutDialog.start()
+        LogoutDialog(this).start()
+    }
+
+    private fun showProgress(show: Boolean) {
+        progressLayout.visibility = if (show) VISIBLE else GONE
     }
 }

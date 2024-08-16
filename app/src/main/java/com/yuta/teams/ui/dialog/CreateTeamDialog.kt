@@ -1,13 +1,12 @@
 package com.yuta.teams.ui.dialog
 
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
@@ -15,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yuta.app.R
 import com.yuta.common.ui.CancelableDialog
+import com.yuta.common.util.FieldUtils.trimmedText
 import com.yuta.common.util.KeyboardUtils
 import com.yuta.common.util.UserUtils
 import com.yuta.domain.model.UserDto
@@ -24,47 +24,41 @@ import kotlinx.coroutines.launch
 
 open class CreateTeamDialog(
     private val fragment: Fragment,
-    private val onCreateSuccess: () -> Unit? = {}
+    private val onCreateSuccessCallback: () -> Unit? = {}
 ) : CancelableDialog(R.layout.dialog_create_team, fragment.requireActivity()) {
 
-    private val teamViewModel: TeamDialogsViewModel by fragment.viewModels()
-
-    protected lateinit var teamName: EditText
-    protected lateinit var submitButton: Button
-    private lateinit var searchButton: Button
-    private lateinit var searchField: EditText
-    private lateinit var error: TextView
-    private lateinit var emptySearch: TextView
-    private lateinit var addedText: TextView
+    protected val teamName: EditText by lazy { dialog.findViewById(R.id.team_name) }
+    protected val submitButton: Button by lazy { dialog.findViewById(R.id.submit) }
+    private val closeButton: Button by lazy { dialog.findViewById(R.id.close) }
+    private val searchButton: Button by lazy { dialog.findViewById(R.id.btnSearch) }
+    private val searchField: EditText by lazy { dialog.findViewById(R.id.find_name) }
+    private val error: TextView by lazy { dialog.findViewById(R.id.error_text) }
+    private val emptySearch: TextView by lazy { dialog.findViewById(R.id.empty_search_text) }
+    private val addedText: TextView by lazy { dialog.findViewById(R.id.added_members) }
     private lateinit var searchAdapter: TeamUserSearchAdapter
     protected lateinit var membersAdapter: TeamUserSearchAdapter
 
+    private val teamViewModel: TeamDialogsViewModel by fragment.viewModels()
+
     override fun start() {
         super.start()
-        setupViews()
+        setupButtons()
+        setupTextWatchers()
         setupRecyclerViews()
     }
 
-    private fun setupViews() {
-        submitButton = dialog.findViewById(R.id.submit)
-        searchButton = dialog.findViewById(R.id.btnSearch)
-        teamName = dialog.findViewById(R.id.team_name)
-        searchField = dialog.findViewById(R.id.find_name)
-        error = dialog.findViewById(R.id.error_text)
-        emptySearch = dialog.findViewById(R.id.empty_search_text)
-        addedText = dialog.findViewById(R.id.added_members)
+    private fun setupButtons() {
+        closeButton.setOnClickListener { dismiss() }
 
-        dialog.findViewById<View>(R.id.close).setOnClickListener { dismiss() }
         searchButton.setOnClickListener {
             KeyboardUtils.hideKeyboard(fragment.requireActivity(), searchButton)
             searchUsers(searchField.trimmedText(), teamViewModel.addedMembers)
         }
+
         submitButton.setOnClickListener {
             KeyboardUtils.hideKeyboard(fragment.requireActivity(), teamName)
             createTeam(teamName.trimmedText(), teamViewModel.addedMembers)
         }
-
-        setupTextWatchers()
     }
 
     private fun setupRecyclerViews() {
@@ -82,24 +76,16 @@ open class CreateTeamDialog(
     }
 
     private fun setupTextWatchers() {
-        teamName.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                checkNameUnique(s.toString()) { isUnique ->
-                    submitButton.isEnabled = isUnique
-                    messageVisibility(error, !isUnique)
-                }
+        teamName.doOnTextChanged { text, _, _, _ ->
+            checkNameUnique(text.toString()) { isUnique ->
+                submitButton.isEnabled = isUnique
+                messageVisibility(error, !isUnique)
             }
-        })
+        }
 
-        searchField.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                searchButton.isEnabled = !s.isNullOrBlank()
-            }
-        })
+        searchField.doOnTextChanged { text, _, _, _ ->
+            searchButton.isEnabled = !text.isNullOrBlank()
+        }
     }
 
     protected open fun checkNameUnique(name: String, onUniqueCallback: (Boolean) -> Unit) {
@@ -113,7 +99,7 @@ open class CreateTeamDialog(
 
         teamViewModel.viewModelScope.launch {
             teamViewModel.create(UserUtils.getUserId(fragment.requireContext()), name, members)
-                .collect { result -> if (result) onCreateSuccess() }
+                .collect { result -> if (result) onCreateSuccessCallback() }
         }
     }
 
@@ -136,6 +122,4 @@ open class CreateTeamDialog(
     private fun messageVisibility(message: View, condition: Boolean) {
         message.visibility = if (condition) VISIBLE else GONE
     }
-
-    protected fun EditText.trimmedText(): String = this.text.toString().trim()
 }

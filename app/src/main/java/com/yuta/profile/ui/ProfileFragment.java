@@ -19,7 +19,7 @@ import com.yuta.profile.ui.dialog.PhotoMenuDialog;
 import com.yuta.profile.ui.dialog.UploadPhotoDialog;
 import com.yuta.profile.ui.dialog.EditUserDialog;
 import com.yuta.authorization.ui.LogoutDialog;
-import com.yuta.profile.ui.dialog.UpdateUserDialog;
+import com.yuta.profile.ui.dialog.SyncUserDialog;
 import com.yuta.app.network.RequestViewModel;
 import com.yuta.app.domain.model.entity.User;
 import com.yuta.app.domain.model.response.UserResponse;
@@ -63,7 +63,7 @@ public class ProfileFragment extends Fragment {
     private void setupViews() {
         progressLayout = view.findViewById(R.id.progressLayout);
         imageView = view.findViewById(R.id.photo);
-        view.findViewById(R.id.log_out).setOnClickListener(v -> openLogoutDialog());
+        view.findViewById(R.id.logout).setOnClickListener(v -> openLogoutDialog());
         view.findViewById(R.id.reload).setOnClickListener(v -> openReloadDialog());
         view.findViewById(R.id.edit).setOnClickListener(v -> openEditUserDialog());
         imageView.setOnClickListener(v -> openPhotoDialog());
@@ -132,7 +132,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void openReloadDialog() {
-        AppDialog updateUserDialog = new UpdateUserDialog(view.getContext(), this);
+        AppDialog updateUserDialog = new SyncUserDialog(view.getContext(), this);
         updateUserDialog.start();
     }
 

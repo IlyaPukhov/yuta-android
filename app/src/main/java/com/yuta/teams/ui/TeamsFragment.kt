@@ -25,13 +25,15 @@ import kotlinx.coroutines.launch
 
 class TeamsFragment : Fragment() {
 
-    private val teamsViewModel: TeamsViewModel by viewModels()
+    private val createTeamButton: Button by lazy { findViewById(R.id.create_team) }
+    private val logoutButton: Button by lazy { findViewById(R.id.logout) }
+    private val managedTeamsButton: ToggleButton by lazy { findViewById(R.id.manager_button) }
+    private val memberTeamsButton: ToggleButton by lazy { findViewById(R.id.member_button) }
+    private val emptyText: TextView by lazy { findViewById(R.id.empty_text) }
+    private val progressLayout: View by lazy { findViewById(R.id.progressLayout) }
+    private val teamsAdapter: TeamsAdapter by lazy { TeamsAdapter(requireActivity(), mutableListOf(), this) }
 
-    private lateinit var managedTeamsButton: ToggleButton
-    private lateinit var memberTeamsButton: ToggleButton
-    private lateinit var emptyText: TextView
-    private lateinit var progressLayout: View
-    private lateinit var teamsAdapter: TeamsAdapter
+    private val teamsViewModel: TeamsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,8 +41,8 @@ class TeamsFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_teams, container, false).also {
             setupRecyclerView(it)
-            teamsSwitchInitialize(it)
-            setupViews(it)
+            setupToggleButtons()
+            setupViews()
         }
     }
 
@@ -49,34 +51,32 @@ class TeamsFragment : Fragment() {
         updateLists()
     }
 
-    fun updateLists() {
-        updateLists(view!!.findViewById<Button>(teamsViewModel.lastPickedButtonId!!))
+    private fun updateLists() {
+        teamsViewModel.lastPickedButtonId?.let {
+            updateLists(findViewById<Button>(it))
+        }
     }
 
     private fun updateLists(button: Button) {
-        progressLayout.visibility = VISIBLE
+        showProgress(true)
         updateTeams {
             button.performClick()
-            progressLayout.visibility = GONE
+            showProgress(false)
         }
     }
 
     private fun onToggleButtonClick(view: View) {
         val button = view as ToggleButton
-        val otherButton: ToggleButton
+        val otherButton = if (button.id == managedTeamsButton.id) memberTeamsButton else managedTeamsButton
 
         if (button.id == managedTeamsButton.id) {
-            otherButton = memberTeamsButton
             fillTeams(teamsViewModel.managedTeamsMembers)
         } else {
-            otherButton = managedTeamsButton
             fillTeams(teamsViewModel.othersTeamsMembers)
         }
 
-        button.setTextAppearance(R.style.active_toggle)
-        button.isChecked = true
-        otherButton.setTextAppearance(R.style.default_toggle)
-        otherButton.isChecked = false
+        setActiveButton(button)
+        setInactiveButton(otherButton)
         teamsViewModel.lastPickedButtonId = button.id
     }
 
@@ -94,25 +94,19 @@ class TeamsFragment : Fragment() {
         }
     }
 
-    private fun setupViews(view: View) {
-        emptyText = view.findViewById(R.id.empty_text)
-        progressLayout = view.findViewById(R.id.progressLayout)
-
-        view.findViewById<Button>(R.id.create_team).setOnClickListener { openCreateTeamDialog() }
-        view.findViewById<Button>(R.id.log_out).setOnClickListener { openLogoutDialog() }
+    private fun setupViews() {
+        createTeamButton.setOnClickListener { openCreateTeamDialog() }
+        logoutButton.setOnClickListener { openLogoutDialog() }
     }
 
     private fun setupRecyclerView(view: View) {
         view.findViewById<RecyclerView>(R.id.recyclerView).apply {
             layoutManager = LinearLayoutManager(requireContext())
-            teamsAdapter = TeamsAdapter(requireActivity(), mutableListOf(), this@TeamsFragment)
             adapter = teamsAdapter
         }
     }
 
-    private fun teamsSwitchInitialize(view: View) {
-        managedTeamsButton = view.findViewById(R.id.manager_button)
-        memberTeamsButton = view.findViewById(R.id.member_button)
+    private fun setupToggleButtons() {
         managedTeamsButton.setOnClickListener(this::onToggleButtonClick)
         memberTeamsButton.setOnClickListener(this::onToggleButtonClick)
 
@@ -122,4 +116,22 @@ class TeamsFragment : Fragment() {
     private fun openCreateTeamDialog() = CreateTeamDialog(fragment = this) { updateLists() }.start()
 
     private fun openLogoutDialog() = LogoutDialog(fragment = this).start()
+
+    private fun setActiveButton(button: ToggleButton) {
+        button.setTextAppearance(R.style.active_toggle)
+        button.isChecked = true
+    }
+
+    private fun setInactiveButton(button: ToggleButton) {
+        button.setTextAppearance(R.style.default_toggle)
+        button.isChecked = false
+    }
+
+    private fun showProgress(show: Boolean) {
+        progressLayout.visibility = if (show) VISIBLE else GONE
+    }
+
+    inline fun <reified T : View> Fragment.findViewById(id: Int): T {
+        return requireView().findViewById(id)
+    }
 }

@@ -39,7 +39,7 @@
             <Button
                     android:layout_width="22dp"
                     android:layout_height="22dp"
-                    android:id="@+id/log_out"
+                    android:id="@+id/logout"
                     android:contentDescription="@string/logout_button"
                     android:background="@drawable/ic_exit"
                     style="@style/classic_button_style"
