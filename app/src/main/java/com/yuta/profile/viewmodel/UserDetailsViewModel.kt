@@ -1,6 +1,7 @@
 package com.yuta.profile.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.yuta.common.util.ImageUtils
 import com.yuta.domain.model.UserEditDto
 import com.yuta.domain.model.UserMiniatureUpdateDto
 import com.yuta.domain.usecase.ProfileUseCase
@@ -29,7 +30,7 @@ class UserDetailsViewModel @Inject constructor(
     }
 
     fun uploadPhoto(userId: Int, filename: String, photo: InputStream): Flow<Boolean> {
-        return useCase.updateUserPhoto(userId, filename, photo)
+        return useCase.updateUserPhoto(userId, filename, ImageUtils.rotateImage(photo, filename))
     }
 
     fun updateMiniature(

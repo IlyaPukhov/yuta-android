@@ -16,23 +16,32 @@ object ImageUtils {
             inputStream.copyTo(outputStream)
         }
 
-        val exif = ExifInterface(tempFile.absolutePath)
-        val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED)
-        val bitmap = BitmapFactory.decodeFile(tempFile.absolutePath)
-        val rotatedBitmap = rotateBitmap(bitmap, orientation)
+        try {
+            val exif = ExifInterface(tempFile.absolutePath)
+            val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED)
 
-        val extension = filename.substring(filename.lastIndexOf(".") + 1)
+            if (orientation == ExifInterface.ORIENTATION_NORMAL || orientation == ExifInterface.ORIENTATION_UNDEFINED) {
+                return Files.newInputStream(tempFile.toPath())
+            }
 
-        val rotatedTempFile = File.createTempFile("rotatedTemp", ".$extension")
-        rotatedTempFile.outputStream().use { rotatedOutputStream ->
-            val validExtension = Bitmap.CompressFormat.entries
-                .map { it.name }
-                .firstOrNull { it.equals(extension.uppercase(), ignoreCase = true) }
-                ?: "JPEG"
+            val bitmap = BitmapFactory.decodeFile(tempFile.absolutePath)
+            val rotatedBitmap = rotateBitmap(bitmap, orientation)
 
-            rotatedBitmap.compress(Bitmap.CompressFormat.valueOf(validExtension), 100, rotatedOutputStream)
+            val extension = filename.substring(filename.lastIndexOf(".") + 1)
+            val rotatedTempFile = File.createTempFile("rotatedTemp", ".$extension")
+            rotatedTempFile.outputStream().use { rotatedOutputStream ->
+                val validExtension = Bitmap.CompressFormat.entries
+                    .map { it.name }
+                    .firstOrNull { it.equals(extension, ignoreCase = true) }
+                    ?: "JPEG"
+
+                rotatedBitmap.compress(Bitmap.CompressFormat.valueOf(validExtension), 100, rotatedOutputStream)
+            }
+
+            return Files.newInputStream(rotatedTempFile.toPath()).also { rotatedBitmap.recycle() }
+        } finally {
+            tempFile.delete()
         }
-        return Files.newInputStream(rotatedTempFile.toPath())
     }
 
     private fun rotateBitmap(bitmap: Bitmap, orientation: Int): Bitmap {
@@ -60,8 +69,6 @@ object ImageUtils {
             else -> return bitmap
         }
 
-        val rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
-        bitmap.recycle()
-        return rotatedBitmap
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
 }
