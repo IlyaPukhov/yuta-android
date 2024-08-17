@@ -1,158 +1,122 @@
-package com.yuta.profile.ui;
+package com.yuta.profile.ui
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import com.yuta.app.R;
-import com.yuta.common.ui.AppDialog;
-import com.yuta.profile.ui.dialog.PhotoMenuDialog;
-import com.yuta.profile.ui.dialog.UploadPhotoDialog;
-import com.yuta.profile.ui.dialog.EditUserDialog;
-import com.yuta.authorization.ui.LogoutDialog;
-import com.yuta.profile.ui.dialog.SyncUserDialog;
-import com.yuta.app.network.RequestViewModel;
-import com.yuta.app.domain.model.entity.User;
-import com.yuta.app.domain.model.response.UserResponse;
-import lombok.NoArgsConstructor;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewModelScope
+import com.yuta.app.R
+import com.yuta.common.ui.BaseFragment
+import com.yuta.common.util.GlideUtils
+import com.yuta.common.util.UserUtils
+import com.yuta.domain.model.User
+import com.yuta.domain.model.UserDto
+import com.yuta.profile.ui.dialog.EditUserDialog
+import com.yuta.profile.ui.dialog.PhotoMenuDialog
+import com.yuta.profile.ui.dialog.SyncUserDialog
+import com.yuta.profile.viewmodel.UserViewModel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static com.yuta.profile.ui.dialog.UploadPhotoDialog.PICK_IMAGE_REQUEST;
-import static com.yuta.common.util.GlideUtils.loadImageToImageViewWithoutCaching;
-import static com.yuta.common.util.UserUtils.getUserId;
-import static com.yuta.common.util.UserUtils.setCurrentUser;
+open class ProfileFragment : BaseFragment() {
 
-@NoArgsConstructor
-public class ProfileFragment extends Fragment {
-    protected View view;
-    protected View progressLayout;
-    protected User userDto;
-    protected ImageView imageView;
-    protected RequestViewModel viewModel;
+    protected val syncButton: Button by lazy { requireView().findViewById(R.id.logout) }
+    protected val editDetailsButton: Button by lazy { requireView().findViewById(R.id.logout) }
+    private val avatarImageView: ImageView by lazy { requireView().findViewById(R.id.photo) }
+    private val contactsContainer: View by lazy { requireView().findViewById(R.id.contacts_container) }
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_profile, container, false);
+    private val userViewModel: UserViewModel by viewModels()
 
-        setupViews();
-        viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
-        updateProfile();
-
-        return view;
-    }
-
-    private void setupViews() {
-        progressLayout = view.findViewById(R.id.progressLayout);
-        imageView = view.findViewById(R.id.photo);
-        view.findViewById(R.id.logout).setOnClickListener(v -> openLogoutDialog());
-        view.findViewById(R.id.reload).setOnClickListener(v -> openReloadDialog());
-        view.findViewById(R.id.edit).setOnClickListener(v -> openEditUserDialog());
-        imageView.setOnClickListener(v -> openPhotoDialog());
-    }
-
-    public void updateProfile() {
-        updateProfile(getUserId(requireActivity()));
-    }
-
-    protected void updateProfile(int userId) {
-        progressLayout.setVisibility(VISIBLE);
-        imageView.setEnabled(false);
-        viewModel.getResultLiveData().removeObservers(getViewLifecycleOwner());
-        if (userId >= 0) {
-            viewModel.getUser(userId);
-            viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
-                if (!(result instanceof UserResponse)) return;
-                userDto = ((UserResponse) result).getUserDto();
-                userDto.setId(userId);
-                updateImage();
-                fillViews();
-                progressLayout.setVisibility(GONE);
-                imageView.setEnabled(true);
-                setCurrentUser(userDto);
-            });
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_profile, container, false).also {
+            setupViews()
+            updateProfile()
         }
     }
 
-    private void fillViews() {
-        String fullName = userDto.getLastName() + " " + userDto.getFirstName() + (userDto.getPatronymic() == null ? "" : " " + userDto.getPatronymic());
-        String faculty = getString(R.string.faculty) + ": " + userDto.getFaculty();
-        String direction = getString(R.string.direction) + ": " + userDto.getDirection();
-        String group = getString(R.string.group) + ": " + userDto.getGroup();
-        String projectsCount = userDto.getDoneProjectsCount() + "/" + userDto.getAllProjectsCount();
-        String tasksCount = userDto.getDoneTasksCount() + "/" + userDto.getAllTasksCount();
-
-        setDataInTextView(R.id.name, fullName);
-        setDataInTextView(R.id.age, userDto.getAge());
-        setDataInTextView(R.id.biography, userDto.getBiography());
-        setDataInTextView(R.id.faculty, faculty);
-        setDataInTextView(R.id.direction, direction);
-        setDataInTextView(R.id.group, group);
-        setDataInTextView(R.id.projects_count, projectsCount);
-        setDataInTextView(R.id.tasks_count, tasksCount);
-        setDataInTextView(R.id.teams_count, String.valueOf(userDto.getTeamsCount()));
-        setDataInTextView(R.id.phone_number, userDto.getPhoneNumber());
-        setDataInTextView(R.id.email, userDto.getEMail());
-        setDataInTextView(R.id.vk, userDto.getVk());
-
-        contactsContainerVisibility(R.id.phone_number, R.id.email, R.id.vk);
+    private fun setupViews() {
+        syncButton.setOnClickListener { openSyncDialog() }
+        editDetailsButton.setOnClickListener { openEditUserDialog() }
+        avatarImageView.setOnClickListener { openPhotoMenu() }
     }
 
-    public void updateImage() {
-        loadImageToImageViewWithoutCaching(imageView, userDto.getCroppedPhoto());
+    private fun updateProfile() {
+        updateProfile(UserUtils.getUserId(requireActivity()))
     }
 
-    private void contactsContainerVisibility(@NonNull int... fields) {
-        boolean isEmpty = true;
-        for (int field : fields) {
-            if (view.findViewById(field).getVisibility() == VISIBLE) {
-                isEmpty = false;
-                break;
-            }
+    protected fun updateProfile(userId: Int) {
+        showProgress(true)
+        avatarImageView.isEnabled = false
+
+        userViewModel.viewModelScope.launch {
+            val user = userViewModel.getProfile(userId).first()
+            handleProfileResult(userId, user)
         }
-        view.findViewById(R.id.contacts_container).setVisibility(isEmpty ? GONE : VISIBLE);
     }
 
-    private void openReloadDialog() {
-        AppDialog updateUserDialog = new SyncUserDialog(view.getContext(), this);
-        updateUserDialog.start();
+    private fun handleProfileResult(id: Int, user: User) {
+        updateImage(user)
+        fillViews(id, user)
+        showProgress(false)
+        avatarImageView.isEnabled = true
+        UserUtils.currentUser = user
     }
 
-    private void openEditUserDialog() {
-        AppDialog editDialog = new EditUserDialog(view.getContext(), this);
-        editDialog.start();
+    private fun fillViews(id: Int, user: User) {
+        val fullName = UserUtils.getFullName(UserDto.fromUser(id, user))
+        val faculty = "${getString(R.string.faculty)}: ${user.faculty}"
+        val direction = "${getString(R.string.direction)}: ${user.direction}"
+        val group = "${getString(R.string.group)}: ${user.group}"
+        val projectsCount = "${user.doneProjectsCount}/${user.allProjectsCount}"
+        val tasksCount = "${user.doneTasksCount}/${user.allTasksCount}"
+
+        setDataInTextView(R.id.name, fullName)
+        setDataInTextView(R.id.age, user.age)
+        setDataInTextView(R.id.biography, user.biography)
+        setDataInTextView(R.id.faculty, faculty)
+        setDataInTextView(R.id.direction, direction)
+        setDataInTextView(R.id.group, group)
+        setDataInTextView(R.id.projects_count, projectsCount)
+        setDataInTextView(R.id.tasks_count, tasksCount)
+        setDataInTextView(R.id.teams_count, user.teamsCount.toString())
+        setDataInTextView(R.id.phone_number, user.phoneNumber)
+        setDataInTextView(R.id.email, user.eMail)
+        setDataInTextView(R.id.vk, user.vk)
+
+        contactsContainerVisibility(R.id.phone_number, R.id.email, R.id.vk)
     }
 
-    private void openPhotoDialog() {
-        AppDialog photoDialog = new PhotoMenuDialog(view.getContext(), this);
-        photoDialog.start();
+    private fun updateImage(user: User) {
+        GlideUtils.loadImageToImageViewWithoutCaching(avatarImageView, user.croppedPhoto)
     }
 
-    private void openLogoutDialog() {
-        AppDialog logoutDialog = new LogoutDialog(view.getContext(), this);
-        logoutDialog.start();
+    private fun contactsContainerVisibility(vararg fields: Int) {
+        val isEmpty = fields.none { requireView().findViewById<View>(it).visibility == VISIBLE }
+        contactsContainer.visibility = if (isEmpty) GONE else VISIBLE
     }
 
-    private void setDataInTextView(int id, String text) {
-        TextView textView = view.findViewById(id);
-        textView.setText(null);
+    private fun openSyncDialog() = SyncUserDialog(this) { updateProfile() }.start()
+
+    private fun openEditUserDialog() = EditUserDialog(this) { updateProfile() }.start()
+
+    private fun openPhotoMenu() = PhotoMenuDialog(this) { updateProfile() }.start()
+
+    private fun setDataInTextView(id: Int, text: String?) {
+        val textView: TextView = requireView().findViewById(id)
         if (text != null) {
-            textView.setText(text);
-            if (textView.getVisibility() != VISIBLE) {
-                textView.setVisibility(VISIBLE);
-            }
+            textView.text = text
+            textView.visibility = VISIBLE
         } else {
-            textView.setVisibility(GONE);
+            textView.visibility = GONE
         }
     }
 }

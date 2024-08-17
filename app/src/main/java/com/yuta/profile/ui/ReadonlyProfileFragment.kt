@@ -1,42 +1,41 @@
-package com.yuta.profile.ui;
+package com.yuta.profile.ui
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProvider;
-import com.yuta.app.R;
-import com.yuta.app.network.RequestViewModel;
-import lombok.NoArgsConstructor;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.view.ViewGroup
+import android.widget.Button
+import com.yuta.app.R
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
+class ReadonlyProfileFragment : ProfileFragment() {
 
-@NoArgsConstructor
-public class ReadonlyProfileFragment extends ProfileFragment {
-    private int userId;
+    private val backButton: Button by lazy { requireView().findViewById(R.id.back_button) }
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_profile, container, false);
-        if (getArguments() != null) {
-            userId = getArguments().getInt("userId", -1);
+    private var userId: Int = -1
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_profile, container, false).also {
+            userId = arguments?.getInt("userId", -1) ?: return it
+            updateProfile(userId)
+
+            hideUnnecessaryButtons()
+            setupBackButton()
         }
+    }
 
-        imageView = view.findViewById(R.id.photo);
-        progressLayout = view.findViewById(R.id.progressLayout);
-        viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
-        updateProfile(userId);
+    private fun hideUnnecessaryButtons() {
+        logoutButton.visibility = GONE
+        syncButton.visibility = GONE
+        editDetailsButton.visibility = GONE
+    }
 
-        view.findViewById(R.id.logout).setVisibility(GONE);
-        view.findViewById(R.id.reload).setVisibility(GONE);
-        view.findViewById(R.id.edit).setVisibility(GONE);
-
-        View backButton = view.findViewById(R.id.back_button);
-        backButton.setVisibility(VISIBLE);
-        backButton.setOnClickListener(v -> requireActivity().getOnBackPressedDispatcher().onBackPressed());
-        return view;
+    private fun setupBackButton() {
+        backButton.visibility = VISIBLE
+        backButton.setOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
     }
 }

@@ -9,13 +9,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.ToggleButton
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yuta.app.R
-import com.yuta.authorization.ui.LogoutDialog
+import com.yuta.common.ui.BaseFragment
 import com.yuta.common.util.UserUtils
 import com.yuta.domain.model.TeamMember
 import com.yuta.teams.ui.adapter.TeamsAdapter
@@ -23,14 +22,12 @@ import com.yuta.teams.ui.dialog.CreateTeamDialog
 import com.yuta.teams.viewmodel.TeamsViewModel
 import kotlinx.coroutines.launch
 
-class TeamsFragment : Fragment() {
+class TeamsFragment : BaseFragment() {
 
-    private val createTeamButton: Button by lazy { findViewById(R.id.create_team) }
-    private val logoutButton: Button by lazy { findViewById(R.id.logout) }
-    private val managedTeamsButton: ToggleButton by lazy { findViewById(R.id.manager_button) }
-    private val memberTeamsButton: ToggleButton by lazy { findViewById(R.id.member_button) }
-    private val emptyText: TextView by lazy { findViewById(R.id.empty_text) }
-    private val progressLayout: View by lazy { findViewById(R.id.progressLayout) }
+    private val createTeamButton: Button by lazy { requireView().findViewById(R.id.create_team) }
+    private val managedTeamsButton: ToggleButton by lazy { requireView().findViewById(R.id.manager_button) }
+    private val memberTeamsButton: ToggleButton by lazy { requireView().findViewById(R.id.member_button) }
+    private val emptyText: TextView by lazy { requireView().findViewById(R.id.empty_text) }
     private val teamsAdapter: TeamsAdapter by lazy { TeamsAdapter(requireActivity(), mutableListOf(), this) }
 
     private val teamsViewModel: TeamsViewModel by viewModels()
@@ -53,7 +50,7 @@ class TeamsFragment : Fragment() {
 
     private fun updateLists() {
         teamsViewModel.lastPickedButtonId?.let {
-            updateLists(findViewById<Button>(it))
+            updateLists(requireView().findViewById<Button>(it))
         }
     }
 
@@ -96,7 +93,6 @@ class TeamsFragment : Fragment() {
 
     private fun setupViews() {
         createTeamButton.setOnClickListener { openCreateTeamDialog() }
-        logoutButton.setOnClickListener { openLogoutDialog() }
     }
 
     private fun setupRecyclerView(view: View) {
@@ -115,8 +111,6 @@ class TeamsFragment : Fragment() {
 
     private fun openCreateTeamDialog() = CreateTeamDialog(fragment = this) { updateLists() }.start()
 
-    private fun openLogoutDialog() = LogoutDialog(fragment = this).start()
-
     private fun setActiveButton(button: ToggleButton) {
         button.setTextAppearance(R.style.active_toggle)
         button.isChecked = true
@@ -125,13 +119,5 @@ class TeamsFragment : Fragment() {
     private fun setInactiveButton(button: ToggleButton) {
         button.setTextAppearance(R.style.default_toggle)
         button.isChecked = false
-    }
-
-    private fun showProgress(show: Boolean) {
-        progressLayout.visibility = if (show) VISIBLE else GONE
-    }
-
-    inline fun <reified T : View> Fragment.findViewById(id: Int): T {
-        return requireView().findViewById(id)
     }
 }
