@@ -16,27 +16,21 @@ import com.yuta.common.util.UserUtils
 
 class MainActivity : AppCompatActivity(), NavigationToProfileCallback {
 
-    private val viewModel: MainViewModel by viewModels()
-    private lateinit var navController: NavController
-    private var bottomNavigationView: BottomNavigationView? = null
+    private val mainViewModel: MainViewModel by viewModels()
+    private val navController: NavController by lazy { findNavController(R.id.nav_host_fragment) }
+    private val bottomNavigationView: BottomNavigationView by lazy { findViewById(R.id.bottomNavigationView) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setupNavigation()
-        onBackPressedDispatcherInitialize()
+        setupWithNavController(bottomNavigationView, navController)
+        initializeBackPressedDispatcher()
     }
 
-    private fun setupNavigation() {
-        bottomNavigationView = findViewById(R.id.bottomNavigationView)
-        navController = findNavController(R.id.nav_host_fragment)
-        setupWithNavController(bottomNavigationView!!, navController)
-    }
-
-    private fun onBackPressedDispatcherInitialize() {
+    private fun initializeBackPressedDispatcher() {
         onBackPressedDispatcher.addCallback(this) {
-            viewModel.handleBackPress(
+            mainViewModel.handleBackPress(
                 onSelectPreviousNavTab = { selectPreviousNavTab() },
                 onPopBackStack = { navController.popBackStack() },
                 onExit = { finish() },
@@ -50,21 +44,14 @@ class MainActivity : AppCompatActivity(), NavigationToProfileCallback {
     }
 
     private fun selectPreviousNavTab() {
-        val currentItemId = bottomNavigationView?.selectedItemId ?: return
-        viewModel.setLastItemId(currentItemId)
-        bottomNavigationView?.selectedItemId = viewModel.getLastItemId()
-        viewModel.resetLastItemId()
+        mainViewModel.setLastItemId(bottomNavigationView.selectedItemId)
+        bottomNavigationView.selectedItemId = mainViewModel.getLastItemId()
+        mainViewModel.resetLastItemId()
     }
 
     private fun selectNavTab(id: Int) {
-        val currentItemId = bottomNavigationView?.selectedItemId ?: return
-        viewModel.setLastItemId(currentItemId)
-        bottomNavigationView?.selectedItemId = id
-    }
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        window.setFormat(PixelFormat.RGBA_8888)
+        mainViewModel.setLastItemId(bottomNavigationView.selectedItemId)
+        bottomNavigationView.selectedItemId = id
     }
 
     override fun navigate(userId: Int) {
@@ -73,7 +60,12 @@ class MainActivity : AppCompatActivity(), NavigationToProfileCallback {
         } else {
             val bundle = Bundle().apply { putInt("userId", userId) }
             this.navigate(R.id.action_searchFragment_to_readonlyProfileFragment, bundle)
-            viewModel.setReadonly(true)
+            mainViewModel.setReadonly(true)
         }
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        window.setFormat(PixelFormat.RGBA_8888)
     }
 }

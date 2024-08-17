@@ -5,17 +5,21 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
 import com.yuta.app.R
+import com.yuta.common.util.FieldUtils.trimmedText
 import com.yuta.common.util.KeyboardUtils
 import com.yuta.domain.model.Team
 import com.yuta.domain.model.UserDto
 import com.yuta.teams.viewmodel.TeamDialogsViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class EditTeamDialog(
     private val fragment: Fragment,
     private val teamId: Int,
-    private val onEditSuccess: () -> Unit
+    private val onEditSuccessCallback: () -> Unit
 ) : CreateTeamDialog(fragment) {
+
+    private val title: TextView by lazy { dialog.findViewById(R.id.title) }
 
     private val teamViewModel: TeamDialogsViewModel by fragment.viewModels()
 
@@ -35,7 +39,7 @@ class EditTeamDialog(
             text = context.getString(R.string.save_button)
             isEnabled = false
         }
-        dialog.findViewById<TextView>(R.id.create_text).text = context.getString(R.string.edit_team_text)
+        title.text = context.getString(R.string.edit_team_text)
     }
 
     private fun getTeamDetails(teamId: Int) {
@@ -54,11 +58,15 @@ class EditTeamDialog(
         if (name.isEmpty()) return
 
         teamViewModel.viewModelScope.launch {
-            teamViewModel.edit(teamId, name, members).collect { result ->
-                if (result) {
-                    onEditSuccess()
-                }
-            }
+            val isEdited = teamViewModel.edit(teamId, name, members).first()
+            handleEditResult(isEdited)
+        }
+    }
+
+    private fun handleEditResult(isEdited: Boolean) {
+        if (isEdited) {
+            onEditSuccessCallback()
+            dismiss()
         }
     }
 

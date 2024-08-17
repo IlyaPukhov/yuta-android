@@ -12,7 +12,7 @@ import com.yuta.domain.util.NetworkUtils
 
 object UserUtils {
 
-    private var currentUser: User? = null
+    var currentUser: User? = null
 
     fun getSharedPreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences("session", MODE_PRIVATE)
@@ -51,9 +51,5 @@ object UserUtils {
         }
         activity.startActivity(intent)
         activity.finish()
-    }
-
-    fun setCurrentUser(currentUser: User) {
-        UserUtils.currentUser = currentUser
     }
 }
