@@ -1,213 +1,177 @@
-package com.yuta.profile.ui.dialog;
+package com.yuta.profile.ui.dialog
 
-import android.content.Context;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Patterns;
-import android.view.KeyEvent;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProvider;
-import com.yuta.app.R;
-import com.yuta.common.ui.CancelableDialog;
-import com.yuta.profile.ui.ProfileFragment;
-import com.yuta.app.network.RequestViewModel;
-import com.yuta.common.util.UserUtils;
-import com.yuta.app.domain.model.entity.User;
-import com.yuta.app.domain.model.response.UpdateResponse;
-import com.santalu.maskara.widget.MaskEditText;
+import android.util.Patterns
+import android.view.KeyEvent
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewModelScope
+import com.santalu.maskara.widget.MaskEditText
+import com.yuta.app.R
+import com.yuta.common.ui.CancelableDialog
+import com.yuta.common.util.FieldUtils.trimmedText
+import com.yuta.common.util.KeyboardUtils
+import com.yuta.common.util.UserUtils
+import com.yuta.domain.model.User
+import com.yuta.profile.viewmodel.UserDetailsViewModel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import java.util.regex.Pattern
 
-import java.util.regex.Pattern;
+class EditUserDialog(
+    private val fragment: Fragment,
+    private val onEditSuccessCallback: () -> Unit
+) : CancelableDialog(R.layout.dialog_edit_user, fragment.requireActivity()) {
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static com.yuta.common.util.UserUtils.getUserId;
-
-public class EditUserDialog extends CancelableDialog {
-    private static final int PHONE_NUMBER_LENGTH = 10;
-    private static final String VK_REGEX = "(https?://)?(www\\.)?vk\\.com/(\\w|\\d|[._])+?/?";
-    private boolean isPhoneValid, isEmailValid, isVkValid;
-    private RequestViewModel viewModel;
-    private EditText biographyView;
-    private MaskEditText phoneNumberView;
-    private EditText emailView;
-    private EditText vkView;
-    private Button submitButton;
-    private TextView errorPhone;
-    private TextView errorEmail;
-    private TextView errorVk;
-
-    public EditUserDialog(Context context, ProfileFragment profileFragment) {
-        super(context, profileFragment);
-        setDialogLayout(R.layout.dialog_edit_user);
+    companion object {
+        private const val PHONE_NUMBER_LENGTH = 10
+        private const val VK_URL_REGEX = "(https?://)?(www\\.)?vk\\.com/(\\w|\\d|[._])+?/?"
     }
 
-    @Override
-    public void start() {
-        super.start();
-        viewModel = new ViewModelProvider(fragment).get(RequestViewModel.class);
+    private var isPhoneValid = true
+    private var isEmailValid = true
+    private var isVkValid = true
 
-        submitButton = dialog.findViewById(R.id.submit);
-        biographyView = dialog.findViewById(R.id.biography);
-        phoneNumberView = dialog.findViewById(R.id.phone_number);
-        emailView = dialog.findViewById(R.id.email);
-        vkView = dialog.findViewById(R.id.vk);
-        errorPhone = dialog.findViewById(R.id.error_phone);
-        errorEmail = dialog.findViewById(R.id.error_email);
-        errorVk = dialog.findViewById(R.id.error_vk);
+    private val submitButton: Button by lazy { dialog.findViewById(R.id.submit) }
+    private val closeButton: Button by lazy { dialog.findViewById(R.id.close) }
+    private val biographyView: EditText by lazy { dialog.findViewById(R.id.biography) }
+    private val phoneNumberView: MaskEditText by lazy { dialog.findViewById(R.id.phone_number) }
+    private val emailView: EditText by lazy { dialog.findViewById(R.id.email) }
+    private val vkView: EditText by lazy { dialog.findViewById(R.id.vk) }
+    private val errorPhone: TextView by lazy { dialog.findViewById(R.id.error_phone) }
+    private val errorEmail: TextView by lazy { dialog.findViewById(R.id.error_email) }
+    private val errorVk: TextView by lazy { dialog.findViewById(R.id.error_vk) }
 
-        User userDto = UserUtils.getCurrentUser();
-        fillFields(userDto);
+    private val detailsViewModel: UserDetailsViewModel by fragment.viewModels()
 
-        isPhoneValid = isEmailValid = isVkValid = true;
-        setupInputFields();
-        setupButtons(userDto);
+    override fun start() {
+        super.start()
 
-        dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
+        fillFields(UserUtils.currentUser!!)
+        setupInputFields()
+        setupButtons()
     }
 
-    private void setupInputFields() {
-        setupField(phoneNumberView, errorPhone);
-        setupField(emailView, errorEmail);
-        setupField(vkView, errorVk);
+    private fun setupInputFields() {
+        setupField(phoneNumberView, errorPhone)
+        setupField(emailView, errorEmail)
+        setupField(vkView, errorVk)
     }
 
-    private void editUserData(User userDto) {
-        setEditUser(userDto);
-
-        viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.editUserData(getUserId(activity), userDto);
-        viewModel.getResultLiveData().observe(fragment, result -> {
-            if (!(result instanceof UpdateResponse)) return;
-            ((ProfileFragment) fragment).updateProfile();
-            dismiss();
-        });
-    }
-
-    private void setEditUser(@NonNull User userDto) {
-        userDto.setBiography(getData(biographyView));
-        userDto.setPhoneNumber(getData(phoneNumberView));
-        userDto.setEMail(getData(emailView));
-        userDto.setVk(getData(vkView));
-    }
-
-    private void fillFields(@NonNull User userDto) {
-        String biographyUser = userDto.getBiography();
-        if (biographyUser != null) {
-            biographyView.setText(biographyUser);
-        }
-
-        String phoneUser = userDto.getPhoneNumber();
-        if (phoneUser != null) {
-            phoneNumberView.setText(phoneUser);
-        }
-
-        String vkUser = userDto.getVk();
-        if (vkUser != null) {
-            vkView.setText(vkUser);
-        }
-
-        String emailUser = userDto.getEMail();
-        if (emailUser != null) {
-            emailView.setText(emailUser);
+    private fun editUserData() {
+        detailsViewModel.viewModelScope.launch {
+            val result = detailsViewModel.editDetails(
+                UserUtils.getUserId(fragment.requireContext()),
+                getData(biographyView),
+                getData(phoneNumberView),
+                getData(emailView),
+                getData(vkView)
+            ).first()
+            handleEditDetailsResult(result)
         }
     }
 
-    private String getData(EditText editText) {
-        if (editText != null) {
-            String text = editText.getText().toString().trim();
-
-            if (!text.isEmpty()) {
-                return text;
-            }
+    private fun handleEditDetailsResult(isSuccess: Boolean) {
+        if (isSuccess) {
+            onEditSuccessCallback()
+            dismiss()
         }
-        return null;
     }
 
-    private void setupField(EditText editText, TextView errorView) {
-        setupEditTextValidation(editText, errorView);
+    private fun fillFields(user: User) {
+        user.biography?.let { biographyView.setText(it) }
+        user.phoneNumber?.let { phoneNumberView.setText(it) }
+        user.vk?.let { vkView.setText(it) }
+        user.eMail?.let { emailView.setText(it) }
+    }
 
-        editText.setOnFocusChangeListener((v, hasFocus) -> {
+    private fun getData(editText: EditText): String? {
+        return editText.trimmedText().takeIf { it.isNotEmpty() }
+    }
+
+    private fun setupField(editText: EditText, errorView: TextView) {
+        setupEditTextValidation(editText, errorView)
+
+        editText.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
-                showError(isFieldValid(editText), errorView);
+                showError(isFieldValid(editText), errorView)
             }
-        });
+        }
 
         if (editText == vkView) {
-            editText.setOnKeyListener((v, keyCode, event) -> {
-                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                    showError(isFieldValid(editText), errorView);
-                    return true;
+            editText.setOnKeyListener { _, keyCode, event ->
+                if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    showError(isFieldValid(editText), errorView)
+                    true
+                } else {
+                    false
                 }
-                return false;
-            });
+            }
         }
     }
 
-    private void setupButtons(User userDto) {
-        submitButton.setOnClickListener(v -> {
-            hideKeyboard(vkView);
-            editUserData(userDto);
-        });
-    }
-
-    private boolean isFieldValid(EditText editText) {
-        if (editText == phoneNumberView) {
-            int phoneLength = phoneNumberView.getUnMasked().length();
-            return phoneLength == PHONE_NUMBER_LENGTH || phoneLength == 0;
-        } else if (editText == emailView) {
-            String email = getData(emailView);
-            return email == null || Patterns.EMAIL_ADDRESS.matcher(email).matches();
-        } else if (editText == vkView) {
-            String vk = getData(vkView);
-            return vk == null || Pattern.compile(VK_REGEX).matcher(vk).matches();
+    private fun setupButtons() {
+        submitButton.setOnClickListener {
+            KeyboardUtils.hideKeyboard(fragment.requireActivity(), vkView)
+            editUserData()
         }
-        return false;
+        closeButton.setOnClickListener { dismiss() }
     }
 
-    private void showError(boolean isValid, TextView errorView) {
-        if (!isValid) {
-            errorView.setVisibility(VISIBLE);
-        } else {
-            hideError(errorView);
-        }
-    }
-
-    private void hideError(TextView errorView) {
-        errorView.setVisibility(GONE);
-    }
-
-    private void setupEditTextValidation(@NonNull EditText editText, TextView errorView) {
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {
+    private fun isFieldValid(editText: EditText): Boolean {
+        return when (editText) {
+            phoneNumberView -> {
+                val phoneLength = phoneNumberView.unMasked.length
+                phoneLength == PHONE_NUMBER_LENGTH || phoneLength == 0
             }
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            emailView -> {
+                val email = getData(emailView)
+                email == null || Patterns.EMAIL_ADDRESS.matcher(email).matches()
             }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (editText == phoneNumberView) {
-                    int phoneLength = phoneNumberView.getUnMasked().length();
-                    isPhoneValid = phoneLength == PHONE_NUMBER_LENGTH || phoneLength == 0;
-                } else if (editText == emailView) {
-                    String email = getData(emailView);
-                    isEmailValid = email == null || Patterns.EMAIL_ADDRESS.matcher(email).matches();
-                } else if (editText == vkView) {
-                    String vk = getData(vkView);
-                    isVkValid = vk == null || Pattern.compile(VK_REGEX).matcher(vk).matches();
+            vkView -> {
+                val vk = getData(vkView)
+                vk == null || Pattern.compile(VK_URL_REGEX).matcher(vk).matches()
+            }
+
+            else -> false
+        }
+    }
+
+    private fun showError(show: Boolean, errorView: TextView) {
+        errorView.visibility = if (show) GONE else VISIBLE
+    }
+
+    private fun setupEditTextValidation(editText: EditText, errorView: TextView) {
+        editText.doOnTextChanged { _, _, _, _ ->
+            when (editText) {
+                phoneNumberView -> {
+                    val phoneLength = phoneNumberView.unMasked.length
+                    isPhoneValid = phoneLength == PHONE_NUMBER_LENGTH || phoneLength == 0
                 }
-                hideError(errorView);
-                updateSubmitEnable();
+
+                emailView -> {
+                    val email = getData(emailView)
+                    isEmailValid = email == null || Patterns.EMAIL_ADDRESS.matcher(email).matches()
+                }
+
+                vkView -> {
+                    val vk = getData(vkView)
+                    isVkValid = vk == null || Pattern.compile(VK_URL_REGEX).matcher(vk).matches()
+                }
             }
-        });
+            showError(true, errorView)
+            updateSubmitEnable()
+        }
     }
 
-    private void updateSubmitEnable() {
-        submitButton.setEnabled(isPhoneValid && isEmailValid && isVkValid);
+    private fun updateSubmitEnable() {
+        submitButton.isEnabled = isPhoneValid && isEmailValid && isVkValid
     }
 }

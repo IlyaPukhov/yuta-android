@@ -16,8 +16,16 @@ class UserDetailsViewModel @Inject constructor(
         return useCase.syncUserData(userId, password)
     }
 
-    fun editDetails(userId: Int, biography: String, phone: String, email: String, vk: String): Flow<Boolean> {
-        return useCase.editUser(UserEditDto(userId, biography, phone, email, vk))
+    fun editDetails(userId: Int, biography: String?, phone: String?, email: String?, vk: String?): Flow<Boolean> {
+        return useCase.editUser(
+            UserEditDto(
+                userId = userId,
+                biography = biography ?: "",
+                phone = phone ?: "",
+                email = email ?: "",
+                vk = vk ?: ""
+            )
+        )
     }
 
     fun uploadPhoto(userId: Int, filename: String, photo: InputStream): Flow<Boolean> {

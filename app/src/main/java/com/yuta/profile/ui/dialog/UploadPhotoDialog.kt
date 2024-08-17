@@ -20,10 +20,6 @@ class UploadPhotoDialog(
     private val onUploadSuccessCallback: () -> Unit
 ) : CancelableDialog(R.layout.dialog_upload_photo, fragment.requireActivity()) {
 
-    companion object {
-        const val PICK_IMAGE_REQUEST = 1
-    }
-
     private val imageView: ImageView by lazy { dialog.findViewById(R.id.photo) }
     private val closeButton: ImageView by lazy { dialog.findViewById(R.id.close) }
     private val deleteButton: ImageView by lazy { dialog.findViewById(R.id.delete_photo) }
@@ -37,13 +33,13 @@ class UploadPhotoDialog(
     override fun start() {
         super.start()
 
-        val userDto = UserUtils.currentUser ?: return
-        loadImageToImageViewWithoutCaching(imageView, userDto.croppedPhoto)
+        val user = UserUtils.currentUser ?: return
+        loadImageToImageViewWithoutCaching(imageView, user.croppedPhoto)
 
         closeButton.setOnClickListener { dismiss() }
-        deleteButton.setOnClickListener { loadImageToImageViewWithoutCaching(imageView, userDto.croppedPhoto) }
+        deleteButton.setOnClickListener { loadImageToImageViewWithoutCaching(imageView, user.croppedPhoto) }
         cropButton.setOnClickListener {
-            if (userDto.photo == PhotoMenuDialog.DEFAULT_USER_PHOTO && selectedImageUri == null) return@setOnClickListener
+            if (user.photo == PhotoMenuDialog.DEFAULT_USER_PHOTO && selectedImageUri == null) return@setOnClickListener
             if (selectedImageUri != null) {
                 updatePhoto(UserUtils.getUserId(fragment.requireContext()))
             } else {
