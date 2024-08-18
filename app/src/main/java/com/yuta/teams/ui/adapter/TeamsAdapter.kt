@@ -19,14 +19,14 @@ import com.yuta.common.ui.BaseAdapter
 import com.yuta.common.util.UserUtils.getUserId
 import com.yuta.domain.model.Team
 import com.yuta.domain.model.TeamMember
-import com.yuta.teams.ui.TeamsFragment
 import com.yuta.teams.ui.dialog.DeleteTeamDialog
 import com.yuta.teams.ui.dialog.EditTeamDialog
 
 class TeamsAdapter(
     context: Context,
     items: MutableList<List<TeamMember>>,
-    private val fragment: Fragment
+    private val fragment: Fragment,
+    private val onUpdateCallback: () -> Unit
 ) : BaseAdapter<List<TeamMember>, BaseAdapter.ViewHolder<List<TeamMember>>>(context, items) {
 
     companion object {
@@ -110,15 +110,11 @@ class TeamsAdapter(
         }
 
         private fun openDeleteTeamDialog() {
-            DeleteTeamDialog(fragment, team) {
-                (fragment as TeamsFragment).updateLists()
-            }.start()
+            DeleteTeamDialog(fragment, team) { onUpdateCallback() }.start()
         }
 
         private fun openEditTeamDialog() {
-            EditTeamDialog(fragment, team.id) {
-                (fragment as TeamsFragment).updateLists()
-            }.start()
+            EditTeamDialog(fragment, team.id) { onUpdateCallback() }.start()
         }
 
         private fun setupDots(size: Int) {

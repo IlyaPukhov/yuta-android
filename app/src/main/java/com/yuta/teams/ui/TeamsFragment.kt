@@ -28,7 +28,9 @@ class TeamsFragment : BaseFragment() {
     private val managedTeamsButton: ToggleButton by lazy { requireView().findViewById(R.id.manager_button) }
     private val memberTeamsButton: ToggleButton by lazy { requireView().findViewById(R.id.member_button) }
     private val emptyText: TextView by lazy { requireView().findViewById(R.id.empty_text) }
-    private val teamsAdapter: TeamsAdapter by lazy { TeamsAdapter(requireActivity(), mutableListOf(), this) }
+    private val teamsAdapter: TeamsAdapter by lazy {
+        TeamsAdapter(requireActivity(), mutableListOf(), this) { updateLists() }
+    }
 
     private val teamsViewModel: TeamsViewModel by viewModels()
 

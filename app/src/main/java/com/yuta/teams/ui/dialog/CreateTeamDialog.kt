@@ -65,13 +65,21 @@ open class CreateTeamDialog(
     private fun setupRecyclerViews() {
         dialog.findViewById<RecyclerView>(R.id.addedMembers).apply {
             layoutManager = LinearLayoutManager(context)
-            membersAdapter = TeamUserSearchAdapter(this@CreateTeamDialog, teamViewModel.addedMembers, null)
+            membersAdapter = TeamUserSearchAdapter(
+                teamViewModel.addedMembers,
+                this@CreateTeamDialog,
+                null
+            ) { updateAddedTextVisibility() }
             adapter = membersAdapter
         }
 
         dialog.findViewById<RecyclerView>(R.id.searchUsers).apply {
             layoutManager = LinearLayoutManager(context)
-            searchAdapter = TeamUserSearchAdapter(this@CreateTeamDialog, mutableListOf(), membersAdapter)
+            searchAdapter = TeamUserSearchAdapter(
+                mutableListOf(),
+                this@CreateTeamDialog,
+                membersAdapter
+            ) { updateAddedTextVisibility() }
             adapter = searchAdapter
         }
     }
@@ -115,7 +123,7 @@ open class CreateTeamDialog(
         if (text.isEmpty()) return
 
         teamViewModel.viewModelScope.launch {
-            teamViewModel.searchUsers(text, members, fragment.requireContext())
+            teamViewModel.searchUsers(text, UserUtils.getUserId(fragment.requireContext()), members)
                 .collect { updateList(searchAdapter, it) }
         }
     }

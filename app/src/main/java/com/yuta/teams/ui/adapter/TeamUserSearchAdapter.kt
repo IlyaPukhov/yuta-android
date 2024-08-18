@@ -12,12 +12,12 @@ import com.yuta.common.ui.BaseAdapter
 import com.yuta.common.util.GlideUtils.loadImageToImageViewWithoutCaching
 import com.yuta.common.util.UserUtils
 import com.yuta.domain.model.UserDto
-import com.yuta.teams.ui.dialog.CreateTeamDialog
 
 class TeamUserSearchAdapter(
-    private val dialog: Dialog,
     items: MutableList<UserDto>,
-    private val membersAdapter: TeamUserSearchAdapter? = null
+    dialog: Dialog,
+    private val membersAdapter: TeamUserSearchAdapter? = null,
+    private val onUpdateCallback: () -> Unit
 ) : BaseAdapter<UserDto, BaseAdapter.ViewHolder<UserDto>>(dialog.context, items) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
@@ -43,7 +43,7 @@ class TeamUserSearchAdapter(
                 buttonAdd.setOnClickListener {
                     removeItem(userDto)
                     membersAdapter.insertItem(userDto)
-                    (dialog as? CreateTeamDialog)?.updateAddedTextVisibility()
+                    onUpdateCallback()
                 }
             } else {
                 buttonAdd.visibility = View.GONE
@@ -51,7 +51,7 @@ class TeamUserSearchAdapter(
 
                 buttonRemove.setOnClickListener {
                     removeItem(userDto)
-                    (dialog as? CreateTeamDialog)?.updateAddedTextVisibility()
+                    onUpdateCallback()
                 }
             }
         }
