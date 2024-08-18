@@ -1,11 +1,11 @@
-package com.yuta.__old.projects.dialog;
+package com.yuta.projects.ui.dialog;
 
 import android.content.Context;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.yuta.__old.R;
-import com.yuta.__old.projects.ProjectsFragment;
+import com.yuta.projects.ui.ProjectsFragment;
 import com.yuta.app.domain.model.entity.ProjectDto;
 import com.yuta.app.domain.model.response.UpdateResponse;
 import com.yuta.common.ui.CancelableDialog;

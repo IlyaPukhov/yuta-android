@@ -1,4 +1,4 @@
-package com.yuta.__old.projects.dialog;
+package com.yuta.projects.ui.dialog;
 
 import android.content.Context;
 import android.view.View;
@@ -8,7 +8,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import com.yuta.__old.R;
-import com.yuta.__old.projects.ProjectsFragment;
+import com.yuta.projects.ui.ProjectsFragment;
 import com.yuta.app.domain.model.entity.Project;
 import com.yuta.app.domain.model.response.ProjectResponse;
 import com.yuta.app.domain.model.entity.Team;

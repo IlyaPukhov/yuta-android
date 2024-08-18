@@ -1,4 +1,4 @@
-package com.yuta.__old.projects.adapter;
+package com.yuta.projects.ui.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -1,4 +1,4 @@
-package com.yuta.__old.projects.dialog;
+package com.yuta.projects.ui.dialog;
 
 import android.content.Context;
 import androidx.fragment.app.Fragment;

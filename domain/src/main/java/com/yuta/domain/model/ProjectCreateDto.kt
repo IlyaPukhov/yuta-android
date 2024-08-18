@@ -7,8 +7,8 @@ data class ProjectCreateDto(
     val name: String,
     val description: String,
     val deadline: String,
-    val teamId: Int? = null,
+    val teamId: Int?,
 
-    val filename: String? = null,
-    val technicalTask: InputStream? = null
+    val filename: String?,
+    val technicalTask: InputStream?
 )

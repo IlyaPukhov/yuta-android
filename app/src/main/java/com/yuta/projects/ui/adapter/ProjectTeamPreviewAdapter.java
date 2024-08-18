@@ -1,4 +1,4 @@
-package com.yuta.__old.projects.adapter;
+package com.yuta.projects.ui.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.yuta.__old.R;
 import com.yuta.app.domain.model.entity.User;
-import com.yuta.__old.projects.itemdecoration.GridSpacingItemDecoration;
+import com.yuta.common.ui.GridSpacingItemDecoration;
 import com.yuta.common.ui.BaseAdapter;
 import org.jetbrains.annotations.NotNull;
 

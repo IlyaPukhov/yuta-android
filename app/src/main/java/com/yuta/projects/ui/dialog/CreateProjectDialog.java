@@ -1,4 +1,4 @@
-package com.yuta.__old.projects.dialog;
+package com.yuta.projects.ui.dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -19,11 +19,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.yuta.__old.R;
-import com.yuta.__old.projects.ProjectsFragment;
+import com.yuta.projects.ui.ProjectsFragment;
 import com.yuta.app.domain.model.response.SearchTeamsResponse;
 import com.yuta.app.domain.model.entity.Team;
 import com.yuta.app.domain.model.response.UpdateResponse;
-import com.yuta.__old.projects.adapter.ProjectTeamSearchAdapter;
+import com.yuta.projects.ui.adapter.ProjectTeamSearchAdapter;
 import com.yuta.common.ui.CancelableDialog;
 import com.yuta.common.util.FileUtils;
 import com.yuta.app.network.RequestViewModel;
