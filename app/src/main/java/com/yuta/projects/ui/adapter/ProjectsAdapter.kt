@@ -1,190 +1,154 @@
-package com.yuta.projects.ui.adapter;
+package com.yuta.projects.ui.adapter
 
-import android.app.DownloadManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.Uri;
-import android.os.Environment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.yuta.__old.R;
-import com.yuta.common.ui.SpanningLinearLayoutManager;
-import com.yuta.common.ui.BaseAdapter;
-import com.yuta.common.ui.AppDialog;
-import com.yuta.projects.ui.dialog.ProjectMenuDialog;
-import com.yuta.common.util.GlideUtils;
-import com.yuta.app.domain.model.entity.ProjectDto;
-import com.yuta.app.domain.model.entity.User;
-import lombok.SneakyThrows;
+import android.app.DownloadManager
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.net.Uri
+import android.os.Environment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.yuta.app.R
+import com.yuta.common.ui.BaseAdapter
+import com.yuta.common.ui.SpanningLinearLayoutManager
+import com.yuta.common.util.GlideUtils
+import com.yuta.common.util.UserUtils
+import com.yuta.domain.model.ProjectDto
+import com.yuta.domain.model.UserDto
+import com.yuta.projects.ui.dialog.ProjectMenuDialog
+import java.io.File
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+class ProjectsAdapter(
+    context: Context,
+    items: MutableList<ProjectDto>,
+    private val fragment: Fragment
+) : BaseAdapter<ProjectDto, ProjectsAdapter.ProjectViewHolder>(context, items) {
 
-import static android.app.DownloadManager.ACTION_DOWNLOAD_COMPLETE;
-import static android.app.DownloadManager.EXTRA_DOWNLOAD_ID;
-import static android.app.DownloadManager.Request;
-import static android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED;
-import static android.content.Context.DOWNLOAD_SERVICE;
-import static android.content.Intent.ACTION_VIEW;
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
-import static android.os.Environment.DIRECTORY_DOWNLOADS;
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static androidx.core.content.ContextCompat.RECEIVER_EXPORTED;
-import static com.yuta.common.util.UserUtils.getPath;
-import static com.yuta.common.util.UserUtils.getUserId;
-
-public class ProjectsAdapter extends BaseAdapter<ProjectDto, BaseAdapter.ViewHolder<ProjectDto>> {
-
-    private final Fragment fragment;
-
-    public ProjectsAdapter(Context context, List<ProjectDto> items, Fragment fragment) {
-        super(context, items);
-        this.fragment = fragment;
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_project, parent, false)
+        return ProjectViewHolder(view)
     }
 
-    @NonNull
-    @Override
-    public ProjectViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_project, parent, false);
-        return new ProjectViewHolder(view);
-    }
+    inner class ProjectViewHolder(itemView: View) : ViewHolder<ProjectDto>(itemView) {
+        private val name: TextView = itemView.findViewById(R.id.project_name)
+        private val photo: ImageView = itemView.findViewById(R.id.photo)
+        private val buttonTechTask: Button = itemView.findViewById(R.id.tech_task_button)
+        private val menu: Button = itemView.findViewById(R.id.project_menu)
+        private val status: TextView = itemView.findViewById(R.id.project_status)
+        private val deadline: TextView = itemView.findViewById(R.id.project_deadline)
+        private val description: TextView = itemView.findViewById(R.id.project_description)
+        private val teamPreview: RecyclerView = itemView.findViewById(R.id.team_preview)
+        private val teamText: TextView = itemView.findViewById(R.id.team_text)
+        private var downloadId: Long = -1
 
-    public class ProjectViewHolder extends ViewHolder<ProjectDto> {
-        private final TextView name;
-        private final ImageView photo;
-        private final Button buttonTechTask;
-        private final Button menu;
-        private final TextView status;
-        private final TextView deadline;
-        private final TextView description;
-        private final RecyclerView teamPreview;
-        private final TextView teamText;
-        long downloadId;
-
-        public ProjectViewHolder(@NonNull View itemView) {
-            super(itemView);
-            this.menu = itemView.findViewById(R.id.project_menu);
-            this.name = itemView.findViewById(R.id.project_name);
-            this.photo = itemView.findViewById(R.id.photo);
-            this.buttonTechTask = itemView.findViewById(R.id.tech_task_button);
-            this.status = itemView.findViewById(R.id.project_status);
-            this.deadline = itemView.findViewById(R.id.project_deadline);
-            this.description = itemView.findViewById(R.id.project_description);
-            this.teamText = itemView.findViewById(R.id.team_text);
-
-            this.teamPreview = itemView.findViewById(R.id.team_preview);
+        override fun bind(project: ProjectDto) {
+            setupTeamPreview(project, project.manager)
+            setupProjectFields(project)
+            setupMenu(project)
         }
 
-        @Override
-        public void bind(ProjectDto project) {
-            setupTeamPreview(project, project.getManager());
-            setupProjectFields(project);
-            setupMenu(project);
-        }
-
-        private void setupTeamPreview(ProjectDto project, User manager) {
-            List<User> teamMembers = new ArrayList<>();
-            teamMembers.add(manager);
-            if (project.getTeam() != null) {
-                teamMembers.addAll(project.getTeam().getMembers());
+        private fun setupTeamPreview(project: ProjectDto, manager: UserDto) {
+            val teamMembers = mutableListOf(manager).apply {
+                project.team?.members?.let { addAll(it) }
             }
-            teamPreview.setLayoutManager(new SpanningLinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-            teamPreview.setAdapter(new ProjectTeamPreviewAdapter(getContext(), teamMembers, itemView));
+            teamPreview.layoutManager = SpanningLinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            teamPreview.adapter = ProjectTeamPreviewAdapter(context, teamMembers, itemView)
         }
 
-        private void setupProjectFields(ProjectDto project) {
-            GlideUtils.loadImageToImageViewWithoutCaching(photo, project.getPhoto());
+        private fun setupProjectFields(project: ProjectDto) {
+            GlideUtils.loadImageToImageViewWithoutCaching(photo, project.photo ?: return)
 
-            if (project.getTeam() != null) {
-                String teamName = getContext().getString(R.string.team) + " \"" + project.getTeam().getName() + "\"";
-                teamText.setText(teamName);
+            project.team?.let {
+                teamText.text = "${context.getString(R.string.team)} \"${it.name}\""
             }
 
-            name.setText(project.getName());
-            status.setText(String.format(" %s", project.getStatus()));
-            deadline.setText(String.format(" %s", project.getStringDeadline()));
-            description.setText(String.format(" %s", project.getDescription()));
+            name.text = project.name
+            status.text = " ${project.status}"
+            deadline.text = " ${project.stringDeadline}"
+            description.text = " ${project.description}"
 
-            if (project.getTechnicalTask() != null) {
-                buttonTechTask.setOnClickListener(v -> openTechTask(project.getTechnicalTask()));
-                buttonTechTask.setText(R.string.tech_task_button);
-                buttonTechTask.setEnabled(true);
+            buttonTechTask.apply {
+                if (project.technicalTask != null) {
+                    setOnClickListener { openTechTask(project.technicalTask!!) }
+                    text = context.getString(R.string.tech_task_button)
+                    isEnabled = true
+                } else {
+                    text = context.getString(R.string.tech_task_not_exists)
+                    isEnabled = false
+                }
+            }
+        }
+
+        private fun setupMenu(project: ProjectDto) {
+            if (project.manager.id == UserUtils.getUserId(context)) {
+                menu.visibility = VISIBLE
+                menu.setOnClickListener { openMenu(project) }
             } else {
-                buttonTechTask.setText(R.string.tech_task_not_exists);
-                buttonTechTask.setEnabled(false);
+                menu.visibility = GONE
+                menu.setOnClickListener(null)
             }
         }
 
-        private void setupMenu(ProjectDto project) {
-            if (project.getManager().getId() == getUserId(getContext())) {
-                menu.setVisibility(VISIBLE);
-                menu.setOnClickListener(v -> openMenu(project));
-            } else {
-                menu.setVisibility(GONE);
-                menu.setOnClickListener(null);
-            }
-        }
+        private fun openTechTask(path: String) {
+            val filename = path.substringAfterLast('/')
 
-        @SneakyThrows
-        public void openTechTask(String path) {
-            String filename = path.substring(path.lastIndexOf('/') + 1);
+            val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), filename)
+            file.delete()
 
-            File file = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS) + "/" + filename);
-            file.delete();
+            val request = DownloadManager.Request(Uri.parse(UserUtils.getPath(path)))
+                .setTitle(filename)
+                .setDescription(context.getString(R.string.downloading))
+                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
 
-            Request request = new Request(
-                    Uri.parse(getPath(path)))
-                    .setTitle(filename)
-                    .setDescription(getContext().getString(R.string.downloading))
-                    .setNotificationVisibility(VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                    .setDestinationInExternalPublicDir(DIRECTORY_DOWNLOADS, filename);
+            val manager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+            downloadId = manager.enqueue(request)
 
-            DownloadManager manager = (DownloadManager) getContext().getSystemService(DOWNLOAD_SERVICE);
-            downloadId = manager.enqueue(request);
-
-            BroadcastReceiver onComplete = new BroadcastReceiver() {
-                public void onReceive(Context context, Intent intent) {
-                    long id = intent.getLongExtra(EXTRA_DOWNLOAD_ID, -1);
-                    if (id == downloadId) {
-                        openPdf(file);
-                        getContext().unregisterReceiver(this);
+            val onComplete = object : BroadcastReceiver() {
+                override fun onReceive(context: Context, intent: Intent) {
+                    if (intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1) == downloadId) {
+                        openPdf(file)
+                        context.unregisterReceiver(this)
                     }
                 }
-            };
-            ContextCompat.registerReceiver(getContext(), onComplete,
-                    new IntentFilter(ACTION_DOWNLOAD_COMPLETE), RECEIVER_EXPORTED);
+            }
+
+            ContextCompat.registerReceiver(
+                context, onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE),
+                ContextCompat.RECEIVER_EXPORTED
+            )
         }
 
-        private void openPdf(File file) {
-            Uri uri = FileProvider.getUriForFile(getContext(),
-                    getContext().getApplicationContext().getPackageName() + ".provider", file);
+        private fun openPdf(file: File) {
+            val uri = FileProvider.getUriForFile(
+                context,
+                "${context.packageName}.provider",
+                file
+            )
 
-            Intent intent = new Intent(ACTION_VIEW);
-            intent.setFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_NEW_TASK);
-            intent.setDataAndType(uri, "application/pdf");
-            intent.addFlags(FLAG_GRANT_READ_URI_PERMISSION);
-            getContext().startActivity(intent);
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                setDataAndType(uri, "application/pdf")
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+
+            context.startActivity(intent)
         }
 
-        private void openMenu(ProjectDto project) {
-            AppDialog projectDialog = new ProjectMenuDialog(getContext(), fragment, project);
-            projectDialog.start();
+        private fun openMenu(project: ProjectDto) {
+            ProjectMenuDialog(context, fragment, project).start()
         }
     }
 }

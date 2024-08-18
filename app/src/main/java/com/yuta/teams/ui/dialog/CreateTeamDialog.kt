@@ -67,8 +67,7 @@ open class CreateTeamDialog(
             layoutManager = LinearLayoutManager(context)
             membersAdapter = TeamUserSearchAdapter(
                 teamViewModel.addedMembers,
-                this@CreateTeamDialog,
-                null
+                this@CreateTeamDialog
             ) { updateAddedTextVisibility() }
             adapter = membersAdapter
         }

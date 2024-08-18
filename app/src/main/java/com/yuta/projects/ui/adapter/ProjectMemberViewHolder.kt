@@ -1,65 +1,39 @@
-package com.yuta.projects.ui.adapter;
+package com.yuta.projects.ui.adapter
 
-import android.content.Context;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.navigation.NavController;
-import com.yuta.__old.R;
-import com.yuta.common.ui.BaseAdapter;
-import com.yuta.app.MainActivity;
-import com.yuta.app.domain.model.entity.User;
-import lombok.Getter;
+import android.annotation.SuppressLint
+import android.content.Context
+import android.view.View
+import android.view.View.VISIBLE
+import android.widget.ImageView
+import android.widget.TextView
+import com.yuta.app.MainActivity
+import com.yuta.app.R
+import com.yuta.common.ui.BaseAdapter
+import com.yuta.common.util.GlideUtils
+import com.yuta.domain.model.UserDto
 
-import static android.view.View.VISIBLE;
-import static com.yuta.common.util.GlideUtils.loadImageToImageViewWithoutCaching;
-import static com.yuta.common.util.UserUtils.getUserId;
+class ProjectMemberViewHolder(
+    itemView: View,
+    val context: Context,
+    private val managerId: Int
+) : BaseAdapter.ViewHolder<UserDto>(itemView) {
 
-public class ProjectMemberViewHolder extends BaseAdapter.ViewHolder<User> {
-    @Getter
-    private final Context context;
-    private final ImageView imageView;
-    private final TextView name;
-    private final View member;
-    private final ImageView teamLeaderIcon;
-    private final int managerId;
+    private val avatar: ImageView = itemView.findViewById(R.id.avatar)
+    private val name: TextView = itemView.findViewById(R.id.name)
+    private val member: View = itemView.findViewById(R.id.member)
+    private val teamLeaderIcon: ImageView = itemView.findViewById(R.id.teamLeaderIcon)
 
-    public ProjectMemberViewHolder(@NonNull View itemView, Context context, int managerId) {
-        super(itemView);
-        this.context = context;
-        this.name = itemView.findViewById(R.id.name);
-        this.imageView = itemView.findViewById(R.id.avatar);
-        this.member = itemView.findViewById(R.id.member);
-        this.teamLeaderIcon = itemView.findViewById(R.id.teamLeaderIcon);
+    @SuppressLint("SetTextI18n")
+    override fun bind(user: UserDto) {
+        avatar.visibility = VISIBLE
+        GlideUtils.loadImageToImageViewWithCaching(avatar, user.croppedPhoto)
 
-        this.managerId = managerId;
-    }
-
-    @Override
-    public void bind(User userDto) {
-        imageView.setVisibility(VISIBLE);
-        loadImageToImageViewWithoutCaching(imageView, userDto.getCroppedPhoto());
-
-        if (managerId == userDto.getId()) {
-            teamLeaderIcon.setVisibility(VISIBLE);
+        if (managerId == user.id) {
+            teamLeaderIcon.visibility = VISIBLE
         }
 
-        String userName = userDto.getLastName() + " " + userDto.getFirstName();
-        name.setText(userName);
+        name.text = "${user.lastName} ${user.firstName}"
 
-        member.setOnClickListener(v -> {
-            MainActivity activity = (MainActivity) getContext();
-            if (getUserId(getContext()) == userDto.getId()) {
-                activity.selectNavTab(R.id.profileFragment);
-            } else {
-                NavController navController = activity.getNavController();
-                Bundle bundle = new Bundle();
-                bundle.putInt("userId", userDto.getId());
-                navController.navigate(R.id.action_projectsFragment_to_readonlyProfileFragment, bundle);
-                activity.setReadonlyProfile(true);
-            }
-        });
+        member.setOnClickListener { (context.applicationContext as MainActivity).navigate(user.id) }
     }
 }

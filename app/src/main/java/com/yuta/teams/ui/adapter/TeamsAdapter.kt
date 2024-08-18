@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.yuta.app.R
 import com.yuta.common.ui.BaseAdapter
-import com.yuta.common.util.UserUtils.getUserId
+import com.yuta.common.util.UserUtils
 import com.yuta.domain.model.Team
 import com.yuta.domain.model.TeamMember
 import com.yuta.teams.ui.dialog.DeleteTeamDialog
@@ -96,7 +96,7 @@ class TeamsAdapter(
         }
 
         private fun setupTeamButtons(leaderId: Int) {
-            if (leaderId == getUserId(context)) {
+            if (leaderId == UserUtils.getUserId(context)) {
                 editTeam.visibility = VISIBLE
                 deleteTeam.visibility = VISIBLE
                 editTeam.setOnClickListener { openEditTeamDialog() }

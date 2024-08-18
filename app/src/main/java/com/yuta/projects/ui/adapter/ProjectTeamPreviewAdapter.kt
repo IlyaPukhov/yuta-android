@@ -1,121 +1,102 @@
-package com.yuta.projects.ui.adapter;
+package com.yuta.projects.ui.adapter
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.TranslateAnimation;
-import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.yuta.__old.R;
-import com.yuta.app.domain.model.entity.User;
-import com.yuta.common.ui.GridSpacingItemDecoration;
-import com.yuta.common.ui.BaseAdapter;
-import org.jetbrains.annotations.NotNull;
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
+import android.view.ViewGroup
+import android.view.animation.TranslateAnimation
+import android.widget.TextView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.yuta.app.R
+import com.yuta.common.ui.BaseAdapter
+import com.yuta.common.ui.GridSpacingItemDecoration
+import com.yuta.domain.model.UserDto
 
-import java.util.List;
+class ProjectTeamPreviewAdapter(
+    context: Context,
+    items: MutableList<UserDto>,
+    private val projectView: View
+) : BaseAdapter<UserDto, BaseAdapter.ViewHolder<UserDto>>(context, items) {
 
-import static android.view.View.INVISIBLE;
-import static android.view.View.VISIBLE;
-
-public class ProjectTeamPreviewAdapter extends BaseAdapter<User, BaseAdapter.ViewHolder<User>> {
-    private static final int MAX_MEMBERS_COUNT = 4;
-    private static final int ENOUGH_USERS = 0;
-    private static final int MORE_USERS = 1;
-    private final View projectView;
-
-    public ProjectTeamPreviewAdapter(Context context, List<User> items, View projectView) {
-        super(context, items);
-        this.projectView = projectView;
+    companion object {
+        private const val MAX_MEMBERS_COUNT = 4
+        private const val ENOUGH_USERS = 0
+        private const val MORE_USERS = 1
+        private const val ANIMATION_DURATION = 500L
+        private const val MINIMIZE_Y = 10
     }
 
-    @Override
-    public @NotNull ViewHolder<User> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_project_member, parent, false);
+    private val itemDecoration = GridSpacingItemDecoration(MAX_MEMBERS_COUNT, 15, true)
 
-        ViewHolder<User> viewHolder;
-        switch (viewType) {
-            case ENOUGH_USERS:
-                viewHolder = new ProjectMemberViewHolder(view, getContext(), getItems().get(0).getId());
-                break;
-            case MORE_USERS:
-            default:
-                viewHolder = new ProjectMoreMembersViewHolder(view);
-                break;
-        }
-        return viewHolder;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        if (getItems().size() > MAX_MEMBERS_COUNT && position == MAX_MEMBERS_COUNT - 1) {
-            return MORE_USERS;
-        } else {
-            return ENOUGH_USERS;
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<UserDto> {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_project_member, parent, false)
+        return when (viewType) {
+            MORE_USERS -> ProjectMoreMembersViewHolder(view)
+            else -> ProjectMemberViewHolder(view, context, items[0].id)
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return Math.min(getItems().size(), MAX_MEMBERS_COUNT);
+    override fun getItemViewType(position: Int): Int {
+        return if (items.size > MAX_MEMBERS_COUNT && position == MAX_MEMBERS_COUNT - 1) MORE_USERS else ENOUGH_USERS
     }
 
-    public class ProjectMoreMembersViewHolder extends ViewHolder<User> {
-        private final TextView remainingMembersCount;
-        private final View member;
-        private final View teamContainer;
-        private final View closeButton;
-        private final RecyclerView teamRecyclerView;
-        private static final int MINIMIZE_Y = 10;
+    override fun getItemCount(): Int {
+        return minOf(items.size, MAX_MEMBERS_COUNT)
+    }
 
+    inner class ProjectMoreMembersViewHolder(itemView: View) : ViewHolder<UserDto>(itemView) {
+        private val remainingMembersCount: TextView = itemView.findViewById(R.id.plus_members)
+        private val member: View = itemView.findViewById(R.id.member)
+        private val teamContainer: View = projectView.findViewById(R.id.team_container)
+        private val closeButton: View = projectView.findViewById(R.id.close)
+        private val teamRecyclerView: RecyclerView = projectView.findViewById(R.id.team_list)
 
-        public ProjectMoreMembersViewHolder(@NonNull View itemView) {
-            super(itemView);
-            this.remainingMembersCount = itemView.findViewById(R.id.plus_members);
-            this.member = itemView.findViewById(R.id.member);
-
-            this.teamContainer = projectView.findViewById(R.id.team_container);
-            this.closeButton = projectView.findViewById(R.id.close);
-            this.teamRecyclerView = projectView.findViewById(R.id.team_list);
+        init {
+            if (teamRecyclerView.itemDecorationCount == 0) {
+                teamRecyclerView.addItemDecoration(itemDecoration)
+            }
+            teamRecyclerView.setHasFixedSize(true)
         }
 
-        @Override
-        public void bind(User userDto) {
-            remainingMembersCount.setVisibility(VISIBLE);
-            String text = "+" + (getItems().size() - MAX_MEMBERS_COUNT + 1);
-            remainingMembersCount.setText(text);
+        override fun bind(item: UserDto) {
+            remainingMembersCount.visibility = VISIBLE
+            val text = "+${items.size - MAX_MEMBERS_COUNT + 1}"
+            remainingMembersCount.text = text
 
-            member.setOnClickListener(v -> {
-                setupFullTeamView(getItems());
-                slideUp(teamContainer);
-            });
+            member.setOnClickListener {
+                setupFullTeamView(items)
+                slideUp(teamContainer)
+            }
 
-            closeButton.setOnClickListener(v -> slideDown(teamContainer));
+            closeButton.setOnClickListener {
+                slideDown(teamContainer)
+            }
         }
 
-        private void setupFullTeamView(List<User> team) {
-            teamRecyclerView.addItemDecoration(new GridSpacingItemDecoration(MAX_MEMBERS_COUNT, 15, true));
-            teamRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), MAX_MEMBERS_COUNT));
-            teamRecyclerView.setAdapter(new ProjectFullTeamAdapter(getContext(), team));
-
-            teamContainer.setTranslationY(MINIMIZE_Y);
+        private fun setupFullTeamView(team: List<UserDto>) {
+            teamRecyclerView.layoutManager = GridLayoutManager(context, MAX_MEMBERS_COUNT)
+            teamRecyclerView.adapter = ProjectFullTeamAdapter(context, team.toMutableList())
+            teamContainer.translationY = MINIMIZE_Y.toFloat()
         }
 
-        public void slideUp(View view) {
-            view.setVisibility(VISIBLE);
-            TranslateAnimation animate = new TranslateAnimation(0, 0, view.getHeight(), MINIMIZE_Y);
-            animate.setDuration(500);
-            animate.setFillAfter(true);
-            view.startAnimation(animate);
+        private fun slideUp(view: View) {
+            view.visibility = VISIBLE
+            val animate = TranslateAnimation(0f, 0f, view.height.toFloat(), MINIMIZE_Y.toFloat()).apply {
+                duration = ANIMATION_DURATION
+                fillAfter = true
+            }
+            view.startAnimation(animate)
         }
 
-        public void slideDown(View view) {
-            TranslateAnimation animate = new TranslateAnimation(0, 0, MINIMIZE_Y, view.getHeight());
-            animate.setDuration(500);
-            view.startAnimation(animate);
-            view.setVisibility(INVISIBLE);
+        private fun slideDown(view: View) {
+            val animate = TranslateAnimation(0f, 0f, MINIMIZE_Y.toFloat(), view.height.toFloat()).apply {
+                duration = ANIMATION_DURATION
+            }
+            view.startAnimation(animate)
+            view.visibility = INVISIBLE
         }
     }
 }

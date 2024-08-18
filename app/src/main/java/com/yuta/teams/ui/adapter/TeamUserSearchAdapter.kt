@@ -36,7 +36,7 @@ class TeamUserSearchAdapter(
             loadImageToImageViewWithoutCaching(avatar, userDto.croppedPhoto)
             name.text = UserUtils.getFullName(userDto)
 
-            if (membersAdapter != null) {
+            membersAdapter?.let {
                 buttonRemove.visibility = View.GONE
                 buttonAdd.visibility = View.VISIBLE
 
@@ -45,7 +45,7 @@ class TeamUserSearchAdapter(
                     membersAdapter.insertItem(userDto)
                     onUpdateCallback()
                 }
-            } else {
+            } ?: run {
                 buttonAdd.visibility = View.GONE
                 buttonRemove.visibility = View.VISIBLE
 
