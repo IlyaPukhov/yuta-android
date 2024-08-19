@@ -1,166 +1,142 @@
-package com.yuta.projects.ui;
+package com.yuta.projects.ui
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.ToggleButton;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.yuta.__old.R;
-import com.yuta.common.ui.BaseFragment;
-import com.yuta.projects.ui.dialog.CreateProjectDialog;
-import com.yuta.app.domain.model.entity.ProjectDto;
-import com.yuta.app.domain.model.response.ProjectsResponse;
-import com.yuta.projects.ui.adapter.ProjectsAdapter;
-import com.yuta.common.ui.AppDialog;
-import com.yuta.authorization.ui.LogoutDialog;
-import com.yuta.app.network.RequestViewModel;
-import lombok.NoArgsConstructor;
+import android.app.Activity
+import android.content.Intent
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import android.widget.ToggleButton
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.yuta.app.R
+import com.yuta.common.ui.BaseFragment
+import com.yuta.common.util.UserUtils.getUserId
+import com.yuta.projects.ui.adapter.ProjectsAdapter
+import com.yuta.projects.ui.dialog.CreateProjectDialog
 
-import java.util.ArrayList;
-import java.util.List;
+class ProjectsFragment : BaseFragment() {
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static com.yuta.projects.ui.dialog.CreateProjectDialog.PICK_PDF_REQUEST;
-import static com.yuta.common.util.UserUtils.getUserId;
+    private lateinit var pdfPickerLauncher: ActivityResultLauncher<Intent>
+    private lateinit var managedProjectsButton: ToggleButton
+    private lateinit var memberProjectsButton: ToggleButton
+    private lateinit var emptyText: TextView
+    private lateinit var progressLayout: View
+    private lateinit var projectsAdapter: ProjectsAdapter
 
-@NoArgsConstructor
-public class ProjectsFragment extends BaseFragment {
-    private static int lastPickedButtonId;
-    public final ActivityResultLauncher<Intent> pdfPickerLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    CreateProjectDialog.handleActivityResult(PICK_PDF_REQUEST, Activity.RESULT_OK, result.getData());
-                }
-            }
-    );
-    private ToggleButton managedProjectsButton;
-    private ToggleButton memberProjectsButton;
-    private TextView emptyText;
-    private View progressLayout;
-    private View view;
-    private RequestViewModel viewModel;
-    private List<ProjectDto> managedProjectsMembers;
-    private List<ProjectDto> othersProjectsMembers;
-    private ProjectsAdapter projectsAdapter;
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return inflater.inflate(R.layout.fragment_projects, container, false).also {
+            setupRecyclerView(it)
+            setupToggleButtons()
+            setupViews()
+        }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_projects, container, false);
+        emptyText = requireView().findViewById(R.id.empty_text)
+        progressLayout = requireView().findViewById(R.id.progressLayout)
+        progressLayout.visibility = View.VISIBLE
 
-        emptyText = view.findViewById(R.id.empty_text);
-        progressLayout = view.findViewById(R.id.progressLayout);
-        progressLayout.setVisibility(VISIBLE);
+        viewModel = ViewModelProvider(this).get(RequestViewModel::class.java)
 
-        viewModel = new ViewModelProvider(this).get(RequestViewModel.class);
-
-        recyclerViewInitialize();
-        projectsSwitchInitialize();
+        recyclerViewInitialize()
+        projectsSwitchInitialize()
 
         if (lastPickedButtonId == 0) {
-            lastPickedButtonId = memberProjectsButton.getId();
+            lastPickedButtonId = memberProjectsButton.id
         }
 
-        view.findViewById(R.id.create_project).setOnClickListener(v -> openCreateProjectDialog());
-        view.findViewById(R.id.log_out).setOnClickListener(v -> openLogoutDialog());
-        return view;
+        requireView().findViewById<Button>(R.id.create_project).setOnClickListener { openCreateProjectDialog() }
+        requireView().findViewById<Button>(R.id.log_out).setOnClickListener { openLogoutDialog() }
+
+        pdfPickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                CreateProjectDialog.handleActivityResult(
+                    CreateProjectDialog.PICK_PDF_REQUEST,
+                    Activity.RESULT_OK,
+                    result.data
+                )
+            }
+        }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        updateLists();
+    override fun onStart() {
+        super.onStart()
+        updateLists()
     }
 
-    private void fillProjects(@NonNull List<ProjectDto> projectMembers) {
-        emptyText.setVisibility(projectMembers.isEmpty() ? VISIBLE : GONE);
-        projectsAdapter.refillList(projectMembers);
+    private fun fillProjects(projectMembers: List<ProjectDto>) {
+        emptyText.visibility = if (projectMembers.isEmpty()) View.VISIBLE else View.GONE
+        projectsAdapter.refillList(projectMembers)
     }
 
-    private void getProjects() {
-        viewModel.getResultLiveData().removeObservers(getViewLifecycleOwner());
-        viewModel.getProjects(getUserId(requireActivity()));
-        viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
-            if (!(result instanceof ProjectsResponse)) return;
-            progressLayout.setVisibility(GONE);
-            ProjectsResponse projectsResponse = (ProjectsResponse) result;
-            managedProjectsMembers = projectsResponse.getManagedProjects();
-            othersProjectsMembers = projectsResponse.getOthersProjects();
-        });
+    private fun getProjects() {
+        viewModel.getResultLiveData().removeObservers(viewLifecycleOwner)
+        viewModel.getProjects(getUserId(requireActivity()))
+        viewModel.getResultLiveData().observe(viewLifecycleOwner) { result ->
+            if (result is ProjectsResponse) {
+                progressLayout.visibility = View.GONE
+                managedProjectsMembers = result.managedProjects
+                othersProjectsMembers = result.othersProjects
+            }
+        }
     }
 
-    public void updateLists() {
-        updateLists(view.findViewById(lastPickedButtonId));
+    private fun updateLists() {
+        updateLists(requireView().findViewById(lastPickedButtonId))
     }
 
-    private void updateLists(Button button) {
-        getProjects();
-        viewModel.getResultLiveData().observe(getViewLifecycleOwner(), result -> {
-            if (!(result instanceof ProjectsResponse)) return;
-            openTab(button);
-        });
+    private fun updateLists(button: View) {
+        getProjects()
+        viewModel.getResultLiveData().observe(viewLifecycleOwner) { result ->
+            if (result is ProjectsResponse) {
+                openTab(button as Button)
+            }
+        }
     }
 
-    private void openTab(@NonNull Button button) {
-        button.performClick();
+    private fun openTab(button: Button) {
+        button.performClick()
     }
 
-    private void recyclerViewInitialize() {
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
-
-        List<ProjectDto> projectList = new ArrayList<>();
-        projectsAdapter = new ProjectsAdapter(requireActivity(), projectList, this);
-        recyclerView.setAdapter(projectsAdapter);
+    private fun recyclerViewInitialize() {
+        val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        projectsAdapter = ProjectsAdapter(requireActivity(), listOf(), this)
+        recyclerView.adapter = projectsAdapter
     }
 
-    private void onToggleButtonClick(View view) {
-        final ToggleButton button = (ToggleButton) view;
-        final ToggleButton otherButton;
+    private fun onToggleButtonClick(view: View) {
+        val button = view as ToggleButton
+        val otherButton: ToggleButton
 
-        if (button.getId() == managedProjectsButton.getId()) {
-            otherButton = memberProjectsButton;
-            fillProjects(managedProjectsMembers);
+        if (button.id == managedProjectsButton.id) {
+            otherButton = memberProjectsButton
+            fillProjects(managedProjectsMembers)
         } else {
-            otherButton = managedProjectsButton;
-            fillProjects(othersProjectsMembers);
+            otherButton = managedProjectsButton
+            fillProjects(othersProjectsMembers)
         }
 
-        button.setTextAppearance(R.style.active_toggle);
-        button.setChecked(true);
-        otherButton.setTextAppearance(R.style.default_toggle);
-        otherButton.setChecked(false);
-        lastPickedButtonId = button.getId();
+        button.setTextAppearance(R.style.active_toggle)
+        button.isChecked = true
+        otherButton.setTextAppearance(R.style.default_toggle)
+        otherButton.isChecked = false
+        lastPickedButtonId = button.id
     }
 
-    private void projectsSwitchInitialize() {
-        managedProjectsButton = view.findViewById(R.id.manager_button);
-        memberProjectsButton = view.findViewById(R.id.member_button);
-        managedProjectsButton.setOnClickListener(this::onToggleButtonClick);
-        memberProjectsButton.setOnClickListener(this::onToggleButtonClick);
+    private fun projectsSwitchInitialize() {
+        managedProjectsButton = requireView().findViewById(R.id.manager_button)
+        memberProjectsButton = requireView().findViewById(R.id.member_button)
+        managedProjectsButton.setOnClickListener(this::onToggleButtonClick)
+        memberProjectsButton.setOnClickListener(this::onToggleButtonClick)
     }
 
-    private void openCreateProjectDialog() {
-        AppDialog createProjectDialog = new CreateProjectDialog(view.getContext(), this);
-        createProjectDialog.start();
-    }
-
-    private void openLogoutDialog() {
-        AppDialog logoutDialog = new LogoutDialog(view.getContext(), this);
-        logoutDialog.start();
-    }
+    private fun openCreateProjectDialog() = CreateProjectDialog(fragment = this) { updateLists() }.start()
 }
