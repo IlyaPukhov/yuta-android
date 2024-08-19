@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.yuta.app.R
 import com.yuta.common.ui.BaseAdapter
-import com.yuta.common.util.GlideUtils.loadImageToImageViewWithoutCaching
+import com.yuta.common.util.GlideUtils
 import com.yuta.common.util.UserUtils
 import com.yuta.domain.model.UserDto
 
@@ -33,7 +33,7 @@ class TeamUserSearchAdapter(
         private val buttonRemove: Button = itemView.findViewById(R.id.btnRemove)
 
         override fun bind(userDto: UserDto) {
-            loadImageToImageViewWithoutCaching(avatar, userDto.croppedPhoto)
+            GlideUtils.loadImageToImageViewWithoutCaching(avatar, userDto.croppedPhoto)
             name.text = UserUtils.getFullName(userDto)
 
             membersAdapter?.let {

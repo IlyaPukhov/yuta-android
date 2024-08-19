@@ -1,11 +1,9 @@
 package com.yuta.teams.ui.dialog
 
-import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -88,7 +86,7 @@ open class CreateTeamDialog(
             if (text.isNullOrBlank()) return@doOnTextChanged
             checkNameUnique(text.toString()) { isUnique ->
                 submitButton.isEnabled = isUnique
-                messageVisibility(error, !isUnique)
+                error.isVisible = !isUnique
             }
         }
 
@@ -125,13 +123,11 @@ open class CreateTeamDialog(
     }
 
     private fun updateList(adapter: TeamUserSearchAdapter, users: List<UserDto>) {
-        messageVisibility(emptySearch, users.isEmpty())
+        emptySearch.isVisible = users.isEmpty()
         adapter.refillList(users)
     }
 
-    fun updateAddedTextVisibility() = messageVisibility(addedText, teamViewModel.addedMembers.isNotEmpty())
-
-    private fun messageVisibility(message: View, condition: Boolean) {
-        message.visibility = if (condition) VISIBLE else GONE
+    fun updateAddedTextVisibility() {
+        addedText.isVisible = teamViewModel.addedMembers.isNotEmpty()
     }
 }

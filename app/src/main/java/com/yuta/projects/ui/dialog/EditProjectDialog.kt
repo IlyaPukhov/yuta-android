@@ -22,8 +22,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class EditProjectDialog(
-    private val fragment: Fragment,
     private val projectDto: ProjectDto,
+    private val fragment: Fragment,
     private val onEditSuccessCallback: () -> Unit
 ) : CreateProjectDialog(fragment) {
 

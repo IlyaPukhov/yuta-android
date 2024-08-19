@@ -3,8 +3,6 @@ package com.yuta.projects.ui.dialog
 import android.app.DatePickerDialog
 import android.net.Uri
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -202,10 +200,8 @@ open class CreateProjectDialog(
         }
     }
 
-    fun updateAddedTextVisibility() = messageVisibility(addedText, projectViewModel.addedTeams.isNotEmpty())
-
-    private fun messageVisibility(message: View, condition: Boolean) {
-        message.visibility = if (condition) VISIBLE else GONE
+    fun updateAddedTextVisibility() {
+        addedText.isVisible = projectViewModel.addedTeams.isNotEmpty()
     }
 
     protected fun updateSubmitButtonState() {

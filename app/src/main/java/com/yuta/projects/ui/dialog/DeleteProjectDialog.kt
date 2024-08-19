@@ -14,8 +14,8 @@ import kotlinx.coroutines.launch
 import kotlin.getValue
 
 class DeleteProjectDialog(
-    fragment: Fragment,
     private val project: ProjectDto,
+    fragment: Fragment,
     private val onDeleteSuccessCallback: () -> Unit
 ) : CancelableDialog(R.layout.dialog_delete, fragment.requireActivity()) {
 

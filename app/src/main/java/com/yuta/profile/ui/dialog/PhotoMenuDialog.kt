@@ -22,7 +22,10 @@ class PhotoMenuDialog(
 
     override fun start() {
         super.start()
+        setupButtons()
+    }
 
+    private fun setupButtons() {
         updatePhotoButton.setOnClickListener {
             openUpdatePhotoDialog()
             dismiss()
