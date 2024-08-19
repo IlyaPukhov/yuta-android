@@ -1,6 +1,5 @@
 package com.yuta.teams.ui.adapter
 
-import android.app.Dialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +14,9 @@ import com.yuta.domain.model.UserDto
 
 class TeamUserSearchAdapter(
     items: MutableList<UserDto>,
-    dialog: Dialog,
     private val membersAdapter: TeamUserSearchAdapter? = null,
     private val onUpdateCallback: () -> Unit
-) : BaseAdapter<UserDto, BaseAdapter.ViewHolder<UserDto>>(dialog.context, items) {
+) : BaseAdapter<UserDto, BaseAdapter.ViewHolder<UserDto>>(items) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val view = LayoutInflater.from(parent.context)

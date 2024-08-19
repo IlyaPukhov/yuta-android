@@ -3,7 +3,6 @@ package com.yuta.projects.viewmodel
 import androidx.lifecycle.ViewModel
 import com.yuta.domain.model.ProjectDto
 import com.yuta.domain.model.ProjectsDto
-import com.yuta.domain.model.TeamMember
 import com.yuta.domain.usecase.ProjectsUseCase
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -19,4 +18,10 @@ class ProjectsViewModel @Inject constructor(
     fun getAll(userId: Int): Flow<ProjectsDto> {
         return useCase.getAllProjects(userId)
     }
+
+    fun initializeProjects(dto: ProjectsDto) {
+        managedProjectsMembers = dto.managedProjects!!
+        othersProjectsMembers = dto.othersProjects!!
+    }
+
 }

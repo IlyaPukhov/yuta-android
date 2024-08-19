@@ -23,11 +23,11 @@ import com.yuta.teams.ui.dialog.DeleteTeamDialog
 import com.yuta.teams.ui.dialog.EditTeamDialog
 
 class TeamsAdapter(
-    context: Context,
+    private val context: Context,
     items: MutableList<List<TeamMember>>,
     private val fragment: Fragment,
     private val onUpdateCallback: () -> Unit
-) : BaseAdapter<List<TeamMember>, BaseAdapter.ViewHolder<List<TeamMember>>>(context, items) {
+) : BaseAdapter<List<TeamMember>, BaseAdapter.ViewHolder<List<TeamMember>>>(items) {
 
     companion object {
         private const val PAGE_SIZE = 2

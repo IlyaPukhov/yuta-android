@@ -16,9 +16,9 @@ import com.yuta.common.util.UserUtils
 import com.yuta.domain.model.UserDto
 
 class UserSearchAdapter(
-    context: Context,
+    private val context: Context,
     items: MutableList<UserDto>
-) : BaseAdapter<UserDto, BaseAdapter.ViewHolder<UserDto>>(context, items) {
+) : BaseAdapter<UserDto, BaseAdapter.ViewHolder<UserDto>>(items) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserSearchViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_user_search, parent, false)

@@ -31,11 +31,12 @@ import com.yuta.projects.ui.dialog.ProjectMenuDialog
 import java.io.File
 
 class ProjectsAdapter(
-    context: Context,
     items: MutableList<ProjectDto>,
     private val fragment: Fragment,
     private val onUpdateCallback: () -> Unit
-) : BaseAdapter<ProjectDto, ProjectsAdapter.ProjectViewHolder>(context, items) {
+) : BaseAdapter<ProjectDto, ProjectsAdapter.ProjectViewHolder>(items) {
+
+    private val context = fragment.requireContext()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_project, parent, false)
@@ -64,7 +65,8 @@ class ProjectsAdapter(
             val teamMembers = mutableListOf(manager).apply {
                 project.team?.members?.let { addAll(it) }
             }
-            teamPreview.layoutManager = SpanningLinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            teamPreview.layoutManager =
+                SpanningLinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             teamPreview.adapter = ProjectTeamPreviewAdapter(context, teamMembers, itemView)
         }
 
@@ -72,7 +74,7 @@ class ProjectsAdapter(
             GlideUtils.loadImageToImageViewWithoutCaching(photo, project.photo ?: return)
 
             project.team?.let {
-                teamText.text = "${context.getString(R.string.team)} \"${it.name}\""
+                teamText.text = "${fragment.getString(R.string.team)} \"${it.name}\""
             }
 
             name.text = project.name

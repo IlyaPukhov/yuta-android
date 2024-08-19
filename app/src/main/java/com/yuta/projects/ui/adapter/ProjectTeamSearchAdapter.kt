@@ -1,6 +1,5 @@
 package com.yuta.projects.ui.adapter
 
-import android.app.Dialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -14,10 +13,9 @@ import com.yuta.domain.model.Team
 
 class ProjectTeamSearchAdapter(
     items: MutableList<Team>,
-    dialog: Dialog,
     private val addedTeamSearchAdapter: ProjectTeamSearchAdapter? = null,
     private val onUpdateCallback: () -> Unit
-) : BaseAdapter<Team, BaseAdapter.ViewHolder<Team>>(dialog.context, items) {
+) : BaseAdapter<Team, BaseAdapter.ViewHolder<Team>>(items) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_team_search_in_project, parent, false)

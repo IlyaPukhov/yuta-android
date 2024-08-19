@@ -16,10 +16,10 @@ import com.yuta.common.ui.GridSpacingItemDecoration
 import com.yuta.domain.model.UserDto
 
 class ProjectTeamPreviewAdapter(
-    context: Context,
+    private val context: Context,
     items: MutableList<UserDto>,
     private val projectView: View
-) : BaseAdapter<UserDto, BaseAdapter.ViewHolder<UserDto>>(context, items) {
+) : BaseAdapter<UserDto, BaseAdapter.ViewHolder<UserDto>>(items) {
 
     companion object {
         private const val MAX_MEMBERS_COUNT = 4

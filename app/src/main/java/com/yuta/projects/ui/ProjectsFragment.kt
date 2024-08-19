@@ -1,68 +1,47 @@
 package com.yuta.projects.ui
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.ToggleButton
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yuta.app.R
 import com.yuta.common.ui.BaseFragment
-import com.yuta.common.util.UserUtils.getUserId
+import com.yuta.common.util.UserUtils
+import com.yuta.domain.model.ProjectDto
 import com.yuta.projects.ui.adapter.ProjectsAdapter
 import com.yuta.projects.ui.dialog.CreateProjectDialog
+import com.yuta.projects.viewmodel.ProjectsViewModel
+import kotlinx.coroutines.launch
 
 class ProjectsFragment : BaseFragment() {
 
-    private lateinit var pdfPickerLauncher: ActivityResultLauncher<Intent>
-    private lateinit var managedProjectsButton: ToggleButton
-    private lateinit var memberProjectsButton: ToggleButton
-    private lateinit var emptyText: TextView
-    private lateinit var progressLayout: View
-    private lateinit var projectsAdapter: ProjectsAdapter
+    private val createProjectButton: Button by lazy { requireView().findViewById(R.id.create_project) }
+    private val managedProjectsButton: ToggleButton by lazy { requireView().findViewById(R.id.manager_button) }
+    private val memberProjectsButton: ToggleButton by lazy { requireView().findViewById(R.id.member_button) }
+    private val emptyText: TextView by lazy { requireView().findViewById(R.id.empty_text) }
+    private val projectsAdapter: ProjectsAdapter by lazy {
+        ProjectsAdapter(mutableListOf(), this) { updateLists() }
+    }
+
+    private val projectsViewModel: ProjectsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         return inflater.inflate(R.layout.fragment_projects, container, false).also {
-            setupRecyclerView(it)
+            setupRecyclerView()
             setupToggleButtons()
             setupViews()
-        }
-
-        emptyText = requireView().findViewById(R.id.empty_text)
-        progressLayout = requireView().findViewById(R.id.progressLayout)
-        progressLayout.visibility = View.VISIBLE
-
-        viewModel = ViewModelProvider(this).get(RequestViewModel::class.java)
-
-        recyclerViewInitialize()
-        projectsSwitchInitialize()
-
-        if (lastPickedButtonId == 0) {
-            lastPickedButtonId = memberProjectsButton.id
-        }
-
-        requireView().findViewById<Button>(R.id.create_project).setOnClickListener { openCreateProjectDialog() }
-        requireView().findViewById<Button>(R.id.log_out).setOnClickListener { openLogoutDialog() }
-
-        pdfPickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                CreateProjectDialog.handleActivityResult(
-                    CreateProjectDialog.PICK_PDF_REQUEST,
-                    Activity.RESULT_OK,
-                    result.data
-                )
-            }
         }
     }
 
@@ -71,72 +50,76 @@ class ProjectsFragment : BaseFragment() {
         updateLists()
     }
 
-    private fun fillProjects(projectMembers: List<ProjectDto>) {
-        emptyText.visibility = if (projectMembers.isEmpty()) View.VISIBLE else View.GONE
-        projectsAdapter.refillList(projectMembers)
-    }
-
-    private fun getProjects() {
-        viewModel.getResultLiveData().removeObservers(viewLifecycleOwner)
-        viewModel.getProjects(getUserId(requireActivity()))
-        viewModel.getResultLiveData().observe(viewLifecycleOwner) { result ->
-            if (result is ProjectsResponse) {
-                progressLayout.visibility = View.GONE
-                managedProjectsMembers = result.managedProjects
-                othersProjectsMembers = result.othersProjects
-            }
-        }
-    }
-
     private fun updateLists() {
-        updateLists(requireView().findViewById(lastPickedButtonId))
+        projectsViewModel.lastPickedButtonId?.let {
+            updateLists(requireView().findViewById(it))
+        }
     }
 
     private fun updateLists(button: View) {
-        getProjects()
-        viewModel.getResultLiveData().observe(viewLifecycleOwner) { result ->
-            if (result is ProjectsResponse) {
-                openTab(button as Button)
+        showProgress(true)
+        updateProjects {
+            button.performClick()
+            showProgress(false)
+        }
+    }
+
+    private fun updateProjects(onUpdateCallback: () -> Unit) {
+        projectsViewModel.viewModelScope.launch {
+            projectsViewModel.getAll(UserUtils.getUserId(requireContext())).collect {
+                projectsViewModel.initializeProjects(it)
+                onUpdateCallback()
             }
         }
     }
 
-    private fun openTab(button: Button) {
-        button.performClick()
-    }
-
-    private fun recyclerViewInitialize() {
-        val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        projectsAdapter = ProjectsAdapter(requireActivity(), listOf(), this)
-        recyclerView.adapter = projectsAdapter
+    private fun fillProjects(projectMembers: List<ProjectDto>) {
+        emptyText.visibility = if (projectMembers.isEmpty()) VISIBLE else GONE
+        projectsAdapter.refillList(projectMembers)
     }
 
     private fun onToggleButtonClick(view: View) {
         val button = view as ToggleButton
-        val otherButton: ToggleButton
+        val otherButton = if (button.id == managedProjectsButton.id) memberProjectsButton else managedProjectsButton
 
         if (button.id == managedProjectsButton.id) {
-            otherButton = memberProjectsButton
-            fillProjects(managedProjectsMembers)
+            fillProjects(projectsViewModel.managedProjectsMembers)
         } else {
-            otherButton = managedProjectsButton
-            fillProjects(othersProjectsMembers)
+            fillProjects(projectsViewModel.othersProjectsMembers)
         }
 
-        button.setTextAppearance(R.style.active_toggle)
-        button.isChecked = true
-        otherButton.setTextAppearance(R.style.default_toggle)
-        otherButton.isChecked = false
-        lastPickedButtonId = button.id
+        setActiveButton(button)
+        setInactiveButton(otherButton)
+        projectsViewModel.lastPickedButtonId = button.id
     }
 
-    private fun projectsSwitchInitialize() {
-        managedProjectsButton = requireView().findViewById(R.id.manager_button)
-        memberProjectsButton = requireView().findViewById(R.id.member_button)
+    private fun setupViews() {
+        createProjectButton.setOnClickListener { openCreateProjectDialog() }
+    }
+
+    private fun setupRecyclerView() {
+        requireView().findViewById<RecyclerView>(R.id.recyclerView).apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = projectsAdapter
+        }
+    }
+
+    private fun setupToggleButtons() {
         managedProjectsButton.setOnClickListener(this::onToggleButtonClick)
         memberProjectsButton.setOnClickListener(this::onToggleButtonClick)
+
+        projectsViewModel.lastPickedButtonId = projectsViewModel.lastPickedButtonId ?: memberProjectsButton.id
     }
 
     private fun openCreateProjectDialog() = CreateProjectDialog(fragment = this) { updateLists() }.start()
+
+    private fun setActiveButton(button: ToggleButton) {
+        button.setTextAppearance(R.style.active_toggle)
+        button.isChecked = true
+    }
+
+    private fun setInactiveButton(button: ToggleButton) {
+        button.setTextAppearance(R.style.default_toggle)
+        button.isChecked = false
+    }
 }

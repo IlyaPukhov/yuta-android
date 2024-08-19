@@ -14,7 +14,7 @@ import com.yuta.domain.model.UserDto
 
 class ProjectMemberViewHolder(
     itemView: View,
-    val context: Context,
+    private val context: Context,
     private val managerId: Int
 ) : BaseAdapter.ViewHolder<UserDto>(itemView) {
 

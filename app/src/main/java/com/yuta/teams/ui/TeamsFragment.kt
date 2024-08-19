@@ -39,7 +39,7 @@ class TeamsFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_teams, container, false).also {
-            setupRecyclerView(it)
+            setupRecyclerView()
             setupToggleButtons()
             setupViews()
         }
@@ -97,8 +97,8 @@ class TeamsFragment : BaseFragment() {
         createTeamButton.setOnClickListener { openCreateTeamDialog() }
     }
 
-    private fun setupRecyclerView(view: View) {
-        view.findViewById<RecyclerView>(R.id.recyclerView).apply {
+    private fun setupRecyclerView() {
+        requireView().findViewById<RecyclerView>(R.id.recyclerView).apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = teamsAdapter
         }

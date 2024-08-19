@@ -1,11 +1,9 @@
 package com.yuta.common.ui
 
-import android.content.Context
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class BaseAdapter<T, VH : BaseAdapter.ViewHolder<T>>(
-    val context: Context,
     val items: MutableList<T>
 ) : RecyclerView.Adapter<VH>() {
 

@@ -41,6 +41,10 @@ open class CreateProjectDialog(
     private val onCreateSuccessCallback: () -> Unit = {}
 ) : CancelableDialog(R.layout.dialog_create_project, fragment.requireActivity()) {
 
+    companion object {
+        private const val EMPTY_STRING = ""
+    }
+
     protected val submitButton: Button by lazy { dialog.findViewById(R.id.submit) }
     private val closeButton: ImageView by lazy { dialog.findViewById(R.id.close) }
     protected val deadlineField: TextView by lazy { dialog.findViewById(R.id.date_field) }
@@ -60,7 +64,6 @@ open class CreateProjectDialog(
     protected var techTaskUri: Uri? = null
 
     private val projectViewModel: ProjectDialogsViewModel by fragment.viewModels()
-
 
     override fun start() {
         super.start()
@@ -88,7 +91,7 @@ open class CreateProjectDialog(
     }
 
     private fun setupEditViews() {
-        fileName.text = ""
+        fileName.text = EMPTY_STRING
 
         setupEditView(projectName)
         setupEditView(projectDesc)
@@ -169,7 +172,6 @@ open class CreateProjectDialog(
             layoutManager = LinearLayoutManager(fragment.requireContext())
             addedTeamSearchAdapter = ProjectTeamSearchAdapter(
                 projectViewModel.addedTeams,
-                this@CreateProjectDialog,
             ) {
                 updateSubmitButtonState()
                 updateAddedTextVisibility()
@@ -181,7 +183,6 @@ open class CreateProjectDialog(
             layoutManager = LinearLayoutManager(fragment.requireContext())
             searchAdapter = ProjectTeamSearchAdapter(
                 mutableListOf(),
-                this@CreateProjectDialog,
                 addedTeamSearchAdapter
             ) {
                 updateSubmitButtonState()
