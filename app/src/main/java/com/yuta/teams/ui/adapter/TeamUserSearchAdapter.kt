@@ -1,6 +1,5 @@
 package com.yuta.teams.ui.adapter
 
-import android.app.Dialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,16 +8,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.yuta.app.R
 import com.yuta.common.ui.BaseAdapter
-import com.yuta.common.util.GlideUtils.loadImageToImageViewWithoutCaching
+import com.yuta.common.util.GlideUtils
 import com.yuta.common.util.UserUtils
 import com.yuta.domain.model.UserDto
-import com.yuta.teams.ui.dialog.CreateTeamDialog
 
 class TeamUserSearchAdapter(
-    private val dialog: Dialog,
     items: MutableList<UserDto>,
-    private val membersAdapter: TeamUserSearchAdapter? = null
-) : BaseAdapter<UserDto, BaseAdapter.ViewHolder<UserDto>>(dialog.context, items) {
+    private val membersAdapter: TeamUserSearchAdapter? = null,
+    private val onUpdateCallback: () -> Unit
+) : BaseAdapter<UserDto, BaseAdapter.ViewHolder<UserDto>>(items) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -33,25 +31,25 @@ class TeamUserSearchAdapter(
         private val buttonRemove: Button = itemView.findViewById(R.id.btnRemove)
 
         override fun bind(userDto: UserDto) {
-            loadImageToImageViewWithoutCaching(avatar, userDto.croppedPhoto)
+            GlideUtils.loadImageToImageViewWithoutCaching(avatar, userDto.croppedPhoto)
             name.text = UserUtils.getFullName(userDto)
 
-            if (membersAdapter != null) {
+            membersAdapter?.let {
                 buttonRemove.visibility = View.GONE
                 buttonAdd.visibility = View.VISIBLE
 
                 buttonAdd.setOnClickListener {
                     removeItem(userDto)
                     membersAdapter.insertItem(userDto)
-                    (dialog as? CreateTeamDialog)?.updateAddedTextVisibility()
+                    onUpdateCallback()
                 }
-            } else {
+            } ?: run {
                 buttonAdd.visibility = View.GONE
                 buttonRemove.visibility = View.VISIBLE
 
                 buttonRemove.setOnClickListener {
                     removeItem(userDto)
-                    (dialog as? CreateTeamDialog)?.updateAddedTextVisibility()
+                    onUpdateCallback()
                 }
             }
         }

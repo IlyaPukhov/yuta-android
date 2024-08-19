@@ -9,8 +9,9 @@ import androidx.lifecycle.viewModelScope
 import com.yuta.app.R
 import com.yuta.common.ui.CancelableDialog
 import com.yuta.common.util.FileUtils
-import com.yuta.common.util.GlideUtils.loadImageToImageViewWithoutCaching
+import com.yuta.common.util.GlideUtils
 import com.yuta.common.util.UserUtils
+import com.yuta.domain.model.User
 import com.yuta.profile.viewmodel.UserDetailsViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -32,12 +33,15 @@ class UploadPhotoDialog(
 
     override fun start() {
         super.start()
-
         val user = UserUtils.currentUser ?: return
-        loadImageToImageViewWithoutCaching(imageView, user.croppedPhoto)
 
+        GlideUtils.loadImageToImageViewWithoutCaching(imageView, user.croppedPhoto)
+        setupButtons(user)
+    }
+
+    private fun setupButtons(user: User) {
         closeButton.setOnClickListener { dismiss() }
-        deleteButton.setOnClickListener { loadImageToImageViewWithoutCaching(imageView, user.croppedPhoto) }
+        deleteButton.setOnClickListener { GlideUtils.loadImageToImageViewWithoutCaching(imageView, user.photo) }
         cropButton.setOnClickListener {
             if (user.photo == PhotoMenuDialog.DEFAULT_USER_PHOTO && selectedImageUri == null) return@setOnClickListener
             if (selectedImageUri != null) {

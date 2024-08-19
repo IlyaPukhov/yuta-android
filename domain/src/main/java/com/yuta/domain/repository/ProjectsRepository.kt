@@ -13,7 +13,7 @@ interface ProjectsRepository {
 
     fun getProjectById(projectId: Int): Flow<Project?>
 
-    fun searchTeamsForProject(teamName: String, leaderId: Int, teamId: Int): Flow<List<Team>?>
+    fun searchTeamsForProject(teamName: String, leaderId: Int, teamId: Int?): Flow<List<Team>?>
 
     fun createProject(createDto: ProjectCreateDto): Flow<String>
 

@@ -1,8 +1,6 @@
 package com.yuta.teams.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
-import com.yuta.common.util.UserUtils.getUserId
 import com.yuta.domain.model.Team
 import com.yuta.domain.model.TeamCreateDto
 import com.yuta.domain.model.TeamEditDto
@@ -21,8 +19,8 @@ class TeamDialogsViewModel @Inject constructor(
         return useCase.getTeamById(id)
     }
 
-    fun searchUsers(text: String, members: List<UserDto>, context: Context): Flow<List<UserDto>> {
-        return useCase.searchUsersForTeam(text, getUserId(context), members)
+    fun searchUsers(text: String, userId: Int, members: List<UserDto>): Flow<List<UserDto>> {
+        return useCase.searchUsersForTeam(text, userId, members)
     }
 
     fun isUniqueName(name: String, teamId: Int? = null): Flow<Boolean> {

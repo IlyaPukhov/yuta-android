@@ -1,11 +1,9 @@
 package com.yuta.teams.ui.dialog
 
-import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -44,8 +42,8 @@ open class CreateTeamDialog(
     override fun start() {
         super.start()
         setupButtons()
-        setupTextWatchers()
-        setupRecyclerViews()
+        setupEditViews()
+        initializeRecyclerViews()
     }
 
     private fun setupButtons() {
@@ -62,25 +60,31 @@ open class CreateTeamDialog(
         }
     }
 
-    private fun setupRecyclerViews() {
+    private fun initializeRecyclerViews() {
         dialog.findViewById<RecyclerView>(R.id.addedMembers).apply {
-            layoutManager = LinearLayoutManager(context)
-            membersAdapter = TeamUserSearchAdapter(this@CreateTeamDialog, teamViewModel.addedMembers, null)
+            layoutManager = LinearLayoutManager(fragment.requireContext())
+            membersAdapter = TeamUserSearchAdapter(
+                teamViewModel.addedMembers,
+            ) { updateAddedTextVisibility() }
             adapter = membersAdapter
         }
 
         dialog.findViewById<RecyclerView>(R.id.searchUsers).apply {
-            layoutManager = LinearLayoutManager(context)
-            searchAdapter = TeamUserSearchAdapter(this@CreateTeamDialog, mutableListOf(), membersAdapter)
+            layoutManager = LinearLayoutManager(fragment.requireContext())
+            searchAdapter = TeamUserSearchAdapter(
+                mutableListOf(),
+                membersAdapter
+            ) { updateAddedTextVisibility() }
             adapter = searchAdapter
         }
     }
 
-    private fun setupTextWatchers() {
+    private fun setupEditViews() {
         teamName.doOnTextChanged { text, _, _, _ ->
+            if (text.isNullOrBlank()) return@doOnTextChanged
             checkNameUnique(text.toString()) { isUnique ->
                 submitButton.isEnabled = isUnique
-                messageVisibility(error, !isUnique)
+                error.isVisible = !isUnique
             }
         }
 
@@ -96,8 +100,6 @@ open class CreateTeamDialog(
     }
 
     private fun createTeam(name: String, members: List<UserDto>) {
-        if (name.isEmpty()) return
-
         teamViewModel.viewModelScope.launch {
             val isCreated = teamViewModel.create(UserUtils.getUserId(fragment.requireContext()), name, members).first()
             handleCreateResult(isCreated)
@@ -112,22 +114,18 @@ open class CreateTeamDialog(
     }
 
     private fun searchUsers(text: String, members: List<UserDto>) {
-        if (text.isEmpty()) return
-
         teamViewModel.viewModelScope.launch {
-            teamViewModel.searchUsers(text, members, fragment.requireContext())
+            teamViewModel.searchUsers(text, UserUtils.getUserId(fragment.requireContext()), members)
                 .collect { updateList(searchAdapter, it) }
         }
     }
 
     private fun updateList(adapter: TeamUserSearchAdapter, users: List<UserDto>) {
-        messageVisibility(emptySearch, users.isEmpty())
+        emptySearch.isVisible = users.isEmpty()
         adapter.refillList(users)
     }
 
-    fun updateAddedTextVisibility() = messageVisibility(addedText, teamViewModel.addedMembers.isNotEmpty())
-
-    private fun messageVisibility(message: View, condition: Boolean) {
-        message.visibility = if (condition) VISIBLE else GONE
+    fun updateAddedTextVisibility() {
+        addedText.isVisible = teamViewModel.addedMembers.isNotEmpty()
     }
 }

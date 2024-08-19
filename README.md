@@ -1,1 +1,1 @@
-# YUTA (YSTU Unified Tasks APP) Android
+# YUTA (YSTU's Unified Tasks App) Android

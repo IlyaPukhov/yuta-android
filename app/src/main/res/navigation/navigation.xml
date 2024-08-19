@@ -22,7 +22,7 @@
     </fragment>
     <fragment
             android:id="@+id/projectsFragment"
-            android:name="com.yuta.__old.projects.ProjectsFragment"
+            android:name="com.yuta.projects.ui.ProjectsFragment"
             android:label="fragment_projects"
             tools:layout="@layout/fragment_projects">
         <action

@@ -22,7 +22,7 @@
                 android:id="@+id/edit_project"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/edit_project"
+                android:text="@string/edit_project_text"
                 android:background="@drawable/dialog_item_background"
                 android:padding="10dp"
                 android:clickable="true"

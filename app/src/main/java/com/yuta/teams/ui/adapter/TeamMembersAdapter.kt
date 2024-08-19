@@ -15,9 +15,9 @@ import com.yuta.common.util.UserUtils
 import com.yuta.domain.model.TeamMember
 
 class TeamMembersAdapter(
-    context: Context,
+    private val context: Context,
     items: MutableList<TeamMember>
-) : BaseAdapter<TeamMember, BaseAdapter.ViewHolder<TeamMember>>(context, items) {
+) : BaseAdapter<TeamMember, BaseAdapter.ViewHolder<TeamMember>>(items) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamMemberViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_team_member_card, parent, false)

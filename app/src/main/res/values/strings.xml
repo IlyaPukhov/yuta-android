@@ -98,7 +98,7 @@
     <string name="project_deadline_header">Сдача проекта:</string>
     <string name="project_desc_header">Описание:</string>
     <string name="team">Команда</string>
-    <string name="edit_project">Редактировать проект</string>
+    <string name="edit_project_text">Редактирование проекта</string>
     <string name="delete_project">Удалить проект</string>
     <string name="add_team">добавить команду</string>
     <string name="remove_team">исключить команду</string>

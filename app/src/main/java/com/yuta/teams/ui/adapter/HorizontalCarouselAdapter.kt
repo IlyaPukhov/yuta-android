@@ -14,9 +14,9 @@ import com.yuta.common.ui.SpanningLinearLayoutManager
 import com.yuta.domain.model.TeamMember
 
 class HorizontalCarouselAdapter(
-    context: Context,
+    private val context: Context,
     items: MutableList<List<TeamMember>>
-) : BaseAdapter<List<TeamMember>, BaseAdapter.ViewHolder<List<TeamMember>>>(context, items) {
+) : BaseAdapter<List<TeamMember>, BaseAdapter.ViewHolder<List<TeamMember>>>(items) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HorizontalViewHolder {
         val view = LayoutInflater.from(parent.context)

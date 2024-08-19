@@ -111,12 +111,12 @@ open class ProfileFragment : BaseFragment() {
     private fun openPhotoMenu() = PhotoMenuDialog(this) { updateProfile() }.start()
 
     private fun setDataInTextView(id: Int, text: String?) {
-        val textView: TextView = requireView().findViewById(id)
-        if (text != null) {
-            textView.text = text
-            textView.visibility = VISIBLE
-        } else {
-            textView.visibility = GONE
+        requireView().findViewById<TextView>(id).apply {
+            visibility = if (text != null) {
+                this.text = text
+                VISIBLE
+            } else GONE
         }
     }
+
 }
