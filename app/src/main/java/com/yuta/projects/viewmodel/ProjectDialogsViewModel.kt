@@ -15,6 +15,8 @@ class ProjectDialogsViewModel @Inject constructor(
     private val useCase: ProjectsUseCase
 ) : ViewModel() {
 
+    val addedTeams = mutableListOf<Team>()
+
     fun getById(id: Int): Flow<Project> {
         return useCase.getProjectById(id)
     }
@@ -42,7 +44,7 @@ class ProjectDialogsViewModel @Inject constructor(
 
     fun edit(
         id: Int, name: String, description: String, deadline: String, teamId: Int? = null, status: String,
-        filename: String? = null, technicalTask: InputStream? = null
+        filename: String?, technicalTask: InputStream?
     ): Flow<Boolean> {
         return useCase.editProject(
             ProjectEditDto(

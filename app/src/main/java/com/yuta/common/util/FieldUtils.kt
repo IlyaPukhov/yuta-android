@@ -1,8 +1,12 @@
 package com.yuta.common.util
 
-import android.widget.EditText
+import android.widget.TextView
 
 object FieldUtils {
 
-    fun EditText.trimmedText(): String = this.text.toString().trim()
+    fun TextView.trimmedText(): String = this.text.toString().trim()
+
+    fun TextView.getData(): String? {
+        return this.trimmedText().takeIf { it.isNotEmpty() }
+    }
 }

@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.yuta.__old.R;
+import com.yuta.common.ui.BaseFragment;
 import com.yuta.projects.ui.dialog.CreateProjectDialog;
 import com.yuta.app.domain.model.entity.ProjectDto;
 import com.yuta.app.domain.model.response.ProjectsResponse;
@@ -35,7 +36,7 @@ import static com.yuta.projects.ui.dialog.CreateProjectDialog.PICK_PDF_REQUEST;
 import static com.yuta.common.util.UserUtils.getUserId;
 
 @NoArgsConstructor
-public class ProjectsFragment extends Fragment {
+public class ProjectsFragment extends BaseFragment {
     private static int lastPickedButtonId;
     public final ActivityResultLauncher<Intent> pdfPickerLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),

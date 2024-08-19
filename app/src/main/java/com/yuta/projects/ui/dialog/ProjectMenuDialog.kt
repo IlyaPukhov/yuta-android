@@ -1,42 +1,34 @@
-package com.yuta.projects.ui.dialog;
+package com.yuta.projects.ui.dialog
 
-import android.content.Context;
-import androidx.fragment.app.Fragment;
-import com.yuta.__old.R;
-import com.yuta.app.domain.model.entity.ProjectDto;
-import com.yuta.common.ui.AppDialog;
-import com.yuta.common.ui.CancelableDialog;
+import android.widget.Button
+import androidx.fragment.app.Fragment
+import com.yuta.app.R
+import com.yuta.common.ui.CancelableDialog
+import com.yuta.domain.model.ProjectDto
 
-public class ProjectMenuDialog extends CancelableDialog {
-    private final ProjectDto project;
+class ProjectMenuDialog(
+    private val project: ProjectDto,
+    private val fragment: Fragment,
+    private val onUpdateCallback: () -> Unit
+) : CancelableDialog(R.layout.dialog_project_menu, fragment.requireActivity()) {
 
-    public ProjectMenuDialog(Context context, Fragment fragment, ProjectDto project) {
-        super(context, fragment);
-        setDialogLayout(R.layout.dialog_project);
-        this.project = project;
+    private val editProjectButton: Button by lazy { dialog.findViewById(R.id.edit_project) }
+    private val deleteProjectButton: Button by lazy { dialog.findViewById(R.id.delete_project) }
+
+    override fun start() {
+        super.start()
+
+        editProjectButton.setOnClickListener {
+            openEditProjectDialog()
+            dismiss()
+        }
+        deleteProjectButton.setOnClickListener {
+            openDeleteProjectDialog()
+            dismiss()
+        }
     }
 
-    @Override
-    public void start() {
-        super.start();
+    private fun openEditProjectDialog() = EditProjectDialog(project, fragment) { onUpdateCallback() }.start()
 
-        dialog.findViewById(R.id.edit_project).setOnClickListener(v -> {
-            openEditProjectDialog();
-            dismiss();
-        });
-        dialog.findViewById(R.id.delete_project).setOnClickListener(v -> {
-            openDeleteProjectDialog();
-            dismiss();
-        });
-    }
-
-    private void openEditProjectDialog() {
-        AppDialog editProjectDialog = new EditProjectDialog(activity, fragment, project.getId());
-        editProjectDialog.start();
-    }
-
-    private void openDeleteProjectDialog() {
-        AppDialog deleteProjectDialog = new DeleteProjectDialog(activity, fragment, project);
-        deleteProjectDialog.start();
-    }
+    private fun openDeleteProjectDialog() = DeleteProjectDialog(project, fragment) { onUpdateCallback() }.start()
 }

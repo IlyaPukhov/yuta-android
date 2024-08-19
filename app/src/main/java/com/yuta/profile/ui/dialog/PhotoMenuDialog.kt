@@ -10,7 +10,7 @@ import com.yuta.common.util.UserUtils
 class PhotoMenuDialog(
     private val fragment: Fragment,
     private val onUpdateCallback: () -> Unit
-) : CancelableDialog(R.layout.dialog_photo, fragment.requireActivity()) {
+) : CancelableDialog(R.layout.dialog_photo_menu, fragment.requireActivity()) {
 
     companion object {
         const val DEFAULT_USER_PHOTO = "default-user-photo"
@@ -29,7 +29,7 @@ class PhotoMenuDialog(
         }
 
         val userPhoto = UserUtils.currentUser!!.photo
-        if (userPhoto.contains(DEFAULT_USER_PHOTO)) {
+        if (userPhoto.contains(DEFAULT_USER_PHOTO, ignoreCase = true)) {
             editMiniatureButton.visibility = GONE
             deletePhotoButton.visibility = GONE
         } else {

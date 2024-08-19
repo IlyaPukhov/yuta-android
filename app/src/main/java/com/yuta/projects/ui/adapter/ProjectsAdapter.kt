@@ -33,7 +33,8 @@ import java.io.File
 class ProjectsAdapter(
     context: Context,
     items: MutableList<ProjectDto>,
-    private val fragment: Fragment
+    private val fragment: Fragment,
+    private val onUpdateCallback: () -> Unit
 ) : BaseAdapter<ProjectDto, ProjectsAdapter.ProjectViewHolder>(context, items) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectViewHolder {
@@ -82,10 +83,10 @@ class ProjectsAdapter(
             buttonTechTask.apply {
                 if (project.technicalTask != null) {
                     setOnClickListener { openTechTask(project.technicalTask!!) }
-                    text = context.getString(R.string.tech_task_button)
+                    setText(R.string.tech_task_button)
                     isEnabled = true
                 } else {
-                    text = context.getString(R.string.tech_task_not_exists)
+                    setText(R.string.tech_task_not_exists)
                     isEnabled = false
                 }
             }
@@ -147,8 +148,6 @@ class ProjectsAdapter(
             context.startActivity(intent)
         }
 
-        private fun openMenu(project: ProjectDto) {
-            ProjectMenuDialog(context, fragment, project).start()
-        }
+        private fun openMenu(project: ProjectDto) = ProjectMenuDialog(project, fragment) { onUpdateCallback() }.start()
     }
 }

@@ -114,7 +114,7 @@ class TeamsAdapter(
         }
 
         private fun openEditTeamDialog() {
-            EditTeamDialog(fragment, team.id) { onUpdateCallback() }.start()
+            EditTeamDialog(fragment, team) { onUpdateCallback() }.start()
         }
 
         private fun setupDots(size: Int) {

@@ -72,7 +72,7 @@ class SearchFragment : BaseFragment() {
 
     private fun setupEditView() {
         searchField.doOnTextChanged { text, _, _, _ ->
-            if (!text.isNullOrEmpty()) {
+            if (!text.isNullOrBlank()) {
                 search(text.toString()) {
                     showProgress(false)
                     emptyText.visibility = if (searchViewModel.usersList.isEmpty()) VISIBLE else GONE

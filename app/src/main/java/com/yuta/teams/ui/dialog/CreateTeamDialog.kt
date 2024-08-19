@@ -44,8 +44,8 @@ open class CreateTeamDialog(
     override fun start() {
         super.start()
         setupButtons()
-        setupTextWatchers()
-        setupRecyclerViews()
+        setupEditViews()
+        initializeRecyclerViews()
     }
 
     private fun setupButtons() {
@@ -62,9 +62,9 @@ open class CreateTeamDialog(
         }
     }
 
-    private fun setupRecyclerViews() {
+    private fun initializeRecyclerViews() {
         dialog.findViewById<RecyclerView>(R.id.addedMembers).apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = LinearLayoutManager(fragment.requireContext())
             membersAdapter = TeamUserSearchAdapter(
                 teamViewModel.addedMembers,
                 this@CreateTeamDialog
@@ -73,7 +73,7 @@ open class CreateTeamDialog(
         }
 
         dialog.findViewById<RecyclerView>(R.id.searchUsers).apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = LinearLayoutManager(fragment.requireContext())
             searchAdapter = TeamUserSearchAdapter(
                 mutableListOf(),
                 this@CreateTeamDialog,
@@ -83,8 +83,9 @@ open class CreateTeamDialog(
         }
     }
 
-    private fun setupTextWatchers() {
+    private fun setupEditViews() {
         teamName.doOnTextChanged { text, _, _, _ ->
+            if (text.isNullOrBlank()) return@doOnTextChanged
             checkNameUnique(text.toString()) { isUnique ->
                 submitButton.isEnabled = isUnique
                 messageVisibility(error, !isUnique)
@@ -103,8 +104,6 @@ open class CreateTeamDialog(
     }
 
     private fun createTeam(name: String, members: List<UserDto>) {
-        if (name.isEmpty()) return
-
         teamViewModel.viewModelScope.launch {
             val isCreated = teamViewModel.create(UserUtils.getUserId(fragment.requireContext()), name, members).first()
             handleCreateResult(isCreated)
@@ -119,8 +118,6 @@ open class CreateTeamDialog(
     }
 
     private fun searchUsers(text: String, members: List<UserDto>) {
-        if (text.isEmpty()) return
-
         teamViewModel.viewModelScope.launch {
             teamViewModel.searchUsers(text, UserUtils.getUserId(fragment.requireContext()), members)
                 .collect { updateList(searchAdapter, it) }

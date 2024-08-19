@@ -14,7 +14,7 @@ import androidx.lifecycle.viewModelScope
 import com.santalu.maskara.widget.MaskEditText
 import com.yuta.app.R
 import com.yuta.common.ui.CancelableDialog
-import com.yuta.common.util.FieldUtils.trimmedText
+import com.yuta.common.util.FieldUtils.getData
 import com.yuta.common.util.KeyboardUtils
 import com.yuta.common.util.UserUtils
 import com.yuta.domain.model.User
@@ -66,11 +66,11 @@ class EditUserDialog(
     private fun editUserData() {
         detailsViewModel.viewModelScope.launch {
             val result = detailsViewModel.editDetails(
-                UserUtils.getUserId(fragment.requireContext()),
-                getData(biographyView),
-                getData(phoneNumberView),
-                getData(emailView),
-                getData(vkView)
+                userId = UserUtils.getUserId(fragment.requireContext()),
+                biography = biographyView.getData(),
+                phone = phoneNumberView.getData(),
+                email = emailView.getData(),
+                vk = vkView.getData()
             ).first()
             handleEditDetailsResult(result)
         }
@@ -88,10 +88,6 @@ class EditUserDialog(
         user.phoneNumber?.let { phoneNumberView.setText(it) }
         user.vk?.let { vkView.setText(it) }
         user.eMail?.let { emailView.setText(it) }
-    }
-
-    private fun getData(editText: EditText): String? {
-        return editText.trimmedText().takeIf { it.isNotEmpty() }
     }
 
     private fun setupField(editText: EditText, errorView: TextView) {
@@ -131,12 +127,12 @@ class EditUserDialog(
             }
 
             emailView -> {
-                val email = getData(emailView)
+                val email = emailView.getData()
                 email == null || Patterns.EMAIL_ADDRESS.matcher(email).matches()
             }
 
             vkView -> {
-                val vk = getData(vkView)
+                val vk = vkView.getData()
                 vk == null || Pattern.compile(VK_URL_REGEX).matcher(vk).matches()
             }
 
@@ -157,12 +153,12 @@ class EditUserDialog(
                 }
 
                 emailView -> {
-                    val email = getData(emailView)
+                    val email = emailView.getData()
                     isEmailValid = email == null || Patterns.EMAIL_ADDRESS.matcher(email).matches()
                 }
 
                 vkView -> {
-                    val vk = getData(vkView)
+                    val vk = vkView.getData()
                     isVkValid = vk == null || Pattern.compile(VK_URL_REGEX).matcher(vk).matches()
                 }
             }

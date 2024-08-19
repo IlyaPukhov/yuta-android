@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class EditTeamDialog(
     private val fragment: Fragment,
-    private val teamId: Int,
+    private val team: Team,
     private val onEditSuccessCallback: () -> Unit
 ) : CreateTeamDialog(fragment) {
 
@@ -26,26 +26,20 @@ class EditTeamDialog(
     override fun start() {
         super.start()
         setupViews()
-        getTeamDetails(teamId)
+        populateTeamDetails(team)
 
         submitButton.setOnClickListener {
             KeyboardUtils.hideKeyboard(fragment.requireActivity(), submitButton)
-            editTeam(teamId, teamName.trimmedText(), teamViewModel.addedMembers)
+            editTeam(team.id, teamName.trimmedText(), teamViewModel.addedMembers)
         }
     }
 
     private fun setupViews() {
         submitButton.apply {
-            text = context.getString(R.string.save_button)
+            setText(R.string.save_button)
             isEnabled = false
         }
-        title.text = context.getString(R.string.edit_team_text)
-    }
-
-    private fun getTeamDetails(teamId: Int) {
-        teamViewModel.viewModelScope.launch {
-            teamViewModel.getById(teamId).collect { populateTeamDetails(it) }
-        }
+        title.setText(R.string.edit_team_text)
     }
 
     private fun populateTeamDetails(team: Team) {
@@ -55,8 +49,6 @@ class EditTeamDialog(
     }
 
     private fun editTeam(teamId: Int, name: String, members: List<UserDto>) {
-        if (name.isEmpty()) return
-
         teamViewModel.viewModelScope.launch {
             val isEdited = teamViewModel.edit(teamId, name, members).first()
             handleEditResult(isEdited)
@@ -72,7 +64,7 @@ class EditTeamDialog(
 
     override fun checkNameUnique(name: String, onUniqueCallback: (Boolean) -> Unit) {
         teamViewModel.viewModelScope.launch {
-            teamViewModel.isUniqueName(name, teamId).collect { onUniqueCallback(it) }
+            teamViewModel.isUniqueName(name, team.id).collect { onUniqueCallback(it) }
         }
     }
 }

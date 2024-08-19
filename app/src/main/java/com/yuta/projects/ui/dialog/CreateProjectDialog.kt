@@ -1,292 +1,227 @@
-package com.yuta.projects.ui.dialog;
+package com.yuta.projects.ui.dialog
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.yuta.__old.R;
-import com.yuta.projects.ui.ProjectsFragment;
-import com.yuta.app.domain.model.response.SearchTeamsResponse;
-import com.yuta.app.domain.model.entity.Team;
-import com.yuta.app.domain.model.response.UpdateResponse;
-import com.yuta.projects.ui.adapter.ProjectTeamSearchAdapter;
-import com.yuta.common.ui.CancelableDialog;
-import com.yuta.common.util.FileUtils;
-import com.yuta.app.network.RequestViewModel;
-import lombok.SneakyThrows;
+import android.app.DatePickerDialog
+import android.net.Uri
+import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.RadioGroup
+import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewModelScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.yuta.app.R
+import com.yuta.common.ui.CancelableDialog
+import com.yuta.common.util.DateUtils
+import com.yuta.common.util.FieldUtils.getData
+import com.yuta.common.util.FieldUtils.trimmedText
+import com.yuta.common.util.FileUtils
+import com.yuta.common.util.KeyboardUtils
+import com.yuta.common.util.UserUtils
+import com.yuta.domain.model.Team
+import com.yuta.projects.ui.adapter.ProjectTeamSearchAdapter
+import com.yuta.projects.viewmodel.ProjectDialogsViewModel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import java.util.Calendar
+import java.util.Calendar.DAY_OF_MONTH
+import java.util.Calendar.MONTH
+import java.util.Calendar.YEAR
+import java.util.Locale
 
-import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
+open class CreateProjectDialog(
+    private val fragment: Fragment,
+    private val onCreateSuccessCallback: () -> Unit = {}
+) : CancelableDialog(R.layout.dialog_create_project, fragment.requireActivity()) {
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-import static com.yuta.common.util.UserUtils.getUserId;
-import static java.util.Calendar.DAY_OF_MONTH;
-import static java.util.Calendar.MONTH;
-import static java.util.Calendar.YEAR;
-import static java.util.Calendar.getInstance;
+    protected val submitButton: Button by lazy { dialog.findViewById(R.id.submit) }
+    private val closeButton: ImageView by lazy { dialog.findViewById(R.id.close) }
+    protected val deadlineField: TextView by lazy { dialog.findViewById(R.id.date_field) }
+    protected val projectName: EditText by lazy { dialog.findViewById(R.id.project_name) }
+    protected val projectDesc: EditText by lazy { dialog.findViewById(R.id.project_desc) }
+    private val searchField: EditText by lazy { dialog.findViewById(R.id.find_team) }
+    protected val radioGroup: RadioGroup by lazy { dialog.findViewById(R.id.radio_group) }
+    private val pickTeamContainer: View by lazy { dialog.findViewById(R.id.pick_team_container) }
+    private val addedText: TextView by lazy { dialog.findViewById(R.id.added_team_text) }
+    protected val fileName: TextView by lazy { dialog.findViewById(R.id.file_name) }
+    private val emptySearch: TextView by lazy { dialog.findViewById(R.id.empty_search_text) }
+    private val pickTechTaskButton: Button by lazy { dialog.findViewById(R.id.pick_tech_task) }
+    private val searchButton: Button by lazy { dialog.findViewById(R.id.btn_search) }
 
-@SuppressWarnings("ConstantConditions")
-public class CreateProjectDialog extends CancelableDialog {
-    public static final int PICK_PDF_REQUEST = 1;
-    protected static final int RADIO_CREATE_WITH_TEAM = R.id.create_with_team;
-    @SuppressLint("StaticFieldLeak")
-    protected static TextView fileName;
-    protected static Uri techTaskUri;
-    private final List<Team> addedTeams = new ArrayList<>();
-    private final List<Team> searchTeams = new ArrayList<>();
-    protected RequestViewModel viewModel;
-    protected Button submitButton;
-    protected TextView deadlineField;
-    protected ProjectTeamSearchAdapter searchAdapter;
-    protected ProjectTeamSearchAdapter addedTeamSearchAdapter;
-    protected EditText projectName;
-    protected EditText projectDesc;
-    private Button searchButton;
-    private TextView addedText;
-    private View pickTeamContainer;
-    private TextView emptySearch;
-    private EditText searchField;
-    protected RadioGroup radioGroup;
+    protected lateinit var addedTeamSearchAdapter: ProjectTeamSearchAdapter
+    private lateinit var searchAdapter: ProjectTeamSearchAdapter
+    protected var techTaskUri: Uri? = null
 
-    public CreateProjectDialog(Context context, Fragment fragment) {
-        super(context, fragment);
-        setDialogLayout(R.layout.dialog_create_project);
+    private val projectViewModel: ProjectDialogsViewModel by fragment.viewModels()
+
+
+    override fun start() {
+        super.start()
+        setupButtons()
+        setupEditViews()
+        datePickerInitialize()
+        radioGroupInitialize()
+        initializeRecyclerViews()
     }
 
-    public static void handleActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PICK_PDF_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
-            setTechTask(data.getData());
+    private fun setupButtons() {
+        closeButton.setOnClickListener { dismiss() }
+
+        pickTechTaskButton.setOnClickListener { pdfPickerLauncher.launch("application/pdf") }
+
+        searchButton.setOnClickListener {
+            KeyboardUtils.hideKeyboard(fragment.requireActivity(), searchButton)
+            searchTeam(searchField.trimmedText())
+        }
+
+        submitButton.setOnClickListener {
+            KeyboardUtils.hideKeyboard(fragment.requireActivity(), submitButton)
+            createProject()
         }
     }
 
-    @Override
-    public void start() {
-        super.start();
-        viewModel = new ViewModelProvider(fragment).get(RequestViewModel.class);
+    private fun setupEditViews() {
+        fileName.text = ""
 
-        fileName = dialog.findViewById(R.id.file_name);
-        fileName.setText("");
-        techTaskUri = null;
-
-        radioGroup = dialog.findViewById(R.id.radio_group);
-        pickTeamContainer = dialog.findViewById(R.id.pick_team_container);
-        searchField = dialog.findViewById(R.id.find_team);
-        searchButton = dialog.findViewById(R.id.btn_search);
-        submitButton = dialog.findViewById(R.id.submit);
-
-        addedText = dialog.findViewById(R.id.added_team_text);
-        emptySearch = dialog.findViewById(R.id.empty_search_text);
-        projectName = dialog.findViewById(R.id.project_name);
-        projectDesc = dialog.findViewById(R.id.project_desc);
-
-        setupEditView(projectName);
-        setupEditView(projectDesc);
-        setupEditView(searchField);
-        datePickerInitialize();
-        recyclerViewInitialize();
-        radioGroupInitialize(radioGroup);
-
-        dialog.findViewById(R.id.pick_tech_task).setOnClickListener(v -> pickTechTask());
-        dialog.findViewById(R.id.close).setOnClickListener(v -> dismiss());
-        searchButton.setOnClickListener(v -> {
-            hideKeyboard(searchButton);
-            searchTeam();
-        });
-        submitButton.setOnClickListener(v -> {
-            hideKeyboard(submitButton);
-            createProject();
-        });
+        setupEditView(projectName)
+        setupEditView(projectDesc)
+        setupEditView(searchField)
     }
 
-    @SneakyThrows
-    private void createProject() {
-        int managerId = getUserId(activity);
-        String name = getData(projectName);
-        String description = getData(projectDesc);
-        String deadline = getFormattedDate(getData(deadlineField));
-        InputStream techTaskInputStream = techTaskUri != null ? getContext().getContentResolver().openInputStream(techTaskUri) : null;
-        String filename = FileUtils.getFilename(fragment.requireContext(), techTaskUri);
-        int teamId = getCurrentTeamId();
-
-        viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.createProject(managerId, name, description, deadline, filename, techTaskInputStream, teamId);
-        viewModel.getResultLiveData().observe(fragment, result -> {
-            if (!(result instanceof UpdateResponse)) return;
-            ((ProjectsFragment) fragment).updateLists();
-            dismiss();
-        });
+    private fun createProject() {
+        projectViewModel.viewModelScope.launch {
+            val isCreated = projectViewModel.create(
+                userId = UserUtils.getUserId(fragment.requireContext()),
+                name = projectName.getData().toString(),
+                description = projectDesc.getData().toString(),
+                deadline = DateUtils.formatToIso(deadlineField.getData().toString()),
+                teamId = projectViewModel.addedTeams.firstOrNull()?.id,
+                filename = FileUtils.getFilename(fragment.requireContext(), techTaskUri),
+                technicalTask = techTaskUri?.let { context.contentResolver.openInputStream(it) }
+            ).first()
+            handleCreateResult(isCreated)
+        }
     }
 
-    private static void setTechTask(Uri uri) {
-        techTaskUri = uri;
-        fileName.setText(FileUtils.getFilename(fragment.getContext(), uri));
+    private fun handleCreateResult(isCreated: Boolean) {
+        if (isCreated) {
+            onCreateSuccessCallback()
+            dismiss()
+        }
     }
 
-    protected int getCurrentTeamId() {
-        return addedTeams.stream()
-                .findFirst()
-                .map(Team::getId)
-                .orElse(-1);
+    private fun datePickerInitialize() {
+        dialog.findViewById<View>(R.id.pick_date).setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val datePickerDialog = DatePickerDialog(
+                fragment.requireActivity(),
+                { _, year, month, dayOfMonth ->
+                    deadlineField.text =
+                        String.format(Locale.getDefault(), "%02d.%02d.%04d", dayOfMonth, month + 1, year)
+                    updateSubmitButtonState()
+                },
+                calendar[YEAR],
+                calendar[MONTH],
+                calendar[DAY_OF_MONTH]
+            )
+            datePickerDialog.datePicker.minDate = System.currentTimeMillis()
+            datePickerDialog.show()
+        }
     }
 
-    protected String getFormattedDate(String date) {
-        DateTimeFormatter sourceDateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        LocalDate localDate = LocalDate.parse(date, sourceDateFormatter);
-
-        return localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    private fun radioGroupInitialize() {
+        radioGroup.setOnCheckedChangeListener { _, checkedId ->
+            if (checkedId == R.id.create_with_team) {
+                pickTeamContainer.isVisible = true
+            } else {
+                pickTeamContainer.isVisible = false
+                projectViewModel.addedTeams.clear()
+            }
+            updateSubmitButtonState()
+        }
     }
 
-    private void radioGroupInitialize(RadioGroup radioGroup) {
-        radioGroup.setOnCheckedChangeListener(
-                (group, checkedId) -> {
-                    if (checkedId == RADIO_CREATE_WITH_TEAM) {
-                        pickTeamContainer.setVisibility(VISIBLE);
-                    } else {
-                        pickTeamContainer.setVisibility(GONE);
-                        addedTeams.clear();
-                    }
-                    updateSubmitButtonState();
-                }
-        );
+    private fun searchTeam(text: String) {
+        projectViewModel.viewModelScope.launch {
+            projectViewModel.searchTeams(
+                text,
+                UserUtils.getUserId(fragment.requireContext()),
+                projectViewModel.addedTeams.firstOrNull()?.id
+            )
+                .collect { updateList(searchAdapter, it) }
+        }
     }
 
-    private void pickTechTask() {
-        Intent intent = new Intent();
-        intent.setType("application/pdf");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        ((ProjectsFragment) fragment).pdfPickerLauncher.launch(Intent.createChooser(intent, activity.getString(R.string.pick_tech_task_file)));
-        updateSubmitButtonState();
+    private fun updateList(adapter: ProjectTeamSearchAdapter, teams: List<Team>) {
+        emptySearch.isVisible = teams.isEmpty()
+        adapter.refillList(teams)
     }
 
-    private void datePickerInitialize() {
-        deadlineField = dialog.findViewById(R.id.date_field);
+    private fun initializeRecyclerViews() {
+        dialog.findViewById<RecyclerView>(R.id.added_teams).apply {
+            layoutManager = LinearLayoutManager(fragment.requireContext())
+            addedTeamSearchAdapter = ProjectTeamSearchAdapter(
+                projectViewModel.addedTeams,
+                this@CreateProjectDialog,
+            ) {
+                updateSubmitButtonState()
+                updateAddedTextVisibility()
+            }
+            adapter = addedTeamSearchAdapter
+        }
 
-        dialog.findViewById(R.id.pick_date).setOnClickListener(v -> {
-            Calendar calendar = getInstance();
-
-            DatePickerDialog datePickerDialog = new DatePickerDialog(
-                    activity,
-                    (view, year1, month1, dayOfMonth) -> {
-                        deadlineField.setText(String.format(
-                                Locale.getDefault(), "%02d.%02d.%04d", dayOfMonth, month1 + 1, year1)
-                        );
-                        calendar.clear();
-                        calendar.set(year1, month1, dayOfMonth);
-                        updateSubmitButtonState();
-                    },
-                    calendar.get(DAY_OF_MONTH),
-                    calendar.get(MONTH),
-                    calendar.get(YEAR)
-            );
-            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
-            datePickerDialog.show();
-        });
+        dialog.findViewById<RecyclerView>(R.id.search_teams).apply {
+            layoutManager = LinearLayoutManager(fragment.requireContext())
+            searchAdapter = ProjectTeamSearchAdapter(
+                mutableListOf(),
+                this@CreateProjectDialog,
+                addedTeamSearchAdapter
+            ) {
+                updateSubmitButtonState()
+                updateAddedTextVisibility()
+            }
+            adapter = searchAdapter
+        }
     }
 
-    protected String getData(TextView editText) {
-        if (editText != null) {
-            String text = editText.getText().toString().trim();
-
-            if (!text.isEmpty()) {
-                return text;
+    private fun setupEditView(editText: EditText) {
+        editText.doOnTextChanged { text, _, _, _ ->
+            when (editText) {
+                projectName, projectDesc -> updateSubmitButtonState()
+                searchField -> searchButton.isEnabled = !text.isNullOrBlank()
             }
         }
-        return null;
     }
 
-    private void searchTeam() {
-        viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.searchTeams(getData(searchField), getUserId(activity), getCurrentTeamId());
-        viewModel.getResultLiveData().observe(fragment, result -> {
-            if (!(result instanceof SearchTeamsResponse)) return;
-            updateList(searchAdapter, ((SearchTeamsResponse) result).getTeams());
-        });
+    fun updateAddedTextVisibility() = messageVisibility(addedText, projectViewModel.addedTeams.isNotEmpty())
+
+    private fun messageVisibility(message: View, condition: Boolean) {
+        message.visibility = if (condition) VISIBLE else GONE
     }
 
-    private void updateList(@NonNull ProjectTeamSearchAdapter adapter, @NonNull List<Team> teams) {
-        messageVisibility(emptySearch, !teams.isEmpty());
-        adapter.refillList(teams);
+    protected fun updateSubmitButtonState() {
+        val isValid =
+            projectName.text.isNotBlank() && projectDesc.text.isNotBlank() && deadlineField.text.isNotBlank() &&
+                    (pickTeamContainer.isGone || projectViewModel.addedTeams.isNotEmpty())
+        submitButton.isEnabled = isValid
     }
 
-    private void recyclerViewInitialize() {
-        RecyclerView searchTeamView = dialog.findViewById(R.id.search_teams);
-        RecyclerView addedTeamsView = dialog.findViewById(R.id.added_teams);
-
-        LinearLayoutManager searchLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        searchTeamView.setLayoutManager(searchLayoutManager);
-
-        LinearLayoutManager addedLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        addedTeamsView.setLayoutManager(addedLayoutManager);
-
-        addedTeamSearchAdapter = new ProjectTeamSearchAdapter(this, addedTeams, null);
-        addedTeamsView.setAdapter(addedTeamSearchAdapter);
-
-        searchAdapter = new ProjectTeamSearchAdapter(this, searchTeams, addedTeamSearchAdapter);
-        searchTeamView.setAdapter(searchAdapter);
+    private fun setTechTask(uri: Uri) {
+        techTaskUri = uri
+        fileName.text = FileUtils.getFilename(fragment.requireContext(), uri)
     }
 
-    public void updateAddedTextVisibility() {
-        addedText.setVisibility((addedTeams != null && !addedTeams.isEmpty()) ? VISIBLE : GONE);
-    }
-
-    private void messageVisibility(@NonNull View message, boolean isValid) {
-        message.setVisibility(isValid ? GONE : VISIBLE);
-    }
-
-    private void setupEditView(@NonNull EditText editText) {
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (editText == projectName || editText == projectDesc) {
-                    updateSubmitButtonState();
-                } else if (editText == searchField) {
-                    searchButton.setEnabled(isFilledTextViews(s));
-                }
-            }
-        });
-    }
-
-    public void updateSubmitButtonState() {
-        boolean isValid = isFilledTextViews(projectName.getText(), projectDesc.getText(), deadlineField.getText())
-                && (pickTeamContainer.getVisibility() == GONE || !addedTeams.isEmpty());
-
-        submitButton.setEnabled(isValid);
-    }
-
-    private boolean isFilledTextViews(CharSequence... sequences) {
-        for (CharSequence s : sequences) {
-            if (s.equals(null) || s.toString().trim().isEmpty()) {
-                return false;
-            }
+    private val pdfPickerLauncher =
+        fragment.registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let { setTechTask(it) }
         }
-        return true;
-    }
 }

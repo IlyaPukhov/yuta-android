@@ -1,135 +1,124 @@
-package com.yuta.projects.ui.dialog;
+package com.yuta.projects.ui.dialog
 
-import android.content.Context;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.TextView;
-import androidx.fragment.app.Fragment;
-import com.yuta.__old.R;
-import com.yuta.projects.ui.ProjectsFragment;
-import com.yuta.app.domain.model.entity.Project;
-import com.yuta.app.domain.model.response.ProjectResponse;
-import com.yuta.app.domain.model.entity.Team;
-import com.yuta.app.domain.model.response.UpdateResponse;
-import com.yuta.common.util.FileUtils;
-import com.yuta.app.domain.model.entity.ProjectStatus;
-import lombok.SneakyThrows;
+import android.view.View
+import android.view.View.VISIBLE
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewModelScope
+import com.yuta.app.R
+import com.yuta.common.util.DateUtils
+import com.yuta.common.util.FieldUtils.getData
+import com.yuta.common.util.FileUtils
+import com.yuta.common.util.KeyboardUtils
+import com.yuta.domain.model.ProjectDto
+import com.yuta.domain.model.ProjectStatus
+import com.yuta.domain.model.Team
+import com.yuta.projects.viewmodel.ProjectDialogsViewModel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
-import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+class EditProjectDialog(
+    private val fragment: Fragment,
+    private val projectDto: ProjectDto,
+    private val onEditSuccessCallback: () -> Unit
+) : CreateProjectDialog(fragment) {
 
-import static android.view.View.VISIBLE;
-
-public class EditProjectDialog extends CreateProjectDialog {
-    private final int projectId;
-    private Project project;
-    private Spinner spinner;
-
-    public EditProjectDialog(Context context, Fragment fragment, int projectId) {
-        super(context, fragment);
-        this.projectId = projectId;
+    companion object {
+        private val RADIO_CREATE_WITH_TEAM: Int = R.id.create_with_team
     }
 
-    @Override
-    public void start() {
-        super.start();
-        setupViews();
-        getProject(projectId);
-        statusSpinnerInitialize();
+    private val spinner: Spinner by lazy { dialog.findViewById(R.id.status) }
+    private val title: TextView by lazy { dialog.findViewById(R.id.title) }
+    private val statusContainer: View by lazy { dialog.findViewById(R.id.status_container) }
 
-        submitButton.setEnabled(false);
-        submitButton.setOnClickListener(v -> {
-            hideKeyboard(submitButton);
-            editProject();
-        });
-    }
+    private val projectViewModel: ProjectDialogsViewModel by fragment.viewModels()
 
-    private void setupViews() {
-        submitButton.setText(R.string.save_button);
-        ((TextView) dialog.findViewById(R.id.create_text)).setText(getContext().getString(R.string.edit_project));
-        dialog.findViewById(R.id.status_container).setVisibility(VISIBLE);
-    }
+    override fun start() {
+        super.start()
+        setupViews()
+        initializeStatusSpinner()
+        populateProjectDetails()
 
-    private void getProject(int projectId) {
-        viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.getProject(projectId);
-        viewModel.getResultLiveData().observe(fragment, result -> {
-            if (!(result instanceof ProjectResponse)) return;
-            project = ((ProjectResponse) result).getProject();
-            setupProject();
-        });
-    }
-
-    private void setupProject() {
-        List<Team> teamList = new ArrayList<>();
-        if (project.getTeam() != null) {
-            radioGroup.check(RADIO_CREATE_WITH_TEAM);
-            teamList.add(project.getTeam());
-            addedTeamSearchAdapter.refillList(teamList);
+        submitButton.setOnClickListener {
+            KeyboardUtils.hideKeyboard(fragment.requireActivity(), submitButton)
+            editProject()
         }
-
-        projectName.setText(project.getName());
-        projectDesc.setText(project.getDescription());
-        fileName.setText(project.getTechnicalTaskName());
-        spinner.setSelection(ProjectStatus.fromText(project.getStatus()).ordinal());
-        deadlineField.setText(getUnformattedDate(project.getDeadline()));
-
-        updateAddedTextVisibility();
     }
 
-    @SneakyThrows
-    private void editProject() {
-        String name = getData(projectName);
-        String description = getData(projectDesc);
-        String deadline = getFormattedDate(getData(deadlineField));
-        String status = spinner.getSelectedItem().toString();
-        InputStream techTaskInputStream = techTaskUri != null ? getContext().getContentResolver().openInputStream(techTaskUri) : null;
-        String filename = FileUtils.getFilename(fragment.requireContext(), techTaskUri);
-        int teamId = getCurrentTeamId();
-
-        viewModel.getResultLiveData().removeObservers(fragment);
-        viewModel.editProject(projectId, name, description, deadline, filename, status, techTaskInputStream, teamId);
-        viewModel.getResultLiveData().observe(fragment, result -> {
-            if (!(result instanceof UpdateResponse)) return;
-            ((ProjectsFragment) fragment).updateLists();
-            dismiss();
-        });
+    private fun setupViews() {
+        submitButton.apply {
+            setText(R.string.save_button)
+            isEnabled = false
+        }
+        title.setText(R.string.edit_project_text)
+        statusContainer.visibility = VISIBLE
     }
 
-    private String getUnformattedDate(String date) {
-        DateTimeFormatter sourceDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate localDate = LocalDate.parse(date, sourceDateFormatter);
+    private fun populateProjectDetails() {
+        val teamList = mutableListOf<Team>()
 
-        return localDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        projectViewModel.viewModelScope.launch {
+            val project = projectViewModel.getById(projectDto.id).first()
+
+            project.team?.let {
+                radioGroup.check(RADIO_CREATE_WITH_TEAM)
+                teamList.add(it)
+                addedTeamSearchAdapter.refillList(teamList)
+            }
+
+            fileName.text = project.technicalTaskName
+            deadlineField.text = DateUtils.formatToEuropean(project.deadline)
+            projectName.setText(project.name)
+            projectDesc.setText(project.description)
+            spinner.setSelection(ProjectStatus.fromText(project.status).ordinal)
+
+            updateAddedTextVisibility()
+        }
     }
 
-    private void statusSpinnerInitialize() {
-        spinner = dialog.findViewById(R.id.status);
-        ArrayAdapter<ProjectStatus> adapter = new ArrayAdapter<>(
-                getContext(),
+    private fun editProject() {
+        projectViewModel.viewModelScope.launch {
+            val result = projectViewModel.edit(
+                id = projectDto.id,
+                name = projectName.getData().toString(),
+                description = projectDesc.getData().toString(),
+                deadline = DateUtils.formatToIso(deadlineField.getData().toString()),
+                teamId = projectViewModel.addedTeams.firstOrNull()?.id,
+                status = spinner.selectedItem.toString(),
+                filename = FileUtils.getFilename(fragment.requireContext(), techTaskUri),
+                technicalTask = techTaskUri?.let { context.contentResolver.openInputStream(it) }
+            ).first()
+
+            if (result) {
+                onEditSuccessCallback()
+                dismiss()
+            }
+        }
+    }
+
+    private fun initializeStatusSpinner() {
+        spinner.apply {
+            adapter = ArrayAdapter(
+                context,
                 android.R.layout.simple_spinner_item,
-                ProjectStatus.values()
-        );
+                ProjectStatus.entries.toTypedArray()
+            ).apply {
+                setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            }
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (project != null && position != ProjectStatus.fromText(project.getStatus()).ordinal()) {
-                    updateSubmitButtonState();
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    if (position != ProjectStatus.fromText(projectDto.status).ordinal) {
+                        updateSubmitButtonState()
+                    }
                 }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
-        });
+        }
     }
 }

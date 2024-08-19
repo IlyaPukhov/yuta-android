@@ -13,8 +13,8 @@ import com.yuta.common.ui.BaseAdapter
 import com.yuta.domain.model.Team
 
 class ProjectTeamSearchAdapter(
-    dialog: Dialog,
     items: MutableList<Team>,
+    dialog: Dialog,
     private val addedTeamSearchAdapter: ProjectTeamSearchAdapter? = null,
     private val onUpdateCallback: () -> Unit
 ) : BaseAdapter<Team, BaseAdapter.ViewHolder<Team>>(dialog.context, items) {
