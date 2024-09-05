@@ -1,8 +1,8 @@
 name: Build & Publish Debug APK
 on:
   push:
-    branches:
-      - master
+    branches: [ 'master' ]
+  workflow_dispatch:
 jobs:
   release:
     runs-on: ubuntu-latest
